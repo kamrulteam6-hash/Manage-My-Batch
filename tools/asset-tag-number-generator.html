@@ -14,7 +14,7 @@
 </script>
 <title>Asset Tag Number Generator — IT &amp; Facilities Asset Labels | Manage My Batch</title>
 <meta name="description" content="Free asset tag number generator. Build IT and facilities asset tags with site, category and sequence segments, check digits and label-friendly formats. Bulk export.">
-<link rel="canonical" href="https://managemybatch.com/tools/asset-tag-number-generator.html">
+<link rel="canonical" href="https://managemybatch.com/tools/asset-tag-number-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
@@ -22,7 +22,7 @@
 <meta property="og:locale" content="en_GB">
 <meta property="og:title" content="Asset Tag Number Generator — IT &amp; Facilities Asset Labels">
 <meta property="og:description" content="Free asset tag number generator. Build IT and facilities asset tags with site, category and sequence segments, check digits and label-friendly formats. Bulk export.">
-<meta property="og:url" content="https://managemybatch.com/tools/asset-tag-number-generator.html">
+<meta property="og:url" content="https://managemybatch.com/tools/asset-tag-number-generator">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Asset Tag Number Generator — IT &amp; Facilities Asset Labels">
 <meta name="twitter:description" content="Free asset tag number generator. Build IT and facilities asset tags with site, category and sequence segments, check digits and label-friendly formats. Bulk export.">
@@ -314,7 +314,7 @@
       '<p style="color:var(--muted)">Asset tags live a harder life than most identifiers. They are printed small, stuck to curved plastic, scratched by cables, and read years later by someone crouched under a desk with a torch. The design constraints come from that physical reality far more than from any database.</p>' +
       '<div class="grid g2" style="margin-top:18px">' +
       '<div><h4 style="font-size:14.5px;margin-bottom:8px">Formats that work</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><code>AST-00001</code> — small organisation, one site.</li><li><code>AST-LAP-00042</code> — category visible during stock takes.</li><li><code>AST-LON-LAP-00042</code> — multi-site, still under 18 characters.</li><li><code>ASTLAP000427</code> — no separators, check digit, optimised for barcode width.</li></ul></div>' +
-      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Why category is the exception</h4><p style="color:var(--muted);font-size:13.8px">Embedding attributes in identifiers is usually a mistake because attributes change. Asset category is the rare case where it does not: a monitor will never become a vehicle. That stability is what makes a category segment safe here, while a department code in an <a href="employee-id-generator.html">employee ID</a> is not.</p>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Why category is the exception</h4><p style="color:var(--muted);font-size:13.8px">Embedding attributes in identifiers is usually a mistake because attributes change. Asset category is the rare case where it does not: a monitor will never become a vehicle. That stability is what makes a category segment safe here, while a department code in an <a href="/tools/employee-id-generator">employee ID</a> is not.</p>' +
       '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">Location is more marginal — assets move between sites. If yours do, keep the site in a field and out of the tag.</p></div></div>' +
       '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>Do not use the manufacturer serial number as your asset tag.</strong> Serial formats vary wildly between vendors, are occasionally duplicated, and become unreadable the moment a device is wall-mounted or the sticker wears off. Record the serial as a field and key your register on your own tag.</span></div>',
     related: ['employee-id-generator', 'batch-number-generator', 'purchase-order-number-generator'],
@@ -375,7 +375,7 @@
           h: 'Separators and check digits',
           html: '<p><strong>Separators</strong> help humans and hurt machines. Hyphens make <code>LDN-IT-0482</code> far easier to read and dictate, but they add characters to the barcode and some legacy asset systems strip or reject them.</p>' +
             '<p>The workable compromise: print with separators, store without them, and normalise on input so that both forms match. Nothing else requires a decision.</p>' +
-            '<p><strong>Check digits</strong> matter more here than in most numbering schemes, because asset tags are frequently typed by hand — from a partially worn label, during an audit, into a mobile app with a small keyboard. A single <a href="reference-number-generator.html">Luhn digit</a> catches the transposition and single-digit errors that otherwise create a phantom asset record.</p>',
+            '<p><strong>Check digits</strong> matter more here than in most numbering schemes, because asset tags are frequently typed by hand — from a partially worn label, during an audit, into a mobile app with a small keyboard. A single <a href="/tools/reference-number-generator">Luhn digit</a> catches the transposition and single-digit errors that otherwise create a phantom asset record.</p>',
           steps: [
             { t: 'Choose a site prefix', d: 'Two or three letters. Stable, meaningful, and short.' },
             { t: 'Choose a broad category', d: 'Or omit it if your estate is homogeneous.' },
@@ -393,11 +393,11 @@
         {
           h: 'Related asset tools',
           list: [
-            '<a href="employee-id-generator.html">Employee ID Generator</a> — identify who an asset is assigned to.',
-            '<a href="batch-number-generator.html">Batch Number Generator</a> — production equipment and run traceability.',
-            '<a href="purchase-order-number-generator.html">Purchase Order Number Generator</a> — link the asset to its purchase.',
-            '<a href="product-code-generator.html">Product Code Generator</a> — model codes for equipment you sell.',
-            '<a href="reference-number-generator.html">Reference Number Generator</a> — check digit schemes.'
+            '<a href="/tools/employee-id-generator">Employee ID Generator</a> — identify who an asset is assigned to.',
+            '<a href="/tools/batch-number-generator">Batch Number Generator</a> — production equipment and run traceability.',
+            '<a href="/tools/purchase-order-number-generator">Purchase Order Number Generator</a> — link the asset to its purchase.',
+            '<a href="/tools/product-code-generator">Product Code Generator</a> — model codes for equipment you sell.',
+            '<a href="/tools/reference-number-generator">Reference Number Generator</a> — check digit schemes.'
           ]
         }
       ],

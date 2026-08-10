@@ -14,7 +14,7 @@
 </script>
 <title>LLMs.txt Generator — Create a Free llms.txt File Online | Manage My Batch</title>
 <meta name="description" content="Free llms.txt generator. Build a spec-compliant llms.txt (and llms-full.txt) so ChatGPT, Claude, Perplexity and Gemini understand and cite your site correctly.">
-<link rel="canonical" href="https://managemybatch.com/tools/llms-txt-generator.html">
+<link rel="canonical" href="https://managemybatch.com/tools/llms-txt-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
@@ -22,7 +22,7 @@
 <meta property="og:locale" content="en_GB">
 <meta property="og:title" content="LLMs.txt Generator — Create a Free llms.txt File Online">
 <meta property="og:description" content="Free llms.txt generator. Build a spec-compliant llms.txt (and llms-full.txt) so ChatGPT, Claude, Perplexity and Gemini understand and cite your site correctly.">
-<meta property="og:url" content="https://managemybatch.com/tools/llms-txt-generator.html">
+<meta property="og:url" content="https://managemybatch.com/tools/llms-txt-generator">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="LLMs.txt Generator — Create a Free llms.txt File Online">
 <meta name="twitter:description" content="Free llms.txt generator. Build a spec-compliant llms.txt (and llms-full.txt) so ChatGPT, Claude, Perplexity and Gemini understand and cite your site correctly.">
@@ -368,7 +368,7 @@
       '<div class="grid g2" style="margin-top:18px">' +
       '<div><h4 style="font-size:14.5px;margin-bottom:8px">The structure the spec expects</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>One <code>#</code> H1 — the site or project name.</li><li>An optional <code>&gt;</code> blockquote summary.</li><li>Free-form paragraphs for context.</li><li><code>##</code> sections containing markdown link lists, each link optionally followed by <code>: a short note</code>.</li><li>A final <code>## Optional</code> section that models may drop when context is tight.</li></ul></div>' +
       '<div><h4 style="font-size:14.5px;margin-bottom:8px">Common mistakes this tool prevents</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>Relative links that break once the file is fetched out of context — we expand them.</li><li>Multiple H1s, which make the file ambiguous.</li><li>Dumping your whole sitemap in; curation is the entire point.</li><li>Serving it as <code>text/html</code>, which some fetchers reject.</li><li>Duplicate targets that waste context budget.</li></ul></div></div>' +
-      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span>llms.txt is a proposed convention, not a standard that every model obeys today. It costs nothing to publish, helps assistants that do read it, and it is not a substitute for <a href="ai-crawler-robots-txt-generator.html">robots.txt rules</a> if your goal is to <em>block</em> AI crawlers.</span></div>',
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span>llms.txt is a proposed convention, not a standard that every model obeys today. It costs nothing to publish, helps assistants that do read it, and it is not a substitute for <a href="/tools/ai-crawler-robots-txt-generator">robots.txt rules</a> if your goal is to <em>block</em> AI crawlers.</span></div>',
     related: ['ai-crawler-robots-txt-generator', 'security-txt-generator', 'sitemap-index-generator'],
     faqs: [
       { q: 'What is an llms.txt file?', a: 'It is a markdown file published at <code>/llms.txt</code> that lists the pages you want AI assistants to read, with short notes explaining each one. It gives models a clean, curated entry point instead of forcing them to crawl and guess.' },
@@ -399,7 +399,7 @@
               ['<code>llms-full.txt</code>', 'Markdown', 'The full text of your documentation in one file.', 'Optional companion to llms.txt.']
             ]
           },
-          callout: { type: 'warn', text: '<strong>llms.txt does not block anything.</strong> It is an invitation, not a restriction. To keep AI crawlers out, you need <code>Disallow</code> rules — see the <a href="ai-crawler-robots-txt-generator.html">AI crawler robots.txt generator</a>. Publishing llms.txt while trying to block scraping achieves the opposite of what you intended.' }
+          callout: { type: 'warn', text: '<strong>llms.txt does not block anything.</strong> It is an invitation, not a restriction. To keep AI crawlers out, you need <code>Disallow</code> rules — see the <a href="/tools/ai-crawler-robots-txt-generator">AI crawler robots.txt generator</a>. Publishing llms.txt while trying to block scraping achieves the opposite of what you intended.' }
         },
         {
           h: 'The file format',
@@ -447,10 +447,10 @@
         {
           h: 'Related AI and crawler tools',
           list: [
-            '<a href="ai-crawler-robots-txt-generator.html">AI Crawler robots.txt Generator</a> — control which AI bots may crawl at all.',
-            '<a href="sitemap-index-generator.html">Sitemap Index Generator</a> — the exhaustive machine-readable counterpart.',
-            '<a href="security-txt-generator.html">security.txt Generator</a> — the RFC 9116 root file for vulnerability contacts.',
-            '<a href="meta-robots-tag-generator.html">Meta Robots Tag Generator</a> — per-page indexing and snippet control.'
+            '<a href="/tools/ai-crawler-robots-txt-generator">AI Crawler robots.txt Generator</a> — control which AI bots may crawl at all.',
+            '<a href="/tools/sitemap-index-generator">Sitemap Index Generator</a> — the exhaustive machine-readable counterpart.',
+            '<a href="/tools/security-txt-generator">security.txt Generator</a> — the RFC 9116 root file for vulnerability contacts.',
+            '<a href="/tools/meta-robots-tag-generator">Meta Robots Tag Generator</a> — per-page indexing and snippet control.'
           ]
         }
       ],

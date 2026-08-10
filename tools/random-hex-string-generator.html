@@ -14,7 +14,7 @@
 </script>
 <title>Random Hex String Generator — Secure, Free | Manage My Batch</title>
 <meta name="description" content="Generate cryptographically secure random hex strings. Set length in bytes or characters, add 0x or # prefixes, choose casing and separators, and export in bulk.">
-<link rel="canonical" href="https://managemybatch.com/tools/random-hex-string-generator.html">
+<link rel="canonical" href="https://managemybatch.com/tools/random-hex-string-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
@@ -22,7 +22,7 @@
 <meta property="og:locale" content="en_GB">
 <meta property="og:title" content="Random Hex String Generator — Secure, Free">
 <meta property="og:description" content="Generate cryptographically secure random hex strings. Set length in bytes or characters, add 0x or # prefixes, choose casing and separators, and export in bulk.">
-<meta property="og:url" content="https://managemybatch.com/tools/random-hex-string-generator.html">
+<meta property="og:url" content="https://managemybatch.com/tools/random-hex-string-generator">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Random Hex String Generator — Secure, Free">
 <meta name="twitter:description" content="Generate cryptographically secure random hex strings. Set length in bytes or characters, add 0x or # prefixes, choose casing and separators, and export in bulk.">
@@ -259,7 +259,7 @@
         return '<div class="kv"><span class="k">' + r[0] + '</span><span class="v">' + r[1] + '</span></div>';
       }).join('') +
       '<div class="note note-info" style="margin-top:14px">' + I.info +
-      '<span>Hex encodes 4 bits per character, so a hex string is always twice as long as the bytes it represents. If length matters, Base64 packs 6 bits per character and Base64URL keeps it safe in URLs — see the <a href="random-byte-generator.html">random byte generator</a>.</span></div>';
+      '<span>Hex encodes 4 bits per character, so a hex string is always twice as long as the bytes it represents. If length matters, Base64 packs 6 bits per character and Base64URL keeps it safe in URLs — see the <a href="/tools/random-byte-generator">random byte generator</a>.</span></div>';
   }
 
   $('#code').innerHTML = [
@@ -328,7 +328,7 @@
       '<p style="color:var(--muted)">Hex encodes exactly 4 bits per character, so <em>n</em> bytes always render as <em>2n</em> characters. This is where a surprising number of security bugs start: a developer asked for "a 32-character key", got 16 bytes of entropy, and shipped half the strength they believed they had. Specify secrets in <strong>bytes</strong> and let the encoding follow.</p>' +
       '<div class="grid g2" style="margin-top:18px">' +
       '<div><h4 style="font-size:14.5px;margin-bottom:8px">Sizes worth memorising</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><strong>16 bytes</strong> — AES-128 key, password salt.</li><li><strong>12 bytes</strong> — AES-GCM nonce. Never reuse one with the same key.</li><li><strong>32 bytes</strong> — AES-256 key, session token, HMAC secret. The sensible default for anything secret.</li><li><strong>64 bytes</strong> — JWT signing secrets where you want extra margin.</li><li><strong>3 bytes</strong> — a hex colour.</li></ul></div>' +
-      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Where hex is the wrong encoding</h4><p style="color:var(--muted);font-size:13.8px">Hex is readable and universally supported, but it is the least dense common encoding. 32 bytes is 64 hex characters versus 44 in Base64. When the value travels in a URL or a header where length matters, Base64URL is the better choice — the <a href="random-byte-generator.html">random byte generator</a> emits both.</p>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Where hex is the wrong encoding</h4><p style="color:var(--muted);font-size:13.8px">Hex is readable and universally supported, but it is the least dense common encoding. 32 bytes is 64 hex characters versus 44 in Base64. When the value travels in a URL or a header where length matters, Base64URL is the better choice — the <a href="/tools/random-byte-generator">random byte generator</a> emits both.</p>' +
       '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">Hex remains the right call for anything a human will read aloud, diff, or paste into a config file where a stray <code>+</code> or <code>/</code> would cause trouble.</p></div></div>' +
       '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong><code>Math.random()</code> is not a secret generator.</strong> It is a fast statistical PRNG whose internal state can be recovered from a few outputs. Anything guarding access must come from <code>crypto.getRandomValues()</code>, <code>crypto.randomBytes()</code>, Python\'s <code>secrets</code> module or an equivalent CSPRNG — which is what this page uses.</span></div>',
     related: ['random-byte-generator', 'dummy-api-key-generator', 'nanoid-generator'],
@@ -395,7 +395,7 @@
             '<strong>Hex is safe everywhere.</strong> No URL-encoding, no shell quoting, no filename problems. Base64 needs the URL-safe variant to travel in a query string.',
             '<strong>Base64 wins on size</strong> whenever the value is transmitted often or stored in bulk.'
           ],
-          after: '<p>Rule of thumb: hex for configuration, identifiers and anything a human touches; Base64URL for tokens on the wire. See the <a href="random-byte-generator.html">random byte generator</a> for Base64 and language-native output.</p>'
+          after: '<p>Rule of thumb: hex for configuration, identifiers and anything a human touches; Base64URL for tokens on the wire. See the <a href="/tools/random-byte-generator">random byte generator</a> for Base64 and language-native output.</p>'
         },
         {
           h: 'Why hex colours are six characters',
@@ -406,11 +406,11 @@
         {
           h: 'Related generators',
           list: [
-            '<a href="random-byte-generator.html">Random Byte Generator</a> — Base64, language literals and raw binary output.',
-            '<a href="dummy-api-key-generator.html">Dummy API Key Generator</a> — provider-shaped placeholder credentials.',
-            '<a href="nanoid-generator.html">NanoID Generator</a> — shorter URL-safe identifiers.',
-            '<a href="uuid-v7-generator.html">UUID v7 Generator</a> — standard 128-bit identifiers.',
-            '<a href="mongodb-objectid-generator.html">MongoDB ObjectId Generator</a> — 24-character hex identifiers with structure.'
+            '<a href="/tools/random-byte-generator">Random Byte Generator</a> — Base64, language literals and raw binary output.',
+            '<a href="/tools/dummy-api-key-generator">Dummy API Key Generator</a> — provider-shaped placeholder credentials.',
+            '<a href="/tools/nanoid-generator">NanoID Generator</a> — shorter URL-safe identifiers.',
+            '<a href="/tools/uuid-v7-generator">UUID v7 Generator</a> — standard 128-bit identifiers.',
+            '<a href="/tools/mongodb-objectid-generator">MongoDB ObjectId Generator</a> — 24-character hex identifiers with structure.'
           ]
         }
       ],

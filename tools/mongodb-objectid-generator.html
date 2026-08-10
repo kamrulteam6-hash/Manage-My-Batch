@@ -14,7 +14,7 @@
 </script>
 <title>MongoDB ObjectId Generator &amp; Decoder — Free | Manage My Batch</title>
 <meta name="description" content="Free MongoDB ObjectId generator and decoder. Create valid 12-byte BSON ObjectIds for any timestamp, decode existing ones, and build query snippets for the shell and drivers.">
-<link rel="canonical" href="https://managemybatch.com/tools/mongodb-objectid-generator.html">
+<link rel="canonical" href="https://managemybatch.com/tools/mongodb-objectid-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
@@ -22,7 +22,7 @@
 <meta property="og:locale" content="en_GB">
 <meta property="og:title" content="MongoDB ObjectId Generator &amp; Decoder — Free">
 <meta property="og:description" content="Free MongoDB ObjectId generator and decoder. Create valid 12-byte BSON ObjectIds for any timestamp, decode existing ones, and build query snippets for the shell and drivers.">
-<meta property="og:url" content="https://managemybatch.com/tools/mongodb-objectid-generator.html">
+<meta property="og:url" content="https://managemybatch.com/tools/mongodb-objectid-generator">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="MongoDB ObjectId Generator &amp; Decoder — Free">
 <meta name="twitter:description" content="Free MongoDB ObjectId generator and decoder. Create valid 12-byte BSON ObjectIds for any timestamp, decode existing ones, and build query snippets for the shell and drivers.">
@@ -375,7 +375,7 @@
             '<strong>Volume is inferable.</strong> Sample two IDs a day apart and the counter delta estimates how many documents you created — the classic competitor-intelligence leak.'
           ],
           after: '<p>None of that is fatal on its own, but it means an ObjectId is an <em>identifier</em>, never an <em>access control</em>. Authorise every request on the server; never rely on an ID being hard to guess.</p>',
-          callout: { type: 'warn', text: '<strong>If a URL identifier must not be guessable or must not reveal timing, do not use an ObjectId.</strong> Use a random public ID — a <a href="nanoid-generator.html">NanoID</a> or a UUID v4 — as a separate indexed field, and keep the ObjectId as the internal primary key.' }
+          callout: { type: 'warn', text: '<strong>If a URL identifier must not be guessable or must not reveal timing, do not use an ObjectId.</strong> Use a random public ID — a <a href="/tools/nanoid-generator">NanoID</a> or a UUID v4 — as a separate indexed field, and keep the ObjectId as the internal primary key.' }
         },
         {
           h: 'ObjectId or UUID?',
@@ -385,7 +385,7 @@
             { t: 'Use UUID v4', d: 'When unguessability matters more than index locality. Fully random, no timestamp, worse insert performance on large collections.' },
             { t: 'Avoid mixing', d: 'A collection with ObjectId keys and one with UUID keys in the same application is a permanent source of subtle bugs in joins, caches and serialisation.' }
           ],
-          after: '<p>See the <a href="uuid-v7-generator.html">UUID v7 generator</a> and the <a href="ulid-generator.html">ULID generator</a> for the time-ordered alternatives.</p>'
+          after: '<p>See the <a href="/tools/uuid-v7-generator">UUID v7 generator</a> and the <a href="/tools/ulid-generator">ULID generator</a> for the time-ordered alternatives.</p>'
         },
         {
           h: 'Collisions',
@@ -396,11 +396,11 @@
         {
           h: 'Related identifier tools',
           list: [
-            '<a href="uuid-v7-generator.html">UUID v7 Generator</a> — the standardised time-ordered UUID.',
-            '<a href="ulid-generator.html">ULID Generator</a> — sortable, URL-safe, 26 characters.',
-            '<a href="nanoid-generator.html">NanoID Generator</a> — short random IDs for public URLs.',
-            '<a href="json-test-data-generator.html">JSON Test Data Generator</a> — documents with ObjectId keys.',
-            '<a href="sql-insert-data-generator.html">SQL Insert Data Generator</a> — the relational counterpart.'
+            '<a href="/tools/uuid-v7-generator">UUID v7 Generator</a> — the standardised time-ordered UUID.',
+            '<a href="/tools/ulid-generator">ULID Generator</a> — sortable, URL-safe, 26 characters.',
+            '<a href="/tools/nanoid-generator">NanoID Generator</a> — short random IDs for public URLs.',
+            '<a href="/tools/json-test-data-generator">JSON Test Data Generator</a> — documents with ObjectId keys.',
+            '<a href="/tools/sql-insert-data-generator">SQL Insert Data Generator</a> — the relational counterpart.'
           ]
         }
       ],

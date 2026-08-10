@@ -15,7 +15,7 @@
 <title>SKU Generator — Free SKU Code Creator &amp; Format Builder | Manage My Batch</title>
 <meta name="description" content="Free SKU generator. Build readable SKU codes from product attributes and create the full size/colour variant matrix in one click. SKU format examples and CSV export.">
 <meta name="keywords" content="sku generator, sku code generator, how to create skus, sku format, sku number generator, product sku generator, sku examples, inventory sku codes, variant sku">
-<link rel="canonical" href="https://managemybatch.com/tools/sku-generator.html">
+<link rel="canonical" href="https://managemybatch.com/tools/sku-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
@@ -23,7 +23,7 @@
 <meta property="og:locale" content="en_GB">
 <meta property="og:title" content="SKU Generator — Free Structured SKU Builder with Variant Matrix">
 <meta property="og:description" content="Free SKU generator. Build readable, structured stock keeping units from product attributes and generate the full size/colour variant matrix in one click. CSV export.">
-<meta property="og:url" content="https://managemybatch.com/tools/sku-generator.html">
+<meta property="og:url" content="https://managemybatch.com/tools/sku-generator">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="SKU Generator — Free Structured SKU Builder with Variant Matrix">
 <meta name="twitter:description" content="Free SKU generator. Build readable, structured stock keeping units from product attributes and generate the full size/colour variant matrix in one click. CSV export.">
@@ -348,7 +348,7 @@ XL: Extra large</textarea>
       '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">Keep each segment a fixed width where you can. Mixed widths make columns ragged and sorting unpredictable.</p></div>' +
       '<div><h4 style="font-size:14.5px;margin-bottom:8px">Things that never belong in a SKU</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>Price — it changes, and the SKU cannot.</li><li>Supplier — you may switch or dual-source.</li><li>Season or year, unless you genuinely retire the item annually.</li><li>Stock location — the same item moves between bins.</li><li>Spaces, slashes or accents — they break CSV imports and URLs.</li></ul></div></div>' +
       '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>Never start a SKU with a digit.</strong> Excel and Google Sheets treat it as a number, strip leading zeros and sometimes convert to scientific notation. A SKU of <code>0012345</code> arrives at your supplier as <code>12345</code>, and this quietly corrupts more product imports than anything else on this list.</span></div>' +
-      '<div class="note note-info" style="margin-top:12px">' + GTI.info + '<span>A SKU is not a barcode. If you sell through retail or major marketplaces you will also need a real GTIN from a GS1 prefix — see the <a href="barcode-number-generator.html">barcode number generator</a> for how that differs.</span></div>',
+      '<div class="note note-info" style="margin-top:12px">' + GTI.info + '<span>A SKU is not a barcode. If you sell through retail or major marketplaces you will also need a real GTIN from a GS1 prefix — see the <a href="/tools/barcode-number-generator">barcode number generator</a> for how that differs.</span></div>',
     related: ['barcode-number-generator', 'product-code-generator', 'coupon-code-generator'],
     faqs: [
       { q: 'What is a SKU?', a: 'A Stock Keeping Unit: an internal code you assign to each distinct stocked item. Unlike a barcode number it is yours to design, so it can encode meaning that helps staff identify products at a glance.' },
@@ -402,7 +402,7 @@ XL: Extra large</textarea>
             { t: 'Barcode / GTIN', d: 'Global, issued from a licensed GS1 company prefix, identifies the item worldwide. Scanned at retail tills. Cannot be invented.' },
             { t: 'Product code', d: 'Identifies a model rather than a variant. One product code may have many SKUs — bare tool, with case, with two batteries.' }
           ],
-          after: '<p>Most catalogues need all three. See the <a href="barcode-number-generator.html">barcode number generator</a> for GS1 check digits and the <a href="product-code-generator.html">product code generator</a> for model-level identifiers.</p>'
+          after: '<p>Most catalogues need all three. See the <a href="/tools/barcode-number-generator">barcode number generator</a> for GS1 check digits and the <a href="/tools/product-code-generator">product code generator</a> for model-level identifiers.</p>'
         },
         {
           h: 'SKU naming best practices',
@@ -434,11 +434,11 @@ XL: Extra large</textarea>
         {
           h: 'Related ecommerce tools',
           list: [
-            '<a href="barcode-number-generator.html">Barcode Number Generator</a> — valid EAN-13, UPC-A and GTIN-14 numbers with GS1 check digits.',
-            '<a href="product-code-generator.html">Product Code Generator</a> — model and article numbers with category and version segments.',
-            '<a href="coupon-code-generator.html">Coupon Code Generator</a> — bulk discount codes with guess-resistance analysis.',
-            '<a href="order-number-generator.html">Order Number Generator</a> — customer-facing order references that resist enumeration.',
-            '<a href="shipping-reference-generator.html">Shipping Reference Generator</a> — consignment and parcel references.'
+            '<a href="/tools/barcode-number-generator">Barcode Number Generator</a> — valid EAN-13, UPC-A and GTIN-14 numbers with GS1 check digits.',
+            '<a href="/tools/product-code-generator">Product Code Generator</a> — model and article numbers with category and version segments.',
+            '<a href="/tools/coupon-code-generator">Coupon Code Generator</a> — bulk discount codes with guess-resistance analysis.',
+            '<a href="/tools/order-number-generator">Order Number Generator</a> — customer-facing order references that resist enumeration.',
+            '<a href="/tools/shipping-reference-generator">Shipping Reference Generator</a> — consignment and parcel references.'
           ]
         }
       ],

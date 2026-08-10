@@ -14,7 +14,7 @@
 </script>
 <title>Sitemap Index Generator — Split &amp; Index Large XML Sitemaps | Manage My Batch</title>
 <meta name="description" content="Free sitemap index generator. Split a URL list into 50,000-URL sitemaps, build a valid sitemapindex file with lastmod, and get the robots.txt and Search Console steps.">
-<link rel="canonical" href="https://managemybatch.com/tools/sitemap-index-generator.html">
+<link rel="canonical" href="https://managemybatch.com/tools/sitemap-index-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
@@ -22,7 +22,7 @@
 <meta property="og:locale" content="en_GB">
 <meta property="og:title" content="Sitemap Index Generator — Split &amp; Index Large XML Sitemaps">
 <meta property="og:description" content="Free sitemap index generator. Split a URL list into 50,000-URL sitemaps, build a valid sitemapindex file with lastmod, and get the robots.txt and Search Console steps.">
-<meta property="og:url" content="https://managemybatch.com/tools/sitemap-index-generator.html">
+<meta property="og:url" content="https://managemybatch.com/tools/sitemap-index-generator">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Sitemap Index Generator — Split &amp; Index Large XML Sitemaps">
 <meta name="twitter:description" content="Free sitemap index generator. Split a URL list into 50,000-URL sitemaps, build a valid sitemapindex file with lastmod, and get the robots.txt and Search Console steps.">
@@ -454,7 +454,7 @@
           html: '<p>Two of these three are ignored. Google has stated plainly that <code>&lt;changefreq&gt;</code> and <code>&lt;priority&gt;</code> carry no weight — they were self-reported, universally inflated, and therefore useless. Emitting them costs bytes and buys nothing.</p>' +
             '<p><code>&lt;lastmod&gt;</code> is different: Google uses it, <em>provided it is consistently accurate</em>. If your CMS stamps today\'s date on every URL at every build, the field is discarded for your whole site and you lose a real signal.</p>' +
             '<p>So the rule is: emit <code>lastmod</code> only when it reflects a genuine content change, and drop the other two.</p>',
-          callout: { type: 'tip', text: 'Only list canonical, indexable, 200-returning URLs. Redirects, noindexed pages and non-canonical variants in a sitemap are contradictory signals — you are asking Google to index pages you told it not to. See the <a href="canonical-tag-generator.html">canonical tag generator</a>.' }
+          callout: { type: 'tip', text: 'Only list canonical, indexable, 200-returning URLs. Redirects, noindexed pages and non-canonical variants in a sitemap are contradictory signals — you are asking Google to index pages you told it not to. See the <a href="/tools/canonical-tag-generator">canonical tag generator</a>.' }
         },
         {
           h: 'Should you gzip?',
@@ -464,10 +464,10 @@
         {
           h: 'Related crawling tools',
           list: [
-            '<a href="canonical-tag-generator.html">Canonical Tag Generator</a> — make sure the URLs you submit are the canonical ones.',
-            '<a href="hreflang-tag-generator.html">Hreflang Tag Generator</a> — annotate locales in the sitemap itself.',
-            '<a href="ai-crawler-robots-txt-generator.html">AI Crawler robots.txt Generator</a> — declare your sitemap and control crawler access.',
-            '<a href="nginx-redirect-generator.html">Nginx Redirect Generator</a> — clear redirects out of your sitemap after a migration.'
+            '<a href="/tools/canonical-tag-generator">Canonical Tag Generator</a> — make sure the URLs you submit are the canonical ones.',
+            '<a href="/tools/hreflang-tag-generator">Hreflang Tag Generator</a> — annotate locales in the sitemap itself.',
+            '<a href="/tools/ai-crawler-robots-txt-generator">AI Crawler robots.txt Generator</a> — declare your sitemap and control crawler access.',
+            '<a href="/tools/nginx-redirect-generator">Nginx Redirect Generator</a> — clear redirects out of your sitemap after a migration.'
           ]
         }
       ],

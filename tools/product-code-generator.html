@@ -14,7 +14,7 @@
 </script>
 <title>Product Code Generator — Model &amp; Article Number Builder | Manage My Batch</title>
 <meta name="description" content="Free product code generator. Build internal product, model and article numbers with category, range and version segments — plus bulk generation from a product list.">
-<link rel="canonical" href="https://managemybatch.com/tools/product-code-generator.html">
+<link rel="canonical" href="https://managemybatch.com/tools/product-code-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
@@ -22,7 +22,7 @@
 <meta property="og:locale" content="en_GB">
 <meta property="og:title" content="Product Code Generator — Model &amp; Article Number Builder">
 <meta property="og:description" content="Free product code generator. Build internal product, model and article numbers with category, range and version segments — plus bulk generation from a product list.">
-<meta property="og:url" content="https://managemybatch.com/tools/product-code-generator.html">
+<meta property="og:url" content="https://managemybatch.com/tools/product-code-generator">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Product Code Generator — Model &amp; Article Number Builder">
 <meta name="twitter:description" content="Free product code generator. Build internal product, model and article numbers with category, range and version segments — plus bulk generation from a product list.">
@@ -279,7 +279,7 @@ Angle Grinder 115mm</textarea>
   }
 
   $('#guide').innerHTML = [
-    ['Product code, SKU and barcode are three different things', 'A product code identifies a <em>model</em> — the Cordless Drill 18V, regardless of colour or bundle. A <a href="sku-generator.html">SKU</a> identifies a stocked variant of it. A <a href="barcode-number-generator.html">barcode number</a> identifies it globally for retail scanning. Most catalogues need all three, and conflating them causes trouble later.'],
+    ['Product code, SKU and barcode are three different things', 'A product code identifies a <em>model</em> — the Cordless Drill 18V, regardless of colour or bundle. A <a href="/tools/sku-generator">SKU</a> identifies a stocked variant of it. A <a href="/tools/barcode-number-generator">barcode number</a> identifies it globally for retail scanning. Most catalogues need all three, and conflating them causes trouble later.'],
     ['Leave gaps in the sequence', 'Numbering 100, 110, 120 rather than 100, 101, 102 means you can slot a related model in at 105 without renumbering a catalogue, reprinting spec sheets or breaking every existing reference.'],
     ['Category codes make codes self-describing', 'Two or three letters for the product family lets anyone reading a code place it immediately. Unlike a department in an employee ID, a product family rarely changes, so this stays accurate.'],
     ['Version suffixes track revisions, not variants', 'Use a version suffix when the same product is revised — a MK2 with a different motor. Do not use it for colours or sizes; those are variants and belong in the SKU.'],
@@ -386,7 +386,7 @@ Angle Grinder 115mm</textarea>
             '<strong>The year.</strong> Only if you genuinely retire the product annually. Otherwise a perfectly current product looks obsolete from 1 January.',
             '<strong>Supplier.</strong> You may dual-source or switch, and the code would then be a lie.',
             '<strong>Stock location.</strong> Items move between bins and warehouses constantly.',
-            '<strong>Colour and size.</strong> Those are variant attributes and belong in the <a href="sku-generator.html">SKU</a>, not the product code.',
+            '<strong>Colour and size.</strong> Those are variant attributes and belong in the <a href="/tools/sku-generator">SKU</a>, not the product code.',
             '<strong>Internal project names.</strong> They leak, and they date badly.'
           ],
           after: '<p>The test is simple: if the attribute can change while the product stays the same product, it does not belong in the code.</p>'
@@ -411,11 +411,11 @@ Angle Grinder 115mm</textarea>
         {
           h: 'Related identification tools',
           list: [
-            '<a href="sku-generator.html">SKU Generator</a> — variant-level stock codes and the full size × colour matrix.',
-            '<a href="barcode-number-generator.html">Barcode Number Generator</a> — GTIN numbers with valid check digits.',
-            '<a href="asset-tag-number-generator.html">Asset Tag Number Generator</a> — codes for equipment you own rather than sell.',
-            '<a href="lot-number-generator.html">Lot Number Generator</a> — traceability for production runs.',
-            '<a href="purchase-order-number-generator.html">Purchase Order Number Generator</a> — the procurement side of the same catalogue.'
+            '<a href="/tools/sku-generator">SKU Generator</a> — variant-level stock codes and the full size × colour matrix.',
+            '<a href="/tools/barcode-number-generator">Barcode Number Generator</a> — GTIN numbers with valid check digits.',
+            '<a href="/tools/asset-tag-number-generator">Asset Tag Number Generator</a> — codes for equipment you own rather than sell.',
+            '<a href="/tools/lot-number-generator">Lot Number Generator</a> — traceability for production runs.',
+            '<a href="/tools/purchase-order-number-generator">Purchase Order Number Generator</a> — the procurement side of the same catalogue.'
           ]
         }
       ],

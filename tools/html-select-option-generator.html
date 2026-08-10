@@ -14,7 +14,7 @@
 </script>
 <title>HTML Select Option Generator — Dropdowns, Optgroups &amp; Presets | Manage My Batch</title>
 <meta name="description" content="Free HTML select option generator. Build dropdown markup from a list with optgroups, selected and disabled states, plus presets for countries, US states, months, years and more.">
-<link rel="canonical" href="https://managemybatch.com/tools/html-select-option-generator.html">
+<link rel="canonical" href="https://managemybatch.com/tools/html-select-option-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
@@ -22,7 +22,7 @@
 <meta property="og:locale" content="en_GB">
 <meta property="og:title" content="HTML Select Option Generator — Dropdowns, Optgroups &amp; Presets">
 <meta property="og:description" content="Free HTML select option generator. Build dropdown markup from a list with optgroups, selected and disabled states, plus presets for countries, US states, months, years and more.">
-<meta property="og:url" content="https://managemybatch.com/tools/html-select-option-generator.html">
+<meta property="og:url" content="https://managemybatch.com/tools/html-select-option-generator">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="HTML Select Option Generator — Dropdowns, Optgroups &amp; Presets">
 <meta name="twitter:description" content="Free HTML select option generator. Build dropdown markup from a list with optgroups, selected and disabled states, plus presets for countries, US states, months, years and more.">
@@ -379,7 +379,7 @@ potato: Potato</textarea>
       w.push(['err', 'No <code>&lt;label&gt;</code>. A select without an associated label is unusable with a screen reader, and a placeholder option does not count as one.']);
     }
     if ($('#optMultiple').checked) w.push(['warn', 'Multi-selects are widely disliked — users often do not discover that ctrl-click is required. A checkbox group is usually the better control.']);
-    if (total > 100) w.push(['warn', total + ' options in a native select is hard to navigate. Consider a searchable combobox, or a <a href="html-datalist-generator.html">datalist</a> for type-ahead.']);
+    if (total > 100) w.push(['warn', total + ' options in a native select is hard to navigate. Consider a searchable combobox, or a <a href="/tools/html-datalist-generator">datalist</a> for type-ahead.']);
     if (!w.length) w.push(['ok', 'Valid, labelled select markup.']);
     $('#warnBox').innerHTML = w.map(function (x) {
       return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : x[0] === 'warn' ? 'note-warn' : 'note-err') + '">' +
@@ -460,7 +460,7 @@ potato: Potato</textarea>
       '<div class="grid g2" style="margin-top:18px">' +
       '<div><h4 style="font-size:14.5px;margin-bottom:8px">The placeholder pattern</h4><p style="color:var(--muted);font-size:13.8px">A first option that is <code>disabled</code>, <code>selected</code> and has <code>value=""</code> gives you a prompt the user cannot return to, while keeping <code>required</code> validation working. Give it a non-empty value and the browser thinks the field is already filled.</p>' +
       '<h4 style="font-size:14.5px;margin:16px 0 8px">Values are what get submitted</h4><p style="color:var(--muted);font-size:13.8px">The label is for humans, the value is for your backend. Use stable codes — <code>GB</code>, not <code>United Kingdom</code> — so renaming a label never breaks stored data.</p></div>' +
-      '<div><h4 style="font-size:14.5px;margin-bottom:8px">When a select is the wrong control</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><strong>Two or three options:</strong> radio buttons show every choice at once and take one click instead of two.</li><li><strong>Over about fifty options:</strong> people cannot scan them. Use a searchable combobox, or an input with a <a href="html-datalist-generator.html">datalist</a>.</li><li><strong>Multiple selection:</strong> native <code>multiple</code> requires ctrl-click, which most users never discover. A checkbox group is clearer.</li><li><strong>Yes/no:</strong> a checkbox.</li></ul></div></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">When a select is the wrong control</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><strong>Two or three options:</strong> radio buttons show every choice at once and take one click instead of two.</li><li><strong>Over about fifty options:</strong> people cannot scan them. Use a searchable combobox, or an input with a <a href="/tools/html-datalist-generator">datalist</a>.</li><li><strong>Multiple selection:</strong> native <code>multiple</code> requires ctrl-click, which most users never discover. A checkbox group is clearer.</li><li><strong>Yes/no:</strong> a checkbox.</li></ul></div></div>' +
       '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>In React, never put <code>selected</code> on an option.</strong> It produces a console warning and does not behave as expected. Control the select with <code>value</code> and <code>onChange</code> on the <code>&lt;select&gt;</code> element — the JSX output here does this.</span></div>',
     related: ['html-datalist-generator', 'html-table-generator', 'json-array-generator'],
     faqs: [
@@ -523,7 +523,7 @@ potato: Potato</textarea>
           cards: [
             { t: 'Under 5 options', d: 'Radio buttons show every choice at once with no interaction. Faster to scan and to hit.' },
             { t: 'Two options', d: 'A checkbox or a pair of radios. A yes/no dropdown is a click nobody needs.' },
-            { t: 'Over ~50 options', d: 'A searchable combobox, or a text input with a <a href="html-datalist-generator.html">datalist</a>. Scrolling to "United Kingdom" past 190 countries is a genuine cost.' },
+            { t: 'Over ~50 options', d: 'A searchable combobox, or a text input with a <a href="/tools/html-datalist-generator">datalist</a>. Scrolling to "United Kingdom" past 190 countries is a genuine cost.' },
             { t: 'Multiple selection', d: 'A native <code>multiple</code> select is notoriously unusable — users do not discover ctrl-click, and mobile rendering is inconsistent. Use checkboxes or a tag input.' },
             { t: 'Dates', d: 'Three selects for day, month and year lose to a single <code>type="date"</code> input in almost every case.' }
           ],
@@ -544,10 +544,10 @@ potato: Potato</textarea>
         {
           h: 'Related form tools',
           list: [
-            '<a href="html-datalist-generator.html">HTML Datalist Generator</a> — native autocomplete for free-text inputs.',
-            '<a href="html-table-generator.html">HTML Table Generator</a> — accessible tabular markup.',
-            '<a href="json-array-generator.html">JSON Array Generator</a> — the same list as data for a framework.',
-            '<a href="markdown-table-generator.html">Markdown Table Generator</a> — document your option values.'
+            '<a href="/tools/html-datalist-generator">HTML Datalist Generator</a> — native autocomplete for free-text inputs.',
+            '<a href="/tools/html-table-generator">HTML Table Generator</a> — accessible tabular markup.',
+            '<a href="/tools/json-array-generator">JSON Array Generator</a> — the same list as data for a framework.',
+            '<a href="/tools/markdown-table-generator">Markdown Table Generator</a> — document your option values.'
           ]
         }
       ],

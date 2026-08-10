@@ -14,7 +14,7 @@
 </script>
 <title>Lot Number Generator — GS1-Aware Traceability Codes | Manage My Batch</title>
 <meta name="description" content="Free lot number generator for food, cosmetics and pharma. Build GS1-compatible lot codes with expiry linkage, date codes and AI (10) application identifier output.">
-<link rel="canonical" href="https://managemybatch.com/tools/lot-number-generator.html">
+<link rel="canonical" href="https://managemybatch.com/tools/lot-number-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
@@ -22,7 +22,7 @@
 <meta property="og:locale" content="en_GB">
 <meta property="og:title" content="Lot Number Generator — GS1-Aware Traceability Codes">
 <meta property="og:description" content="Free lot number generator for food, cosmetics and pharma. Build GS1-compatible lot codes with expiry linkage, date codes and AI (10) application identifier output.">
-<meta property="og:url" content="https://managemybatch.com/tools/lot-number-generator.html">
+<meta property="og:url" content="https://managemybatch.com/tools/lot-number-generator">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Lot Number Generator — GS1-Aware Traceability Codes">
 <meta name="twitter:description" content="Free lot number generator for food, cosmetics and pharma. Build GS1-compatible lot codes with expiry linkage, date codes and AI (10) application identifier output.">
@@ -382,7 +382,7 @@
       '<div class="grid g2" style="margin-top:18px">' +
       '<div><h4 style="font-size:14.5px;margin-bottom:8px">What belongs in the code</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>A production date code — the primary recall boundary.</li><li>A facility code if you produce in more than one site.</li><li>A sequence separating runs within a day.</li></ul>' +
       '<h4 style="font-size:14.5px;margin:16px 0 8px">What does not</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>The expiry date — it belongs in AI (17) and the printed date.</li><li>Supplier or ingredient lots — these live in your traceability record.</li><li>Anything longer than the 20-character AI (10) limit.</li></ul></div>' +
-      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Batch or lot?</h4><p style="color:var(--muted);font-size:13.8px">The terms are used interchangeably in many companies. Where a distinction is drawn, a <a href="batch-number-generator.html">batch</a> is what was produced in one run under uniform conditions, while a lot is a quantity grouped for distribution — which may combine several batches.</p>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Batch or lot?</h4><p style="color:var(--muted);font-size:13.8px">The terms are used interchangeably in many companies. Where a distinction is drawn, a <a href="/tools/batch-number-generator">batch</a> is what was produced in one run under uniform conditions, while a lot is a quantity grouped for distribution — which may combine several batches.</p>' +
       '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">If your sector regulates one of the terms specifically, follow that definition rather than a general convention. What matters practically is that the code on the pack resolves to a record precise enough to scope a recall.</p></div></div>' +
       '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>Check the 20-character limit before committing to a format.</strong> GS1 application identifier (10) caps the batch/lot field at 20 alphanumeric characters. A scheme that exceeds it cannot be encoded in a GS1-128 or DataMatrix symbol — and that is usually discovered after the label artwork is signed off.</span></div>',
     related: ['batch-number-generator', 'asset-tag-number-generator', 'receipt-number-generator'],
@@ -424,7 +424,7 @@
         {
           h: 'Lot number or batch number?',
           html: '<p>Used interchangeably in practice. Where a distinction exists, "batch" is the manufacturing unit and "lot" is the traceability unit — one batch of bulk product might be packed into three lots on different days, or three small batches combined into one lot for distribution.</p>' +
-            '<p>Which term to use is largely determined by your regulator and your customers. Food and cosmetics regulation says lot; manufacturing and pharmaceutical GMP documentation more often says batch. Pick one, define it in your quality system, and use it consistently — the harm comes from two departments meaning different things by the same word. See the <a href="batch-number-generator.html">batch number generator</a> for the production-side view.</p>'
+            '<p>Which term to use is largely determined by your regulator and your customers. Food and cosmetics regulation says lot; manufacturing and pharmaceutical GMP documentation more often says batch. Pick one, define it in your quality system, and use it consistently — the harm comes from two departments meaning different things by the same word. See the <a href="/tools/batch-number-generator">batch number generator</a> for the production-side view.</p>'
         },
         {
           h: 'Keep the expiry date out of the lot code',
@@ -458,11 +458,11 @@
         {
           h: 'Related traceability tools',
           list: [
-            '<a href="batch-number-generator.html">Batch Number Generator</a> — production-side codes with line and shift.',
-            '<a href="barcode-number-generator.html">Barcode Number Generator</a> — the GTIN that accompanies AI (10).',
-            '<a href="shipping-reference-generator.html">Shipping Reference Generator</a> — track where a lot was distributed.',
-            '<a href="sku-generator.html">SKU Generator</a> — the stock codes lots are produced against.',
-            '<a href="purchase-order-number-generator.html">Purchase Order Number Generator</a> — incoming raw material references.'
+            '<a href="/tools/batch-number-generator">Batch Number Generator</a> — production-side codes with line and shift.',
+            '<a href="/tools/barcode-number-generator">Barcode Number Generator</a> — the GTIN that accompanies AI (10).',
+            '<a href="/tools/shipping-reference-generator">Shipping Reference Generator</a> — track where a lot was distributed.',
+            '<a href="/tools/sku-generator">SKU Generator</a> — the stock codes lots are produced against.',
+            '<a href="/tools/purchase-order-number-generator">Purchase Order Number Generator</a> — incoming raw material references.'
           ]
         }
       ],

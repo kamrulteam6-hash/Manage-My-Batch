@@ -14,7 +14,7 @@
 </script>
 <title>JSON Array Generator — Numbers, Strings, Ranges &amp; Objects | Manage My Batch</title>
 <meta name="description" content="Free JSON array generator. Build arrays of numbers, sequences, ranges, dates, strings or objects — with shuffling, unique values, custom separators and multiple output formats.">
-<link rel="canonical" href="https://managemybatch.com/tools/json-array-generator.html">
+<link rel="canonical" href="https://managemybatch.com/tools/json-array-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
@@ -22,7 +22,7 @@
 <meta property="og:locale" content="en_GB">
 <meta property="og:title" content="JSON Array Generator — Numbers, Strings, Ranges &amp; Objects">
 <meta property="og:description" content="Free JSON array generator. Build arrays of numbers, sequences, ranges, dates, strings or objects — with shuffling, unique values, custom separators and multiple output formats.">
-<meta property="og:url" content="https://managemybatch.com/tools/json-array-generator.html">
+<meta property="og:url" content="https://managemybatch.com/tools/json-array-generator">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="JSON Array Generator — Numbers, Strings, Ranges &amp; Objects">
 <meta name="twitter:description" content="Free JSON array generator. Build arrays of numbers, sequences, ranges, dates, strings or objects — with shuffling, unique values, custom separators and multiple output formats.">
@@ -512,7 +512,7 @@ yellow</textarea>
           html: '<p>Object mode is where the tool replaces a real script. Define the fields once — name, type, and a rule such as a range, a pattern or a pick-list — and every element follows the same shape:</p>' +
             '<p><code>[{ "id": 1, "name": "Ada Lovelace", "active": true }, …]</code></p>' +
             '<p>Two details make the output usable as a fixture rather than as noise. Field order is preserved, so the JSON diffs cleanly against a checked-in snapshot. And a sequential <code>id</code> alongside random content gives you a stable key to assert against while everything else varies.</p>',
-          callout: { type: 'tip', text: 'For deeply nested fixtures with realistic names, addresses and emails, the <a href="json-test-data-generator.html">JSON test data generator</a> is the better tool — it takes a schema, supports nesting and optional nulls, and emits a matching TypeScript interface. This one is for flat arrays you need right now.' }
+          callout: { type: 'tip', text: 'For deeply nested fixtures with realistic names, addresses and emails, the <a href="/tools/json-test-data-generator">JSON test data generator</a> is the better tool — it takes a schema, supports nesting and optional nulls, and emits a matching TypeScript interface. This one is for flat arrays you need right now.' }
         },
         {
           h: 'Numeric ranges',
@@ -550,16 +550,16 @@ yellow</textarea>
             '<strong>SQL <code>IN</code> clause</strong> — parenthesised and quoted correctly for pasting straight into a query.',
             '<strong>CSV column</strong> — one value per line, for spreadsheets.'
           ],
-          callout: { type: 'warn', text: 'A generated <code>IN</code> clause is for ad-hoc queries you are running yourself, not for application code. Interpolating values into SQL in an application is how injection happens — use parameterised queries there, and see the <a href="sql-insert-data-generator.html">SQL insert generator</a> for properly escaped seed scripts.' }
+          callout: { type: 'warn', text: 'A generated <code>IN</code> clause is for ad-hoc queries you are running yourself, not for application code. Interpolating values into SQL in an application is how injection happens — use parameterised queries there, and see the <a href="/tools/sql-insert-data-generator">SQL insert generator</a> for properly escaped seed scripts.' }
         },
         {
           h: 'Related data tools',
           list: [
-            '<a href="json-test-data-generator.html">JSON Test Data Generator</a> — schema-driven fixtures with nesting and TypeScript types.',
-            '<a href="csv-test-data-generator.html">CSV Test Data Generator</a> — the same data as RFC 4180 CSV.',
-            '<a href="sql-insert-data-generator.html">SQL Insert Data Generator</a> — dialect-correct seed scripts.',
-            '<a href="html-select-option-generator.html">HTML Select Option Generator</a> — turn a list into dropdown markup.',
-            '<a href="uuid-v7-generator.html">UUID v7 Generator</a> — time-ordered identifiers for array elements.'
+            '<a href="/tools/json-test-data-generator">JSON Test Data Generator</a> — schema-driven fixtures with nesting and TypeScript types.',
+            '<a href="/tools/csv-test-data-generator">CSV Test Data Generator</a> — the same data as RFC 4180 CSV.',
+            '<a href="/tools/sql-insert-data-generator">SQL Insert Data Generator</a> — dialect-correct seed scripts.',
+            '<a href="/tools/html-select-option-generator">HTML Select Option Generator</a> — turn a list into dropdown markup.',
+            '<a href="/tools/uuid-v7-generator">UUID v7 Generator</a> — time-ordered identifiers for array elements.'
           ]
         }
       ],

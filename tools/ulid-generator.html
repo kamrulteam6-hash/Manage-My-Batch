@@ -14,7 +14,7 @@
 </script>
 <title>ULID Generator — Sortable, URL-Safe Identifiers | Manage My Batch</title>
 <meta name="description" content="Free ULID generator. Create lexicographically sortable 26-character Crockford Base32 identifiers with monotonic ordering, bulk output and a built-in ULID decoder.">
-<link rel="canonical" href="https://managemybatch.com/tools/ulid-generator.html">
+<link rel="canonical" href="https://managemybatch.com/tools/ulid-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
@@ -22,7 +22,7 @@
 <meta property="og:locale" content="en_GB">
 <meta property="og:title" content="ULID Generator — Sortable, URL-Safe Identifiers">
 <meta property="og:description" content="Free ULID generator. Create lexicographically sortable 26-character Crockford Base32 identifiers with monotonic ordering, bulk output and a built-in ULID decoder.">
-<meta property="og:url" content="https://managemybatch.com/tools/ulid-generator.html">
+<meta property="og:url" content="https://managemybatch.com/tools/ulid-generator">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="ULID Generator — Sortable, URL-Safe Identifiers">
 <meta name="twitter:description" content="Free ULID generator. Create lexicographically sortable 26-character Crockford Base32 identifiers with monotonic ordering, bulk output and a built-in ULID decoder.">
@@ -379,7 +379,7 @@
               ['Tool support', 'Libraries in most languages', 'Broad, including database functions']
             ]
           },
-          after: '<p>Practical rule: if your database has a native UUID type and identifiers cross system boundaries, use <a href="uuid-v7-generator.html">UUID v7</a> — it is the standard and it stores in 16 bytes automatically. If identifiers appear in URLs, get read aloud, or you value the compact form, use ULID.</p>'
+          after: '<p>Practical rule: if your database has a native UUID type and identifiers cross system boundaries, use <a href="/tools/uuid-v7-generator">UUID v7</a> — it is the standard and it stores in 16 bytes automatically. If identifiers appear in URLs, get read aloud, or you value the compact form, use ULID.</p>'
         },
         {
           h: 'Why the alphabet skips I, L, O and U',
@@ -402,7 +402,7 @@
           h: 'Collisions and case',
           html: '<p>Within a millisecond, uniqueness depends on 80 random bits. Generating a thousand ULIDs in the same millisecond gives a collision probability around 10<sup>-18</sup> — you would need to sustain that rate for longer than the age of the universe for a collision to be likely. Across different milliseconds, collision is impossible by construction.</p>' +
             '<p>ULIDs are canonically <strong>uppercase</strong>. Crockford decoding accepts lowercase and maps it to the same value, so <code>01arz3…</code> and <code>01ARZ3…</code> represent the same ID — but string comparison in your database does not know that. Normalise to uppercase on input and store one canonical form, or a case-sensitive unique index will happily accept both.</p>',
-          callout: { type: 'warn', text: '<strong>ULIDs disclose creation time to anyone who has one.</strong> The first ten characters decode to a millisecond timestamp with no key required. For public identifiers where timing is sensitive — or where the sequence would reveal how many records you create — use a <a href="nanoid-generator.html">NanoID</a> or a UUID v4 as the external ID.' }
+          callout: { type: 'warn', text: '<strong>ULIDs disclose creation time to anyone who has one.</strong> The first ten characters decode to a millisecond timestamp with no key required. For public identifiers where timing is sensitive — or where the sequence would reveal how many records you create — use a <a href="/tools/nanoid-generator">NanoID</a> or a UUID v4 as the external ID.' }
         },
         {
           h: 'Storing ULIDs in a database',
@@ -416,11 +416,11 @@
         {
           h: 'Related identifier tools',
           list: [
-            '<a href="uuid-v7-generator.html">UUID v7 Generator</a> — the RFC-standardised time-ordered UUID.',
-            '<a href="nanoid-generator.html">NanoID Generator</a> — shorter, fully random, no timestamp.',
-            '<a href="mongodb-objectid-generator.html">MongoDB ObjectId Generator</a> — the 12-byte MongoDB equivalent.',
-            '<a href="random-hex-string-generator.html">Random Hex String Generator</a> — raw hex tokens.',
-            '<a href="json-test-data-generator.html">JSON Test Data Generator</a> — fixtures with ULID keys.'
+            '<a href="/tools/uuid-v7-generator">UUID v7 Generator</a> — the RFC-standardised time-ordered UUID.',
+            '<a href="/tools/nanoid-generator">NanoID Generator</a> — shorter, fully random, no timestamp.',
+            '<a href="/tools/mongodb-objectid-generator">MongoDB ObjectId Generator</a> — the 12-byte MongoDB equivalent.',
+            '<a href="/tools/random-hex-string-generator">Random Hex String Generator</a> — raw hex tokens.',
+            '<a href="/tools/json-test-data-generator">JSON Test Data Generator</a> — fixtures with ULID keys.'
           ]
         }
       ],

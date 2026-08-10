@@ -19,7 +19,7 @@ const shell = (slug, title, desc, heading, body) => `<!DOCTYPE html>
 </script>
 <title>${title} | Manage My Batch</title>
 <meta name="description" content="${desc}">
-<link rel="canonical" href="https://managemybatch.com/${slug}.html">
+<link rel="canonical" href="https://managemybatch.com/${slug}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -33,7 +33,7 @@ const shell = (slug, title, desc, heading, body) => `<!DOCTYPE html>
 <section class="hero">
   <div class="dots"></div>
   <div class="wrap">
-    <div class="crumbs"><a href="index.html">Home</a><span>/</span><span>${heading}</span></div>
+    <div class="crumbs"><a href="/">Home</a><span>/</span><span>${heading}</span></div>
     <h1 style="text-align:center;font-size:clamp(28px,5vw,44px)">${heading}</h1>
     <p class="lede">${desc}</p>
   </div>
@@ -64,7 +64,7 @@ const pages = [
 <li style="margin-bottom:8px"><strong>No dark patterns.</strong> No signup wall, no watermark, no premium export.</li>
 <li><strong>Fast.</strong> No frameworks, no trackers, no cookie banner to decline.</li>
 </ul>
-<p style="color:var(--muted);margin-top:22px">Something wrong or missing? <a href="contact.html">Tell us</a> — corrections to spec details are especially welcome.</p>`],
+<p style="color:var(--muted);margin-top:22px">Something wrong or missing? <a href="/contact">Tell us</a> — corrections to spec details are especially welcome.</p>`],
 
 ['faq', 'Frequently Asked Questions',
  'Common questions about Manage My Batch — pricing, privacy, accuracy and how the generators work.',
@@ -72,11 +72,11 @@ const pages = [
 <details class="faq" open><summary>Are these tools really free?</summary><div class="body"><p>Yes, all of them, with no usage limits and no account. There is no paid tier holding features back.</p></div></details>
 <details class="faq"><summary>Is my data sent anywhere?</summary><div class="body"><p>No. Every generator runs entirely in your browser. Nothing you type is transmitted, stored or logged — you can verify it in the network tab.</p></div></details>
 <details class="faq"><summary>Do I need an account?</summary><div class="body"><p>Never. Open a tool, use it, copy the output.</p></div></details>
-<details class="faq"><summary>How accurate are the generated files?</summary><div class="body"><p>Each generator follows the relevant published specification — RFC 9116 for security.txt, the sitemaps.org protocol, the IAB ads.txt spec, and the documented crawler directives from Google and Bing. Where a convention is proposed rather than standardised, such as llms.txt, the tool says so. Specifications change; if you spot a discrepancy, <a href="contact.html">report it</a>.</p></div></details>
+<details class="faq"><summary>How accurate are the generated files?</summary><div class="body"><p>Each generator follows the relevant published specification — RFC 9116 for security.txt, the sitemaps.org protocol, the IAB ads.txt spec, and the documented crawler directives from Google and Bing. Where a convention is proposed rather than standardised, such as llms.txt, the tool says so. Specifications change; if you spot a discrepancy, <a href="/contact">report it</a>.</p></div></details>
 <details class="faq"><summary>Can I use the output commercially?</summary><div class="body"><p>Yes. The files you generate are yours, with no attribution required.</p></div></details>
 <details class="faq"><summary>Do the tools work offline?</summary><div class="body"><p>Once a page has loaded, yes — the generators need no network access. Only the web font is fetched remotely.</p></div></details>
 <details class="faq"><summary>Which tool do I actually need?</summary><div class="body"><p>To control <em>crawling</em>, use robots.txt. To control <em>indexing</em> of an HTML page, use meta robots. For a PDF, image or whole directory, use X-Robots-Tag. To consolidate duplicate URLs, use canonical tags. To move URLs permanently, use redirects.</p></div></details>
-<details class="faq"><summary>Will more generators be added?</summary><div class="body"><p>Yes — CSP, Permissions-Policy, Referrer-Policy, CORS and a set of schema generators are next. The queue is listed at the bottom of <a href="tools.html">All Generators</a>.</p></div></details>`],
+<details class="faq"><summary>Will more generators be added?</summary><div class="body"><p>Yes — CSP, Permissions-Policy, Referrer-Policy, CORS and a set of schema generators are next. The queue is listed at the bottom of <a href="/tools">All Generators</a>.</p></div></details>`],
 
 ['contact', 'Contact',
  'Report a bug, suggest a generator, or flag a specification change.',
@@ -99,16 +99,16 @@ const pages = [
 <h2 style="font-size:20px;margin-bottom:16px">Guides</h2>
 <p style="color:var(--muted);margin-bottom:22px">Long-form articles are on the way. In the meantime, each generator carries a full explainer covering the specification, the trade-offs, and the mistakes that break it in production:</p>
 <ul style="color:var(--muted);padding-left:18px;line-height:2">
-<li><a href="tools/llms-txt-generator.html">What llms.txt is, and what it is not</a></li>
-<li><a href="tools/ai-crawler-robots-txt-generator.html">Blocking AI crawlers without wrecking your SEO</a></li>
-<li><a href="tools/security-txt-generator.html">Why security.txt matters more than it looks</a></li>
-<li><a href="tools/ads-txt-generator.html">How ads.txt protects your revenue</a></li>
-<li><a href="tools/meta-robots-tag-generator.html">Meta robots, robots.txt and X-Robots-Tag — which to reach for</a></li>
-<li><a href="tools/x-robots-tag-generator.html">When a header beats a meta tag</a></li>
-<li><a href="tools/hreflang-tag-generator.html">The rules that actually break hreflang implementations</a></li>
-<li><a href="tools/canonical-tag-generator.html">What canonicalization actually fixes</a></li>
-<li><a href="tools/sitemap-index-generator.html">When you need a sitemap index, and how to structure it</a></li>
-<li><a href="tools/nginx-redirect-generator.html">return, rewrite or map — and when each wins</a></li>
+<li><a href="/tools/llms-txt-generator">What llms.txt is, and what it is not</a></li>
+<li><a href="/tools/ai-crawler-robots-txt-generator">Blocking AI crawlers without wrecking your SEO</a></li>
+<li><a href="/tools/security-txt-generator">Why security.txt matters more than it looks</a></li>
+<li><a href="/tools/ads-txt-generator">How ads.txt protects your revenue</a></li>
+<li><a href="/tools/meta-robots-tag-generator">Meta robots, robots.txt and X-Robots-Tag — which to reach for</a></li>
+<li><a href="/tools/x-robots-tag-generator">When a header beats a meta tag</a></li>
+<li><a href="/tools/hreflang-tag-generator">The rules that actually break hreflang implementations</a></li>
+<li><a href="/tools/canonical-tag-generator">What canonicalization actually fixes</a></li>
+<li><a href="/tools/sitemap-index-generator">When you need a sitemap index, and how to structure it</a></li>
+<li><a href="/tools/nginx-redirect-generator">return, rewrite or map — and when each wins</a></li>
 </ul>`],
 
 ['privacy', 'Privacy Policy',
@@ -124,7 +124,7 @@ const pages = [
 <h2 style="font-size:19px;margin:22px 0 10px">Third parties</h2>
 <p style="color:var(--muted);margin-bottom:18px">The site loads a web font from Google Fonts. That request necessarily discloses your IP address to Google. Self-host the font if you would rather it did not. No other third-party resource is loaded.</p>
 <h2 style="font-size:19px;margin:22px 0 10px">Contact</h2>
-<p style="color:var(--muted)">Questions about this policy: <a href="contact.html">get in touch</a>.</p>`],
+<p style="color:var(--muted)">Questions about this policy: <a href="/contact">get in touch</a>.</p>`],
 
 ['terms', 'Terms of Use',
  'The terms under which Manage My Batch is provided.',

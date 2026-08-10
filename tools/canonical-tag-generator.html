@@ -14,7 +14,7 @@
 </script>
 <title>Canonical Tag Generator — rel=canonical with URL Normalization | Manage My Batch</title>
 <meta name="description" content="Free canonical tag generator. Build rel=canonical link tags and HTTP Link headers, strip UTM parameters, normalize trailing slashes, and bulk-process URL lists.">
-<link rel="canonical" href="https://managemybatch.com/tools/canonical-tag-generator.html">
+<link rel="canonical" href="https://managemybatch.com/tools/canonical-tag-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
@@ -22,7 +22,7 @@
 <meta property="og:locale" content="en_GB">
 <meta property="og:title" content="Canonical Tag Generator — rel=canonical with URL Normalization">
 <meta property="og:description" content="Free canonical tag generator. Build rel=canonical link tags and HTTP Link headers, strip UTM parameters, normalize trailing slashes, and bulk-process URL lists.">
-<meta property="og:url" content="https://managemybatch.com/tools/canonical-tag-generator.html">
+<meta property="og:url" content="https://managemybatch.com/tools/canonical-tag-generator">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Canonical Tag Generator — rel=canonical with URL Normalization">
 <meta name="twitter:description" content="Free canonical tag generator. Build rel=canonical link tags and HTTP Link headers, strip UTM parameters, normalize trailing slashes, and bulk-process URL lists.">
@@ -309,7 +309,7 @@ https://example.com/page?b=2&a=1</textarea>
       '<p style="color:var(--muted)">The same content reachable at several URLs splits its own ranking signals. <code>?utm_source=newsletter</code>, <code>/Page/</code> versus <code>/page</code>, <code>www</code> versus bare host, <code>?a=1&amp;b=2</code> versus <code>?b=2&amp;a=1</code> — to a crawler these are four different pages competing with each other. rel=canonical tells Google which one to consolidate everything onto.</p>' +
       '<div class="grid g2" style="margin-top:18px">' +
       '<div><h4 style="font-size:14.5px;margin-bottom:8px">Good reasons to canonicalize</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>Campaign URLs with tracking parameters.</li><li>Faceted navigation producing sorted or filtered duplicates.</li><li>Print and AMP variants of an article.</li><li>Products reachable from multiple category paths.</li><li>Content syndicated to a partner site.</li></ul></div>' +
-      '<div><h4 style="font-size:14.5px;margin-bottom:8px">When a redirect is the better tool</h4><p style="color:var(--muted);font-size:13.8px">A canonical is a hint; a 301 is an instruction. If the duplicate URL should never be reachable again — a moved page, a retired domain, an old slug — use a permanent redirect instead. Reserve canonicals for URLs that must keep working for users while consolidating for search.</p><p style="color:var(--muted);font-size:13.8px;margin-top:10px">Need the redirect rules? The <a href="nginx-redirect-generator.html">Nginx redirect generator</a> builds them from a URL list.</p></div></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">When a redirect is the better tool</h4><p style="color:var(--muted);font-size:13.8px">A canonical is a hint; a 301 is an instruction. If the duplicate URL should never be reachable again — a moved page, a retired domain, an old slug — use a permanent redirect instead. Reserve canonicals for URLs that must keep working for users while consolidating for search.</p><p style="color:var(--muted);font-size:13.8px;margin-top:10px">Need the redirect rules? The <a href="/tools/nginx-redirect-generator">Nginx redirect generator</a> builds them from a URL list.</p></div></div>' +
       '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>The most damaging mistake:</strong> a site-wide canonical pointing every page at the homepage. It is usually a mis-set template variable, and it can deindex an entire site within weeks. Always spot-check the rendered tag on a handful of live URLs after deployment.</span></div>',
     related: ['hreflang-tag-generator', 'meta-robots-tag-generator', 'nginx-redirect-generator'],
     faqs: [
@@ -365,7 +365,7 @@ https://example.com/page?b=2&a=1</textarea>
             { t: 'Use a canonical tag', d: 'When both URLs must keep working — filtered listings, tracked campaign links, print views, near-identical product variants. Users still reach the variant; only the index consolidates.' },
             { t: 'Use both, carefully', d: 'Never on the same pair. A page that redirects should not also be a canonical target of the URL it redirects to, and a canonical chain plus a redirect chain is how signals get lost.' }
           ],
-          after: '<p>For redirect rules, see the <a href="nginx-redirect-generator.html">Nginx redirect generator</a>.</p>'
+          after: '<p>For redirect rules, see the <a href="/tools/nginx-redirect-generator">Nginx redirect generator</a>.</p>'
         },
         {
           h: 'Common canonical tag mistakes',
@@ -388,11 +388,11 @@ https://example.com/page?b=2&a=1</textarea>
         {
           h: 'Related technical SEO tools',
           list: [
-            '<a href="hreflang-tag-generator.html">Hreflang Tag Generator</a> — language and region targeting with return-tag validation.',
-            '<a href="meta-robots-tag-generator.html">Meta Robots Tag Generator</a> — per-page indexing and snippet directives.',
-            '<a href="x-robots-tag-generator.html">X-Robots-Tag Generator</a> — indexing rules for PDFs, images and directories.',
-            '<a href="nginx-redirect-generator.html">Nginx Redirect Generator</a> — 301 rules for URLs that have genuinely moved.',
-            '<a href="sitemap-index-generator.html">Sitemap Index Generator</a> — submit only canonical URLs for crawling.'
+            '<a href="/tools/hreflang-tag-generator">Hreflang Tag Generator</a> — language and region targeting with return-tag validation.',
+            '<a href="/tools/meta-robots-tag-generator">Meta Robots Tag Generator</a> — per-page indexing and snippet directives.',
+            '<a href="/tools/x-robots-tag-generator">X-Robots-Tag Generator</a> — indexing rules for PDFs, images and directories.',
+            '<a href="/tools/nginx-redirect-generator">Nginx Redirect Generator</a> — 301 rules for URLs that have genuinely moved.',
+            '<a href="/tools/sitemap-index-generator">Sitemap Index Generator</a> — submit only canonical URLs for crawling.'
           ]
         }
       ],

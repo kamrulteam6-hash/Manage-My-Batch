@@ -14,7 +14,7 @@
 </script>
 <title>HTML Data List Generator — datalist Autocomplete Markup | Manage My Batch</title>
 <meta name="description" content="Free HTML datalist generator. Create native autocomplete markup correctly wired to its input, with presets, value/label pairs, and notes on browser behaviour and accessibility.">
-<link rel="canonical" href="https://managemybatch.com/tools/html-datalist-generator.html">
+<link rel="canonical" href="https://managemybatch.com/tools/html-datalist-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
@@ -22,7 +22,7 @@
 <meta property="og:locale" content="en_GB">
 <meta property="og:title" content="HTML Data List Generator — datalist Autocomplete Markup">
 <meta property="og:description" content="Free HTML datalist generator. Create native autocomplete markup correctly wired to its input, with presets, value/label pairs, and notes on browser behaviour and accessibility.">
-<meta property="og:url" content="https://managemybatch.com/tools/html-datalist-generator.html">
+<meta property="og:url" content="https://managemybatch.com/tools/html-datalist-generator">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="HTML Data List Generator — datalist Autocomplete Markup">
 <meta name="twitter:description" content="Free HTML datalist generator. Create native autocomplete markup correctly wired to its input, with presets, value/label pairs, and notes on browser behaviour and accessibility.">
@@ -351,7 +351,7 @@ Kotlin</textarea>
 
   function renderNotes() {
     $('#notes').innerHTML = [
-      ['It suggests, it does not restrict', 'This is the single most misunderstood thing about datalist. The user can ignore every suggestion and type whatever they like. If the value must come from a fixed set, use a <a href="html-select-option-generator.html">select</a> — or keep the datalist and validate, which is what the optional script does.'],
+      ['It suggests, it does not restrict', 'This is the single most misunderstood thing about datalist. The user can ignore every suggestion and type whatever they like. If the value must come from a fixed set, use a <a href="/tools/html-select-option-generator">select</a> — or keep the datalist and validate, which is what the optional script does.'],
       ['Wiring is by id, not nesting', 'The input carries <code>list="some-id"</code> and the datalist carries <code>id="some-id"</code>. The datalist can sit anywhere in the document; it is never rendered itself.'],
       ['Styling is not possible', 'The suggestion dropdown is drawn by the browser, outside your CSS. If you need custom styling, highlighting of matched substrings, or grouped results, you need a real combobox component with the ARIA combobox pattern.'],
       ['Matching behaviour varies', 'Chrome matches anywhere in the string, Firefox historically matched from the start. Do not build interactions that depend on a particular matching rule.'],
@@ -400,7 +400,7 @@ Kotlin</textarea>
       '<p style="color:var(--muted)">A <code>&lt;datalist&gt;</code> gives an ordinary text input a native suggestion dropdown, with no JavaScript, no dependency and no accessibility work. It is the right answer far more often than the combobox library people reach for instead — and the wrong answer in a few specific cases worth knowing.</p>' +
       '<div class="grid g2" style="margin-top:18px">' +
       '<div><h4 style="font-size:14.5px;margin-bottom:8px">Use it when</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>There are common answers but free text is legitimate — job titles, tags, city names.</li><li>You want to speed up typing without constraining the user.</li><li>The list is moderate in size and does not need grouping.</li><li>You would rather ship no JavaScript for this field.</li></ul></div>' +
-      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Do not use it when</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>The value <strong>must</strong> come from a fixed set — use a <a href="html-select-option-generator.html">select</a>.</li><li>You need to style the dropdown, highlight matches, or show rich content.</li><li>Suggestions come from a server as the user types and need debouncing and loading states.</li><li>You need multi-select or removable tokens.</li></ul></div></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Do not use it when</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>The value <strong>must</strong> come from a fixed set — use a <a href="/tools/html-select-option-generator">select</a>.</li><li>You need to style the dropdown, highlight matches, or show rich content.</li><li>Suggestions come from a server as the user types and need debouncing and loading states.</li><li>You need multi-select or removable tokens.</li></ul></div></div>' +
       '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>A datalist never validates anything.</strong> It is a convenience layer over a plain text input, so the submitted value can be anything the user types. Validate on the server as you would for any free-text field — the optional client-side check generated here improves the experience but is not a security control.</span></div>' +
       '<div class="note note-info" style="margin-top:12px">' + GTI.info + '<span>Because the dropdown is rendered by the browser, it inherits native keyboard handling, touch behaviour and screen-reader support at no cost. A hand-rolled combobox has to reimplement all of that correctly, and most do not.</span></div>',
     related: ['html-select-option-generator', 'html-table-generator', 'json-array-generator'],
@@ -429,7 +429,7 @@ Kotlin</textarea>
           html: '<p>A datalist offers values. It does not enforce them. The user can type anything, and the form submits whatever they typed.</p>' +
             '<p>That is usually the point — a datalist suits fields where the list is helpful but not exhaustive: a job title, a city, a tag, a browser version. If you need to <em>constrain</em> the answer, you need something else:</p>',
           list: [
-            '<strong>Use a <a href="html-select-option-generator.html">select</a></strong> when only listed values are acceptable. The control cannot express anything else.',
+            '<strong>Use a <a href="/tools/html-select-option-generator">select</a></strong> when only listed values are acceptable. The control cannot express anything else.',
             '<strong>Add a <code>pattern</code> attribute</strong> to reject anything outside a set — the generator can emit one built from your options.',
             '<strong>Validate on the server regardless.</strong> Client-side restriction of any kind is a convenience, never a guarantee.'
           ],
@@ -476,10 +476,10 @@ Kotlin</textarea>
         {
           h: 'Related form tools',
           list: [
-            '<a href="html-select-option-generator.html">HTML Select Option Generator</a> — for closed sets of values.',
-            '<a href="html-table-generator.html">HTML Table Generator</a> — accessible tabular markup.',
-            '<a href="json-array-generator.html">JSON Array Generator</a> — the same list as data.',
-            '<a href="regex-character-class-generator.html">Regex Character Class Generator</a> — build the <code>pattern</code> attribute that restricts input.'
+            '<a href="/tools/html-select-option-generator">HTML Select Option Generator</a> — for closed sets of values.',
+            '<a href="/tools/html-table-generator">HTML Table Generator</a> — accessible tabular markup.',
+            '<a href="/tools/json-array-generator">JSON Array Generator</a> — the same list as data.',
+            '<a href="/tools/regex-character-class-generator">Regex Character Class Generator</a> — build the <code>pattern</code> attribute that restricts input.'
           ]
         }
       ],

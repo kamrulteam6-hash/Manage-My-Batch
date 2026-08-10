@@ -14,7 +14,7 @@
 </script>
 <title>Round Robin Schedule Generator — Everyone Plays Everyone | Manage My Batch</title>
 <meta name="description" content="Free round robin schedule generator. Every team plays every other team, with balanced home and away, automatic byes for odd numbers and printable round-by-round fixtures.">
-<link rel="canonical" href="https://managemybatch.com/tools/round-robin-schedule-generator.html">
+<link rel="canonical" href="https://managemybatch.com/tools/round-robin-schedule-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
@@ -22,7 +22,7 @@
 <meta property="og:locale" content="en_GB">
 <meta property="og:title" content="Round Robin Schedule Generator — Everyone Plays Everyone">
 <meta property="og:description" content="Free round robin schedule generator. Every team plays every other team, with balanced home and away, automatic byes for odd numbers and printable round-by-round fixtures.">
-<meta property="og:url" content="https://managemybatch.com/tools/round-robin-schedule-generator.html">
+<meta property="og:url" content="https://managemybatch.com/tools/round-robin-schedule-generator">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Round Robin Schedule Generator — Everyone Plays Everyone">
 <meta name="twitter:description" content="Free round robin schedule generator. Every team plays every other team, with balanced home and away, automatic byes for odd numbers and printable round-by-round fixtures.">
@@ -360,7 +360,7 @@ Denton</textarea>
       '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">Double those for home and away.</p></div>' +
       '<div><h4 style="font-size:14.5px;margin-bottom:8px">Odd numbers</h4><p style="color:var(--muted);font-size:13.8px">An odd team count adds a phantom opponent. Whoever draws it sits out that round, and across the full cycle every team gets exactly one bye — no manual balancing needed.</p>' +
       '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">This is also why an odd count takes n rounds rather than n−1: there are more rounds, but fewer matches in each.</p></div></div>' +
-      '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>Round robin is the fairest format and the least scalable — match count grows with the square of the entry list. Past about twelve teams, a group stage feeding a <a href="tournament-bracket-generator.html">knockout bracket</a> is usually more practical.</span></div>',
+      '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>Round robin is the fairest format and the least scalable — match count grows with the square of the entry list. Past about twelve teams, a group stage feeding a <a href="/tools/tournament-bracket-generator">knockout bracket</a> is usually more practical.</span></div>',
     related: ['league-schedule-generator', 'match-fixture-generator', 'tournament-bracket-generator'],
     faqs: [
       { q: 'How many rounds does a round robin take?', a: 'One fewer than the number of teams if that number is even, or the same as the number of teams if it is odd. Eight teams need seven rounds; seven teams need seven rounds with one bye each.' },
@@ -418,7 +418,7 @@ Denton</textarea>
             '<strong>Limit consecutive runs.</strong> Three consecutive away fixtures is noticeable; four is a complaint. The generator reports the longest run so you can see it before publishing.',
             '<strong>Accept a one-game imbalance on odd counts.</strong> With an odd number of rounds, perfect balance is arithmetically impossible — someone gets one extra home game. Rotate who, season to season.'
           ],
-          after: '<p>For a full home-and-away season where each pairing meets twice, the <a href="league-schedule-generator.html">league schedule generator</a> handles the reverse fixtures and the fairness reporting.</p>'
+          after: '<p>For a full home-and-away season where each pairing meets twice, the <a href="/tools/league-schedule-generator">league schedule generator</a> handles the reverse fixtures and the fairness reporting.</p>'
         },
         {
           h: 'Fitting limited courts or pitches',
@@ -436,16 +436,16 @@ Denton</textarea>
           html: '<p>Different questions, different answers.</p>' +
             '<p>A <strong>knockout</strong> answers "who wins today" in the minimum number of matches. It is dramatic and short, and half the field is finished after one game — which is fine for a cup and miserable for a club night.</p>' +
             '<p>A <strong>round robin</strong> answers "who is best over the season". Everyone plays the same number of games, one upset does not end anyone\'s participation, and the standings are meaningful. It costs time.</p>' +
-            '<p>The hybrid — pools followed by a knockout — is what most real tournaments use, because it gives everyone several guaranteed games and still produces a single decisive winner. See the <a href="tournament-bracket-generator.html">tournament bracket generator</a> for the knockout stage.</p>'
+            '<p>The hybrid — pools followed by a knockout — is what most real tournaments use, because it gives everyone several guaranteed games and still produces a single decisive winner. See the <a href="/tools/tournament-bracket-generator">tournament bracket generator</a> for the knockout stage.</p>'
         },
         {
           h: 'Related scheduling tools',
           list: [
-            '<a href="league-schedule-generator.html">League Schedule Generator</a> — full home-and-away seasons with dates.',
-            '<a href="match-fixture-generator.html">Match Fixture Generator</a> — add venues, times and match numbers.',
-            '<a href="tournament-bracket-generator.html">Tournament Bracket Generator</a> — seeded single elimination.',
-            '<a href="team-generator.html">Team Generator</a> — build balanced teams before you schedule them.',
-            '<a href="work-shift-rotation-generator.html">Work Shift Rotation Generator</a> — the same rotation maths for rotas.'
+            '<a href="/tools/league-schedule-generator">League Schedule Generator</a> — full home-and-away seasons with dates.',
+            '<a href="/tools/match-fixture-generator">Match Fixture Generator</a> — add venues, times and match numbers.',
+            '<a href="/tools/tournament-bracket-generator">Tournament Bracket Generator</a> — seeded single elimination.',
+            '<a href="/tools/team-generator">Team Generator</a> — build balanced teams before you schedule them.',
+            '<a href="/tools/work-shift-rotation-generator">Work Shift Rotation Generator</a> — the same rotation maths for rotas.'
           ]
         }
       ],

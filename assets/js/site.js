@@ -5,7 +5,7 @@
 
   /* ------------------------------------------------------------------ paths */
   var ROOT = (document.body && document.body.getAttribute('data-root')) || './';
-  function url(p) { return ROOT + p; }
+  function url(p) { return p.charAt(0) === '/' ? p : ROOT + p; }
   window.GT_ROOT = ROOT;
 
   /* ---------------------------------------------------------------- icons */
@@ -418,25 +418,25 @@
   /* ------------------------------------------------------------ shell HTML */
   function navHTML(active) {
     var gens = TOOLS.map(function (t) {
-      return '<a href="' + url('tools/' + t.slug + '.html') + '">' + t.name + '</a>';
+      return '<a href="' + url('/tools/' + t.slug) + '">' + t.name + '</a>';
     }).join('');
     var cats = CATS.map(function (c) {
-      return '<a href="' + url('tools.html') + '?cat=' + encodeURIComponent(c.match) + '">' + c.name + '</a>';
+      return '<a href="' + url('/tools') + '?cat=' + encodeURIComponent(c.match) + '">' + c.name + '</a>';
     }).join('');
     return '' +
       '<header class="site-header"><div class="wrap"><nav class="nav">' +
-      '<a class="brand" href="' + url('index.html') + '"><span class="logo">' + I.logo + '</span>Manage My Batch</a>' +
+      '<a class="brand" href="' + url('/') + '"><span class="logo">' + I.logo + '</span>Manage My Batch</a>' +
       '<button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">' +
       '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>' +
       '<div class="nav-links" id="navLinks">' +
-      '<a href="' + url('index.html') + '"' + (active === 'home' ? ' class="active"' : '') + '>Home</a>' +
-      '<span class="has-menu"><a href="' + url('tools.html') + '"' + (active === 'tools' ? ' class="active"' : '') + '>Generators</a>' +
+      '<a href="' + url('/') + '"' + (active === 'home' ? ' class="active"' : '') + '>Home</a>' +
+      '<span class="has-menu"><a href="' + url('/tools') + '"' + (active === 'tools' ? ' class="active"' : '') + '>Generators</a>' +
       '<span class="menu-panel">' + gens + '</span></span>' +
-      '<span class="has-menu"><a href="' + url('tools.html') + '">Categories</a><span class="menu-panel">' + cats + '</span></span>' +
-      '<a href="' + url('blog.html') + '"' + (active === 'blog' ? ' class="active"' : '') + '>Blog</a>' +
-      '<a href="' + url('about.html') + '"' + (active === 'about' ? ' class="active"' : '') + '>About</a>' +
+      '<span class="has-menu"><a href="' + url('/tools') + '">Categories</a><span class="menu-panel">' + cats + '</span></span>' +
+      '<a href="' + url('/blog') + '"' + (active === 'blog' ? ' class="active"' : '') + '>Blog</a>' +
+      '<a href="' + url('/about') + '"' + (active === 'about' ? ' class="active"' : '') + '>About</a>' +
       '</div><span class="nav-spacer"></span>' +
-      '<a class="btn btn-primary" href="' + url('tools.html') + '">Browse Tools ' + I.ext + '</a>' +
+      '<a class="btn btn-primary" href="' + url('/tools') + '">Browse Tools ' + I.ext + '</a>' +
       '</nav></div></header>';
   }
 
@@ -445,14 +445,14 @@
     function li(h, t) { return '<li><a href="' + url(h) + '">' + t + '</a></li>'; }
     return '' +
       '<footer class="site-footer"><div class="wrap"><div class="foot-grid">' +
-      '<div class="foot-about"><a class="brand" href="' + url('index.html') + '"><span class="logo">' + I.logo + '</span>Manage My Batch</a>' +
+      '<div class="foot-about"><a class="brand" href="' + url('/') + '"><span class="logo">' + I.logo + '</span>Manage My Batch</a>' +
       '<p>Fast, free and simple tools to boost your productivity every day.</p>' +
       '<div class="socials"><a href="#" aria-label="GitHub"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.15-1.11-1.46-1.11-1.46-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/></svg></a>' +
       '<a href="#" aria-label="X"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.4 8.5L23 22h-6.8l-5.3-7-6.1 7H1.7l7.9-9.1L1 2h7l4.8 6.4zm-1.2 18h1.9L7.4 4H5.4z"/></svg></a>' +
       '<a href="#" aria-label="LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-.95 1.83-1.95 3.77-1.95 4.03 0 4.78 2.5 4.78 5.76V21h-4v-5.6c0-1.34-.03-3.07-1.94-3.07-1.94 0-2.24 1.46-2.24 2.97V21H9z"/></svg></a></div></div>' +
-      '<div><h5>Explore</h5><ul>' + li('tools.html', 'All Generators') + li('tools.html', 'Categories') + li('tools.html#popular', 'Popular Tools') + li('tools.html#new', 'Recently Added') + '</ul></div>' +
-      '<div><h5>Resources</h5><ul>' + li('blog.html', 'Blog') + li('faq.html', 'FAQ') + li('about.html', 'About Us') + li('contact.html', 'Contact') + '</ul></div>' +
-      '<div><h5>Company</h5><ul>' + li('privacy.html', 'Privacy Policy') + li('terms.html', 'Terms of Use') + li('disclaimer.html', 'Disclaimer') + '</ul></div>' +
+      '<div><h5>Explore</h5><ul>' + li('/tools', 'All Generators') + li('/tools', 'Categories') + li('/tools#popular', 'Popular Tools') + li('/tools#new', 'Recently Added') + '</ul></div>' +
+      '<div><h5>Resources</h5><ul>' + li('/blog', 'Blog') + li('/faq', 'FAQ') + li('/about', 'About Us') + li('/contact', 'Contact') + '</ul></div>' +
+      '<div><h5>Company</h5><ul>' + li('/privacy', 'Privacy Policy') + li('/terms', 'Terms of Use') + li('/disclaimer', 'Disclaimer') + '</ul></div>' +
       '<div><h5>Stay Updated</h5><p style="color:var(--muted);font-size:13.8px">Get tips, updates and new tools in your inbox.</p>' +
       '<form class="sub" onsubmit="event.preventDefault();GT.toast(\'Thanks — you are on the list!\')">' +
       '<input type="email" placeholder="Enter your email" required><button class="btn btn-primary" type="submit">Subscribe</button></form></div>' +
@@ -600,7 +600,7 @@
   function relatedHTML(slugs) {
     return slugs.map(function (s) {
       var t = bySlug(s); if (!t) return '';
-      return '<a class="tool-card" href="' + url('tools/' + t.slug + '.html') + '">' +
+      return '<a class="tool-card" href="' + url('/tools/' + t.slug) + '">' +
         '<span class="ic ' + t.tone + '">' + I[t.icon] + '</span><h3>' + t.name + '</h3><p>' + t.desc + '</p>' +
         '<span class="go">Use Tool ' + I.arrow + '</span></a>';
     }).join('');
@@ -686,8 +686,8 @@
     var hero = GT.$('#hero');
     if (hero) {
       hero.innerHTML = '<div class="dots"></div><div class="wrap">' +
-        '<div class="crumbs"><a href="' + url('index.html') + '">Home</a><span>/</span>' +
-        '<a href="' + url('tools.html') + '?cat=' + encodeURIComponent(t.cat || '') + '">' + (t.cat || 'Tools') + '</a>' +
+        '<div class="crumbs"><a href="' + url('/') + '">Home</a><span>/</span>' +
+        '<a href="' + url('/tools') + '?cat=' + encodeURIComponent(t.cat || '') + '">' + (t.cat || 'Tools') + '</a>' +
         '<span>/</span><span>' + (t.name || document.title) + '</span></div>' +
         '<div class="tool-head"><span class="tool-icon">' + (I[t.icon] || I.file) + '</span><h1>' + (t.name || '') + '</h1></div>' +
         '<p class="lede">' + (cfg.lede || t.desc || '') + '</p>' +
@@ -706,9 +706,9 @@
           '<div class="steps">' + stepsHTML(cfg.steps) + '</div></div></section>' : '') +
         (cfg.guide ? '<section><div class="wrap"><div class="card card-pad"><h2 class="section-title"><span class="ico">' + I.chart + '</span>' + (cfg.guideTitle || 'Everything you need to know') + '</h2><div class="guide">' + cfg.guide + '</div></div></div></section>' : '') +
         (cfg.related ? '<section><div class="wrap"><div class="section-head"><h2 class="section-title" style="margin:0"><span class="ico">' + I.chart + '</span>Related Tools</h2>' +
-          '<a href="' + url('tools.html') + '">View all tools ' + I.arrow + '</a></div><div class="grid g3">' + relatedHTML(cfg.related) + '</div></div></section>' : '') +
+          '<a href="' + url('/tools') + '">View all tools ' + I.arrow + '</a></div><div class="grid g3">' + relatedHTML(cfg.related) + '</div></div></section>' : '') +
         (cfg.faqs ? '<section><div class="wrap"><div class="section-head"><h2 class="section-title" style="margin:0"><span class="ico">' + I.help + '</span>Frequently Asked Questions</h2>' +
-          '<a href="' + url('faq.html') + '">View all FAQs ' + I.arrow + '</a></div>' + faqHTML(cfg.faqs) + '</div></section>' : '') +
+          '<a href="' + url('/faq') + '">View all FAQs ' + I.arrow + '</a></div>' + faqHTML(cfg.faqs) + '</div></section>' : '') +
         seoHTML(cfg.seo);
     }
 
@@ -717,7 +717,7 @@
 
     /* ---------------- structured data ---------------- */
     var ORIGIN = 'https://managemybatch.com';
-    var pageUrl = ORIGIN + '/tools/' + cfg.slug + '.html';
+    var pageUrl = ORIGIN + '/tools/' + cfg.slug;
     var graph = [];
 
     graph.push({
@@ -738,7 +738,7 @@
       '@type': 'BreadcrumbList',
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Home', item: ORIGIN + '/' },
-        { '@type': 'ListItem', position: 2, name: t.cat || 'Tools', item: ORIGIN + '/tools.html' },
+        { '@type': 'ListItem', position: 2, name: t.cat || 'Tools', item: ORIGIN + '/tools' },
         { '@type': 'ListItem', position: 3, name: t.name, item: pageUrl }
       ]
     });
@@ -786,7 +786,7 @@
   };
 
   GT.toolCard = function (t) {
-    return '<a class="tool-card" href="' + url('tools/' + t.slug + '.html') + '">' +
+    return '<a class="tool-card" href="' + url('/tools/' + t.slug) + '">' +
       '<span class="ic ' + t.tone + '">' + I[t.icon] + '</span><h3>' + t.name + '</h3><p>' + t.desc + '</p>' +
       '<span class="go">Use Tool ' + I.arrow + '</span></a>';
   };

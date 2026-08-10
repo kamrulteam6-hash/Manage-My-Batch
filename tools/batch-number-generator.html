@@ -14,7 +14,7 @@
 </script>
 <title>Batch Number Generator — Manufacturing Traceability Codes | Manage My Batch</title>
 <meta name="description" content="Free batch number generator for manufacturing. Build traceable batch codes with Julian or calendar date codes, line and shift identifiers, and check digits.">
-<link rel="canonical" href="https://managemybatch.com/tools/batch-number-generator.html">
+<link rel="canonical" href="https://managemybatch.com/tools/batch-number-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
@@ -22,7 +22,7 @@
 <meta property="og:locale" content="en_GB">
 <meta property="og:title" content="Batch Number Generator — Manufacturing Traceability Codes">
 <meta property="og:description" content="Free batch number generator for manufacturing. Build traceable batch codes with Julian or calendar date codes, line and shift identifiers, and check digits.">
-<meta property="og:url" content="https://managemybatch.com/tools/batch-number-generator.html">
+<meta property="og:url" content="https://managemybatch.com/tools/batch-number-generator">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Batch Number Generator — Manufacturing Traceability Codes">
 <meta name="twitter:description" content="Free batch number generator for manufacturing. Build traceable batch codes with Julian or calendar date codes, line and shift identifiers, and check digits.">
@@ -386,7 +386,7 @@
             { t: 'Lot', d: 'A quantity handled as a unit for traceability, which may be one batch, part of a batch, or several batches combined for packing. Regulatory and distribution language.' },
             { t: 'In practice', d: 'One code usually serves both. Problems arise only when one batch is split across several packing runs, at which point the lot is the narrower unit.' }
           ],
-          after: '<p>If you are subject to food, cosmetic or pharmaceutical labelling rules, the regulated term is normally "lot" — see the <a href="lot-number-generator.html">lot number generator</a> for GS1 application identifiers and expiry handling.</p>'
+          after: '<p>If you are subject to food, cosmetic or pharmaceutical labelling rules, the regulated term is normally "lot" — see the <a href="/tools/lot-number-generator">lot number generator</a> for GS1 application identifiers and expiry handling.</p>'
         },
         {
           h: 'Segments worth including',
@@ -402,7 +402,7 @@
         {
           h: 'How long, and does it need a check digit?',
           html: '<p>Eight to twelve characters covers date, line, shift and sequence with room to read. Beyond about fourteen, the code stops being printed legibly on small packaging and starts being transcribed wrongly.</p>' +
-            '<p>Check digits are usually unnecessary. Batch codes are read from a label and typed rarely — most systems scan them as part of a GS1-128 barcode, where the symbology already carries error detection. The exception is manual goods-in entry, where a warehouse operator keys the batch code from a printed label into a receiving screen; there, a <a href="reference-number-generator.html">Luhn digit</a> catches the common transposition errors.</p>',
+            '<p>Check digits are usually unnecessary. Batch codes are read from a label and typed rarely — most systems scan them as part of a GS1-128 barcode, where the symbology already carries error detection. The exception is manual goods-in entry, where a warehouse operator keys the batch code from a printed label into a receiving screen; there, a <a href="/tools/reference-number-generator">Luhn digit</a> catches the common transposition errors.</p>',
           callout: { type: 'tip', text: 'Print the code in a fixed position and a fixed format on every product. Recall notices are read under pressure by people who have never looked at your packaging before, and "the code is somewhere on the base" costs hours across thousands of retail sites.' }
         },
         {
@@ -414,11 +414,11 @@
         {
           h: 'Related traceability tools',
           list: [
-            '<a href="lot-number-generator.html">Lot Number Generator</a> — GS1 lot codes with expiry calculation.',
-            '<a href="barcode-number-generator.html">Barcode Number Generator</a> — GTINs for the products themselves.',
-            '<a href="shipping-reference-generator.html">Shipping Reference Generator</a> — where the batch went.',
-            '<a href="asset-tag-number-generator.html">Asset Tag Number Generator</a> — identify the equipment that produced it.',
-            '<a href="purchase-order-number-generator.html">Purchase Order Number Generator</a> — the raw materials that went in.'
+            '<a href="/tools/lot-number-generator">Lot Number Generator</a> — GS1 lot codes with expiry calculation.',
+            '<a href="/tools/barcode-number-generator">Barcode Number Generator</a> — GTINs for the products themselves.',
+            '<a href="/tools/shipping-reference-generator">Shipping Reference Generator</a> — where the batch went.',
+            '<a href="/tools/asset-tag-number-generator">Asset Tag Number Generator</a> — identify the equipment that produced it.',
+            '<a href="/tools/purchase-order-number-generator">Purchase Order Number Generator</a> — the raw materials that went in.'
           ]
         }
       ],

@@ -14,7 +14,7 @@
 </script>
 <title>NanoID Generator — URL-Safe Short IDs + Collision Calculator | Manage My Batch</title>
 <meta name="description" content="Free NanoID generator with a real collision-probability calculator. Custom alphabets, adjustable length, bulk output, and code for JavaScript, Python, Go and more.">
-<link rel="canonical" href="https://managemybatch.com/tools/nanoid-generator.html">
+<link rel="canonical" href="https://managemybatch.com/tools/nanoid-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
@@ -22,7 +22,7 @@
 <meta property="og:locale" content="en_GB">
 <meta property="og:title" content="NanoID Generator — URL-Safe Short IDs + Collision Calculator">
 <meta property="og:description" content="Free NanoID generator with a real collision-probability calculator. Custom alphabets, adjustable length, bulk output, and code for JavaScript, Python, Go and more.">
-<meta property="og:url" content="https://managemybatch.com/tools/nanoid-generator.html">
+<meta property="og:url" content="https://managemybatch.com/tools/nanoid-generator">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="NanoID Generator — URL-Safe Short IDs + Collision Calculator">
 <meta name="twitter:description" content="Free NanoID generator with a real collision-probability calculator. Custom alphabets, adjustable length, bulk output, and code for JavaScript, Python, Go and more.">
@@ -367,7 +367,7 @@
               ['12', '~72 bits', 'A comfortable default for most applications.'],
               ['16', '~96 bits', 'High-volume systems, and anything semi-public.'],
               ['21 (default)', '126 bits', 'Effectively collision-free forever. Use unless length genuinely matters.'],
-              ['24+', '144+ bits', 'Tokens and secrets — though a <a href="random-byte-generator.html">random byte</a> secret is a better fit.']
+              ['24+', '144+ bits', 'Tokens and secrets — though a <a href="/tools/random-byte-generator">random byte</a> secret is a better fit.']
             ]
           },
           after: '<p>The collision calculator in the tool gives the concrete number: at your chosen length and generation rate, how long until a 1% chance of any collision. That is a far more useful figure than an entropy count.</p>'
@@ -390,7 +390,7 @@
             { t: 'Random index inserts', d: 'On a large B-tree primary key, random values write to scattered pages rather than the tail. On tables in the tens of millions this is measurable.' },
             { t: 'Nothing leaks', d: 'The flip side: a NanoID reveals no timing, no volume and no ordering. For public identifiers this is exactly what you want.' }
           ],
-          after: '<p>If you need both time-ordering and a compact URL-safe form, use a <a href="ulid-generator.html">ULID</a> or a <a href="uuid-v7-generator.html">UUID v7</a> instead. A common pattern is a time-ordered internal primary key plus a NanoID as the public-facing identifier.</p>'
+          after: '<p>If you need both time-ordering and a compact URL-safe form, use a <a href="/tools/ulid-generator">ULID</a> or a <a href="/tools/uuid-v7-generator">UUID v7</a> instead. A common pattern is a time-ordered internal primary key plus a NanoID as the public-facing identifier.</p>'
         },
         {
           h: 'Why the default alphabet looks scrambled',
@@ -402,11 +402,11 @@
         {
           h: 'Related identifier tools',
           list: [
-            '<a href="uuid-v7-generator.html">UUID v7 Generator</a> — standardised, time-ordered identifiers.',
-            '<a href="ulid-generator.html">ULID Generator</a> — sortable and URL-safe in 26 characters.',
-            '<a href="random-hex-string-generator.html">Random Hex String Generator</a> — hex tokens sized in bytes.',
-            '<a href="random-byte-generator.html">Random Byte Generator</a> — raw key material for secrets.',
-            '<a href="coupon-code-generator.html">Coupon Code Generator</a> — human-readable codes with guess resistance.'
+            '<a href="/tools/uuid-v7-generator">UUID v7 Generator</a> — standardised, time-ordered identifiers.',
+            '<a href="/tools/ulid-generator">ULID Generator</a> — sortable and URL-safe in 26 characters.',
+            '<a href="/tools/random-hex-string-generator">Random Hex String Generator</a> — hex tokens sized in bytes.',
+            '<a href="/tools/random-byte-generator">Random Byte Generator</a> — raw key material for secrets.',
+            '<a href="/tools/coupon-code-generator">Coupon Code Generator</a> — human-readable codes with guess resistance.'
           ]
         }
       ],
