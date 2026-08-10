@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Manage My Batch">
+  <rect width="100" height="100" rx="22" fill="#2563eb"/>
+  <g fill="none" stroke="#ffffff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M42 30 24 50l18 20"/>
+    <path d="M58 30l18 20-18 20"/>
+  </g>
+</svg>
