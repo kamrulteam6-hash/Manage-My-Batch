@@ -8,6 +8,15 @@ const shell = (slug, title, desc, heading, body) => `<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CX2WHCM8XP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CX2WHCM8XP');
+</script>
 <title>${title} | Manage My Batch</title>
 <meta name="description" content="${desc}">
 <link rel="canonical" href="https://managemybatch.com/${slug}.html">
