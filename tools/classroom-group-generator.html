@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Classroom Group Generator — Balanced Random Student Groups | Manage My Batch</title>
+<meta name="description" content="Free classroom group generator. Split a class into balanced random groups with keep-apart and keep-together rules, custom group names and printable output.">
+<link rel="canonical" href="https://managemybatch.com/tools/classroom-group-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Classroom Group Generator — Balanced Random Student Groups">
+<meta property="og:description" content="Free classroom group generator. Split a class into balanced random groups with keep-apart and keep-together rules, custom group names and printable output.">
+<meta property="og:url" content="https://managemybatch.com/tools/classroom-group-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Classroom Group Generator — Balanced Random Student Groups">
+<meta name="twitter:description" content="Free classroom group generator. Split a class into balanced random groups with keep-apart and keep-together rules, custom group names and printable output.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Class Setup</div>
+
+    <div class="field">
+      <label for="names">Student names — one per line</label>
+      <textarea id="names" style="min-height:200px">Amara
+Ben
+Chen
+Diego
+Elena
+Farah
+Grace
+Hugo
+Ines
+Jonas
+Layla
+Mateo
+Nadia
+Omar
+Priya
+Rosa</textarea>
+      <div id="rosterStats"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label>Split by</label>
+      <div class="seg" id="mode">
+        <button type="button" class="on" data-m="size">Students per group</button>
+        <button type="button" data-m="count">Number of groups</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="value" id="valueLabel">Students per group</label>
+      <input type="number" id="value" value="4" min="1" max="60">
+      <div class="hint" id="splitHint"></div>
+    </div>
+
+    <div class="field">
+      <label for="naming">Group names</label>
+      <select id="naming">
+        <option value="number" selected>Group 1, Group 2…</option>
+        <option value="letter">Group A, Group B…</option>
+        <option value="colour">Colours</option>
+        <option value="animal">Animals</option>
+        <option value="planet">Planets</option>
+        <option value="custom">Custom list…</option>
+      </select>
+      <input type="text" id="customNames" placeholder="Comma separated names" style="margin-top:8px" hidden>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label for="apart">Keep apart — one pair per line</label>
+      <textarea id="apart" style="min-height:64px" placeholder="Ben & Chen"></textarea>
+    </div>
+
+    <div class="field">
+      <label for="together">Keep together — one pair per line</label>
+      <textarea id="together" style="min-height:64px" placeholder="Ines & Jonas"></textarea>
+      <div class="hint">Useful for a paired support arrangement or a language buddy.</div>
+    </div>
+
+    <div class="field">
+      <label for="seed">Seed</label>
+      <div class="row" style="grid-template-columns:minmax(0,1fr) auto;gap:8px">
+        <input type="text" id="seed" value="class-a">
+        <button type="button" class="btn btn-soft" id="newSeed"><span id="icoReset"></span></button>
+      </div>
+    </div>
+
+    <div class="out-actions">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate Groups</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Groups<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="results">Groups</button>
+      <button type="button" data-tab="export">Export</button>
+      <button type="button" data-tab="guide">Teaching notes</button>
+    </div>
+
+    <div data-panel="results">
+      <div id="groups"></div>
+      <div class="out-actions" style="margin-top:18px">
+        <button type="button" class="btn btn-primary" id="printBtn"><span id="icoFile"></span> Print / PDF</button>
+        <button type="button" class="btn btn-ghost" id="copyBtn"><span id="icoCopy"></span> Copy</button>
+        <button type="button" class="btn btn-soft" id="regen"><span id="icoReset2"></span> Reshuffle</button>
+      </div>
+      <div id="checks"></div>
+    </div>
+
+    <div data-panel="export" hidden>
+      <div class="field">
+        <label for="exportAs">Export format</label>
+        <select id="exportAs">
+          <option value="text">Readable list</option>
+          <option value="csv">CSV — student, group</option>
+          <option value="json">JSON</option>
+        </select>
+      </div>
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">groups.txt</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyAllBtn"><span id="icoCopy2"></span> Copy all</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+    </div>
+
+    <div data-panel="guide" hidden><div id="guide"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/roster.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoCopy:copy','icoCopy2:copy','icoDl:download','icoReset:reset','icoReset2:reset','icoFile:file']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var NAME_SETS = {
+    colour: ['Red', 'Blue', 'Green', 'Yellow', 'Purple', 'Orange', 'Teal', 'Pink', 'Amber', 'Indigo'],
+    animal: ['Otters', 'Falcons', 'Foxes', 'Dolphins', 'Bears', 'Herons', 'Lynx', 'Ravens', 'Badgers', 'Seals'],
+    planet: ['Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto', 'Ceres']
+  };
+
+  var mode = 'size', res = null, names = [], labels = [];
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyAllBtn', downloadBtn: '#dlBtn', filename: 'groups.txt', mime: 'text/plain' });
+
+  function groupLabel(i) {
+    var n = $('#naming').value;
+    if (n === 'letter') return 'Group ' + String.fromCharCode(65 + i);
+    if (n === 'custom') {
+      var list = $('#customNames').value.split(',').map(function (x) { return x.trim(); }).filter(Boolean);
+      return list[i] || ('Group ' + (i + 1));
+    }
+    if (NAME_SETS[n]) return NAME_SETS[n][i % NAME_SETS[n].length] + (i >= NAME_SETS[n].length ? ' ' + (Math.floor(i / NAME_SETS[n].length) + 1) : '');
+    return 'Group ' + (i + 1);
+  }
+
+  function build() {
+    var parsed = GTRoster.parseNames($('#names').value);
+    names = parsed.names;
+    GTRoster.rosterStats('#rosterStats', parsed);
+
+    if (names.length < 2) {
+      $('#groups').innerHTML = '<div class="empty">Add at least two students.</div>';
+      $('#pill').textContent = '—';
+      return;
+    }
+
+    var value = Math.max(1, parseInt($('#value').value, 10) || 1);
+    res = GTRoster.makeGroups(names, {
+      seed: $('#seed').value,
+      mode: mode,
+      value: value,
+      apart: GTRoster.parsePairs($('#apart').value),
+      together: GTRoster.parsePairs($('#together').value)
+    });
+    labels = res.groups.map(function (_, i) { return groupLabel(i); });
+
+    var sizes = res.groups.map(function (g) { return g.length; });
+    $('#splitHint').textContent = mode === 'size'
+      ? 'Produces ' + res.groups.length + ' groups of ' + Math.min.apply(null, sizes) +
+        (Math.max.apply(null, sizes) !== Math.min.apply(null, sizes) ? '–' + Math.max.apply(null, sizes) : '') + '.'
+      : 'Produces groups of ' + Math.min.apply(null, sizes) +
+        (Math.max.apply(null, sizes) !== Math.min.apply(null, sizes) ? '–' + Math.max.apply(null, sizes) : '') + ' students.';
+
+    renderGroups();
+    renderExport();
+    renderChecks();
+
+    $('#pill').textContent = res.groups.length + ' groups · ' + names.length + ' students';
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+  }
+
+  function renderGroups() {
+    $('#groups').innerHTML = '<div class="grid g2">' + res.groups.map(function (g, i) {
+      return '<div class="card" style="padding:16px;box-shadow:none">' +
+        '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">' +
+        '<h3 style="font-size:15px">' + GT.esc(labels[i]) + '</h3>' +
+        '<span class="chip" style="font-family:var(--sans)">' + g.length + '</span></div>' +
+        '<ol style="margin:0;padding-left:20px;font-size:14px;line-height:1.9;color:var(--ink-2)">' +
+        g.map(function (n) { return '<li>' + GT.esc(n) + '</li>'; }).join('') + '</ol></div>';
+    }).join('') + '</div>';
+  }
+
+  function renderExport() {
+    var m = $('#exportAs').value, text, file = 'groups.txt';
+    if (m === 'csv') {
+      text = 'student,group\n' + res.groups.map(function (g, i) {
+        return g.map(function (n) { return '"' + n.replace(/"/g, '""') + '","' + labels[i] + '"'; }).join('\n');
+      }).join('\n');
+      file = 'groups.csv';
+    } else if (m === 'json') {
+      text = JSON.stringify(res.groups.map(function (g, i) {
+        return { group: labels[i], students: g };
+      }), null, 2);
+      file = 'groups.json';
+    } else {
+      text = res.groups.map(function (g, i) {
+        return labels[i] + '\n' + g.map(function (n) { return '  · ' + n; }).join('\n');
+      }).join('\n\n');
+    }
+    out.set(text, file);
+  }
+
+  function renderChecks() {
+    var c = [];
+    var sizes = res.groups.map(function (g) { return g.length; });
+    var min = Math.min.apply(null, sizes), max = Math.max.apply(null, sizes);
+    c.push(['ok', res.groups.length + ' groups created, sizes ' + (min === max ? 'all ' + min : min + ' to ' + max) + '.']);
+
+    if (res.violations.length) {
+      c.push(['err', 'Could not honour every keep-apart rule: ' +
+        res.violations.map(function (v) { return GT.esc(v[0]) + ' & ' + GT.esc(v[1]); }).join(', ') +
+        '. There are too few groups to separate them — increase the number of groups or reduce group size.']);
+    } else if ($('#apart').value.trim()) {
+      c.push(['ok', 'All keep-apart rules satisfied.']);
+    }
+
+    if ($('#together').value.trim()) {
+      c.push(['ok', 'Keep-together pairs are placed as a single unit, which can make their group one larger than the others.']);
+    }
+    if (max - min > 1) {
+      c.push(['warn', 'Group sizes differ by more than one. This usually happens when keep-together pairs force uneven placement.']);
+    }
+    if (min === 1) {
+      c.push(['warn', 'At least one group has a single student. Reduce the number of groups, or increase students per group.']);
+    }
+    $('#checks').innerHTML = c.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : x[0] === 'warn' ? 'note-warn' : 'note-err') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+  }
+
+  $('#copyBtn').addEventListener('click', function () {
+    GT.copy(res.groups.map(function (g, i) {
+      return labels[i] + ': ' + g.join(', ');
+    }).join('\n'), 'Groups');
+  });
+
+  $('#printBtn').addEventListener('click', function () {
+    var body = '<h1>Class Groups</h1><p class="sub">' + names.length + ' students · ' +
+      res.groups.length + ' groups · ' + new Date().toLocaleDateString() + '</p>' +
+      '<div class="grid g3">' + res.groups.map(function (g, i) {
+        return '<div class="card"><h3>' + GT.esc(labels[i]) + '</h3><ol>' +
+          g.map(function (n) { return '<li>' + GT.esc(n) + '</li>'; }).join('') + '</ol></div>';
+      }).join('') + '</div>';
+    GTRoster.printHtml('Class Groups', body);
+  });
+
+  $('#mode').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#mode button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    mode = b.getAttribute('data-m');
+    $('#valueLabel').textContent = mode === 'size' ? 'Students per group' : 'Number of groups';
+    build();
+  });
+  $('#naming').addEventListener('change', function () { $('#customNames').hidden = this.value !== 'custom'; });
+  $('#newSeed').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); });
+  $('#regen').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); });
+
+  $('#guide').innerHTML = [
+    ['Group size changes the dynamic', 'Threes and fours are the sweet spot for discussion — everyone has to contribute. Fives and sixes let a quiet student disappear entirely. Pairs maximise talk time but limit the range of ideas. Choose the size for the task, not for the room layout.'],
+    ['Keep-together is for support, not friendship', 'The keep-together rule is most useful for a language buddy, a paired support arrangement, or a student who needs a familiar peer. Using it for friendship groups tends to undo the point of randomising.'],
+    ['Keep-apart needs enough groups', 'If you list several exclusions but only create two groups, the constraints become impossible to satisfy. The tool tells you exactly which rule it could not honour rather than silently ignoring it.'],
+    ['Random is not always fairest', 'Purely random groups can concentrate confident students together. If that matters for the task, run the generator, then move one or two students by hand — the goal is a good lesson, not algorithmic purity.'],
+    ['Named groups reduce friction', 'Colours, animals or planets give students something to identify with and make instructions easier to call across a room than "group four".'],
+    ['Reuse the seed for continuity', 'For a multi-lesson project, keep the same seed so groups persist. Change it when you want a fresh mix.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('');
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Groups generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+  $('#exportAs').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'classroom-group-generator',
+    lede: 'Split a class into balanced random groups in one click — with keep-apart and keep-together rules that are actually enforced, and honest warnings when they cannot be.',
+    steps: [
+      { icon: 'gear', title: 'Paste your class list', text: 'Numbering and bullets copied from a register are stripped automatically.' },
+      { icon: 'users', title: 'Set group size or count', text: 'The tool balances sizes and reports the spread.' },
+      { icon: 'file', title: 'Print or export', text: 'A printable handout, or CSV for your gradebook.' }
+    ],
+    guideTitle: 'Constraints that are enforced, not just requested',
+    guide:
+      '<p style="color:var(--muted)">Most group generators shuffle a list and slice it. That works until you have two students who genuinely cannot sit together, or a pair who must stay together for support — at which point you end up rearranging by hand every time.</p>' +
+      '<p style="color:var(--muted);margin-top:12px">This tool treats those as real constraints. Keep-together pairs are merged into a single unit before allocation, so they always land in the same group. Keep-apart pairs are checked as each student is placed, and the placement is scored to avoid them. If the constraints are impossible — three mutually exclusive students and only two groups — you get told which rule failed instead of a silently wrong answer.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Choosing a group size</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><strong>Pairs</strong> — maximum talk time, narrow range of ideas.</li><li><strong>Threes</strong> — hard to stay silent, good for discussion.</li><li><strong>Fours</strong> — the usual default; splits neatly into pairs for sub-tasks.</li><li><strong>Five or more</strong> — a quiet student can disappear entirely.</li></ul></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Balance is best-effort</h4><p style="color:var(--muted);font-size:13.8px">With 16 students in groups of 5, someone gets a group of 4 or 6 — there is no arrangement that avoids it. The tool places the largest units first into the smallest group, which keeps sizes as even as the numbers allow, and reports the actual spread so there are no surprises when you print.</p>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">Student names stay in your browser and are never uploaded.</p></div></div>',
+    related: ['random-student-pair-generator', 'classroom-seating-chart-generator', 'presentation-order-generator'],
+    faqs: [
+      { q: 'How do I stop two students being in the same group?', a: 'List them under keep apart as <code>Name &amp; Name</code>. The tool avoids placing them together and tells you explicitly if there are too few groups to make that possible.' },
+      { q: 'Can I force two students into the same group?', a: 'Yes — use the keep together field. The pair is treated as one unit during allocation, which can make their group one member larger than the others.' },
+      { q: 'What group size works best?', a: 'Threes and fours for discussion tasks, since everyone has to contribute. Five or more lets a quieter student stay silent. Pairs maximise talk time but narrow the range of ideas.' },
+      { q: 'Why are my groups different sizes?', a: 'Because the class does not divide evenly, or a keep-together pair had to be placed as a unit. The tool balances as far as the numbers allow and shows the actual size range.' },
+      { q: 'Can I get the same groups again next lesson?', a: 'Yes. Keep the seed value and the class list identical, and you get identical groups. Press Reshuffle for a new arrangement.' },
+      { q: 'Is my class list stored anywhere?', a: 'No. Everything happens in your browser — nothing is uploaded, logged or saved, so pasting a real register is safe.' }
+    ],
+    seo: {
+      title: 'Grouping a class: constraints that are enforced, not just requested',
+      lead: 'This <strong>classroom group generator</strong> splits a class into balanced random groups in one click, with keep-apart and keep-together rules that are genuinely enforced and honest warnings when they cannot be. Below: what group size works, why groups come out uneven, and where your class list goes.',
+      blocks: [
+        {
+          h: 'Random grouping, and why it helps',
+          html: '<p>Letting students pick their own groups produces the same groups every time, leaves someone unpicked, and reinforces exactly the social patterns a mixed activity is meant to disrupt. Assigning groups yourself works but invites negotiation, and the negotiation is with you.</p>' +
+            '<p>A visible random draw does neither. Nobody was chosen last, nobody was placed deliberately, and the answer to "why am I with them" is that the generator decided. That is worth more than the fairness itself — it removes the discussion.</p>',
+          callout: { type: 'tip', text: 'Project the generator and press the button in front of the class. A result that appears on screen is accepted in a way that a list you read out is not, because everyone watched it happen.' }
+        },
+        {
+          h: 'Constraints that are actually enforced',
+          html: '<p>Most group randomisers offer keep-apart rules and quietly ignore them when the arithmetic gets difficult. This one places constrained students first and then fills around them — and when a constraint cannot be satisfied, it says so rather than producing a result that looks fine.</p>',
+          cards: [
+            { t: 'Keep apart', d: 'Named students are never placed in the same group. The common case: two students who cannot work together, or three who reliably stop working when combined.' },
+            { t: 'Keep together', d: 'Named students are placed as a unit. Useful for a peer-support pairing or a shared language.' },
+            { t: 'When it is impossible', d: 'Four students who must all be kept apart cannot fit into three groups. The tool tells you which constraint failed instead of silently dropping one.' },
+            { t: 'Everything else is random', d: 'Constrained students are placed first, then the rest are distributed randomly around them.' }
+          ],
+          callout: { type: 'warn', text: '<strong>Check the warnings before the lesson, not during it.</strong> The generator flags unsatisfiable constraints immediately — but only if someone reads them. A constraint that failed is exactly the one whose failure you will notice within five minutes of the activity starting.' }
+        },
+        {
+          h: 'What group size works best',
+          table: {
+            head: ['Size', 'Works well for', 'Watch for'],
+            rows: [
+              ['2 (pairs)', 'Practice, peer marking, quick discussion. Everyone participates.', 'No spare capacity — one absence leaves someone alone.'],
+              ['3', 'Discussion with more than one perspective. Still hard to hide.', 'Two-against-one dynamics.'],
+              ['4', 'The best general default. Splits into pairs for sub-tasks.', 'One passenger is possible.'],
+              ['5–6', 'Projects with genuinely distinct roles.', 'Passengers become likely without assigned roles.'],
+              ['7+', 'Rarely. Presentations to the group, perhaps.', 'Participation drops sharply.']
+            ]
+          },
+          after: '<p>Four is the sweet spot for most classroom work: large enough for a range of ideas, small enough that nobody can disappear, and it divides neatly into pairs when the task has two halves.</p>'
+        },
+        {
+          h: 'Generating groups',
+          steps: [
+            { t: 'Paste your class list', d: 'One name per line, straight from your register or MIS export.' },
+            { t: 'Choose group size or group count', d: 'Set the size when the activity needs a specific number per group; set the count when you have a fixed number of tables or resources.' },
+            { t: 'Add keep-apart and keep-together rules', d: 'Only where you need them — over-constraining a small class makes a valid arrangement impossible.' },
+            { t: 'Generate and read the warnings', d: 'Any constraint that could not be satisfied is listed explicitly.' },
+            { t: 'Reshuffle if the draw is awkward', d: 'A fresh random arrangement, same constraints.' },
+            { t: 'Print or project', d: 'A group list for the wall, or a display view for the board.' }
+          ]
+        },
+        {
+          h: 'Why groups come out different sizes',
+          html: '<p>Three reasons, and the tool tells you which applies:</p>',
+          list: [
+            '<strong>The class does not divide evenly.</strong> Twenty-nine students into groups of four gives seven groups of four and one of one — so the generator makes six of four and one of five instead, keeping sizes as close as possible.',
+            '<strong>A keep-together group had to be placed whole.</strong> A trio placed as a unit shifts the counts around it.',
+            '<strong>You set a group count rather than a size.</strong> Five groups from twenty-two students is 5, 5, 4, 4, 4 — there is no arrangement that makes them equal.'
+          ],
+          after: '<p>Sizes are always kept within one of each other unless a constraint forces otherwise. A group of six beside a group of two means a keep-together rule is doing something you may not have intended.</p>'
+        },
+        {
+          h: 'Repeating or varying groups',
+          html: '<p>Both are sometimes what you want, and they are opposite settings.</p>' +
+            '<p><strong>To repeat</strong> the same groups next lesson, keep the seed and the class list identical. Useful for a project running over several weeks, where regrouping every lesson wastes the time it takes to settle.</p>' +
+            '<p><strong>To vary</strong>, reshuffle or change the seed. Over a term, varied groups are worth the disruption: students who never work together develop no working relationship, and the same four people every time recreates the self-selected groups you were avoiding.</p>' +
+            '<p>A reasonable pattern is fixed groups within a unit of work and a fresh draw at the start of each unit.</p>'
+        },
+        {
+          h: 'Where your class list goes',
+          html: '<p>Nowhere. Everything runs in your browser — the names you paste are processed on your own machine and never transmitted, stored or logged. You can confirm it in the network tab: after the page loads, the tool makes no requests at all.</p>' +
+            '<p>That is deliberate, because a class list is personal data about children. Anything that uploaded it would put you in the position of having shared pupil information with a third party, which is a conversation with your data protection lead that nobody wants to have over a grouping tool.</p>' +
+            '<p>Closing the tab clears everything. If you need the groups again, print them or save the export.</p>'
+        },
+        {
+          h: 'Related classroom tools',
+          list: [
+            '<a href="random-student-pair-generator.html">Random Student Pair Generator</a> — pairs, with odd-number handling.',
+            '<a href="classroom-seating-chart-generator.html">Classroom Seating Chart Generator</a> — seat the same class.',
+            '<a href="presentation-order-generator.html">Presentation Order Generator</a> — fair speaking order.',
+            '<a href="random-question-picker.html">Random Question Picker</a> — cold-call without bias.',
+            '<a href="team-generator.html">Team Generator</a> — skill-balanced teams for PE.'
+          ]
+        }
+      ],
+      keywords: [
+        'classroom group generator', 'random group maker', 'split class into groups',
+        'student group randomiser', 'keep students apart groups', 'group size classroom',
+        'team maker for class', 'random groups from list', 'classroom grouping tool',
+        'fair student groups', 'group generator no signup', 'class list splitter'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

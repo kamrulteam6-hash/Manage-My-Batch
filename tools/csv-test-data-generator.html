@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CSV Test Data Generator — RFC 4180 Sample Data, Free | Manage My Batch</title>
+<meta name="description" content="Free CSV test data generator. Build sample CSV or TSV files from 40 field types with correct quoting, delimiters, line endings and optional BOM for Excel.">
+<link rel="canonical" href="https://managemybatch.com/tools/csv-test-data-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="CSV Test Data Generator — RFC 4180 Sample Data, Free">
+<meta property="og:description" content="Free CSV test data generator. Build sample CSV or TSV files from 40 field types with correct quoting, delimiters, line endings and optional BOM for Excel.">
+<meta property="og:url" content="https://managemybatch.com/tools/csv-test-data-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CSV Test Data Generator — RFC 4180 Sample Data, Free">
+<meta name="twitter:description" content="Free CSV test data generator. Build sample CSV or TSV files from 40 field types with correct quoting, delimiters, line endings and optional BOM for Excel.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Schema Builder</div>
+
+    <div class="field">
+      <label for="template">Start from a template</label>
+      <select id="template">
+        <option value="users" selected>Users</option>
+        <option value="products">Product catalogue</option>
+        <option value="orders">Orders</option>
+        <option value="transactions">Transactions</option>
+        <option value="contacts">Contacts / CRM import</option>
+        <option value="empty">Empty schema</option>
+      </select>
+    </div>
+
+    <div class="row">
+      <div class="field"><label for="count">Rows</label><input type="number" id="count" value="25" min="1" max="50000"></div>
+      <div class="field">
+        <label for="seed">Seed</label>
+        <div class="row" style="grid-template-columns:minmax(0,1fr) auto;gap:8px">
+          <input type="text" id="seed" value="gentools">
+          <button type="button" class="btn btn-soft" id="newSeed"><span id="icoReset"></span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="label" style="display:flex;justify-content:space-between;align-items:center">
+        <span>Columns</span>
+        <button type="button" class="btn btn-soft btn-sm" id="addField"><span id="icoPlus"></span> Add column</button>
+      </div>
+      <div id="fields"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="row">
+      <div class="field">
+        <label for="delim">Delimiter</label>
+        <select id="delim">
+          <option value="," selected>Comma (,) — CSV</option>
+          <option value="&#9;">Tab — TSV</option>
+          <option value=";">Semicolon (;) — European Excel</option>
+          <option value="|">Pipe (|)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="eol">Line ending</label>
+        <select id="eol">
+          <option value="\r\n" selected>CRLF — RFC 4180 / Windows</option>
+          <option value="\n">LF — Unix</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="quote">Quoting</label>
+      <select id="quote">
+        <option value="minimal" selected>Minimal — only when needed</option>
+        <option value="all">Quote every field</option>
+        <option value="strings">Quote all non-numeric fields</option>
+        <option value="none">Never quote (unsafe)</option>
+      </select>
+      <div class="hint">Minimal quoting follows RFC 4180: a field is quoted only if it contains the delimiter, a quote character or a line break.</div>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Options</legend>
+      <div class="check-list">
+        <label class="check on"><input type="checkbox" id="optHeader" checked><span><span class="t">Include header row</span></span></label>
+        <label class="check"><input type="checkbox" id="optBom"><span><span class="t">Add UTF-8 BOM</span><span class="d">Excel needs this to read accented characters correctly.</span></span></label>
+        <label class="check"><input type="checkbox" id="optMessy"><span><span class="t">Include awkward values</span><span class="d">Injects commas, quotes, newlines and unicode so you can prove your parser copes.</span></span></label>
+        <label class="check"><input type="checkbox" id="optBlank"><span><span class="t">Sprinkle empty cells</span></span></label>
+      </div>
+    </fieldset>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated CSV<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="file">Raw</button>
+      <button type="button" data-tab="table">Preview</button>
+      <button type="button" data-tab="parse">Parsing notes</button>
+    </div>
+
+    <div data-panel="file">
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">data.csv</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+      <div id="warnBox"></div>
+    </div>
+
+    <div data-panel="table" hidden><div id="table" style="overflow-x:auto"></div></div>
+    <div data-panel="parse" hidden><div id="parse"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/fake.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoCopy:copy','icoDl:download','icoReset:reset','icoPlus:plus']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var TEMPLATES = {
+    users: [
+      { name: 'id', type: 'id' }, { name: 'first_name', type: 'firstName' },
+      { name: 'last_name', type: 'lastName' }, { name: 'email', type: 'email' },
+      { name: 'country', type: 'country' }, { name: 'signup_date', type: 'date' },
+      { name: 'active', type: 'bool' }
+    ],
+    products: [
+      { name: 'sku', type: 'sku' }, { name: 'name', type: 'product' },
+      { name: 'price', type: 'price' }, { name: 'currency', type: 'currency' },
+      { name: 'stock', type: 'int', min: 0, max: 900 }, { name: 'category', type: 'enum', values: 'Peripherals,Furniture,Audio,Accessories' }
+    ],
+    orders: [
+      { name: 'order_id', type: 'uuid' }, { name: 'customer', type: 'fullName' },
+      { name: 'email', type: 'email' }, { name: 'total', type: 'price' },
+      { name: 'status', type: 'status' }, { name: 'placed_at', type: 'datetime' }
+    ],
+    transactions: [
+      { name: 'txn_id', type: 'uuid7' }, { name: 'amount', type: 'float', min: -500, max: 5000 },
+      { name: 'currency', type: 'currency' }, { name: 'merchant', type: 'company' },
+      { name: 'date', type: 'date' }, { name: 'status', type: 'status' }
+    ],
+    contacts: [
+      { name: 'full_name', type: 'fullName' }, { name: 'email', type: 'email' },
+      { name: 'phone', type: 'phone' }, { name: 'company', type: 'company' },
+      { name: 'city', type: 'city' }, { name: 'country', type: 'country' },
+      { name: 'address', type: 'address' }
+    ],
+    empty: [{ name: 'column_1', type: 'word' }]
+  };
+
+  var fields = JSON.parse(JSON.stringify(TEMPLATES.users));
+  var editor = GTFake.mountFields($('#fields'), fields, build);
+
+  $('#addField').addEventListener('click', function () {
+    fields.push({ name: 'column_' + (fields.length + 1), type: 'word' }); editor.render(); build();
+  });
+  $('#template').addEventListener('change', function () {
+    fields.length = 0;
+    JSON.parse(JSON.stringify(TEMPLATES[this.value] || [])).forEach(function (f) { fields.push(f); });
+    editor.render(); build();
+  });
+  $('#newSeed').addEventListener('click', function () {
+    $('#seed').value = Math.random().toString(36).slice(2, 10); build();
+  });
+
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'data.csv', mime: 'text/csv' });
+
+  var MESSY = [
+    'Smith, John', 'He said "hello"', 'Line one\nLine two', '  padded  ',
+    'Ünïcödé — em dash', '=1+1', '+15551234567', '0001234', 'null', ''
+  ];
+
+  var rows = [], header = [];
+
+  function delim() { return $('#delim').value; }
+  function eol() { return $('#eol').value === '\\n' ? '\n' : '\r\n'; }
+
+  function needsQuote(s) {
+    return s.indexOf(delim()) > -1 || s.indexOf('"') > -1 || /[\r\n]/.test(s) || /^\s|\s$/.test(s);
+  }
+  function esc(v, isNumber) {
+    var s = v === null || v === undefined ? '' : String(v);
+    var mode = $('#quote').value;
+    var q = mode === 'all' || (mode === 'strings' && !isNumber) || (mode === 'minimal' && needsQuote(s));
+    if (mode === 'none') return s.replace(/[\r\n]/g, ' ');
+    return q ? '"' + s.replace(/"/g, '""') + '"' : s;
+  }
+
+  function build() {
+    var n = Math.max(1, Math.min(50000, parseInt($('#count').value, 10) || 1));
+    var valid = fields.filter(function (f) { return (f.name || '').trim(); });
+    header = valid.map(function (f) { return f.name; });
+    rows = GTFake.rows(valid, n, $('#seed').value);
+
+    if ($('#optMessy').checked || $('#optBlank').checked) {
+      var g = GTFake.makeGen($('#seed').value + '-mess');
+      rows.forEach(function (r, i) {
+        valid.forEach(function (f) {
+          var roll = g.rnd();
+          if ($('#optMessy').checked && roll < 0.06 && GTFake.typeMeta(f.type).ts === 'string') {
+            r[f.name] = MESSY[g.num(0, MESSY.length - 1)];
+          } else if ($('#optBlank').checked && roll > 0.94) {
+            r[f.name] = '';
+          }
+        });
+      });
+    }
+
+    var D = delim(), E = eol();
+    var lines = [];
+    if ($('#optHeader').checked) lines.push(header.map(function (h) { return esc(h, false); }).join(D));
+    rows.forEach(function (r) {
+      lines.push(valid.map(function (f) {
+        var v = r[f.name];
+        return esc(v, typeof v === 'number');
+      }).join(D));
+    });
+
+    var text = ($('#optBom').checked ? '﻿' : '') + lines.join(E) + E;
+    var isTsv = D === '\t';
+    out.set(text, isTsv ? 'data.tsv' : 'data.csv');
+
+    $('#pill').textContent = n.toLocaleString() + ' rows × ' + valid.length + ' cols';
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+
+    renderTable(valid);
+    renderWarn(valid);
+    renderParse();
+  }
+
+  function renderTable(valid) {
+    var slice = rows.slice(0, 15);
+    $('#table').innerHTML =
+      '<p style="color:var(--muted);font-size:13.5px;margin-bottom:12px">First ' + slice.length + ' of ' + rows.length +
+      ' rows, rendered as a table so you can spot escaping problems at a glance.</p>' +
+      '<table style="border-collapse:collapse;width:100%;font-size:12.5px">' +
+      '<tr>' + header.map(function (h) {
+        return '<th style="text-align:left;padding:8px;border-bottom:1px solid var(--line);white-space:nowrap;font-family:var(--mono)">' + GT.esc(h) + '</th>';
+      }).join('') + '</tr>' +
+      slice.map(function (r) {
+        return '<tr>' + valid.map(function (f) {
+          var v = r[f.name];
+          var s = (v === '' || v === null) ? '<span style="color:var(--muted-2)">empty</span>' : GT.esc(String(v)).slice(0, 36);
+          return '<td style="padding:8px;border-bottom:1px solid var(--line-2);white-space:pre-wrap;max-width:200px">' + s + '</td>';
+        }).join('') + '</tr>';
+      }).join('') + '</table>';
+  }
+
+  function renderWarn(valid) {
+    var w = [];
+    var names = header.slice();
+    var dup = names.filter(function (n, i) { return names.indexOf(n) !== i; });
+    if (dup.length) w.push(['err', 'Duplicate column names: ' + GT.uniq(dup).join(', ') + '. Most parsers keep only the last one.']);
+    if ($('#quote').value === 'none') w.push(['err', 'Quoting is disabled. Any value containing your delimiter will corrupt the row structure — this setting exists only to demonstrate the failure.']);
+    if ($('#delim').value === ';') w.push(['warn', 'Semicolon-delimited files open correctly in European Excel but are not CSV in the RFC 4180 sense. Name the file accordingly if it will be consumed programmatically.']);
+    if ($('#optBom').checked) w.push(['warn', 'The BOM makes Excel display UTF-8 correctly, but some parsers read it as part of the first column name. Strip it server-side, or leave it off for machine-to-machine transfer.']);
+    if ($('#optMessy').checked) w.push(['warn', 'Awkward values are enabled — values beginning with <code>=</code> or <code>+</code> are treated as formulas by spreadsheets. That is the CSV injection risk your import code should neutralise.']);
+    if (!w.length) w.push(['ok', 'RFC 4180 compliant: CRLF endings, minimal quoting, doubled quotes inside quoted fields.']);
+    $('#warnBox').innerHTML = w.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : x[0] === 'warn' ? 'note-warn' : 'note-err') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+  }
+
+  function renderParse() {
+    $('#parse').innerHTML = [
+      ['The rule people forget', 'A quote inside a quoted field is escaped by <strong>doubling</strong> it, not with a backslash. <code>He said "hi"</code> becomes <code>"He said ""hi"""</code>. Backslash escaping is the single most common home-made CSV bug.'],
+      ['Never split on commas', 'A regex or <code>split(",")</code> breaks the moment a field contains a comma or a newline. Use a real parser: <code>csv-parse</code> or Papa Parse in JavaScript, the <code>csv</code> module in Python, <code>encoding/csv</code> in Go.'],
+      ['Embedded newlines are legal', 'A quoted field may span multiple physical lines. Line-by-line reading is therefore wrong — enable “awkward values” above to generate a file that proves it.'],
+      ['CSV injection', 'A cell starting with <code>=</code>, <code>+</code>, <code>-</code> or <code>@</code> is executed as a formula when opened in Excel or Sheets. When exporting user-supplied data, prefix such values with a single quote or strip the leading character.'],
+      ['Encoding', 'Always write UTF-8. Add a BOM only if the file is destined for Excel on Windows; for API consumption leave it off, since many parsers surface it as part of the first header name.'],
+      ['Type inference is not your friend', 'Spreadsheets turn <code>0001234</code> into <code>1234</code> and <code>+15551234567</code> into a number. If leading zeros matter — postcodes, SKUs, phone numbers — the receiving system must be told the column is text.']
+    ].map(function (x) {
+      return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+        '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+    }).join('');
+  }
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); });
+  ['#count','#seed','#delim','#eol','#quote','#optHeader','#optBom','#optMessy','#optBlank']
+    .forEach(function (s) { $(s).addEventListener('change', build); $(s).addEventListener('input', build); });
+
+  build();
+
+  GT.page({
+    slug: 'csv-test-data-generator',
+    lede: 'Generate CSV and TSV sample data with correct RFC 4180 quoting — including an option to inject the awkward values that break naive parsers.',
+    steps: [
+      { icon: 'gear', title: 'Define your columns', text: 'Pick a template or build a schema from 40 realistic field types.' },
+      { icon: 'grid', title: 'Set the dialect', text: 'Delimiter, line endings, quoting style and BOM — the four things that decide whether a file opens cleanly.' },
+      { icon: 'copy', title: 'Download and import', text: 'Test your importer against the clean file, then again with awkward values enabled.' }
+    ],
+    guideTitle: 'CSV is not as simple as it looks',
+    guide:
+      '<p style="color:var(--muted)">CSV has a specification — RFC 4180 — that almost nothing implements exactly. Delimiters vary by locale, Excel wants a BOM, quoting rules are widely misunderstood, and every team eventually writes a parser that splits on commas and regrets it. Generating a file that deliberately contains the hard cases is the fastest way to find out whether your import pipeline is correct.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">The four dialect decisions</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><strong>Delimiter</strong> — comma by default, semicolon for locales where the comma is a decimal separator, tab when values commonly contain commas.</li><li><strong>Line ending</strong> — RFC 4180 says CRLF; Unix tooling assumes LF. Both are read correctly by good parsers.</li><li><strong>Quoting</strong> — minimal is standard. Quote-everything is safer for hand-rolled consumers and slightly larger.</li><li><strong>BOM</strong> — required for Excel to detect UTF-8, harmful for many programmatic parsers.</li></ul></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Test with hostile data</h4><p style="color:var(--muted);font-size:13.8px">Enable “awkward values” and your file will contain fields with embedded commas, doubled quotes, line breaks, leading and trailing whitespace, non-ASCII characters, leading zeros and formula-like strings.</p>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">If your importer survives that file, it will survive real customer uploads. If it does not, you have just found the bug on your own terms rather than during a migration.</p></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>CSV injection is a real vulnerability.</strong> Export user-supplied text into a CSV, have someone open it in Excel, and a cell beginning <code>=</code> becomes an executable formula. Sanitise on export by prefixing such cells with an apostrophe — the “awkward values” option generates examples so you can verify your handling.</span></div>',
+    related: ['json-test-data-generator', 'sql-insert-data-generator', 'markdown-table-generator'],
+    faqs: [
+      { q: 'What is RFC 4180?', a: 'The specification that defines CSV: comma delimiters, CRLF line endings, optional quoting, and quotes escaped by doubling them inside a quoted field. This generator follows it by default.' },
+      { q: 'When should a field be quoted?', a: 'Whenever it contains the delimiter, a double quote, or a line break. Minimal quoting applies this rule automatically; quoting every field is also valid and slightly safer for simple consumers.' },
+      { q: 'Why does Excel show my accented characters incorrectly?', a: 'Excel assumes the system codepage unless the file starts with a UTF-8 BOM. Enable the BOM option for files people will open in Excel, and leave it off for files consumed by an API.' },
+      { q: 'What is the difference between CSV and TSV?', a: 'Only the delimiter. TSV uses a tab, which is far less likely to appear inside a value, so quoting is rarely needed. It is a good choice when your data naturally contains commas.' },
+      { q: 'How do I test my CSV parser properly?', a: 'Enable “awkward values”. The generated file will include embedded commas, doubled quotes, multi-line fields, unicode and leading zeros — the cases that break parsers built on string splitting.' },
+      { q: 'Can I generate large files?', a: 'Up to 50,000 rows per pass, generated entirely in your browser. For larger volumes, generate several files with different seeds and concatenate them.' }
+    ],
+    seo: {
+      title: 'CSV test data: RFC 4180 quoting, encodings and the values that break parsers',
+      lead: 'This <strong>CSV test data generator</strong> produces sample CSV and TSV files with correct RFC 4180 quoting — and can deliberately inject the awkward values that expose a naive parser. Below: when a field must be quoted, why Excel mangles accents, and how to test an importer properly.',
+      blocks: [
+        {
+          h: 'CSV is not as simple as it looks',
+          html: '<p>Everyone assumes CSV is "split on commas". It is not, and the assumption is why so many importers fail on real data.</p>' +
+            '<p><strong>RFC 4180</strong> is the closest thing to a specification. It defines a header row, comma separators, CRLF line endings and — crucially — a quoting rule: a field containing a comma, a double quote or a line break must be wrapped in double quotes, and any inner double quote is escaped by doubling it.</p>' +
+            '<p>The rule that surprises people is that a quoted field may contain <em>newlines</em>. A single record can span five physical lines. Any parser that reads the file line by line is already broken; it just has not met that data yet.</p>'
+        },
+        {
+          h: 'When a field must be quoted',
+          table: {
+            head: ['Raw value', 'Correct CSV', 'Why'],
+            rows: [
+              ['<code>Smith, John</code>', '<code>"Smith, John"</code>', 'Contains the delimiter.'],
+              ['<code>He said "hi"</code>', '<code>"He said ""hi"""</code>', 'Inner quotes are doubled, whole field quoted.'],
+              ['A value with a line break', '<code>"line one\\nline two"</code>', 'Newlines are legal inside quotes.'],
+              ['<code>  padded  </code>', '<code>"  padded  "</code>', 'Quote to preserve leading and trailing spaces.'],
+              ['<code>=1+1</code>', '<code>"=1+1"</code>', 'Quoting does not stop Excel treating it as a formula — see below.'],
+              ['<code>plain</code>', '<code>plain</code>', 'No quoting needed, and adding it is still valid.']
+            ]
+          },
+          after: '<p>Quoting every field is always valid and slightly larger. Quoting only where required is the RFC\'s minimal form. The generator supports both, plus a "quote non-numeric" mode that keeps numbers unquoted for spreadsheet import.</p>'
+        },
+        {
+          h: 'Why Excel mangles your accents',
+          html: '<p>Excel does not detect UTF-8 in a <code>.csv</code> file. On Windows it assumes the system ANSI codepage, so <code>café</code> arrives as <code>cafÃ©</code> and Cyrillic or Greek text becomes unreadable.</p>' +
+            '<p>The fix is a <strong>UTF-8 BOM</strong> — three bytes (<code>EF BB BF</code>) at the start of the file that tell Excel the encoding explicitly. The generator can add one.</p>' +
+            '<p>The trade-off is real: the BOM makes Excel correct but confuses some parsers, which read it as part of the first header name — producing a mysterious column called <code>﻿id</code> that never matches. Add the BOM for files humans will open in Excel; omit it for machine-to-machine transfer.</p>',
+          callout: { type: 'warn', text: '<strong>A CSV field starting with <code>=</code>, <code>+</code>, <code>-</code> or <code>@</code> is executed as a formula by Excel and Sheets.</strong> This is CSV injection, and it is a real attack path when your application exports user-supplied data. Prefix such values with an apostrophe or a tab on export. The generator can inject these values so you can confirm your export escapes them.' }
+        },
+        {
+          h: 'CSV or TSV?',
+          cards: [
+            { t: 'CSV', d: 'Universal, understood by everything, and requires quoting because commas appear in ordinary text — names, addresses, descriptions.' },
+            { t: 'TSV', d: 'Tab-separated. Tabs are rare in real text, so quoting is seldom needed and the output is easier to read. The convention is to reject rather than escape embedded tabs.' },
+            { t: 'Semicolon-separated', d: 'What Excel produces in locales where the comma is the decimal separator. Still called <code>.csv</code>, which causes no end of confusion in European data exchange.' }
+          ],
+          after: '<p>If you control both ends and the data is plain, TSV is less error-prone. If anyone will open the file in a spreadsheet, use CSV and accept the quoting.</p>'
+        },
+        {
+          h: 'Testing a parser properly',
+          html: '<p>A parser that handles your sample file proves nothing. Test it against the values that actually occur:</p>',
+          list: [
+            '<strong>Commas inside quoted fields</strong> — the baseline case that naive splitting fails.',
+            '<strong>Doubled quotes</strong> — <code>"He said ""hi"""</code>. A surprising number of parsers return the wrong string here.',
+            '<strong>Embedded newlines</strong> — multi-line addresses and free-text notes.',
+            '<strong>Empty fields versus quoted empty strings</strong> — <code>a,,b</code> and <code>a,"",b</code> differ in some readers.',
+            '<strong>Mixed line endings</strong> — a file with both CRLF and LF, which is what you get when two systems have appended to it.',
+            '<strong>Ragged rows</strong> — more or fewer fields than the header. Decide whether to reject or pad, then test that decision.',
+            '<strong>A trailing newline, and none</strong> — off-by-one row counts come from here.',
+            '<strong>Unicode, emoji and RTL text</strong> — encoding and width assumptions.',
+            '<strong>Formula-prefixed values</strong> — confirm your export escapes them.'
+          ],
+          callout: { type: 'tip', text: 'Turn on "inject awkward values" and keep the resulting file as a permanent regression fixture. It costs nothing to check into the repository and it catches the class of bug that otherwise arrives as a customer complaint about one broken row in a 40,000-row import.' }
+        },
+        {
+          h: 'Generating large files',
+          html: '<p>Everything runs in your browser, so the practical ceiling is memory rather than a server limit. Tens of thousands of rows are comfortable; hundreds of thousands will make a tab sluggish while it builds the string.</p>' +
+            '<p>For genuinely large volumes — millions of rows for a load test — generate a small seeded sample here to fix the schema and quoting, then reproduce it in a script that streams to disk. The point of the tool is getting the <em>shape</em> right, and the shape is identical at any size.</p>'
+        },
+        {
+          h: 'Related data tools',
+          list: [
+            '<a href="json-test-data-generator.html">JSON Test Data Generator</a> — the same fixtures as schema-driven JSON.',
+            '<a href="sql-insert-data-generator.html">SQL Insert Data Generator</a> — load the data straight into a database.',
+            '<a href="markdown-table-generator.html">Markdown Table Generator</a> — convert CSV into documentation tables.',
+            '<a href="html-table-generator.html">HTML Table Generator</a> — accessible table markup from the same data.',
+            '<a href="json-array-generator.html">JSON Array Generator</a> — single-column value lists.'
+          ]
+        }
+      ],
+      keywords: [
+        'csv test data generator', 'sample csv file', 'rfc 4180', 'csv quoting rules',
+        'csv escape double quotes', 'tsv generator', 'csv utf-8 bom excel',
+        'csv injection', 'test csv parser', 'dummy csv data', 'csv with newlines in field',
+        'large csv sample'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

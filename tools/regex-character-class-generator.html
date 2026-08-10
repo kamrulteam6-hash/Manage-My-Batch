@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Regex Character Class Generator — Build &amp; Test [a-z] Patterns | Manage My Batch</title>
+<meta name="description" content="Free regex character class generator. Build [a-z0-9_] classes visually with ranges, negation, quantifiers and Unicode properties — with a live tester and escaping handled for you.">
+<link rel="canonical" href="https://managemybatch.com/tools/regex-character-class-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Regex Character Class Generator — Build &amp; Test [a-z] Patterns">
+<meta property="og:description" content="Free regex character class generator. Build [a-z0-9_] classes visually with ranges, negation, quantifiers and Unicode properties — with a live tester and escaping handled for you.">
+<meta property="og:url" content="https://managemybatch.com/tools/regex-character-class-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Regex Character Class Generator — Build &amp; Test [a-z] Patterns">
+<meta name="twitter:description" content="Free regex character class generator. Build [a-z0-9_] classes visually with ranges, negation, quantifiers and Unicode properties — with a live tester and escaping handled for you.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Class Builder</div>
+
+    <div class="field">
+      <label for="preset">Common patterns</label>
+      <select id="preset">
+        <option value="custom" selected>Build my own</option>
+        <option value="slug">URL slug</option>
+        <option value="username">Username</option>
+        <option value="hex">Hexadecimal</option>
+        <option value="alnum">Alphanumeric</option>
+        <option value="identifier">Code identifier</option>
+        <option value="filename">Safe filename</option>
+        <option value="whitespace">Whitespace</option>
+        <option value="punctuation">Punctuation</option>
+        <option value="unicodeletters">Unicode letters (any script)</option>
+        <option value="emoji">Emoji</option>
+        <option value="nonascii">Non-ASCII</option>
+      </select>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Character ranges</legend>
+      <div class="check-list two" id="ranges"></div>
+    </fieldset>
+
+    <div class="field">
+      <label for="extra">Additional literal characters</label>
+      <input type="text" id="extra" value="_-" placeholder="e.g. _-.@">
+      <div class="hint">Type them plainly — <code>]</code>, <code>\</code>, <code>^</code> and <code>-</code> are escaped and positioned correctly for you.</div>
+    </div>
+
+    <div class="field">
+      <label for="customRanges">Custom ranges</label>
+      <input type="text" id="customRanges" placeholder="e.g. À-Ö, 0-7, а-я">
+      <div class="hint">Comma-separated <code>start-end</code> pairs.</div>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Shorthand classes</legend>
+      <div class="check-list two" id="shorthands"></div>
+    </fieldset>
+
+    <fieldset class="field">
+      <legend class="label">Unicode properties <span style="font-weight:400;color:var(--muted)">(needs the u flag)</span></legend>
+      <div class="check-list two" id="unicode"></div>
+    </fieldset>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label class="check on" style="margin-bottom:12px"><input type="checkbox" id="optNegate">
+        <span><span class="t">Negate the class</span><span class="d">Matches everything <em>except</em> these characters — <code>[^…]</code>.</span></span></label>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="quant">Quantifier</label>
+        <select id="quant">
+          <option value="">None — single character</option>
+          <option value="?">? — optional (0 or 1)</option>
+          <option value="*">* — zero or more</option>
+          <option value="+">+ — one or more</option>
+          <option value="custom">{n,m} — exact range</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="lazy">Greediness</label>
+        <select id="lazy">
+          <option value="">Greedy (default)</option>
+          <option value="?">Lazy (?)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row" id="quantRange" hidden>
+      <div class="field"><label for="qmin">Min</label><input type="number" id="qmin" value="3" min="0"></div>
+      <div class="field"><label for="qmax">Max (blank = unlimited)</label><input type="number" id="qmax" value="16" min="0"></div>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Anchors &amp; flags</legend>
+      <div class="check-list two">
+        <label class="check"><input type="checkbox" id="optAnchors"><span><span class="t">Anchor whole string ^…$</span></span></label>
+        <label class="check"><input type="checkbox" id="optGroup"><span><span class="t">Wrap in a group</span></span></label>
+        <label class="check"><input type="checkbox" id="fg" checked><span><span class="t">g — global</span></span></label>
+        <label class="check"><input type="checkbox" id="fi"><span><span class="t">i — ignore case</span></span></label>
+        <label class="check"><input type="checkbox" id="fm"><span><span class="t">m — multiline</span></span></label>
+        <label class="check"><input type="checkbox" id="fu"><span><span class="t">u — unicode</span></span></label>
+      </div>
+    </fieldset>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Pattern<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="file">Pattern</button>
+      <button type="button" data-tab="test">Live tester</button>
+      <button type="button" data-tab="ref">Cheat sheet</button>
+    </div>
+
+    <div data-panel="file">
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">pattern.txt</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy</button>
+        <button class="btn btn-soft" id="copyClass">Copy class only</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+      <div id="explain"></div>
+      <div id="warnBox"></div>
+    </div>
+
+    <div data-panel="test" hidden>
+      <div class="field">
+        <label for="testStr">Test string</label>
+        <textarea id="testStr" style="min-height:110px;font-family:var(--mono)">Hello World_123!
+user-name@example.com
+Ünïcödé tëxt — 2026
+  spaces   and	tabs</textarea>
+      </div>
+      <div id="testOut"></div>
+    </div>
+
+    <div data-panel="ref" hidden><div id="ref"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoCopy:copy','icoDl:download']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var RANGES = [
+    { id: 'lower', label: 'a-z', desc: 'Lowercase ASCII letters', v: 'a-z' },
+    { id: 'upper', label: 'A-Z', desc: 'Uppercase ASCII letters', v: 'A-Z' },
+    { id: 'digits', label: '0-9', desc: 'ASCII digits', v: '0-9' },
+    { id: 'hexlower', label: 'a-f', desc: 'Hex letters, lowercase', v: 'a-f' },
+    { id: 'hexupper', label: 'A-F', desc: 'Hex letters, uppercase', v: 'A-F' },
+    { id: 'latin1', label: 'À-ÿ', desc: 'Latin-1 accented letters', v: '\\u00C0-\\u00FF' },
+    { id: 'cyrillic', label: 'а-я', desc: 'Cyrillic', v: '\\u0400-\\u04FF' },
+    { id: 'greek', label: 'α-ω', desc: 'Greek', v: '\\u0370-\\u03FF' },
+    { id: 'arabic', label: 'Arabic', desc: 'Arabic script', v: '\\u0600-\\u06FF' },
+    { id: 'cjk', label: 'CJK', desc: 'Chinese, Japanese, Korean ideographs', v: '\\u4E00-\\u9FFF' }
+  ];
+
+  var SHORT = [
+    { id: 'd', label: '\\d', desc: 'Any digit — same as 0-9' },
+    { id: 'w', label: '\\w', desc: 'Word character: [A-Za-z0-9_]' },
+    { id: 's', label: '\\s', desc: 'Whitespace: space, tab, newline' },
+    { id: 'D', label: '\\D', desc: 'Any non-digit' },
+    { id: 'W', label: '\\W', desc: 'Any non-word character' },
+    { id: 'S', label: '\\S', desc: 'Any non-whitespace' },
+    { id: 't', label: '\\t', desc: 'Tab' },
+    { id: 'n', label: '\\n', desc: 'Newline' },
+    { id: 'r', label: '\\r', desc: 'Carriage return' },
+    { id: 'space', label: 'space', desc: 'A literal space character' }
+  ];
+
+  var UNI = [
+    { id: 'L', label: '\\p{L}', desc: 'Any letter, any script' },
+    { id: 'Lu', label: '\\p{Lu}', desc: 'Uppercase letter' },
+    { id: 'Ll', label: '\\p{Ll}', desc: 'Lowercase letter' },
+    { id: 'N', label: '\\p{N}', desc: 'Any numeric character' },
+    { id: 'P', label: '\\p{P}', desc: 'Punctuation' },
+    { id: 'S', label: '\\p{S}', desc: 'Symbols, including currency and maths' },
+    { id: 'Emoji', label: '\\p{Emoji_Presentation}', desc: 'Emoji' },
+    { id: 'Script_Latin', label: '\\p{Script=Latin}', desc: 'Latin script' }
+  ];
+
+  function checkList(host, arr, key) {
+    $(host).innerHTML = arr.map(function (r) {
+      return '<label class="check"><input type="checkbox" data-' + key + '="' + r.id + '">' +
+        '<span><span class="t"><code>' + GT.esc(r.label) + '</code></span><span class="d">' + r.desc + '</span></span></label>';
+    }).join('');
+  }
+  checkList('#ranges', RANGES, 'r');
+  checkList('#shorthands', SHORT, 's');
+  checkList('#unicode', UNI, 'u');
+
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'pattern.txt', mime: 'text/plain' });
+
+  var PRESETS = {
+    slug: { r: ['lower', 'digits'], extra: '-', quant: '+', anchors: true, flags: { g: false } },
+    username: { r: ['lower', 'upper', 'digits'], extra: '_-', quant: 'custom', min: 3, max: 16, anchors: true },
+    hex: { r: ['digits', 'hexlower', 'hexupper'], extra: '', quant: '+' },
+    alnum: { r: ['lower', 'upper', 'digits'], extra: '', quant: '+' },
+    identifier: { r: ['lower', 'upper', 'digits'], extra: '_$', quant: '+' },
+    filename: { r: ['lower', 'upper', 'digits'], extra: '._-', quant: '+', anchors: true },
+    whitespace: { r: [], s: ['space', 't', 'n', 'r'], extra: '', quant: '+' },
+    punctuation: { r: [], extra: '.,;:!?\'"()[]{}<>/\\|@#$%^&*+=~`-', quant: '+' },
+    unicodeletters: { r: [], u: ['L'], extra: '', quant: '+', unicode: true },
+    emoji: { r: [], u: ['Emoji'], extra: '', quant: '+', unicode: true },
+    nonascii: { r: [], custom: '\\u0080-\\uFFFF', extra: '', quant: '+', negate: false }
+  };
+
+  /* Escape a literal for safe use inside a character class. */
+  function escInClass(ch) {
+    if (ch === '\\') return '\\\\';
+    if (ch === ']') return '\\]';
+    if (ch === '^') return '\\^';
+    if (ch === '-') return '\\-';
+    if (ch === '[') return '\\[';
+    return ch;
+  }
+
+  function classBody() {
+    var parts = [];
+    RANGES.forEach(function (r) {
+      if ($('[data-r="' + r.id + '"]').checked) parts.push(r.v);
+    });
+    var custom = $('#customRanges').value.split(',').map(function (x) { return x.trim(); }).filter(Boolean);
+    custom.forEach(function (c) { parts.push(c); });
+
+    SHORT.forEach(function (s) {
+      if (!$('[data-s="' + s.id + '"]').checked) return;
+      parts.push(s.id === 'space' ? ' ' : '\\' + s.id);
+    });
+    UNI.forEach(function (u) {
+      if ($('[data-u="' + u.id + '"]').checked) parts.push(u.label);
+    });
+
+    var extra = $('#extra').value;
+    var lit = '';
+    for (var i = 0; i < extra.length; i++) lit += escInClass(extra[i]);
+    if (lit) parts.push(lit);
+
+    return parts.join('');
+  }
+
+  function quantifier() {
+    var q = $('#quant').value;
+    if (!q) return '';
+    if (q === 'custom') {
+      var mn = $('#qmin').value === '' ? '0' : $('#qmin').value;
+      var mx = $('#qmax').value;
+      return mx === '' ? '{' + mn + ',}' : (mn === mx ? '{' + mn + '}' : '{' + mn + ',' + mx + '}');
+    }
+    return q;
+  }
+
+  function flags() {
+    return (($('#fg').checked ? 'g' : '') + ($('#fi').checked ? 'i' : '') +
+            ($('#fm').checked ? 'm' : '') + ($('#fu').checked ? 'u' : ''));
+  }
+
+  function buildPattern() {
+    var body = classBody();
+    if (!body) return { cls: '', pattern: '' };
+    var cls = '[' + ($('#optNegate').checked ? '^' : '') + body + ']';
+    var p = cls + quantifier();
+    if (quantifier() && $('#lazy').value) p += '?';
+    if ($('#optGroup').checked) p = '(' + p + ')';
+    if ($('#optAnchors').checked) p = '^' + p + '$';
+    return { cls: cls, pattern: p };
+  }
+
+  var current = { cls: '', pattern: '' };
+
+  function build() {
+    current = buildPattern();
+    var f = flags();
+
+    if (!current.pattern) {
+      out.set('// Select at least one range, shorthand or literal character.', 'pattern.txt');
+      $('#pill').textContent = 'empty';
+      $('#explain').innerHTML = '';
+      $('#warnBox').innerHTML = '';
+      $('#testOut').innerHTML = '';
+      return;
+    }
+
+    var text = [
+      '# Pattern',
+      current.pattern,
+      '',
+      '# JavaScript',
+      'const re = /' + current.pattern + '/' + f + ';',
+      "const isMatch = re.test(input);",
+      '',
+      '# JavaScript (from a string — note the doubled backslashes)',
+      "const re = new RegExp('" + current.pattern.replace(/\\/g, '\\\\').replace(/'/g, "\\'") + "', '" + f + "');",
+      '',
+      '# Python',
+      'import re',
+      'pattern = re.compile(r"' + current.pattern + '"' + (f.indexOf('i') > -1 ? ', re.IGNORECASE' : '') + ')',
+      '',
+      '# PHP',
+      "preg_match('/" + current.pattern.replace(/\//g, '\\/') + "/" + f.replace('g', '') + "', $input, $m);",
+      '',
+      '# Go',
+      're := regexp.MustCompile(`' + current.pattern + '`)',
+      '',
+      '# HTML input pattern attribute',
+      '<input pattern="' + GT.escAttr(current.pattern.replace(/^\^/, '').replace(/\$$/, '')) + '">'
+    ].join('\n');
+
+    out.set(text, 'pattern.txt');
+    $('#pill').textContent = current.pattern.length + ' chars';
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+
+    renderExplain();
+    renderWarn();
+    runTest();
+    renderRef();
+  }
+
+  function renderExplain() {
+    var parts = [];
+    if ($('#optAnchors').checked) parts.push(['^', 'Start of string' + ($('#fm').checked ? ' or line (m flag)' : '')]);
+    if ($('#optGroup').checked) parts.push(['(', 'Start capturing group']);
+    parts.push([current.cls, ($('#optNegate').checked ? 'Any character NOT in this set' : 'Any one character from this set')]);
+    var q = quantifier();
+    if (q) {
+      var desc = q === '+' ? 'One or more times' : q === '*' ? 'Zero or more times' : q === '?' ? 'Zero or one time'
+        : 'Between ' + ($('#qmin').value || 0) + ' and ' + ($('#qmax').value || 'unlimited') + ' times';
+      parts.push([q + ($('#lazy').value || ''), desc + ($('#lazy').value ? ', as few as possible (lazy)' : ', as many as possible (greedy)')]);
+    }
+    if ($('#optGroup').checked) parts.push([')', 'End capturing group']);
+    if ($('#optAnchors').checked) parts.push(['$', 'End of string' + ($('#fm').checked ? ' or line' : '')]);
+
+    $('#explain').innerHTML = '<h4 style="font-size:14px;margin:16px 0 8px">Breakdown</h4>' +
+      parts.map(function (p) {
+        return '<div class="kv"><span class="k" style="font-family:var(--mono);font-size:13px;color:var(--blue)">' +
+          GT.esc(p[0]) + '</span><span class="v" style="font-family:var(--sans);font-weight:500;max-width:65%;text-align:right">' +
+          p[1] + '</span></div>';
+      }).join('');
+  }
+
+  function renderWarn() {
+    var w = [];
+    var body = classBody();
+    var usesUnicode = UNI.some(function (u) { return $('[data-u="' + u.id + '"]').checked; });
+
+    if (usesUnicode && !$('#fu').checked) {
+      w.push(['err', 'Unicode property escapes such as <code>\\p{L}</code> require the <code>u</code> flag. Without it JavaScript throws a SyntaxError.']);
+    }
+    if ($('#quant').value === 'custom' && $('#qmax').value !== '' && +$('#qmax').value < +$('#qmin').value) {
+      w.push(['err', 'Maximum is less than minimum — this pattern can never match.']);
+    }
+    if ($('#optNegate').checked && /\\D|\\W|\\S/.test(body)) {
+      w.push(['warn', 'Negating a class that already contains a negated shorthand is confusing and often wrong. <code>[^\\D]</code> is just <code>\\d</code>.']);
+    }
+    if (/a-z/.test(body) && /A-Z/.test(body) && $('#fi').checked) {
+      w.push(['warn', 'You have both cases in the class <em>and</em> the <code>i</code> flag. Drop one — keeping both makes intent unclear during review.']);
+    }
+    if (/0-9/.test(body) && /\\d/.test(body)) {
+      w.push(['warn', '<code>0-9</code> and <code>\\d</code> are redundant together in this class.']);
+    }
+    if ($('#quant').value === '*' && $('#optAnchors').checked) {
+      w.push(['warn', '<code>^[…]*$</code> matches the empty string. If the field is required, use <code>+</code> instead.']);
+    }
+    var extra = $('#extra').value;
+    if (/[.^$*+?()[\]{}|\\]/.test(extra)) {
+      w.push(['ok', 'Special characters in your literal list are escaped automatically — inside a class only <code>] \\ ^ -</code> actually need it.']);
+    }
+    if ($('#fg').checked && $('#optAnchors').checked) {
+      w.push(['warn', 'The <code>g</code> flag with anchors is rarely useful for validation, and a global regex object keeps <code>lastIndex</code> state between <code>.test()</code> calls — a classic source of alternating true/false bugs.']);
+    }
+    if (!w.length) w.push(['ok', 'Pattern is valid and unambiguous.']);
+    $('#warnBox').innerHTML = w.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : x[0] === 'warn' ? 'note-warn' : 'note-err') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+  }
+
+  function runTest() {
+    var str = $('#testStr').value;
+    var el = $('#testOut');
+    if (!current.pattern) { el.innerHTML = ''; return; }
+    var re;
+    try {
+      re = new RegExp(current.pattern, flags().indexOf('g') > -1 ? flags() : flags() + 'g');
+    } catch (e) {
+      el.innerHTML = '<div class="note note-err">' + I.warn + '<span>Invalid pattern: ' + GT.esc(e.message) + '</span></div>';
+      return;
+    }
+
+    var html = '', last = 0, count = 0, m, guard = 0;
+    re.lastIndex = 0;
+    while ((m = re.exec(str)) !== null && guard++ < 5000) {
+      if (m.index >= last) {
+        html += GT.esc(str.slice(last, m.index));
+        html += '<mark style="background:#bfdbfe;color:#1e3a8a;border-radius:3px;padding:0 1px">' +
+          GT.esc(m[0] === '' ? '∅' : m[0]) + '</mark>';
+        last = m.index + (m[0].length || 1);
+        count++;
+      }
+      if (m[0] === '') re.lastIndex++;
+    }
+    html += GT.esc(str.slice(last));
+
+    var full = false;
+    try {
+      full = new RegExp('^(?:' + current.pattern + ')$', flags().replace('g', '')).test(str.split('\n')[0]);
+    } catch (e) {}
+
+    el.innerHTML =
+      '<div class="note ' + (count ? 'note-ok' : 'note-warn') + '">' + (count ? I.check : I.warn) +
+      '<span><strong>' + count + ' match' + (count === 1 ? '' : 'es') + '</strong> in the test string. ' +
+      'First line ' + (full ? 'fully matches' : 'does not fully match') + ' the pattern.</span></div>' +
+      '<div class="output-box" style="margin-top:12px"><div class="output-bar"><span class="fname">Highlighted matches</span></div>' +
+      '<pre class="code" style="white-space:pre-wrap">' + html + '</pre></div>' +
+      '<div class="kv" style="margin-top:12px"><span class="k">Pattern</span>' +
+      '<span class="v">/' + GT.esc(current.pattern) + '/' + flags() + '</span></div>';
+  }
+
+  function renderRef() {
+    $('#ref').innerHTML =
+      '<h4 style="font-size:14.5px;margin-bottom:10px">Inside a character class</h4>' +
+      [['<code>[abc]</code>', 'Any one of a, b or c'],
+       ['<code>[^abc]</code>', 'Any character except a, b or c'],
+       ['<code>[a-z]</code>', 'A range — everything from a to z by code point'],
+       ['<code>[a-zA-Z0-9]</code>', 'Multiple ranges combined'],
+       ['<code>[\\d\\s]</code>', 'Shorthands work inside classes'],
+       ['<code>[.-]</code>', 'Most metacharacters are literal inside a class'],
+       ['<code>[\\]\\\\^-]</code>', 'Only these four need escaping: ] \\ ^ -'],
+       ['<code>[-abc]</code>', 'A hyphen first or last is literal, no escape needed']
+      ].map(function (r) {
+        return '<div class="kv"><span class="k">' + r[0] + '</span><span class="v" style="font-family:var(--sans);font-weight:500;max-width:62%;text-align:right">' + r[1] + '</span></div>';
+      }).join('') +
+      '<h4 style="font-size:14.5px;margin:20px 0 10px">Quantifiers</h4>' +
+      [['<code>?</code>', 'Zero or one'], ['<code>*</code>', 'Zero or more'], ['<code>+</code>', 'One or more'],
+       ['<code>{3}</code>', 'Exactly three'], ['<code>{3,}</code>', 'Three or more'], ['<code>{3,8}</code>', 'Between three and eight'],
+       ['<code>+?</code>', 'Lazy — as few as possible']
+      ].map(function (r) {
+        return '<div class="kv"><span class="k">' + r[0] + '</span><span class="v" style="font-family:var(--sans);font-weight:500">' + r[1] + '</span></div>';
+      }).join('') +
+      '<div class="note note-warn" style="margin-top:16px">' + I.warn +
+      '<span><code>[a-Z]</code> is not a valid range — the code point for <code>Z</code> (90) is below <code>a</code> (97), so the engine throws. Write <code>[a-zA-Z]</code>.</span></div>';
+  }
+
+  $('#preset').addEventListener('change', function () {
+    var p = PRESETS[this.value];
+    if (!p) return;
+    $$('#ranges input, #shorthands input, #unicode input').forEach(function (c) {
+      c.checked = false; c.closest('.check').classList.remove('on');
+    });
+    (p.r || []).forEach(function (id) {
+      var c = $('[data-r="' + id + '"]'); if (c) { c.checked = true; c.closest('.check').classList.add('on'); }
+    });
+    (p.s || []).forEach(function (id) {
+      var c = $('[data-s="' + id + '"]'); if (c) { c.checked = true; c.closest('.check').classList.add('on'); }
+    });
+    (p.u || []).forEach(function (id) {
+      var c = $('[data-u="' + id + '"]'); if (c) { c.checked = true; c.closest('.check').classList.add('on'); }
+    });
+    $('#extra').value = p.extra || '';
+    $('#customRanges').value = p.custom || '';
+    $('#quant').value = p.quant || '';
+    $('#quantRange').hidden = p.quant !== 'custom';
+    if (p.min != null) $('#qmin').value = p.min;
+    if (p.max != null) $('#qmax').value = p.max;
+    $('#optAnchors').checked = !!p.anchors;
+    $('#optNegate').checked = !!p.negate;
+    $('#fu').checked = !!p.unicode;
+    build();
+  });
+
+  $('#quant').addEventListener('change', function () { $('#quantRange').hidden = this.value !== 'custom'; build(); });
+  $('#copyClass').addEventListener('click', function () { GT.copy(current.cls, 'Character class'); });
+  $('#testStr').addEventListener('input', runTest);
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+
+  /* sensible default: lowercase + digits + _- */
+  ['lower', 'digits'].forEach(function (id) {
+    var c = $('[data-r="' + id + '"]'); c.checked = true; c.closest('.check').classList.add('on');
+  });
+  $('#quant').value = '+';
+  build();
+
+  GT.page({
+    slug: 'regex-character-class-generator',
+    lede: 'Build regex character classes visually — ranges, shorthands, Unicode properties and quantifiers — with escaping handled and a live tester that highlights every match.',
+    steps: [
+      { icon: 'gear', title: 'Tick the ranges you need', text: 'Or start from a preset like URL slug, username or hexadecimal.' },
+      { icon: 'regex', title: 'Add literals and quantifiers', text: 'Special characters are escaped and positioned correctly inside the class for you.' },
+      { icon: 'check', title: 'Test it', text: 'Paste real input and see every match highlighted, plus a plain-language breakdown.' }
+    ],
+    guideTitle: 'Character classes: the rules that are different inside brackets',
+    guide:
+      '<p style="color:var(--muted)">A character class matches exactly one character from a set. The rules inside <code>[…]</code> are genuinely different from the rest of a regex, which is why so much regex code contains unnecessary — and occasionally harmful — escaping.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Only four characters need escaping</h4><p style="color:var(--muted);font-size:13.8px">Inside a class, only <code>]</code>, <code>\\</code>, <code>^</code> (when first) and <code>-</code> (when between two characters) are special. Everything else — <code>.</code>, <code>*</code>, <code>+</code>, <code>(</code>, <code>?</code>, <code>$</code> — is a literal. <code>[\\.\\*\\+]</code> works but says nothing that <code>[.*+]</code> does not.</p>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">Ranges are code points, not alphabets</h4><p style="color:var(--muted);font-size:13.8px"><code>[a-z]</code> is a numeric range over character codes. That is why <code>[a-Z]</code> throws — <code>Z</code> is 90 and <code>a</code> is 97 — and why <code>[A-z]</code> silently includes six punctuation characters between the alphabets.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Negation is broader than people expect</h4><p style="color:var(--muted);font-size:13.8px"><code>[^a-z]</code> matches digits, punctuation, whitespace, newlines, emoji and every non-Latin script. When validating input, an allow-list class is almost always safer than a deny-list negation.</p>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">ASCII shorthands are not Unicode-aware</h4><p style="color:var(--muted);font-size:13.8px"><code>\\w</code> means <code>[A-Za-z0-9_]</code> and nothing more — it excludes é, ü, Cyrillic, Arabic and CJK. For international text use <code>\\p{L}</code> with the <code>u</code> flag, which this tool will add for you.</p></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>A global regex is stateful.</strong> A pattern with the <code>g</code> flag keeps a <code>lastIndex</code> between calls, so reusing the same object with <code>.test()</code> returns alternating true and false results. For validation, leave <code>g</code> off — or create the regex fresh each time.</span></div>' +
+      '<div class="note note-info" style="margin-top:12px">' + GTI.info + '<span>Nested quantifiers over overlapping classes — patterns shaped like <code>([a-z]+)+$</code> — can trigger catastrophic backtracking, where a slightly-wrong input takes exponential time. Keep classes disjoint and avoid quantifying an already-quantified group.</span></div>',
+    related: ['nanoid-generator', 'json-array-generator', 'html-select-option-generator'],
+    faqs: [
+      { q: 'What is a regex character class?', a: 'A set of characters in square brackets that matches exactly one character from that set. <code>[aeiou]</code> matches any single vowel, and <code>[a-z0-9]</code> matches one lowercase letter or digit.' },
+      { q: 'Which characters need escaping inside a class?', a: 'Only <code>]</code>, <code>\\</code>, <code>^</code> when it is first, and <code>-</code> when it sits between two characters. Dots, asterisks, plus signs and parentheses are all literal inside a class.' },
+      { q: 'Why does [a-Z] throw an error?', a: 'Ranges are numeric over code points. Uppercase Z is 90 and lowercase a is 97, so the range runs backwards and the engine rejects it. Use <code>[a-zA-Z]</code> instead.' },
+      { q: 'What is the difference between \\w and \\p{L}?', a: '<code>\\w</code> is ASCII only — <code>[A-Za-z0-9_]</code>. <code>\\p{L}</code> matches letters in any script, including accented Latin, Cyrillic, Arabic and CJK, but requires the <code>u</code> flag.' },
+      { q: 'How do I match everything except certain characters?', a: 'Put a caret first: <code>[^abc]</code>. Be aware this also matches newlines, whitespace and every non-ASCII character — for validation, an allow-list is usually safer.' },
+      { q: 'Why does my regex return alternating true and false?', a: 'Because it has the <code>g</code> flag and you are reusing the same object. A global regex remembers <code>lastIndex</code> between <code>.test()</code> calls. Drop the flag for validation, or construct the regex fresh each time.' }
+    ],
+    seo: {
+      title: 'Regex character classes: escaping, ranges and Unicode properties',
+      lead: 'This <strong>regex character class generator</strong> builds bracket expressions visually — ranges, shorthands, Unicode properties, negation and quantifiers — with escaping handled and a live tester. Below: which characters actually need escaping inside brackets, why <code>[a-Z]</code> fails, and the stateful bug that makes a regex return alternating results.',
+      blocks: [
+        {
+          h: 'What a character class is',
+          html: '<p>A <strong>character class</strong> is a set in square brackets that matches exactly one character from that set. <code>[abc]</code> matches one <code>a</code>, <code>b</code> or <code>c</code>. Add a quantifier and it repeats: <code>[abc]+</code> matches a run of them.</p>' +
+            '<p>Three constructions cover most real use:</p>',
+          list: [
+            '<strong>Literals</strong> — <code>[aeiou]</code>, any vowel.',
+            '<strong>Ranges</strong> — <code>[a-z]</code>, <code>[0-9]</code>, <code>[A-Fa-f0-9]</code> for hex.',
+            '<strong>Negation</strong> — <code>[^0-9]</code>, any character that is <em>not</em> a digit. The caret only negates in the first position; anywhere else it is a literal caret.'
+          ],
+          after: '<p>Ranges work on code point order, which is why <code>[a-z]</code> is contiguous and useful while <code>[a-Z]</code> is not.</p>'
+        },
+        {
+          h: 'Escaping inside brackets is different',
+          html: '<p>Most metacharacters lose their special meaning inside a class. A dot inside brackets is a literal dot; <code>[.]</code> and <code>[\\.]</code> are the same thing, and <code>+</code>, <code>*</code>, <code>?</code>, <code>(</code>, <code>)</code>, <code>{</code>, <code>}</code>, <code>|</code> and <code>$</code> are all literal too.</p>' +
+            '<p>Only four characters need attention:</p>',
+          table: {
+            head: ['Character', 'When it needs escaping', 'Alternative'],
+            rows: [
+              ['<code>]</code>', 'Always, except as the first character.', '<code>[]abc]</code> works in POSIX; escape it in JavaScript.'],
+              ['<code>\\</code>', 'Always — it starts an escape sequence.', 'Write <code>\\\\</code>.'],
+              ['<code>^</code>', 'Only in the first position, where it means negation.', 'Move it anywhere else: <code>[a^]</code>.'],
+              ['<code>-</code>', 'Between two characters, where it forms a range.', 'Put it first or last: <code>[-a-z]</code> or <code>[a-z-]</code>.']
+            ]
+          },
+          callout: { type: 'tip', text: 'Over-escaping is not harmless. In JavaScript\'s <code>u</code> and <code>v</code> modes, escaping a character that does not need it — <code>[\\-]</code> is fine, but <code>[\\%]</code> is not — is a syntax error rather than a no-op. The generator escapes exactly what the target flavour requires.' }
+        },
+        {
+          h: 'Why [a-Z] throws an error',
+          html: '<p>A range is defined by code points, and it must ascend. In ASCII, <code>a</code> is 97 and <code>Z</code> is 90 — so <code>[a-Z]</code> asks for a range that runs backwards, and the engine rejects it as out of order.</p>' +
+            '<p>The related trap is <code>[A-z]</code>, which is <em>valid</em> and almost never what anyone means. It spans code points 65 to 122, which includes the six characters sitting between the alphabets: <code>[</code>, <code>\\</code>, <code>]</code>, <code>^</code>, <code>_</code> and <code>` </code>. A validator built on <code>[A-z]</code> silently accepts backslashes.</p>' +
+            '<p>Write <code>[A-Za-z]</code>. Two explicit ranges, no surprises.</p>'
+        },
+        {
+          h: 'Shorthands and their Unicode equivalents',
+          table: {
+            head: ['Shorthand', 'Matches', 'Unicode-aware form'],
+            rows: [
+              ['<code>\\d</code>', 'ASCII digits 0–9.', '<code>\\p{Nd}</code> — digits in every script.'],
+              ['<code>\\w</code>', '<code>[A-Za-z0-9_]</code> only.', '<code>[\\p{L}\\p{N}_]</code> — letters and numbers in any language.'],
+              ['<code>\\s</code>', 'Whitespace, including Unicode spaces in JavaScript.', '<code>\\p{White_Space}</code>.'],
+              ['<code>.</code>', 'Any character except a line break.', 'Add the <code>s</code> flag to include line breaks.'],
+              ['<code>\\D \\W \\S</code>', 'The negations of the above.', 'Use <code>\\P{…}</code> for negated properties.']
+            ]
+          },
+          callout: { type: 'warn', text: '<strong><code>\\w</code> is ASCII-only and rejects most of the world\'s names.</strong> A "letters, numbers and underscore" validator built on <code>\\w</code> refuses <code>José</code>, <code>Müller</code> and every non-Latin script. Use <code>[\\p{L}\\p{N}_]</code> with the <code>u</code> flag when the input is a human name.' }
+        },
+        {
+          h: 'Matching everything except…',
+          steps: [
+            { t: 'Use a negated class', d: '<code>[^&lt;&gt;]</code> matches any character that is not an angle bracket.' },
+            { t: 'Remember it still matches one character', d: '<code>[^a]</code> requires a character to be present. To allow nothing, add a quantifier: <code>[^a]*</code>.' },
+            { t: 'Negation includes newlines', d: 'Unlike <code>.</code>, a negated class matches line breaks unless you exclude them explicitly.' },
+            { t: 'Prefer negation to lookahead for single characters', d: '<code>[^abc]</code> is clearer and faster than <code>(?!(a|b|c)).</code>' },
+            { t: 'For excluding whole words, use a lookahead', d: 'Character classes work on single characters only — a class cannot exclude a multi-character string.' }
+          ]
+        },
+        {
+          h: 'The alternating true/false bug',
+          html: '<p>A regex with the global flag keeps state. <code>RegExp.prototype.test()</code> and <code>exec()</code> both advance <code>lastIndex</code> on a match and reset it on a failure — so calling <code>test()</code> repeatedly on the same string returns <code>true</code>, <code>false</code>, <code>true</code>, <code>false</code>.</p>' +
+            '<p>The usual sighting is a module-level <code>const re = /\\d+/g</code> reused across calls, or a validator in a loop that passes for half its inputs with no pattern anyone can see.</p>',
+          list: [
+            '<strong>Drop the <code>g</code> flag</strong> when you only want a yes-or-no answer. <code>test()</code> does not need it.',
+            '<strong>Reset explicitly</strong> with <code>re.lastIndex = 0</code> before each use if the flag must stay.',
+            '<strong>Create the regex inside the function</strong> so each call gets a fresh object.',
+            '<strong>Use <code>String.prototype.match</code> or <code>matchAll</code></strong> for extraction, which is where <code>g</code> genuinely belongs.'
+          ]
+        },
+        {
+          h: 'Related tools',
+          list: [
+            '<a href="nanoid-generator.html">NanoID Generator</a> — define an alphabet, then validate it with a class.',
+            '<a href="json-array-generator.html">JSON Array Generator</a> — patterned strings to test a pattern against.',
+            '<a href="html-select-option-generator.html">HTML Select Option Generator</a> — build option lists from a value set.',
+            '<a href="csv-test-data-generator.html">CSV Test Data Generator</a> — awkward values that break naive patterns.'
+          ]
+        }
+      ],
+      keywords: [
+        'regex character class generator', 'regex bracket expression', 'regex escape inside class',
+        'regex a-z A-Z', 'regex unicode property', 'regex \\w vs \\p{L}',
+        'negated character class', 'regex tester online', 'regex range error',
+        'javascript regex lastindex bug', 'regex match accented letters', 'regex hex character class'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

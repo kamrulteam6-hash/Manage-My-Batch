@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Asset Tag Number Generator — IT &amp; Facilities Asset Labels | Manage My Batch</title>
+<meta name="description" content="Free asset tag number generator. Build IT and facilities asset tags with site, category and sequence segments, check digits and label-friendly formats. Bulk export.">
+<link rel="canonical" href="https://managemybatch.com/tools/asset-tag-number-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Asset Tag Number Generator — IT &amp; Facilities Asset Labels">
+<meta property="og:description" content="Free asset tag number generator. Build IT and facilities asset tags with site, category and sequence segments, check digits and label-friendly formats. Bulk export.">
+<meta property="og:url" content="https://managemybatch.com/tools/asset-tag-number-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Asset Tag Number Generator — IT &amp; Facilities Asset Labels">
+<meta name="twitter:description" content="Free asset tag number generator. Build IT and facilities asset tags with site, category and sequence segments, check digits and label-friendly formats. Bulk export.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Generator Settings</div>
+
+    <div class="row">
+      <div class="field"><label for="prefix">Organisation prefix</label><input type="text" id="prefix" value="AST"></div>
+      <div class="field">
+        <label for="sep">Separator</label>
+        <select id="sep">
+          <option value="-" selected>Hyphen (-)</option>
+          <option value="">None (best for barcodes)</option>
+          <option value=".">Dot (.)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="category">Asset category</label>
+      <select id="category">
+        <option value="">None</option>
+        <option value="LAP">LAP — Laptops</option>
+        <option value="DSK">DSK — Desktops</option>
+        <option value="MON">MON — Monitors</option>
+        <option value="PHN">PHN — Phones</option>
+        <option value="TAB">TAB — Tablets</option>
+        <option value="NET">NET — Network equipment</option>
+        <option value="SRV">SRV — Servers</option>
+        <option value="PRN">PRN — Printers</option>
+        <option value="FUR">FUR — Furniture</option>
+        <option value="VEH">VEH — Vehicles</option>
+        <option value="TLS">TLS — Tools &amp; equipment</option>
+        <option value="custom">Custom…</option>
+      </select>
+      <input type="text" id="categoryCustom" placeholder="Custom category code" style="margin-top:8px" hidden>
+    </div>
+
+    <div class="row">
+      <div class="field"><label for="site">Site / building code</label><input type="text" id="site" placeholder="e.g. LON, HQ, B2"></div>
+      <div class="field">
+        <label for="dateFormat">Acquisition period</label>
+        <select id="dateFormat"></select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field"><label for="start">Starting number</label><input type="number" id="start" value="1" min="0"></div>
+      <div class="field">
+        <label for="pad">Number length</label>
+        <select id="pad">
+          <option value="4">4 digits</option>
+          <option value="5" selected>5 digits</option>
+          <option value="6">6 digits</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="checkDigit">Check digit</label>
+      <select id="checkDigit"></select>
+      <div class="hint">Recommended — asset tags are read from worn labels during stock takes, where a misread digit sends the wrong item to write-off.</div>
+    </div>
+
+    <div class="field">
+      <label for="preview">Preview format</label>
+      <div class="seq-preview" id="preview">AST-00001</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="row">
+      <div class="field"><label for="count">How many</label><input type="number" id="count" value="10" min="1" max="5000"></div>
+      <div class="field"><label for="date">Acquisition date</label><input type="date" id="date"></div>
+    </div>
+
+    <details class="faq" style="box-shadow:none;margin-bottom:16px">
+      <summary style="padding:12px 14px;font-size:13.8px">Advanced format</summary>
+      <div class="body" style="padding:0 14px 14px">
+        <label for="pattern" style="margin-top:6px">Custom pattern</label>
+        <input type="text" id="pattern" placeholder="e.g. {PREFIX}{SEP}LAP{SEP}{SEQ:5}">
+        <div class="token-help" id="tokenHelp"></div>
+        <label for="suffix" style="margin-top:12px">Suffix</label>
+        <input type="text" id="suffix" placeholder="optional">
+      </div>
+    </details>
+
+    <div class="out-actions">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate Asset Tags</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated Results<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="results">Results</button>
+      <button type="button" data-tab="export">Export</button>
+      <button type="button" data-tab="checks">Validation</button>
+      <button type="button" data-tab="guide">Labelling guide</button>
+    </div>
+
+    <div data-panel="results">
+      <div id="primary"></div>
+      <div id="more"></div>
+      <button type="button" class="btn btn-soft btn-block" id="regen" style="margin-top:18px">
+        <span id="icoReset"></span> Regenerate</button>
+      <div class="note note-info" style="margin-top:14px"><span id="icoInfo"></span>
+        <span>Asset tags outlive the asset. Keep retired tags in your register rather than deleting them — depreciation schedules and disposal records refer back to them for years.</span></div>
+    </div>
+
+    <div data-panel="export" hidden>
+      <div class="field">
+        <label for="exportAs">Export format</label>
+        <select id="exportAs">
+          <option value="csvIndexed">CSV for label printing</option>
+          <option value="lines">Plain list</option>
+          <option value="json">JSON array</option>
+          <option value="sql">SQL INSERT</option>
+        </select>
+      </div>
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">asset-tags.csv</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy all</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+      <div class="note note-info" style="margin-top:4px"><span id="icoInfo2"></span>
+        <span>The indexed CSV imports directly into most label-printing software as a mail-merge source.</span></div>
+    </div>
+
+    <div data-panel="checks" hidden><div id="checks"></div></div>
+    <div data-panel="guide" hidden><div id="guide"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/seqid.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoCopy:copy','icoDl:download','icoReset:reset','icoInfo:info','icoInfo2:info']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  $('#dateFormat').innerHTML = GTSeq.DATE_FORMATS.map(function (f) {
+    return '<option value="' + f.id + '"' + (f.id === 'none' ? ' selected' : '') + '>' + f.label + '</option>';
+  }).join('');
+  $('#checkDigit').innerHTML = GTSeq.CHECK_DIGITS.map(function (c) {
+    return '<option value="' + c.id + '"' + (c.id === 'luhn' ? ' selected' : '') + '>' + c.label + '</option>';
+  }).join('');
+  $('#tokenHelp').innerHTML = GTSeq.tokenHelpHtml();
+  $('#date').value = GT.today();
+
+  var ids = [];
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'asset-tags.csv', mime: 'text/csv' });
+
+  function category() {
+    var v = $('#category').value;
+    return v === 'custom' ? $('#categoryCustom').value.trim().toUpperCase() : v;
+  }
+
+  function opts() {
+    var sep = $('#sep').value;
+    var cat = category();
+    var site = $('#site').value.trim().toUpperCase();
+    var pattern = $('#pattern').value.trim();
+    if (!pattern && (cat || site)) {
+      var df = GTSeq.DATE_FORMATS.filter(function (f) { return f.id === $('#dateFormat').value; })[0];
+      var parts = ['{PREFIX}'];
+      if (site) parts.push(site);
+      if (cat) parts.push(cat);
+      if (df && df.pattern) parts.push(df.pattern);
+      parts.push('{SEQ}');
+      if ($('#suffix').value.trim()) parts.push('{SUFFIX}');
+      pattern = parts.join(sep === '' ? '' : '{SEP}');
+    }
+    return {
+      prefix: $('#prefix').value.trim(),
+      suffix: $('#suffix').value.trim(),
+      dateFormat: $('#dateFormat').value,
+      sep: sep,
+      start: $('#start').value,
+      pad: parseInt($('#pad').value, 10),
+      count: parseInt($('#count').value, 10),
+      checkDigit: $('#checkDigit').value,
+      date: $('#date').value ? new Date($('#date').value + 'T12:00:00') : new Date(),
+      pattern: pattern
+    };
+  }
+
+  function build() {
+    var o = opts();
+    ids = GTSeq.generate(o).ids;
+
+    $('#preview').textContent = ids[0] || '—';
+    GTSeq.renderResults({ ids: ids, primary: '#primary', more: '#more', noun: 'Asset Tag' });
+    $('#pill').textContent = ids.length.toLocaleString() + ' generated';
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+
+    var mode = $('#exportAs').value;
+    var ext = mode === 'json' ? 'json' : mode === 'sql' ? 'sql' : /csv/.test(mode) ? 'csv' : 'txt';
+    out.set(GTSeq.exportAs(ids, mode, { column: 'asset_tag', table: 'assets' }), 'asset-tags.' + ext);
+
+    var extra = [];
+    var len = (ids[0] || '').length;
+    if (len > 18) extra.push({ s: 'warn', m: 'At ' + len + ' characters this may not fit a small equipment label, and the barcode will be physically wide. Under about 15 characters is comfortable for asset labels.' });
+    if ($('#dateFormat').value !== 'none') {
+      extra.push({ s: 'warn', m: 'Acquisition period embedded. Useful for depreciation grouping, but it makes the tag longer and it is already recorded in your asset register.' });
+    }
+    if ($('#sep').value !== '' && $('#checkDigit').value !== 'none') {
+      extra.push({ s: 'warn', m: 'Separators inside a barcoded value force scanners to handle punctuation and lengthen the symbol. For barcode labels, generate without a separator and add hyphens only in the human-readable text.' });
+    }
+    if (!category()) {
+      extra.push({ s: 'warn', m: 'No category code. A category segment lets anyone doing a stock take see at a glance whether a tag belongs on a laptop or a monitor.' });
+    }
+    GTSeq.renderChecks('#checks', GTSeq.validate(ids, { checkDigit: o.checkDigit, humanEntry: true }).concat(extra));
+  }
+
+  $('#category').addEventListener('change', function () {
+    $('#categoryCustom').hidden = this.value !== 'custom';
+  });
+
+  $('#guide').innerHTML = [
+    ['The tag is permanent, the asset is not', 'An asset tag identifies a physical item from purchase to disposal. It appears on depreciation schedules, insurance inventories and disposal certificates, and those records are kept for years after the item is gone. Never delete or reuse a tag.'],
+    ['Category codes earn their place here', 'Unlike employee IDs, where embedded attributes go stale, an asset\'s category almost never changes — a monitor stays a monitor. A category segment makes stock takes far faster because staff can see what a tag should be attached to.'],
+    ['Keep it short for the label', 'Asset labels are small and often curved. Every character makes the barcode wider and the human-readable text smaller. Aim for 12–15 characters total, which is why site plus category plus sequence is usually the practical limit.'],
+    ['Avoid separators inside barcodes', 'Hyphens lengthen the symbol and add scanner edge cases. Generate the value without separators for the barcode, and print a hyphenated version as human-readable text beneath it.'],
+    ['Check digits matter for stock takes', 'Tags get scratched, faded and partly covered. When someone reads a worn label by eye and types it in, a check digit is what stops the wrong asset being marked missing or written off.'],
+    ['Serial number is not an asset tag', 'Manufacturer serials are inconsistent in format, sometimes duplicated across vendors, and unreadable once a device is mounted or wall-fixed. Record the serial as a field, and use your own tag as the key.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('');
+
+  GTSeq.bindCopy('#primary', function () { return ids; });
+  GTSeq.bindCopy('#more', function () { return ids; });
+  GTSeq.bindTokenHelp('#tokenHelp', '#pattern', build);
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Asset tags generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+  $('#regen').addEventListener('click', build);
+  $('#exportAs').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'asset-tag-number-generator',
+    lede: 'Generate asset tags sized for real labels — site and category segments, check digits for worn-label entry, and a CSV that drops straight into label-printing software.',
+    steps: [
+      { icon: 'gear', title: 'Set site and category', text: 'Category codes stay accurate for an asset’s whole life, unlike most embedded attributes.' },
+      { icon: 'tag', title: 'Generate a block', text: 'Create tags for a delivery, a refresh cycle or a full inventory.' },
+      { icon: 'copy', title: 'Print labels', text: 'Export the indexed CSV as a mail-merge source for your label printer.' }
+    ],
+    guideTitle: 'Designing a tag that survives the warehouse',
+    guide:
+      '<p style="color:var(--muted)">Asset tags live a harder life than most identifiers. They are printed small, stuck to curved plastic, scratched by cables, and read years later by someone crouched under a desk with a torch. The design constraints come from that physical reality far more than from any database.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Formats that work</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><code>AST-00001</code> — small organisation, one site.</li><li><code>AST-LAP-00042</code> — category visible during stock takes.</li><li><code>AST-LON-LAP-00042</code> — multi-site, still under 18 characters.</li><li><code>ASTLAP000427</code> — no separators, check digit, optimised for barcode width.</li></ul></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Why category is the exception</h4><p style="color:var(--muted);font-size:13.8px">Embedding attributes in identifiers is usually a mistake because attributes change. Asset category is the rare case where it does not: a monitor will never become a vehicle. That stability is what makes a category segment safe here, while a department code in an <a href="employee-id-generator.html">employee ID</a> is not.</p>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">Location is more marginal — assets move between sites. If yours do, keep the site in a field and out of the tag.</p></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>Do not use the manufacturer serial number as your asset tag.</strong> Serial formats vary wildly between vendors, are occasionally duplicated, and become unreadable the moment a device is wall-mounted or the sticker wears off. Record the serial as a field and key your register on your own tag.</span></div>',
+    related: ['employee-id-generator', 'batch-number-generator', 'purchase-order-number-generator'],
+    faqs: [
+      { q: 'What is an asset tag number?', a: 'A unique identifier your organisation assigns to a physical asset, printed on a label attached to the item. It links the physical object to its record in your asset register, depreciation schedule and insurance inventory.' },
+      { q: 'How long should an asset tag be?', a: '12 to 15 characters is the practical sweet spot. Labels are small and often curved, and every extra character makes the barcode wider and the printed text harder to read.' },
+      { q: 'Should the asset tag include the category?', a: 'Yes, usually. Unlike department codes in employee IDs, an asset\'s category almost never changes, so it stays accurate — and it makes stock takes much faster.' },
+      { q: 'Can I use the serial number instead?', a: 'Not as your primary key. Serial formats are inconsistent between manufacturers, occasionally duplicated, and often become unreadable once equipment is installed. Store the serial as a field alongside your own tag.' },
+      { q: 'Should asset tags include separators?', a: 'Only in the human-readable text. Hyphens inside a barcoded value make the symbol wider and add scanner edge cases, so generate without separators for the barcode itself.' },
+      { q: 'What happens to the tag when an asset is disposed of?', a: 'Retire it, never reuse it. Disposal certificates, depreciation records and insurance claims all refer back to the tag for years after the item has gone.' }
+    ],
+    seo: {
+      title: 'Asset tags: designing a number that survives the warehouse',
+      lead: 'This <strong>asset tag number generator</strong> produces tags sized for real labels — site and category segments, check digits for worn-label entry, and CSV output for label-printing software. Below: how long a tag should be, whether to encode a category, and why a serial number is not an asset tag.',
+      blocks: [
+        {
+          h: 'What an asset tag is for',
+          html: '<p>An <strong>asset tag number</strong> is the identifier your organisation puts on a physical item so that it can be found, audited, depreciated and disposed of. It is stuck to a laptop, a forklift, a projector or a lathe, and it is scanned or typed by people who are standing in a cold warehouse with a torch.</p>' +
+            '<p>That last point drives every design decision. An asset tag is not read in comfortable conditions — it is read from a scuffed label at an awkward angle, sometimes copied by hand onto a paper audit sheet. A format that is elegant in a spreadsheet and unreadable on a worn label has failed.</p>',
+          callout: { type: 'tip', text: 'Design the number and the label together. A 20-character tag on a 25mm label prints at a size nobody can read, and the audit team will start writing "the Dell one in the corner" on their sheets instead.' }
+        },
+        {
+          h: 'Asset tag or serial number?',
+          html: '<p>Record both; tag with yours. A manufacturer serial number identifies the item to the manufacturer, and it is genuinely useful for warranty claims and support calls — but it is a poor primary identifier:</p>',
+          list: [
+            '<strong>Formats are inconsistent.</strong> Every manufacturer uses a different length, alphabet and structure. Sorting, validating and printing a mixed set is unpleasant.',
+            '<strong>They are long and error-prone.</strong> Seventeen mixed-case alphanumeric characters transcribe badly.',
+            '<strong>They are not always accessible.</strong> Serial plates end up against walls, under machinery, or inside a case that has to be opened.',
+            '<strong>They can be missing or duplicated.</strong> Refurbished and white-label equipment is a genuine problem here.',
+            '<strong>They tell you nothing about you.</strong> No site, no category, no ownership.'
+          ],
+          after: '<p>The convention that works: your asset tag is the primary key, applied as a durable label; the serial number is a field in the record, used for warranty and support.</p>'
+        },
+        {
+          h: 'How long should a tag be?',
+          table: {
+            head: ['Length', 'Example', 'Suits'],
+            rows: [
+              ['6 characters', '<code>A04821</code>', 'Small organisations, one site, no categories.'],
+              ['8–10 characters', '<code>LDN-IT-0482</code>', 'The practical default — site, category, sequence.'],
+              ['12–14 characters', '<code>LDN-IT-LAP-0482</code>', 'Large estates with meaningful sub-categories.'],
+              ['16+ characters', '—', 'Too long. It prints small, scans marginally and gets abbreviated.']
+            ]
+          },
+          after: '<p>Fix the width from the start and zero-pad the sequence. Tags that grow a digit sort incorrectly in every export and, worse, look like different tag formats to whoever is auditing them.</p>'
+        },
+        {
+          h: 'Should the category be in the tag?',
+          cards: [
+            { t: 'Arguments for', d: 'An auditor can sort a stack of tags by type without a system. Lost items are recognisable. Category-based reporting works from the number alone.' },
+            { t: 'Arguments against', d: 'Categories get reclassified. An item tagged <code>IT</code> that moves to <code>FAC</code> now has a misleading tag, and re-tagging a deployed asset is rarely done.' },
+            { t: 'The middle ground', d: 'Encode broad, stable categories only — IT, vehicles, furniture, plant. Leave fine-grained classification to the record, where it can change.' },
+            { t: 'Site is safer', d: 'Sites change less often than categories, and a site prefix genuinely helps a multi-location audit.' }
+          ],
+          callout: { type: 'warn', text: '<strong>Never re-tag an asset because its category changed.</strong> The old tag is in your fixed asset register, your insurance schedule and possibly a customer\'s records. Update the record, leave the label alone, and accept that the prefix is a historical fact rather than a current one.' }
+        },
+        {
+          h: 'Separators and check digits',
+          html: '<p><strong>Separators</strong> help humans and hurt machines. Hyphens make <code>LDN-IT-0482</code> far easier to read and dictate, but they add characters to the barcode and some legacy asset systems strip or reject them.</p>' +
+            '<p>The workable compromise: print with separators, store without them, and normalise on input so that both forms match. Nothing else requires a decision.</p>' +
+            '<p><strong>Check digits</strong> matter more here than in most numbering schemes, because asset tags are frequently typed by hand — from a partially worn label, during an audit, into a mobile app with a small keyboard. A single <a href="reference-number-generator.html">Luhn digit</a> catches the transposition and single-digit errors that otherwise create a phantom asset record.</p>',
+          steps: [
+            { t: 'Choose a site prefix', d: 'Two or three letters. Stable, meaningful, and short.' },
+            { t: 'Choose a broad category', d: 'Or omit it if your estate is homogeneous.' },
+            { t: 'Set a fixed-width sequence', d: 'Four digits covers 9,999 assets per category per site — enough for most, and easy to extend by starting a new prefix rather than widening.' },
+            { t: 'Add a check digit if tags are typed', d: 'Skip it if every read is a scan.' },
+            { t: 'Export CSV for the label printer', d: 'The output maps directly onto Brady, Zebra, Dymo and most label software\'s merge fields.' }
+          ]
+        },
+        {
+          h: 'Disposal and reuse',
+          html: '<p>Retire the tag with the asset. Do not reuse the number.</p>' +
+            '<p>The reason is the audit trail. A disposed asset stays in the fixed asset register for years — for depreciation history, for tax records, and for the disposal evidence itself. If the same number is reissued to a new laptop, then a query about tag <code>LDN-IT-0482</code> returns two assets, and reconciling which is which requires knowing a date nobody recorded.</p>' +
+            '<p>Mark the record as disposed with a date, a method and a reference to the disposal certificate where one exists. Physically remove or deface the label if the item leaves the organisation intact — a live-looking tag on equipment sold to a third party invites confusion later, and on IT equipment it can leak your internal naming conventions.</p>'
+        },
+        {
+          h: 'Related asset tools',
+          list: [
+            '<a href="employee-id-generator.html">Employee ID Generator</a> — identify who an asset is assigned to.',
+            '<a href="batch-number-generator.html">Batch Number Generator</a> — production equipment and run traceability.',
+            '<a href="purchase-order-number-generator.html">Purchase Order Number Generator</a> — link the asset to its purchase.',
+            '<a href="product-code-generator.html">Product Code Generator</a> — model codes for equipment you sell.',
+            '<a href="reference-number-generator.html">Reference Number Generator</a> — check digit schemes.'
+          ]
+        }
+      ],
+      keywords: [
+        'asset tag number generator', 'asset tag format', 'fixed asset numbering',
+        'asset label numbering system', 'asset tag vs serial number', 'it asset tagging',
+        'asset tag check digit', 'equipment id numbering', 'asset register numbering',
+        'barcode asset labels', 'asset tag length', 'asset disposal record'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

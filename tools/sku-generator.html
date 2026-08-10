@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SKU Generator — Free SKU Code Creator &amp; Format Builder | Manage My Batch</title>
+<meta name="description" content="Free SKU generator. Build readable SKU codes from product attributes and create the full size/colour variant matrix in one click. SKU format examples and CSV export.">
+<meta name="keywords" content="sku generator, sku code generator, how to create skus, sku format, sku number generator, product sku generator, sku examples, inventory sku codes, variant sku">
+<link rel="canonical" href="https://managemybatch.com/tools/sku-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="SKU Generator — Free Structured SKU Builder with Variant Matrix">
+<meta property="og:description" content="Free SKU generator. Build readable, structured stock keeping units from product attributes and generate the full size/colour variant matrix in one click. CSV export.">
+<meta property="og:url" content="https://managemybatch.com/tools/sku-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SKU Generator — Free Structured SKU Builder with Variant Matrix">
+<meta name="twitter:description" content="Free SKU generator. Build readable, structured stock keeping units from product attributes and generate the full size/colour variant matrix in one click. CSV export.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>SKU Structure</div>
+
+    <div class="field">
+      <label>Mode</label>
+      <div class="seg" id="mode">
+        <button type="button" class="on" data-m="single">Single product</button>
+        <button type="button" data-m="matrix">Variant matrix</button>
+      </div>
+      <div class="hint" id="modeHint">Build one SKU from fixed attributes.</div>
+    </div>
+
+    <div class="field">
+      <label for="segments">Segments — one per line</label>
+      <textarea id="segments" style="min-height:130px">TSH: T-Shirt
+BLK: Black
+M: Medium</textarea>
+      <div class="hint">Format <code>CODE: Meaning</code>. The code becomes part of the SKU; the meaning is only a note for you.</div>
+    </div>
+
+    <div id="matrixFields" hidden>
+      <div class="field">
+        <label for="base">Base code (product)</label>
+        <input type="text" id="base" value="TSH" placeholder="TSH">
+      </div>
+      <div class="field">
+        <label for="axis1">Variant axis 1 — e.g. colour</label>
+        <textarea id="axis1" style="min-height:80px">BLK: Black
+WHT: White
+NVY: Navy</textarea>
+      </div>
+      <div class="field">
+        <label for="axis2">Variant axis 2 — e.g. size <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
+        <textarea id="axis2" style="min-height:80px">S: Small
+M: Medium
+L: Large
+XL: Extra large</textarea>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="row">
+      <div class="field">
+        <label for="sep">Separator</label>
+        <select id="sep">
+          <option value="-" selected>Hyphen (-)</option>
+          <option value="">None</option>
+          <option value="_">Underscore (_)</option>
+          <option value=".">Dot (.)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="seqLen">Trailing sequence</label>
+        <select id="seqLen">
+          <option value="0" selected>None</option>
+          <option value="2">2 digits</option>
+          <option value="3">3 digits</option>
+          <option value="4">4 digits</option>
+        </select>
+      </div>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Options</legend>
+      <div class="check-list">
+        <label class="check on"><input type="checkbox" id="optUpper" checked><span><span class="t">Uppercase</span><span class="d">Avoids case-sensitivity bugs between systems.</span></span></label>
+        <label class="check"><input type="checkbox" id="optNoVowel"><span><span class="t">Strip vowels from generated codes</span><span class="d">Shortens auto-derived codes: <code>BLACK → BLCK</code>.</span></span></label>
+        <label class="check on"><input type="checkbox" id="optSafe" checked><span><span class="t">Remove unsafe characters</span><span class="d">Strips spaces, slashes and punctuation that break CSV imports and URLs.</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="field">
+      <label for="preview">Preview</label>
+      <div class="seq-preview" id="preview">TSH-BLK-M</div>
+    </div>
+
+    <div class="out-actions">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate SKUs</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated SKUs<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="results">Results</button>
+      <button type="button" data-tab="export">Export</button>
+      <button type="button" data-tab="checks">Validation</button>
+      <button type="button" data-tab="guide">SKU design</button>
+    </div>
+
+    <div data-panel="results">
+      <div id="primary"></div>
+      <div id="more"></div>
+      <div id="matrixTable" style="margin-top:16px;overflow-x:auto"></div>
+    </div>
+
+    <div data-panel="export" hidden>
+      <div class="field">
+        <label for="exportAs">Export format</label>
+        <select id="exportAs">
+          <option value="table">CSV with attributes</option>
+          <option value="lines">Plain list</option>
+          <option value="json">JSON array</option>
+          <option value="sql">SQL INSERT</option>
+        </select>
+      </div>
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">skus.csv</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy all</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+    </div>
+
+    <div data-panel="checks" hidden><div id="checks"></div></div>
+    <div data-panel="guide" hidden><div id="guide"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/seqid.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoCopy:copy','icoDl:download']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var mode = 'single', rows = [];
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'skus.csv', mime: 'text/csv' });
+
+  function clean(code) {
+    var s = String(code || '').trim();
+    if ($('#optSafe').checked) s = s.replace(/[^A-Za-z0-9]/g, '');
+    if ($('#optNoVowel').checked && s.length > 3) {
+      s = s[0] + s.slice(1).replace(/[AEIOUaeiou]/g, '');
+    }
+    if ($('#optUpper').checked) s = s.toUpperCase();
+    return s;
+  }
+
+  function parseSegs(text) {
+    return GT.lines(text).map(function (l) {
+      var i = l.indexOf(':');
+      if (i === -1) return { code: clean(l), label: l.trim() };
+      return { code: clean(l.slice(0, i)), label: l.slice(i + 1).trim() };
+    }).filter(function (s) { return s.code; });
+  }
+
+  function build() {
+    var sep = $('#sep').value;
+    var seqLen = parseInt($('#seqLen').value, 10) || 0;
+    rows = [];
+
+    if (mode === 'single') {
+      var segs = parseSegs($('#segments').value);
+      var codes = segs.map(function (s) { return s.code; });
+      if (seqLen) codes.push(String(1).padStart(seqLen, '0'));
+      rows.push({ sku: codes.join(sep), attrs: segs.map(function (s) { return s.label; }) });
+    } else {
+      var base = clean($('#base').value);
+      var a1 = parseSegs($('#axis1').value);
+      var a2 = parseSegs($('#axis2').value);
+      var n = 1;
+      var list1 = a1.length ? a1 : [{ code: '', label: '' }];
+      var list2 = a2.length ? a2 : [{ code: '', label: '' }];
+      list1.forEach(function (x) {
+        list2.forEach(function (y) {
+          var parts = [base, x.code, y.code].filter(Boolean);
+          if (seqLen) parts.push(String(n).padStart(seqLen, '0'));
+          rows.push({ sku: parts.join(sep), attrs: [x.label, y.label].filter(Boolean) });
+          n++;
+        });
+      });
+    }
+
+    var skus = rows.map(function (r) { return r.sku; });
+
+    GTSeq.renderResults({ ids: skus, primary: '#primary', more: '#more', noun: 'SKU', maxMore: 14 });
+    $('#preview').textContent = skus[0] || '—';
+    $('#pill').textContent = skus.length.toLocaleString() + ' SKU' + (skus.length === 1 ? '' : 's');
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+
+    renderMatrix();
+    renderExport(skus);
+    renderChecks(skus);
+  }
+
+  function renderMatrix() {
+    if (mode !== 'matrix') { $('#matrixTable').innerHTML = ''; return; }
+    var a1 = parseSegs($('#axis1').value), a2 = parseSegs($('#axis2').value);
+    if (!a1.length || !a2.length) { $('#matrixTable').innerHTML = ''; return; }
+    var base = clean($('#base').value), sep = $('#sep').value;
+    $('#matrixTable').innerHTML =
+      '<p class="more-label">Variant matrix</p>' +
+      '<table style="border-collapse:collapse;width:100%;font-size:12.5px;font-family:var(--mono)">' +
+      '<tr><th style="padding:8px;border-bottom:1px solid var(--line);text-align:left"></th>' +
+      a2.map(function (y) {
+        return '<th style="padding:8px;border-bottom:1px solid var(--line);text-align:left">' + GT.esc(y.code) + '</th>';
+      }).join('') + '</tr>' +
+      a1.map(function (x) {
+        return '<tr><th style="padding:8px;border-bottom:1px solid var(--line-2);text-align:left">' + GT.esc(x.code) + '</th>' +
+          a2.map(function (y) {
+            return '<td style="padding:8px;border-bottom:1px solid var(--line-2);white-space:nowrap">' +
+              GT.esc([base, x.code, y.code].filter(Boolean).join(sep)) + '</td>';
+          }).join('') + '</tr>';
+      }).join('') + '</table>';
+  }
+
+  function renderExport(skus) {
+    var m = $('#exportAs').value, text, file = 'skus.csv';
+    if (m === 'table') {
+      text = 'sku,attributes\n' + rows.map(function (r) {
+        return r.sku + ',"' + r.attrs.join(' / ').replace(/"/g, '""') + '"';
+      }).join('\n');
+    } else if (m === 'json') {
+      text = JSON.stringify(rows.map(function (r) { return { sku: r.sku, attributes: r.attrs }; }), null, 2);
+      file = 'skus.json';
+    } else if (m === 'sql') {
+      text = 'INSERT INTO products (sku, description) VALUES\n' + rows.map(function (r) {
+        return "  ('" + r.sku + "', '" + r.attrs.join(' / ').replace(/'/g, "''") + "')";
+      }).join(',\n') + ';';
+      file = 'skus.sql';
+    } else { text = skus.join('\n'); file = 'skus.txt'; }
+    out.set(text, file);
+  }
+
+  function renderChecks(skus) {
+    var c = GTSeq.validate(skus, { humanEntry: true });
+    var first = skus[0] || '';
+    if (first.length > 20) c.push({ s: 'warn', m: 'SKUs are ' + first.length + ' characters. Many marketplaces and label printers cap around 20 — Amazon and eBay both truncate or reject longer values.' });
+    if (/[^A-Z0-9\-_.]/i.test(first)) c.push({ s: 'err', m: 'Contains characters that break CSV imports, URLs or barcode symbologies. Enable “Remove unsafe characters”.' });
+    if (/^\d/.test(first)) c.push({ s: 'warn', m: 'Starting with a digit makes spreadsheets treat the SKU as a number, stripping leading zeros. Begin with a letter.' });
+    if (mode === 'matrix' && skus.length > 200) c.push({ s: 'warn', m: skus.length + ' variants is a large matrix. Check you actually stock every combination before importing.' });
+    if (parseInt($('#seqLen').value, 10) > 0) c.push({ s: 'warn', m: 'A trailing sequence makes SKUs unique but meaningless — you lose the ability to read a SKU and know what it is. Only add it if attribute codes alone can collide.' });
+    GTSeq.renderChecks('#checks', c);
+  }
+
+  $('#guide').innerHTML = [
+    ['A SKU is for humans, a barcode is for machines', 'The whole value of a SKU is that a warehouse picker can glance at <code>TSH-BLK-M</code> and know it is a medium black t-shirt. If yours needs a lookup table to interpret, you have built a slower barcode.'],
+    ['Structure it broad to narrow', 'Category, then product, then variant attributes, then size last. This makes SKUs sort into a genuinely useful order in any spreadsheet — all the black t-shirts group together, sizes ascending within them.'],
+    ['Never encode price or supplier', 'Both change. A SKU is a permanent identifier for a stocked item; when the price changes you would have to reprint every label and break every historical sales record.'],
+    ['Keep codes fixed width where you can', 'Three characters per segment sorts predictably. <code>S</code>, <code>M</code>, <code>L</code>, <code>XL</code> is the common exception — accept that sizes sort alphabetically, or use <code>01</code>–<code>05</code> if ordering matters more than readability.'],
+    ['Start with a letter', 'A SKU beginning with a digit gets treated as a number by Excel and Google Sheets, which strips leading zeros and occasionally converts to scientific notation. This corrupts more product imports than any other single cause.'],
+    ['One SKU per stocked variant', 'If you count it separately in stock, it needs its own SKU. Size and colour almost always warrant separate SKUs; packaging changes that do not affect picking usually do not.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('');
+
+  $('#mode').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#mode button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    mode = b.getAttribute('data-m');
+    $('#matrixFields').hidden = mode !== 'matrix';
+    $('#segments').closest('.field').hidden = mode === 'matrix';
+    $('#modeHint').textContent = mode === 'matrix'
+      ? 'Generate every combination of two variant axes — the full size/colour grid.'
+      : 'Build one SKU from fixed attributes.';
+    build();
+  });
+
+  GTSeq.bindCopy('#primary', function () { return rows.map(function (r) { return r.sku; }); });
+  GTSeq.bindCopy('#more', function () { return rows.map(function (r) { return r.sku; }); });
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('SKUs generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+  $('#exportAs').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'sku-generator',
+    lede: 'Build SKUs a warehouse picker can actually read — structured from your own attribute codes, with one-click generation of the full variant matrix.',
+    steps: [
+      { icon: 'gear', title: 'Define your segments', text: 'Category, product, colour, size — each as a short code with a meaning you can refer back to.' },
+      { icon: 'box', title: 'Generate the matrix', text: 'Two variant axes produce every combination in a readable grid.' },
+      { icon: 'copy', title: 'Export to your store', text: 'CSV with attributes imports straight into Shopify, WooCommerce or a spreadsheet.' }
+    ],
+    guideTitle: 'What separates a good SKU from a random string',
+    guide:
+      '<p style="color:var(--muted)">A SKU is an internal identifier you control, unlike a barcode number which must be globally unique and purchased. That freedom is the point: you can make it <em>mean</em> something. <code>TSH-BLK-M</code> tells a picker what to grab without opening a system; <code>SKU-849271</code> tells them nothing.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">A structure that scales</h4><p style="color:var(--muted);font-size:13.8px">Order segments from broad to narrow — category, product, colour, size. This makes an alphabetical sort genuinely useful: everything in a category groups together, then by product, then by variant.</p>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">Keep each segment a fixed width where you can. Mixed widths make columns ragged and sorting unpredictable.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Things that never belong in a SKU</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>Price — it changes, and the SKU cannot.</li><li>Supplier — you may switch or dual-source.</li><li>Season or year, unless you genuinely retire the item annually.</li><li>Stock location — the same item moves between bins.</li><li>Spaces, slashes or accents — they break CSV imports and URLs.</li></ul></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>Never start a SKU with a digit.</strong> Excel and Google Sheets treat it as a number, strip leading zeros and sometimes convert to scientific notation. A SKU of <code>0012345</code> arrives at your supplier as <code>12345</code>, and this quietly corrupts more product imports than anything else on this list.</span></div>' +
+      '<div class="note note-info" style="margin-top:12px">' + GTI.info + '<span>A SKU is not a barcode. If you sell through retail or major marketplaces you will also need a real GTIN from a GS1 prefix — see the <a href="barcode-number-generator.html">barcode number generator</a> for how that differs.</span></div>',
+    related: ['barcode-number-generator', 'product-code-generator', 'coupon-code-generator'],
+    faqs: [
+      { q: 'What is a SKU?', a: 'A Stock Keeping Unit: an internal code you assign to each distinct stocked item. Unlike a barcode number it is yours to design, so it can encode meaning that helps staff identify products at a glance.' },
+      { q: 'What is the difference between a SKU and a barcode number?', a: 'A SKU is internal and free to invent. A barcode number such as an EAN-13 must be globally unique and is issued from a GS1 company prefix you license. Retailers scan the barcode; your warehouse reads the SKU.' },
+      { q: 'How long should a SKU be?', a: 'Under 20 characters. Amazon, eBay and most label printers either cap or truncate beyond that, and long SKUs stop being readable at a glance — which defeats their purpose.' },
+      { q: 'Should SKUs contain letters or just numbers?', a: 'Letters, because they carry meaning. Always start with a letter too — a SKU beginning with a digit gets mangled by spreadsheets, which strip leading zeros and convert long values to scientific notation.' },
+      { q: 'Do I need a separate SKU for every size and colour?', a: 'Yes, if you count them separately in stock. That is exactly what a stock keeping unit means — anything picked, counted or sold independently needs its own code.' },
+      { q: 'Can I put the price in a SKU?', a: 'No. Prices change and SKUs cannot, since they appear on labels and in every historical sales record. Keep price as a field in your catalogue.' }
+    ],
+    seo: {
+      title: 'SKU Generator: how to create SKU codes that actually work',
+      lead: 'This <strong>free SKU generator</strong> builds structured, readable stock keeping units from your own product attributes — and generates the complete size × colour <strong>variant matrix</strong> in a single click. Below: SKU format examples, a naming system you can adopt today, and the mistakes that corrupt product imports.',
+      blocks: [
+        {
+          h: 'What is a SKU?',
+          html: '<p>A <strong>SKU</strong> — Stock Keeping Unit — is an internal code you assign to every distinct product variant you hold in stock. It is the identifier your warehouse, your inventory system and your staff use to refer to one specific item: not "the black t-shirt" but "the medium black t-shirt", which is a different SKU from the large black one.</p>' +
+            '<p>The defining feature of a SKU is that <strong>you control it</strong>. Unlike a barcode number, which must be globally unique and issued from a licensed GS1 prefix, a SKU is yours to design. That freedom is the entire point: a well-designed SKU code carries meaning, so a picker glancing at <code>TSH-BLK-M</code> knows exactly what to fetch without opening a system.</p>' +
+            '<p>Anything you count separately in stock needs its own SKU. Size and colour almost always warrant separate codes. Packaging changes that do not affect picking usually do not.</p>'
+        },
+        {
+          h: 'SKU format examples',
+          html: '<p>There is no universal <strong>SKU format</strong> — the best structure depends on what you sell. These patterns cover most retail and ecommerce catalogues.</p>',
+          table: {
+            head: ['SKU structure', 'Example', 'Suits'],
+            rows: [
+              ['Category–Product–Size', '<code>TSH-BLK-M</code>', 'Apparel. The most common structure in clothing and footwear.'],
+              ['Brand–Category–Sequence', '<code>ACM-TL-1040</code>', 'Tools, hardware and multi-brand catalogues.'],
+              ['Category–Product–Variant–Size', '<code>SHO-RUN-NVY-42</code>', 'Deep catalogues where product line and colour both matter.'],
+              ['Type–Material–Dimension', '<code>TBL-OAK-160</code>', 'Furniture and made-to-size goods.'],
+              ['Category–Sequence', '<code>ELEC-00412</code>', 'Wide catalogues where attributes vary too much to encode.'],
+              ['Supplier–Model–Variant', '<code>SUP1-X200-RED</code>', 'Resellers carrying manufacturer product lines.']
+            ]
+          },
+          after: '<div class="seo-callout warn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m21.7 18-8-14a2 2 0 0 0-3.4 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3z"/><path d="M12 9v4M12 17h.01"/></svg><span><strong>Never start a SKU with a digit.</strong> Excel and Google Sheets treat it as a number, strip leading zeros and sometimes convert long values to scientific notation. A SKU of <code>0012345</code> arrives at your supplier as <code>12345</code>. This silently corrupts more product imports than any other single cause.</span></div>'
+        },
+        {
+          h: 'How to create SKUs with this generator',
+          steps: [
+            { t: 'Define your segments', d: 'Enter each attribute as <code>CODE: Meaning</code>. Three characters per segment is the sweet spot — long enough to be readable, short enough to keep the whole SKU scannable.' },
+            { t: 'Order them broad to narrow', d: 'Category, then product, then colour, then size. This makes an alphabetical sort genuinely useful: everything in a category groups together, then by product, then by variant.' },
+            { t: 'Switch to variant matrix mode', d: 'Enter a base product code and two variant axes — typically colour and size. The tool generates every combination as a readable grid.' },
+            { t: 'Check the validation warnings', d: 'The tool flags SKUs that start with a digit, exceed marketplace length limits, or contain characters that break CSV imports and URLs.' },
+            { t: 'Export to your store', d: 'CSV with attributes imports directly into Shopify, WooCommerce, Amazon Seller Central or a spreadsheet.' }
+          ]
+        },
+        {
+          h: 'SKU vs barcode vs product code',
+          html: '<p>These three identifiers get used interchangeably and should not be. Understanding the difference prevents a painful catalogue migration later.</p>',
+          cards: [
+            { t: 'SKU', d: 'Internal, yours to invent, identifies a stocked variant. Used for picking, counting and stock control. Free.' },
+            { t: 'Barcode / GTIN', d: 'Global, issued from a licensed GS1 company prefix, identifies the item worldwide. Scanned at retail tills. Cannot be invented.' },
+            { t: 'Product code', d: 'Identifies a model rather than a variant. One product code may have many SKUs — bare tool, with case, with two batteries.' }
+          ],
+          after: '<p>Most catalogues need all three. See the <a href="barcode-number-generator.html">barcode number generator</a> for GS1 check digits and the <a href="product-code-generator.html">product code generator</a> for model-level identifiers.</p>'
+        },
+        {
+          h: 'SKU naming best practices',
+          list: [
+            '<strong>Start with a letter.</strong> Prevents spreadsheet mangling — the single most important rule.',
+            '<strong>Keep it under 20 characters.</strong> Amazon, eBay and most label printers truncate or reject longer values.',
+            '<strong>Use fixed-width segments</strong> where you can, so columns align and sorting is predictable.',
+            '<strong>Uppercase only.</strong> Avoids case-sensitivity mismatches between systems that compare differently.',
+            '<strong>Letters and digits only.</strong> Spaces, slashes, accents and ampersands break CSV imports, URLs and barcode symbologies.',
+            '<strong>Never encode price</strong> — it changes, the SKU cannot, and it would appear in every historical sales record.',
+            '<strong>Never encode supplier</strong> — you may switch or dual-source the same item.',
+            '<strong>Avoid season or year</strong> unless you genuinely retire the product annually.',
+            '<strong>Do not encode stock location</strong> — the same item moves between bins and warehouses.'
+          ]
+        },
+        {
+          h: 'Managing SKUs for variants',
+          html: '<p>Variants are where SKU systems either scale or collapse. A t-shirt in four colours and five sizes is twenty SKUs, and typing those by hand invites inconsistency — <code>TSH-BLK-M</code> in one row and <code>TSH-BLACK-MED</code> in another.</p>' +
+            '<p>The <strong>variant matrix</strong> mode solves this. Define the base product once, list your colour codes and size codes, and every combination is generated with identical structure. The result is a grid you can read at a glance and a CSV you can import directly.</p>' +
+            '<p>Two conventions worth adopting: keep size codes consistent across your whole catalogue (<code>S</code>, <code>M</code>, <code>L</code>, <code>XL</code> or numeric, but not both), and use the same colour abbreviations everywhere — <code>BLK</code> should mean black in every product line.</p>',
+          callout: { type: 'tip', text: '<strong>Adding a trailing sequence makes SKUs unique but meaningless.</strong> If <code>TSH-BLK-M-001</code> and <code>TSH-BLK-M-002</code> are different products, your attribute codes are not specific enough. Fix the segments rather than appending numbers — a SKU that needs a lookup table has become a slower barcode.' }
+        },
+        {
+          h: 'SKUs for Shopify, Amazon and WooCommerce',
+          html: '<p><strong>Shopify</strong> accepts any SKU string per variant and uses it for inventory tracking and reporting. Keep them unique across your store — Shopify will not stop you duplicating one, but your stock reports will become unreliable.</p>' +
+            '<p><strong>Amazon</strong> uses your SKU as the seller-side identifier separate from the ASIN. It is effectively permanent: once a listing exists, changing the SKU means creating a new listing and losing its history. Design carefully before you first list.</p>' +
+            '<p><strong>WooCommerce</strong> enforces SKU uniqueness by default and exposes it in product search, so readable SKUs make admin faster. The CSV export from this tool matches the WooCommerce importer\'s expected columns closely enough to map in one step.</p>'
+        },
+        {
+          h: 'Related ecommerce tools',
+          list: [
+            '<a href="barcode-number-generator.html">Barcode Number Generator</a> — valid EAN-13, UPC-A and GTIN-14 numbers with GS1 check digits.',
+            '<a href="product-code-generator.html">Product Code Generator</a> — model and article numbers with category and version segments.',
+            '<a href="coupon-code-generator.html">Coupon Code Generator</a> — bulk discount codes with guess-resistance analysis.',
+            '<a href="order-number-generator.html">Order Number Generator</a> — customer-facing order references that resist enumeration.',
+            '<a href="shipping-reference-generator.html">Shipping Reference Generator</a> — consignment and parcel references.'
+          ]
+        }
+      ],
+      keywords: [
+        'sku generator', 'sku code generator', 'how to create skus', 'sku format',
+        'sku number generator', 'product sku generator', 'sku examples',
+        'sku naming convention', 'inventory sku codes', 'variant sku',
+        'sku vs barcode', 'shopify sku', 'amazon sku format', 'what is a sku'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

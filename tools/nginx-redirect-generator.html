@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nginx Redirect Generator — 301/302 Rules, Maps &amp; Regex | Manage My Batch</title>
+<meta name="description" content="Free Nginx redirect generator. Turn a URL list into optimized 301/302 rules, an O(1) map block, or regex rewrites — plus HTTPS, www and domain migration presets.">
+<link rel="canonical" href="https://managemybatch.com/tools/nginx-redirect-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Nginx Redirect Generator — 301/302 Rules, Maps &amp; Regex">
+<meta property="og:description" content="Free Nginx redirect generator. Turn a URL list into optimized 301/302 rules, an O(1) map block, or regex rewrites — plus HTTPS, www and domain migration presets.">
+<meta property="og:url" content="https://managemybatch.com/tools/nginx-redirect-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Nginx Redirect Generator — 301/302 Rules, Maps &amp; Regex">
+<meta name="twitter:description" content="Free Nginx redirect generator. Turn a URL list into optimized 301/302 rules, an O(1) map block, or regex rewrites — plus HTTPS, www and domain migration presets.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Generator Settings</div>
+
+    <div class="field">
+      <label for="scenario">Scenario</label>
+      <select id="scenario">
+        <option value="list">URL list → new URLs</option>
+        <option value="https">Force HTTPS</option>
+        <option value="www">www ↔ non-www</option>
+        <option value="domain">Whole domain migration</option>
+        <option value="slash">Trailing slash normalization</option>
+        <option value="pattern">Pattern / regex rewrite</option>
+        <option value="wildcard">Directory → directory</option>
+      </select>
+      <div class="hint" id="scHint"></div>
+    </div>
+
+    <div class="field" id="listField">
+      <label for="pairs">Old URL → new URL</label>
+      <textarea id="pairs" style="min-height:170px" placeholder="/old-page, /new-page&#10;/blog/2019/post, /blog/post">/old-page, /new-page
+/products/legacy-widget, /shop/widget
+/about-us.html, /about
+/blog/2019/announcement, https://example.com/news/announcement</textarea>
+      <div class="hint">One pair per line, separated by a comma, tab or pipe. Old paths may be absolute URLs — only the path is used for matching.</div>
+    </div>
+
+    <div class="row" id="domainField" hidden>
+      <div class="field"><label for="oldDomain">Old domain</label><input type="text" id="oldDomain" value="old-example.com"></div>
+      <div class="field"><label for="newDomain">New domain</label><input type="text" id="newDomain" value="example.com"></div>
+    </div>
+
+    <div class="field" id="hostField">
+      <label for="host">Canonical host</label>
+      <input type="text" id="host" value="example.com" placeholder="example.com">
+    </div>
+
+    <div class="row" id="patternField" hidden>
+      <div class="field"><label for="rxFrom">Match (regex)</label><input type="text" id="rxFrom" value="^/blog/[0-9]{4}/(.*)$"></div>
+      <div class="field"><label for="rxTo">Replace with</label><input type="text" id="rxTo" value="/news/$1"></div>
+    </div>
+
+    <div class="row" id="wildcardField" hidden>
+      <div class="field"><label for="dirFrom">Old directory</label><input type="text" id="dirFrom" value="/old-section/"></div>
+      <div class="field"><label for="dirTo">New directory</label><input type="text" id="dirTo" value="/new-section/"></div>
+    </div>
+
+    <div class="field" id="slashField" hidden>
+      <label for="slashMode">Normalize to</label>
+      <select id="slashMode">
+        <option value="remove">No trailing slash</option>
+        <option value="add">Always trailing slash</option>
+      </select>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="row">
+      <div class="field">
+        <label for="code">Status code</label>
+        <select id="code">
+          <option value="301" selected>301 — Moved Permanently</option>
+          <option value="308">308 — Permanent, keeps method/body</option>
+          <option value="302">302 — Found (temporary)</option>
+          <option value="307">307 — Temporary, keeps method/body</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="style">Output style</label>
+        <select id="style">
+          <option value="auto">Auto — pick the fastest</option>
+          <option value="location">location blocks</option>
+          <option value="map">map block (O(1) lookup)</option>
+          <option value="rewrite">rewrite rules</option>
+        </select>
+      </div>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Options</legend>
+      <div class="check-list">
+        <label class="check"><input type="checkbox" id="optQuery" checked><span><span class="t">Preserve query string</span><span class="d">Appends <code>$is_args$args</code> so UTM tags survive the hop.</span></span></label>
+        <label class="check"><input type="checkbox" id="optAbs" checked><span><span class="t">Absolute redirect targets</span><span class="d">Prefix relative targets with <code>https://host</code>.</span></span></label>
+        <label class="check"><input type="checkbox" id="optCase"><span><span class="t">Case-insensitive matching</span><span class="d">Uses <code>~*</code>. Slower — enable only if you need it.</span></span></label>
+        <label class="check"><input type="checkbox" id="optComments" checked><span><span class="t">Include comments</span><span class="d">Documents intent for the next person to touch this config.</span></span></label>
+        <label class="check"><input type="checkbox" id="optServerBlock" checked><span><span class="t">Wrap in a server block</span><span class="d">Complete, paste-ready configuration.</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="out-actions" style="margin-top:20px">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate Nginx config</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated Config<span class="spacer"></span>
+      <span class="result-pill" id="pill">ready</span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="file">nginx.conf</button>
+      <button type="button" data-tab="map">Redirect map file</button>
+      <button type="button" data-tab="test">Test &amp; deploy</button>
+      <button type="button" data-tab="checks">Checks</button>
+    </div>
+
+    <div data-panel="file">
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">nginx.conf</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+      <div class="note note-info"><span id="icoInfo"></span><span>Nginx evaluates <code>location</code> matches by specificity, not file order: exact <code>=</code> first, then <code>^~</code> prefixes, then regexes in the order written, then the longest plain prefix.</span></div>
+    </div>
+
+    <div data-panel="map" hidden>
+      <div class="output-box"><div class="output-bar"><span class="fname">/etc/nginx/redirects.map</span></div>
+        <pre class="code" id="mapFile"></pre></div>
+      <div class="out-actions"><button class="btn btn-ghost" id="copyMap">Copy map file</button>
+        <button class="btn btn-ghost" id="dlMap">Download</button></div>
+      <div class="note note-info" style="margin-top:4px"><span id="icoInfo2"></span><span>A map is a hash table: lookup cost is constant no matter how many redirects you have. Past roughly 50 rules this is the only sane approach.</span></div>
+    </div>
+
+    <div data-panel="test" hidden><div id="test"></div></div>
+    <div data-panel="checks" hidden><div id="checks"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoCopy:copy','icoDl:download','icoInfo:info','icoInfo2:info']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var HINTS = {
+    list: 'Paste old→new pairs from your migration spreadsheet. Best for a finite set of moved pages.',
+    https: 'Redirects all HTTP traffic to HTTPS. Pair it with HSTS once you are confident nothing breaks.',
+    www: 'Picks one canonical host and redirects the other. Which one you choose does not matter for SEO — consistency does.',
+    domain: 'Rebrand or merge: every path on the old domain maps to the same path on the new one.',
+    slash: 'Stops /page and /page/ being two indexable URLs. Choose one form and enforce it everywhere.',
+    pattern: 'A regex rewrite for structural changes — date-based blog URLs into a flat structure, for example.',
+    wildcard: 'Move an entire directory tree, preserving everything below it.'
+  };
+
+  function sc() { return $('#scenario').value; }
+  function refreshFields() {
+    var s = sc();
+    $('#scHint').textContent = HINTS[s];
+    $('#listField').hidden = s !== 'list';
+    $('#domainField').hidden = s !== 'domain';
+    $('#patternField').hidden = s !== 'pattern';
+    $('#wildcardField').hidden = s !== 'wildcard';
+    $('#slashField').hidden = s !== 'slash';
+    $('#hostField').hidden = s === 'domain';
+  }
+  $('#scenario').addEventListener('change', function () { refreshFields(); build(); });
+
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'nginx.conf', mime: 'text/plain' });
+
+  function host() { return ($('#host').value || 'example.com').trim().replace(/^https?:\/\//, '').replace(/\/.*$/, ''); }
+  function q() { return $('#optQuery').checked ? '$is_args$args' : ''; }
+  function code() { return $('#code').value; }
+
+  function pairs() {
+    return GT.lines($('#pairs').value).map(function (l) {
+      var p = l.split(/[,\t|]+|\s+->\s+/).map(function (x) { return x.trim(); }).filter(Boolean);
+      if (p.length < 2) return null;
+      var from = p[0], to = p[1];
+      try { if (/^https?:\/\//i.test(from)) from = new URL(from).pathname; } catch (e) {}
+      if (from.charAt(0) !== '/') from = '/' + from;
+      if ($('#optAbs').checked && !/^https?:\/\//i.test(to)) to = 'https://' + host() + (to.charAt(0) === '/' ? '' : '/') + to;
+      return { from: from, to: to };
+    }).filter(Boolean);
+  }
+
+  function styleFor(n) {
+    var s = $('#style').value;
+    if (s !== 'auto') return s;
+    return n > 30 ? 'map' : 'location';
+  }
+
+  function mapFileText() {
+    var p = pairs();
+    return '# /etc/nginx/redirects.map — generated ' + GT.today() + ' by managemybatch.com\n' +
+      '# format: <old path> <new url>;\n' +
+      p.map(function (x) { return x.from + ' ' + x.to + ';'; }).join('\n') + '\n';
+  }
+
+  function body() {
+    var s = sc(), C = $('#optComments').checked, L = [];
+    function c(t) { if (C) L.push('# ' + t); }
+
+    if (s === 'https') {
+      c('Redirect all HTTP traffic to HTTPS');
+      L.push('server {', '  listen 80;', '  listen [::]:80;',
+        '  server_name ' + host() + ' www.' + host() + ';',
+        '  return ' + code() + ' https://' + host() + '$request_uri;', '}');
+      return { text: L.join('\n'), wrapped: true, count: 1 };
+    }
+
+    if (s === 'www') {
+      var bare = host().replace(/^www\./, '');
+      c('Canonical host is ' + host() + ' — redirect the other form');
+      L.push('server {', '  listen 443 ssl;', '  listen [::]:443 ssl;',
+        '  server_name ' + (/^www\./.test(host()) ? bare : 'www.' + bare) + ';',
+        '  return ' + code() + ' https://' + host() + '$request_uri;', '}');
+      return { text: L.join('\n'), wrapped: true, count: 1 };
+    }
+
+    if (s === 'domain') {
+      var od = ($('#oldDomain').value || 'old.com').replace(/^https?:\/\//, ''), nd = ($('#newDomain').value || 'new.com').replace(/^https?:\/\//, '');
+      c('Domain migration: ' + od + ' → ' + nd + ' (paths preserved)');
+      L.push('server {', '  listen 80;', '  listen 443 ssl;',
+        '  server_name ' + od + ' www.' + od + ';',
+        '  return ' + code() + ' https://' + nd + '$request_uri;', '}', '',
+        (C ? '# Keep this server block live for at least 12 months so link equity transfers fully.' : ''));
+      return { text: L.join('\n'), wrapped: true, count: 1 };
+    }
+
+    if (s === 'slash') {
+      if ($('#slashMode').value === 'remove') {
+        c('Strip trailing slashes (except the root)');
+        L.push('rewrite ^/(.*)/$ /$1 permanent;');
+      } else {
+        c('Enforce trailing slashes on non-file paths');
+        L.push('rewrite ^([^.]*[^/])$ $1/ permanent;');
+      }
+      return { text: L.join('\n'), count: 1 };
+    }
+
+    if (s === 'pattern') {
+      c('Regex rewrite');
+      L.push('rewrite "' + ($('#rxFrom').value || '^/(.*)$') + '" ' + ($('#rxTo').value || '/$1') +
+        (q() ? '?' + q() : '') + ' ' + (code() === '301' || code() === '308' ? 'permanent' : 'redirect') + ';');
+      return { text: L.join('\n'), count: 1 };
+    }
+
+    if (s === 'wildcard') {
+      var df = ($('#dirFrom').value || '/old/').replace(/\/?$/, '/'), dt = ($('#dirTo').value || '/new/').replace(/\/?$/, '/');
+      c('Move everything under ' + df + ' to ' + dt);
+      L.push('location ^~ ' + df + ' {',
+        '  return ' + code() + ' ' + ($('#optAbs').checked ? 'https://' + host() : '') + dt + '$1' + q() + ';',
+        '}', '',
+        (C ? '# Or with rewrite, capturing the remainder:' : ''),
+        'rewrite ^' + df + '(.*)$ ' + ($('#optAbs').checked ? 'https://' + host() : '') + dt + '$1 ' +
+        (code() === '301' || code() === '308' ? 'permanent' : 'redirect') + ';');
+      return { text: L.join('\n'), count: 1 };
+    }
+
+    /* list mode */
+    var p = pairs(), st = styleFor(p.length);
+    if (!p.length) return { text: '# Add at least one "old, new" pair.', count: 0 };
+
+    if (st === 'map') {
+      c(p.length + ' redirects via a map — constant-time lookup');
+      c('Place the map block at http{} level, outside any server block.');
+      L.push('map $request_uri $redirect_target {', '  default "";');
+      p.forEach(function (x) { L.push('  ' + x.from + ' ' + x.to + ';'); });
+      L.push('}', '');
+      c('Then inside your server block:');
+      L.push('if ($redirect_target) {', '  return ' + code() + ' $redirect_target' + q() + ';', '}');
+      L.push('');
+      c('For hundreds of rules, keep them in a separate file:');
+      L.push('# map $request_uri $redirect_target {');
+      L.push('#   default "";');
+      L.push('#   include /etc/nginx/redirects.map;');
+      L.push('# }');
+      return { text: L.join('\n'), count: p.length, style: 'map' };
+    }
+
+    if (st === 'rewrite') {
+      c(p.length + ' rewrite rules');
+      p.forEach(function (x) {
+        L.push('rewrite ^' + x.from.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '/?$ ' + x.to + ' ' +
+          (code() === '301' || code() === '308' ? 'permanent' : 'redirect') + ';');
+      });
+      return { text: L.join('\n'), count: p.length, style: 'rewrite' };
+    }
+
+    c(p.length + ' exact-match redirects (fastest for small sets)');
+    p.forEach(function (x) {
+      var op = $('#optCase').checked ? '~* ^' + x.from.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '$' : '= ' + x.from;
+      L.push('location ' + op + ' {', '  return ' + code() + ' ' + x.to + q() + ';', '}');
+    });
+    return { text: L.join('\n'), count: p.length, style: 'location' };
+  }
+
+  function build() {
+    var b = body(), text = b.text;
+    if ($('#optServerBlock').checked && !b.wrapped && sc() !== 'domain') {
+      var isMap = b.style === 'map';
+      var mapPart = '', serverPart = text;
+      if (isMap) {
+        var i = text.indexOf('if ($redirect_target)');
+        mapPart = text.slice(0, i).trim();
+        serverPart = text.slice(i);
+      }
+      text = (mapPart ? mapPart + '\n\n' : '') +
+        'server {\n  listen 443 ssl;\n  listen [::]:443 ssl;\n  server_name ' + host() + ';\n\n' +
+        serverPart.split('\n').map(function (l) { return l ? '  ' + l : ''; }).join('\n') +
+        '\n\n  # ... your existing root, index and location / blocks\n}';
+    }
+    out.set(text, 'nginx.conf');
+    $('#mapFile').textContent = mapFileText();
+
+    var pill = $('#pill');
+    pill.textContent = b.count + ' rule' + (b.count === 1 ? '' : 's') + (b.style ? ' · ' + b.style : '');
+    pill.style.background = 'var(--blue-50)'; pill.style.color = 'var(--blue)';
+
+    renderChecks();
+    renderTest();
+    return text;
+  }
+
+  function renderChecks() {
+    var w = [], p = pairs(), s = sc();
+    if (s === 'list') {
+      if (!p.length) w.push(['err', 'No valid pairs parsed. Use <code>old, new</code> — one per line.']);
+      var dup = {}, dl = [];
+      p.forEach(function (x) { if (dup[x.from]) dl.push(x.from); dup[x.from] = 1; });
+      if (dl.length) w.push(['err', 'Duplicate source paths: ' + GT.uniq(dl).join(', ') + ' — only the first will ever match.']);
+
+      var targets = {}; p.forEach(function (x) { targets[x.to.replace(/^https?:\/\/[^/]+/, '')] = 1; });
+      var chains = p.filter(function (x) { return dup[x.to.replace(/^https?:\/\/[^/]+/, '')]; });
+      if (chains.length) w.push(['warn', 'Redirect chains detected: ' + chains.map(function (x) { return x.from; }).slice(0, 5).join(', ') +
+        ' point at URLs that are themselves redirected. Flatten every chain to a single hop — each extra hop loses crawl efficiency and Safari caps chains outright.']);
+
+      var loops = p.filter(function (x) { return x.from === x.to.replace(/^https?:\/\/[^/]+/, ''); });
+      if (loops.length) w.push(['err', 'Redirect loop: ' + loops.map(function (x) { return x.from; }).join(', ') + ' redirects to itself.']);
+
+      if (p.length > 30 && styleFor(p.length) !== 'map') w.push(['warn', 'With ' + p.length + ' rules, individual location blocks force Nginx to evaluate each one. Switch the output style to <strong>map</strong> for constant-time lookups.']);
+    }
+    if (code() === '302' || code() === '307') w.push(['warn', 'A temporary redirect passes no ranking signal and the old URL stays indexed. For a permanent move, use 301 or 308.']);
+    if (!$('#optQuery').checked) w.push(['warn', 'Query strings will be dropped. Campaign parameters and pagination on the old URL will be lost.']);
+    if ($('#optCase').checked) w.push(['warn', 'Case-insensitive regex locations are meaningfully slower than exact matches. Use only where you genuinely have mixed-case inbound links.']);
+    if (sc() === 'https') w.push(['ok', 'Once verified, add <code>Strict-Transport-Security</code> to the HTTPS server block so browsers skip the redirect entirely.']);
+    if (!w.length) w.push(['ok', 'Configuration looks clean — no loops, chains or duplicate sources.']);
+
+    $('#checks').innerHTML = w.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : x[0] === 'warn' ? 'note-warn' : 'note-err') + '" style="margin-top:8px">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+  }
+
+  function renderTest() {
+    var p = pairs(), sample = p.length ? p[0].from : '/old-page';
+    $('#test').innerHTML =
+      '<h4 style="font-size:14.5px;margin-bottom:8px">1. Validate the syntax before reloading</h4>' +
+      '<pre class="code">sudo nginx -t</pre>' +
+      '<p style="color:var(--muted);font-size:13.5px;margin-top:8px">Never reload without this. A syntax error takes the whole server down.</p>' +
+      '<h4 style="font-size:14.5px;margin:18px 0 8px">2. Reload without dropping connections</h4>' +
+      '<pre class="code">sudo systemctl reload nginx</pre>' +
+      '<h4 style="font-size:14.5px;margin:18px 0 8px">3. Verify a redirect</h4>' +
+      '<pre class="code">curl -sSI https://' + host() + sample + ' | head -n 3</pre>' +
+      '<p style="color:var(--muted);font-size:13.5px;margin-top:8px">Expect <code>HTTP/2 ' + code() + '</code> and a <code>location:</code> header with the new URL.</p>' +
+      '<h4 style="font-size:14.5px;margin:18px 0 8px">4. Check for chains</h4>' +
+      '<pre class="code">curl -sSIL https://' + host() + sample + ' | grep -iE "^(HTTP|location)"</pre>' +
+      '<p style="color:var(--muted);font-size:13.5px;margin-top:8px"><code>-L</code> follows the whole chain. You want exactly one hop before the 200.</p>' +
+      '<div class="note note-warn" style="margin-top:16px">' + I.warn +
+      '<span><code>if</code> inside a <code>location</code> block is notoriously unsafe in Nginx. The map pattern this tool generates puts the <code>if</code> at server level with a plain <code>return</code>, which is the documented-safe use.</span></div>' +
+      '<div class="note note-info" style="margin-top:10px">' + I.info +
+      '<span>Keep redirects in place for at least a year. Search engines need repeated crawls of the old URL before the signal fully transfers, and old inbound links never truly disappear.</span></div>';
+  }
+
+  $('#copyMap').addEventListener('click', function () { GT.copy(mapFileText(), 'Map file'); });
+  $('#dlMap').addEventListener('click', function () { GT.download(mapFileText(), 'redirects.map', 'text/plain'); });
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Nginx config generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+
+  refreshFields(); build();
+
+  GT.page({
+    slug: 'nginx-redirect-generator',
+    lede: 'Turn a migration spreadsheet into production-ready Nginx rules — exact locations for small sets, O(1) map blocks for large ones, with loop and chain detection built in.',
+    steps: [
+      { icon: 'gear', title: 'Pick the scenario', text: 'Paste old→new pairs, or choose HTTPS, www, domain migration, trailing slash or regex.' },
+      { icon: 'server', title: 'Let it choose the style', text: 'Under 30 rules gets location blocks; more gets a map block, because linear matching does not scale.' },
+      { icon: 'check', title: 'Test before reloading', text: 'Run nginx -t, reload, then curl the redirect and confirm a single hop.' }
+    ],
+    guideTitle: 'return, rewrite or map — the three ways, and when each wins',
+    guide:
+      '<div class="grid g3" style="margin-top:4px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">return</h4><p style="color:var(--muted);font-size:13.8px">The fastest and most explicit. No regex engine, no ambiguity. Use it for whole-host redirects (HTTP→HTTPS, www, domain moves) and for exact-path matches with <code>location =</code>.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">rewrite</h4><p style="color:var(--muted);font-size:13.8px">Needed when you must capture part of the path — dated blog URLs flattening into a new structure, for instance. Slower, and misplaced rules can re-enter the location search. Reach for it only when <code>return</code> genuinely cannot express the change.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">map</h4><p style="color:var(--muted);font-size:13.8px">A hash lookup declared once at <code>http{}</code> level. Ten redirects or ten thousand cost the same. This is the correct answer for any real site migration, and the rules can live in an included file that non-ops colleagues can edit safely.</p></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>Redirect chains are the silent killer of migrations.</strong> <code>/a → /b → /c</code> works for users but wastes crawl budget, dilutes signals at every hop, and browsers cap the chain length. Always map old URLs to their <em>final</em> destination, even when that means rewriting a spreadsheet someone else built.</span></div>' +
+      '<div class="note note-info" style="margin-top:12px">' + GTI.info + '<span>Nginx does not read <code>.htaccess</code> files — there is no per-directory config. Everything lives in the server configuration and needs a reload to take effect, which is why <code>nginx -t</code> before <code>systemctl reload</code> is non-negotiable.</span></div>',
+    related: ['canonical-tag-generator', 'x-robots-tag-generator', 'sitemap-index-generator'],
+    faqs: [
+      { q: 'Should I use 301 or 302?', a: 'Use 301 for permanent moves — it transfers ranking signals and eventually replaces the old URL in the index. Use 302 only when the original URL will genuinely return, such as a temporary campaign page or maintenance route.' },
+      { q: 'What is the difference between 301 and 308?', a: 'Both are permanent. A 301 allows clients to convert POST requests to GET; a 308 preserves the method and body. For plain page redirects 301 is standard; for APIs, prefer 308.' },
+      { q: 'How do I redirect thousands of URLs efficiently?', a: 'Use a map block. Nginx evaluates location and rewrite rules sequentially, so thousands of them add latency to every request. A map is a hash table with constant-time lookup, and the entries can be kept in an included file.' },
+      { q: 'Does my redirect preserve query strings?', a: '<code>$request_uri</code> already includes the query string. When you build a target from <code>$uri</code> or a literal path, append <code>$is_args$args</code> — the “Preserve query string” option does this for you.' },
+      { q: 'Why is my redirect looping?', a: 'Usually the target matches the same rule that produced it — for example forcing HTTPS inside the HTTPS server block, or a trailing-slash rule fighting a canonical-host rule. Check with <code>curl -sSIL</code> and make sure each rule\'s target cannot re-enter it.' },
+      { q: 'How long should I keep redirects?', a: 'At least twelve months, and indefinitely where feasible. Search engines need repeated crawls of the old URL before signals fully transfer, and old inbound links keep sending traffic for years.' }
+    ],
+    seo: {
+      title: 'Nginx redirects: return, rewrite and map blocks for site migrations',
+      lead: 'This <strong>Nginx redirect generator</strong> turns a migration spreadsheet into production-ready config — exact <code>location</code> blocks for small sets, an O(1) <code>map</code> for thousands — with loop and chain detection built in. Below: which status code to use, how query strings behave, and why redirects loop.',
+      blocks: [
+        {
+          h: 'The three ways to redirect in Nginx',
+          html: '<p>Nginx offers several mechanisms and they are not equivalent in cost or behaviour. Choosing wrongly is how a migration turns into a latency problem.</p>',
+          table: {
+            head: ['Method', 'Best for', 'Cost'],
+            rows: [
+              ['<code>location = /old { return 301 ...; }</code>', 'Exact one-to-one redirects, up to a few dozen.', 'Hash lookup. Effectively free.'],
+              ['<code>rewrite ^/old/(.*)$ /new/$1 permanent;</code>', 'Pattern moves where a path segment changes.', 'Regex evaluated per request, in order.'],
+              ['<code>map $request_uri $target { ... }</code>', 'Hundreds or thousands of unrelated redirects.', 'One hash lookup regardless of table size.'],
+              ['<code>try_files</code> + named location', 'Fallbacks, not redirects.', 'Filesystem check.']
+            ]
+          },
+          after: '<p>The rule of thumb: exact <code>location</code> blocks below about fifty rules, a <code>map</code> above it, and <code>rewrite</code> only where the new URL is genuinely derived from the old one.</p>',
+          callout: { type: 'warn', text: '<strong>A long list of <code>rewrite</code> rules is evaluated in order, on every request.</strong> Two thousand regexes at the top of a server block means every request runs up to two thousand pattern matches before anything is served. A <code>map</code> does the same job in one lookup.' }
+        },
+        {
+          h: 'Which status code?',
+          cards: [
+            { t: '301 Moved Permanently', d: 'The default for migrations. Cached hard by browsers and treated as a permanent signal by search engines. Method may be rewritten to GET.' },
+            { t: '302 Found', d: 'Temporary. Use for A/B tests, maintenance and geolocation. Search engines keep indexing the original URL.' },
+            { t: '307 Temporary Redirect', d: 'Like 302 but guarantees the method and body are preserved. The correct temporary redirect for POST requests.' },
+            { t: '308 Permanent Redirect', d: 'Like 301 but preserves method and body. The right permanent choice for API endpoints.' }
+          ],
+          after: '<p>For ordinary page moves, 301 remains correct. For anything that receives non-GET requests, use 308 or 307 so the method survives.</p>'
+        },
+        {
+          h: 'Building your rules',
+          steps: [
+            { t: 'Paste your URL pairs', d: 'One <code>old,new</code> pair per line — straight out of the migration spreadsheet.' },
+            { t: 'Pick the output style', d: 'Exact locations, rewrites or a map block. The tool recommends one based on how many rules you pasted.' },
+            { t: 'Choose the status code', d: '301 for permanent moves, 308 where the request method must survive.' },
+            { t: 'Decide on query-string handling', d: 'Preserve or drop. This is the setting people forget, and it changes analytics attribution.' },
+            { t: 'Check the diagnostics', d: 'The tool flags loops, chains, duplicate sources and rules that can never match because an earlier one shadows them.' },
+            { t: 'Test before reloading', d: '<code>nginx -t</code> validates syntax, then <code>nginx -s reload</code> applies without dropping connections.' }
+          ]
+        },
+        {
+          h: 'Query strings and the $request_uri trap',
+          html: '<p>Nginx has two variables that look interchangeable and are not. <code>$uri</code> is the normalised path with the query string stripped. <code>$request_uri</code> is the original, query string included.</p>' +
+            '<p>This matters in two places. In a <code>map</code>, keying on <code>$request_uri</code> means <code>/old</code> and <code>/old?utm_source=x</code> are different keys and the tracked version will not match — usually you want to key on <code>$uri</code>. In a <code>return</code>, a target ending in <code>?</code> discards the incoming query string, while one without it appends the original query automatically.</p>',
+          list: [
+            '<code>return 301 /new;</code> — the original query string is appended.',
+            '<code>return 301 /new?;</code> — the trailing <code>?</code> drops the original query string.',
+            '<code>return 301 /new?ref=old;</code> — replaces the query string entirely.',
+            '<code>rewrite ... permanent;</code> — appends the query string unless the replacement contains a <code>?</code>.'
+          ],
+          callout: { type: 'tip', text: 'Dropping UTM parameters at redirect time breaks campaign attribution in analytics. Preserve query strings by default and strip them only where a parameter genuinely causes a problem.' }
+        },
+        {
+          h: 'Why redirects loop',
+          html: '<p>A loop is Nginx returning a redirect to a URL that redirects back. The browser gives up with <code>ERR_TOO_MANY_REDIRECTS</code>. The usual causes:</p>',
+          ol: [
+            '<strong>The target matches the source rule.</strong> Redirecting <code>/blog/(.*)</code> to <code>/blog/$1/</code> means the new URL matches the pattern again. Anchor the regex or exclude the trailing-slash form.',
+            '<strong>Two rules pointing at each other</strong> — often one added by the application and one by the server, months apart.',
+            '<strong>An HTTPS redirect behind a proxy.</strong> Nginx sees HTTP on the internal hop, redirects to HTTPS, the proxy forwards HTTP again. Check <code>$http_x_forwarded_proto</code>, not <code>$scheme</code>.',
+            '<strong>Trailing-slash rules fighting the application.</strong> Nginx adds a slash, the framework removes it, forever.',
+            '<strong>A <code>www</code> rule and a canonical host rule disagreeing</strong> about which form is authoritative.'
+          ],
+          after: '<p>Chains are the quieter version of the same problem: A goes to B goes to C. Each hop costs latency and dilutes signals, and browsers stop following after roughly twenty. The generator detects both and collapses chains to a single hop.</p>'
+        },
+        {
+          h: 'How long to keep redirects',
+          html: '<p>At least a year, and preferably permanently. Search engines usually transfer signals within a few months, but external links and bookmarks last far longer than anyone expects — inbound traffic on redirects from a migration five years ago is entirely normal.</p>' +
+            '<p>Redirects cost nothing to keep when implemented as a <code>map</code>: one hash lookup no matter how many entries. There is rarely a performance reason to prune, and removing an old rule converts a working link into a 404 with no warning.</p>' +
+            '<p>Where a redirect table has become genuinely unmanageable, retire rules by measured traffic rather than by age.</p>'
+        },
+        {
+          h: 'Related migration tools',
+          list: [
+            '<a href="canonical-tag-generator.html">Canonical Tag Generator</a> — consolidate duplicates you cannot redirect.',
+            '<a href="sitemap-index-generator.html">Sitemap Index Generator</a> — resubmit clean URL lists after the move.',
+            '<a href="x-robots-tag-generator.html">X-Robots-Tag Generator</a> — indexing headers for files and directories.',
+            '<a href="hreflang-tag-generator.html">Hreflang Tag Generator</a> — locale redirects that do not break annotations.'
+          ]
+        }
+      ],
+      keywords: [
+        'nginx redirect generator', 'nginx 301 redirect', 'nginx rewrite rule',
+        'nginx map redirect', 'bulk redirect nginx', 'nginx redirect query string',
+        '301 vs 302', '308 permanent redirect', 'nginx redirect loop',
+        'site migration redirects', 'nginx location return 301', 'htaccess to nginx redirect'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

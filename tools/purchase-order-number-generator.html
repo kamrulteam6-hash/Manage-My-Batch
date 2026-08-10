@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Purchase Order Number Generator — Free PO Number Format Builder | Manage My Batch</title>
+<meta name="description" content="Free purchase order number generator. Build structured PO numbers with department, cost centre and fiscal year segments. Bulk generate and export for your ERP.">
+<link rel="canonical" href="https://managemybatch.com/tools/purchase-order-number-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Purchase Order Number Generator — Free PO Number Format Builder">
+<meta property="og:description" content="Free purchase order number generator. Build structured PO numbers with department, cost centre and fiscal year segments. Bulk generate and export for your ERP.">
+<meta property="og:url" content="https://managemybatch.com/tools/purchase-order-number-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Purchase Order Number Generator — Free PO Number Format Builder">
+<meta name="twitter:description" content="Free purchase order number generator. Build structured PO numbers with department, cost centre and fiscal year segments. Bulk generate and export for your ERP.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Generator Settings</div>
+
+    <div class="field">
+      <label for="prefix">Prefix</label>
+      <input type="text" id="prefix" value="PO" placeholder="PO">
+    </div>
+
+    <div class="field">
+      <label for="dept">Department / cost centre code</label>
+      <input type="text" id="dept" placeholder="e.g. IT, MKT, 4200">
+      <div class="hint">Routes approvals and makes spend attributable at a glance. Keep it to 2–4 characters.</div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="dateFormat">Period segment</label>
+        <select id="dateFormat"></select>
+      </div>
+      <div class="field">
+        <label for="fiscalStart">Fiscal year starts</label>
+        <select id="fiscalStart">
+          <option value="1" selected>January</option>
+          <option value="4">April</option>
+          <option value="7">July</option>
+          <option value="10">October</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="sep">Separator</label>
+        <select id="sep">
+          <option value="-" selected>Hyphen (-)</option>
+          <option value="/">Slash (/)</option>
+          <option value="_">Underscore (_)</option>
+          <option value="">None</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="pad">Number length</label>
+        <select id="pad">
+          <option value="3">3 digits</option>
+          <option value="4">4 digits</option>
+          <option value="5" selected>5 digits</option>
+          <option value="6">6 digits</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="start">Starting number</label>
+      <input type="number" id="start" value="10001" min="0">
+    </div>
+
+    <div class="field">
+      <label for="preview">Preview format</label>
+      <div class="seq-preview" id="preview">PO-2026-10001</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="row">
+      <div class="field"><label for="count">How many</label><input type="number" id="count" value="5" min="1" max="5000"></div>
+      <div class="field"><label for="date">PO date</label><input type="date" id="date"></div>
+    </div>
+
+    <details class="faq" style="box-shadow:none;margin-bottom:16px">
+      <summary style="padding:12px 14px;font-size:13.8px">Advanced format</summary>
+      <div class="body" style="padding:0 14px 14px">
+        <label for="pattern" style="margin-top:6px">Custom pattern</label>
+        <input type="text" id="pattern" placeholder="e.g. PO{SEP}{FY}{SEP}IT{SEP}{SEQ:5}">
+        <div class="token-help" id="tokenHelp"></div>
+        <label for="suffix" style="margin-top:12px">Suffix</label>
+        <input type="text" id="suffix" placeholder="e.g. supplier code">
+      </div>
+    </details>
+
+    <div class="out-actions">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate PO Numbers</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated Results<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="results">Results</button>
+      <button type="button" data-tab="export">Export</button>
+      <button type="button" data-tab="checks">Validation</button>
+      <button type="button" data-tab="guide">PO workflow</button>
+    </div>
+
+    <div data-panel="results">
+      <div id="primary"></div>
+      <div id="more"></div>
+      <button type="button" class="btn btn-soft btn-block" id="regen" style="margin-top:18px">
+        <span id="icoReset"></span> Regenerate</button>
+      <div class="note note-info" style="margin-top:14px"><span id="icoInfo"></span>
+        <span>A PO number is the key that ties requisition, approval, delivery note and supplier invoice together. Issue it <strong>before</strong> the order goes to the supplier.</span></div>
+    </div>
+
+    <div data-panel="export" hidden>
+      <div class="field">
+        <label for="exportAs">Export format</label>
+        <select id="exportAs">
+          <option value="lines">Plain list</option>
+          <option value="csvIndexed">CSV with index</option>
+          <option value="json">JSON array</option>
+          <option value="sql">SQL INSERT</option>
+          <option value="quoted">Quoted &amp; comma-separated</option>
+        </select>
+      </div>
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">po-numbers.txt</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy all</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+    </div>
+
+    <div data-panel="checks" hidden><div id="checks"></div></div>
+    <div data-panel="guide" hidden><div id="guide"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/seqid.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoCopy:copy','icoDl:download','icoReset:reset','icoInfo:info']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  $('#dateFormat').innerHTML = GTSeq.DATE_FORMATS.map(function (f) {
+    return '<option value="' + f.id + '"' + (f.id === 'YYYY' ? ' selected' : '') + '>' + f.label + '</option>';
+  }).join('');
+  $('#tokenHelp').innerHTML = GTSeq.tokenHelpHtml();
+  $('#date').value = GT.today();
+
+  var ids = [];
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'po-numbers.txt', mime: 'text/plain' });
+
+  function opts() {
+    var sep = $('#sep').value;
+    var dept = $('#dept').value.trim().toUpperCase();
+    var pattern = $('#pattern').value.trim();
+    if (!pattern && dept) {
+      /* splice the department segment in after the date */
+      var df = GTSeq.DATE_FORMATS.filter(function (f) { return f.id === $('#dateFormat').value; })[0];
+      var parts = ['{PREFIX}'];
+      if (df && df.pattern) parts.push(df.pattern);
+      parts.push(dept, '{SEQ}');
+      if ($('#suffix').value.trim()) parts.push('{SUFFIX}');
+      pattern = parts.join(sep === '' ? '' : '{SEP}');
+    }
+    return {
+      prefix: $('#prefix').value.trim(),
+      suffix: $('#suffix').value.trim(),
+      dateFormat: $('#dateFormat').value,
+      sep: sep,
+      start: $('#start').value,
+      pad: parseInt($('#pad').value, 10),
+      count: parseInt($('#count').value, 10),
+      date: $('#date').value ? new Date($('#date').value + 'T12:00:00') : new Date(),
+      fiscalStart: parseInt($('#fiscalStart').value, 10),
+      pattern: pattern
+    };
+  }
+
+  function build() {
+    var o = opts();
+    ids = GTSeq.generate(o).ids;
+
+    $('#preview').textContent = ids[0] || '—';
+    GTSeq.renderResults({ ids: ids, primary: '#primary', more: '#more', noun: 'PO Number' });
+    $('#pill').textContent = ids.length.toLocaleString() + ' generated';
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+
+    var mode = $('#exportAs').value;
+    var ext = mode === 'json' ? 'json' : mode === 'sql' ? 'sql' : /csv/.test(mode) ? 'csv' : 'txt';
+    out.set(GTSeq.exportAs(ids, mode, { column: 'po_number', table: 'purchase_orders' }), 'po-numbers.' + ext);
+
+    var extra = [];
+    if (!$('#dept').value.trim()) extra.push({ s: 'warn', m: 'No department or cost centre segment. Adding one lets finance attribute spend without opening each PO, and makes approval routing rules far simpler.' });
+    if ($('#dateFormat').value === 'none') extra.push({ s: 'warn', m: 'No period segment. Including the fiscal year is what lets you close a year cleanly and restart the sequence.' });
+    if (parseInt($('#pad').value, 10) < 4) extra.push({ s: 'warn', m: 'Short padding. Procurement volumes grow — a 3-digit sequence runs out after 999 orders in the period.' });
+    if ($('#fiscalStart').value !== '1' && $('#dateFormat').value !== 'FY') {
+      extra.push({ s: 'warn', m: 'Your fiscal year does not start in January, but the period segment uses the calendar year. Choose the <strong>FY</strong> date format so the number matches your reporting period.' });
+    }
+    GTSeq.renderChecks('#checks', GTSeq.validate(ids, { sequential: true, humanEntry: true }).concat(extra));
+  }
+
+  $('#guide').innerHTML = [
+    ['Issue the number before the order', 'The PO number has to exist before the supplier receives the order, because it is the reference they will quote on the invoice and delivery note. A number created after the fact defeats the entire control.'],
+    ['Three-way matching is the point', 'Purchase order, goods received note and supplier invoice should all carry the same PO number. Finance matches all three before payment. Without a shared reference, every discrepancy becomes a manual investigation.'],
+    ['Encode what you will filter by', 'Department, cost centre or site codes in the number let anyone filter a spreadsheet of thousands of POs without a lookup table. Do not encode anything that changes — a supplier can be re-assigned, a cost centre rarely is.'],
+    ['Match the fiscal year, not the calendar year', 'If your financial year starts in April or July, a calendar-year segment will put spend in the wrong bucket at year end. Use the FY format so the number and the reporting period agree.'],
+    ['Reserve blocks for bulk requisitions', 'When a department needs many POs at once, generate a contiguous block and hand it over. Gaps are far less sensitive here than on invoices, but contiguous blocks are still easier to reconcile.'],
+    ['Do not reuse a cancelled PO number', 'Mark it cancelled and move on. Reusing the number means two different orders share one identifier in the supplier\'s system as well as yours.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('');
+
+  GTSeq.bindCopy('#primary', function () { return ids; });
+  GTSeq.bindCopy('#more', function () { return ids; });
+  GTSeq.bindTokenHelp('#tokenHelp', '#pattern', build);
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('PO numbers generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+  $('#regen').addEventListener('click', build);
+  $('#exportAs').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'purchase-order-number-generator',
+    lede: 'Build structured purchase order numbers with department, cost centre and fiscal year segments — the reference that ties requisition, delivery and invoice together.',
+    steps: [
+      { icon: 'gear', title: 'Add your segments', text: 'Prefix, fiscal period and a department or cost centre code.' },
+      { icon: 'clipboard', title: 'Generate a block', text: 'Create one PO number or a contiguous block for bulk requisitions.' },
+      { icon: 'copy', title: 'Export to your ERP', text: 'Copy as a list, CSV, JSON or SQL insert.' }
+    ],
+    guideTitle: 'What a good PO number tells you before you open it',
+    guide:
+      '<p style="color:var(--muted)">A purchase order number is a control, not just a label. It is issued before the order leaves the building, quoted by the supplier on their invoice, and used by finance to match three documents that arrive at different times from different places. The structure you choose decides how much work that matching takes.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Common structures</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><code>PO-10001</code> — simple running number. Fine for a small company.</li><li><code>PO-2026-10001</code> — restarts each year, closes cleanly.</li><li><code>PO-FY27-IT-00042</code> — fiscal year plus department. Spend is attributable from the number alone.</li><li><code>PO-2026-LON-4200-0015</code> — site and cost centre, for multi-site organisations.</li></ul></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Segment discipline</h4><p style="color:var(--muted);font-size:13.8px">Every segment you add makes the number longer and someone has to type it. Include a segment only if you would actually filter or route by it. Department and fiscal period usually earn their place; supplier codes and project numbers usually do not, because they change and they belong in fields, not identifiers.</p>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">Keep the total under about 20 characters so it fits on a supplier portal form and can be read over the phone.</p></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>The most expensive mistake is issuing PO numbers after the fact.</strong> If a supplier invoice arrives and someone creates a PO to match it, you have documentation rather than control — the approval happened after the money was committed. The number must be generated at requisition time.</span></div>',
+    related: ['invoice-number-generator', 'reference-number-generator', 'asset-tag-number-generator'],
+    faqs: [
+      { q: 'What is a purchase order number?', a: 'A unique reference assigned to a purchase order before it is sent to a supplier. It appears on the order, the delivery note and the supplier invoice, allowing finance to match all three before paying.' },
+      { q: 'What format should a PO number use?', a: 'A prefix, a fiscal period and a sequence covers most needs — for example <code>PO-2026-10001</code>. Add a department or cost centre code if you want spend to be attributable without a lookup.' },
+      { q: 'Do PO numbers need to be sequential?', a: 'They are not subject to the same legal gapless requirement as invoices, but sequential numbering makes reconciliation and audit far easier, and makes a missing order obvious.' },
+      { q: 'Should the PO number include the fiscal year?', a: 'Yes if your financial year does not start in January. Use the FY format so the number matches your reporting period — a calendar-year segment will file spend into the wrong year at your year end.' },
+      { q: 'What happens if a PO is cancelled?', a: 'Mark it cancelled and leave the number retired. Never reuse it — the supplier may already have it in their system attached to the original order.' },
+      { q: 'How long should a PO number be?', a: 'Under about 20 characters. It gets typed into supplier portals, read over the phone and printed on paperwork, so every extra segment has a real cost in errors.' }
+    ],
+    seo: {
+      title: 'Purchase order numbers: structure, fiscal years and the three-way match',
+      lead: 'This <strong>purchase order number generator</strong> builds structured PO references with department, cost centre and fiscal year segments. Below: what a good PO number tells you before you open the document, why sequence matters for audit, and what to do when a PO is cancelled.',
+      blocks: [
+        {
+          h: 'What a PO number is for',
+          html: '<p>A <strong>purchase order number</strong> is the thread that ties a requisition, a delivery and a supplier invoice together. It appears on the order you send, the delivery note that comes back, and the invoice you are asked to pay — and matching those three documents is the control that stops you paying for goods you never received.</p>' +
+            '<p>That is the <strong>three-way match</strong>, and it only works if the reference is present, unique and stable on all three documents. Everything else about PO numbering follows from that requirement.</p>' +
+            '<p>The number is also the audit trail. "Who authorised this spend, against which budget, in which year" should be answerable from the reference and the record it points at — which is why structured PO numbers are worth the extra characters.</p>'
+        },
+        {
+          h: 'What the structure should tell you',
+          table: {
+            head: ['Segment', 'Example', 'Answers'],
+            rows: [
+              ['Prefix', '<code>PO</code>', 'What kind of document this is, at a glance.'],
+              ['Fiscal year', '<code>FY26</code>', 'Which budget year the commitment belongs to.'],
+              ['Department or cost centre', '<code>IT</code> / <code>4200</code>', 'Whose budget it comes out of.'],
+              ['Sequence', '<code>0148</code>', 'Which order, and how many have been raised.'],
+              ['Site (optional)', '<code>LDN</code>', 'Which location, for multi-site organisations.']
+            ]
+          },
+          after: '<p>A reference such as <code>PO-FY26-IT-0148</code> is readable by a supplier, sortable in a spreadsheet, and self-explanatory to anyone in finance. Compare it with <code>84213</code>, which requires a system lookup to mean anything at all.</p>',
+          callout: { type: 'tip', text: 'Put the cost centre in the number, not just in the record. When a supplier queries an unpaid invoice six months later, the accounts payable clerk can route it correctly from the reference alone — without opening the ERP.' }
+        },
+        {
+          h: 'The fiscal year segment',
+          html: '<p>Include it. Purchase orders are budget commitments, and budgets run in fiscal years — which for many organisations do not align with the calendar.</p>' +
+            '<p>Use the fiscal year label your finance team uses, not the calendar year. If your year runs April to March, an order raised in February 2026 belongs to <code>FY26</code> even though the calendar says 2026 and will soon say 2027. Getting this wrong puts commitments in the wrong budget period, which is discovered at year-end close and is tedious to unpick.</p>' +
+            '<p>Reset the sequence each fiscal year. It keeps numbers short, makes the year-end cut-off obvious, and means "how many POs did we raise last year" is a range rather than a query.</p>'
+        },
+        {
+          h: 'Do PO numbers need to be sequential?',
+          html: '<p>Within their sequence, yes — and for a different reason than order numbers.</p>',
+          list: [
+            '<strong>Completeness.</strong> A gapless sequence proves no commitment was raised and then hidden. Auditors check this.',
+            '<strong>Volume and cut-off.</strong> Sequential numbers make it straightforward to establish which orders fall in which period.',
+            '<strong>No guessability concern.</strong> Unlike customer-facing order numbers, PO numbers circulate only between you and your suppliers. There is nothing to enumerate.',
+            '<strong>Per-department sequences are fine</strong>, provided the department is in the reference. Two departments both reaching <code>0148</code> is unambiguous when the number says <code>IT</code> and <code>OPS</code>.'
+          ],
+          callout: { type: 'warn', text: '<strong>Never reuse or renumber a purchase order.</strong> The supplier has quoted it on their invoice and their system, and it appears in your commitment reporting. Reissuing a number means two different commitments claim the same reference, and the three-way match silently matches the wrong pair.' }
+        },
+        {
+          h: 'Cancellations and amendments',
+          steps: [
+            { t: 'Cancel, do not delete', d: 'The number stays in the sequence, marked cancelled with a reason and a date. A gap looks like a concealed commitment.' },
+            { t: 'Amend with a revision suffix', d: '<code>PO-FY26-IT-0148-R2</code> when quantity, price or delivery changes. The supplier can see it supersedes the original.' },
+            { t: 'Reissue only when the scope changes fundamentally', d: 'A different supplier or a different item is a new PO, cross-referenced to the cancelled one.' },
+            { t: 'Communicate the revision', d: 'An amended PO the supplier never received is an invoice dispute waiting to happen.' },
+            { t: 'Keep the original visible', d: 'Anyone reviewing the spend needs to see what was originally committed, not only the final version.' }
+          ]
+        },
+        {
+          h: 'How long should it be?',
+          html: '<p>Long enough to carry the segments you need; short enough that a supplier types it correctly onto an invoice.</p>' +
+            '<p>Twelve to eighteen characters is the workable range. <code>PO-FY26-IT-0148</code> is fifteen and carries four pieces of information. Beyond about twenty, suppliers start abbreviating or truncating it in their own systems, and a truncated PO number on an invoice fails to match — which is the exact failure the number exists to prevent.</p>' +
+            '<p>Two practical constraints worth checking before you settle a format: many ERP and accounting systems cap the PO reference field, sometimes at ten or twelve characters, and some supplier portals silently truncate. Test your format end to end with your largest supplier before rolling it out.</p>'
+        },
+        {
+          h: 'Related procurement tools',
+          list: [
+            '<a href="invoice-number-generator.html">Invoice Number Generator</a> — the matching sales-side sequence.',
+            '<a href="reference-number-generator.html">Reference Number Generator</a> — payment references with check digits.',
+            '<a href="asset-tag-number-generator.html">Asset Tag Number Generator</a> — tag the equipment the PO bought.',
+            '<a href="shipping-reference-generator.html">Shipping Reference Generator</a> — inbound consignment references.',
+            '<a href="employee-id-generator.html">Employee ID Generator</a> — requester and approver identifiers.'
+          ]
+        }
+      ],
+      keywords: [
+        'purchase order number generator', 'po number format', 'purchase order numbering system',
+        'three way match', 'po number fiscal year', 'cost centre in po number',
+        'sequential po numbers', 'cancelled purchase order', 'po revision numbering',
+        'procurement reference format', 'purchase requisition numbering', 'po number length'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

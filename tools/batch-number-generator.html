@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Batch Number Generator — Manufacturing Traceability Codes | Manage My Batch</title>
+<meta name="description" content="Free batch number generator for manufacturing. Build traceable batch codes with Julian or calendar date codes, line and shift identifiers, and check digits.">
+<link rel="canonical" href="https://managemybatch.com/tools/batch-number-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Batch Number Generator — Manufacturing Traceability Codes">
+<meta property="og:description" content="Free batch number generator for manufacturing. Build traceable batch codes with Julian or calendar date codes, line and shift identifiers, and check digits.">
+<meta property="og:url" content="https://managemybatch.com/tools/batch-number-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Batch Number Generator — Manufacturing Traceability Codes">
+<meta name="twitter:description" content="Free batch number generator for manufacturing. Build traceable batch codes with Julian or calendar date codes, line and shift identifiers, and check digits.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Generator Settings</div>
+
+    <div class="row">
+      <div class="field"><label for="prefix">Prefix</label><input type="text" id="prefix" value="B"></div>
+      <div class="field">
+        <label for="sep">Separator</label>
+        <select id="sep">
+          <option value="" selected>None (compact)</option>
+          <option value="-">Hyphen (-)</option>
+          <option value=".">Dot (.)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="dateFormat">Date code</label>
+      <select id="dateFormat"></select>
+      <div class="hint" id="dateHint">Julian codes (<code>YYJJJ</code>) are the manufacturing standard — fixed width, unambiguous internationally, and compact on a print head.</div>
+    </div>
+
+    <div class="row">
+      <div class="field"><label for="line">Production line</label><input type="text" id="line" placeholder="e.g. L1, A"></div>
+      <div class="field">
+        <label for="shift">Shift</label>
+        <select id="shift">
+          <option value="">None</option>
+          <option value="A">A — day</option>
+          <option value="B">B — evening</option>
+          <option value="C">C — night</option>
+          <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field"><label for="start">Starting number</label><input type="number" id="start" value="1" min="0"></div>
+      <div class="field">
+        <label for="pad">Number length</label>
+        <select id="pad">
+          <option value="2">2 digits</option>
+          <option value="3" selected>3 digits</option>
+          <option value="4">4 digits</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="checkDigit">Check digit</label>
+      <select id="checkDigit"></select>
+    </div>
+
+    <div class="field">
+      <label for="preview">Preview format</label>
+      <div class="seq-preview" id="preview">B26221001</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="row">
+      <div class="field"><label for="count">How many batches</label><input type="number" id="count" value="8" min="1" max="5000"></div>
+      <div class="field"><label for="date">Production date</label><input type="date" id="date"></div>
+    </div>
+
+    <details class="faq" style="box-shadow:none;margin-bottom:16px">
+      <summary style="padding:12px 14px;font-size:13.8px">Advanced format</summary>
+      <div class="body" style="padding:0 14px 14px">
+        <label for="pattern" style="margin-top:6px">Custom pattern</label>
+        <input type="text" id="pattern" placeholder="e.g. {PREFIX}{YY}{JJJ}L1{SEQ:3}">
+        <div class="token-help" id="tokenHelp"></div>
+        <label for="suffix" style="margin-top:12px">Suffix</label>
+        <input type="text" id="suffix" placeholder="optional">
+      </div>
+    </details>
+
+    <div class="out-actions">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate Batch Numbers</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated Results<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="results">Results</button>
+      <button type="button" data-tab="decode">Decode</button>
+      <button type="button" data-tab="export">Export</button>
+      <button type="button" data-tab="guide">Traceability</button>
+    </div>
+
+    <div data-panel="results">
+      <div id="primary"></div>
+      <div id="more"></div>
+      <button type="button" class="btn btn-soft btn-block" id="regen" style="margin-top:18px">
+        <span id="icoReset"></span> Regenerate</button>
+      <div id="checks"></div>
+    </div>
+
+    <div data-panel="decode" hidden>
+      <p style="color:var(--muted);font-size:13.8px;margin-bottom:14px">Julian date codes are compact but unreadable by eye. Paste a <code>YYJJJ</code> code to convert it back to a calendar date.</p>
+      <div class="field">
+        <label for="julian">Julian code (YYJJJ or JJJ)</label>
+        <input type="text" id="julian" placeholder="26221">
+      </div>
+      <div id="julianOut"></div>
+      <div class="divider"></div>
+      <div class="field">
+        <label for="calDate">Calendar date → Julian</label>
+        <input type="date" id="calDate">
+      </div>
+      <div id="calOut"></div>
+    </div>
+
+    <div data-panel="export" hidden>
+      <div class="field">
+        <label for="exportAs">Export format</label>
+        <select id="exportAs">
+          <option value="csvIndexed">CSV with index</option>
+          <option value="lines">Plain list</option>
+          <option value="json">JSON array</option>
+          <option value="sql">SQL INSERT</option>
+        </select>
+      </div>
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">batch-numbers.csv</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy all</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+    </div>
+
+    <div data-panel="guide" hidden><div id="guide"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/seqid.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoCopy:copy','icoDl:download','icoReset:reset']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  $('#dateFormat').innerHTML = GTSeq.DATE_FORMATS.map(function (f) {
+    return '<option value="' + f.id + '"' + (f.id === 'YYJJJ' ? ' selected' : '') + '>' + f.label + '</option>';
+  }).join('');
+  $('#checkDigit').innerHTML = GTSeq.CHECK_DIGITS.map(function (c) {
+    return '<option value="' + c.id + '">' + c.label + '</option>';
+  }).join('');
+  $('#tokenHelp').innerHTML = GTSeq.tokenHelpHtml();
+  $('#date').value = GT.today();
+  $('#calDate').value = GT.today();
+
+  var ids = [];
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'batch-numbers.csv', mime: 'text/csv' });
+
+  function opts() {
+    var sep = $('#sep').value;
+    var line = $('#line').value.trim().toUpperCase();
+    var shift = $('#shift').value;
+    var pattern = $('#pattern').value.trim();
+    if (!pattern && (line || shift)) {
+      var df = GTSeq.DATE_FORMATS.filter(function (f) { return f.id === $('#dateFormat').value; })[0];
+      var parts = ['{PREFIX}'];
+      if (df && df.pattern) parts.push(df.pattern);
+      if (line) parts.push(line);
+      if (shift) parts.push(shift);
+      parts.push('{SEQ}');
+      if ($('#suffix').value.trim()) parts.push('{SUFFIX}');
+      pattern = parts.join(sep === '' ? '' : '{SEP}');
+    }
+    return {
+      prefix: $('#prefix').value.trim(),
+      suffix: $('#suffix').value.trim(),
+      dateFormat: $('#dateFormat').value,
+      sep: sep,
+      start: $('#start').value,
+      pad: parseInt($('#pad').value, 10),
+      count: parseInt($('#count').value, 10),
+      checkDigit: $('#checkDigit').value,
+      date: $('#date').value ? new Date($('#date').value + 'T12:00:00') : new Date(),
+      pattern: pattern
+    };
+  }
+
+  function build() {
+    var o = opts();
+    ids = GTSeq.generate(o).ids;
+
+    $('#preview').textContent = ids[0] || '—';
+    GTSeq.renderResults({ ids: ids, primary: '#primary', more: '#more', noun: 'Batch Number' });
+    $('#pill').textContent = ids.length.toLocaleString() + ' generated';
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+
+    var mode = $('#exportAs').value;
+    var ext = mode === 'json' ? 'json' : mode === 'sql' ? 'sql' : /csv/.test(mode) ? 'csv' : 'txt';
+    out.set(GTSeq.exportAs(ids, mode, { column: 'batch_number', table: 'batches' }), 'batch-numbers.' + ext);
+
+    var extra = [];
+    if ($('#dateFormat').value === 'none') {
+      extra.push({ s: 'err', m: 'No date code. A batch number without a production date defeats the purpose — during a recall you need to isolate what was made and when, from the code on the packaging alone.' });
+    }
+    if (!$('#line').value.trim()) {
+      extra.push({ s: 'warn', m: 'No line identifier. If a fault is traced to one machine, a line code lets you recall only that line\'s output instead of the whole day\'s production.' });
+    }
+    if (!$('#shift').value) {
+      extra.push({ s: 'warn', m: 'No shift code. Shift is often the fastest way to narrow a quality issue to a specific crew, changeover or set of conditions.' });
+    }
+    if ((ids[0] || '').length > 16) {
+      extra.push({ s: 'warn', m: 'Long codes are hard to print legibly with inkjet coders on curved or textured packaging. Under about 14 characters is safer.' });
+    }
+    GTSeq.renderChecks('#checks', GTSeq.validate(ids, { checkDigit: o.checkDigit, humanEntry: true }).concat(extra));
+  }
+
+  /* ---------- Julian helpers ---------- */
+  $('#julian').addEventListener('input', function () {
+    var v = this.value.trim().replace(/\D/g, ''), el = $('#julianOut');
+    if (!v) { el.innerHTML = ''; return; }
+    var yy, jjj;
+    if (v.length === 5) { yy = +v.slice(0, 2); jjj = +v.slice(2); }
+    else if (v.length === 3) { yy = new Date().getFullYear() % 100; jjj = +v; }
+    else { el.innerHTML = '<div class="note note-warn">' + I.warn + '<span>Enter 5 digits (YYJJJ) or 3 digits (day of year).</span></div>'; return; }
+    if (jjj < 1 || jjj > 366) {
+      el.innerHTML = '<div class="note note-err">' + I.warn + '<span>Day of year must be between 001 and 366.</span></div>';
+      return;
+    }
+    var year = 2000 + yy;
+    var d = new Date(year, 0, jjj);
+    el.innerHTML = '<div class="note note-ok">' + I.check + '<span><strong>' +
+      d.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) +
+      '</strong><br>Day ' + jjj + ' of ' + year + '</span></div>';
+  });
+
+  $('#calDate').addEventListener('input', function () {
+    var el = $('#calOut');
+    if (!this.value) { el.innerHTML = ''; return; }
+    var d = new Date(this.value + 'T12:00:00');
+    var start = new Date(d.getFullYear(), 0, 0);
+    var jjj = Math.floor((d - start) / 86400000);
+    var yy = String(d.getFullYear()).slice(-2);
+    el.innerHTML = '<div class="note note-ok">' + I.check + '<span>Julian code <strong>' + yy +
+      String(jjj).padStart(3, '0') + '</strong> &nbsp;·&nbsp; day ' + jjj + ' of ' + d.getFullYear() + '</span></div>';
+  });
+
+  $('#guide').innerHTML = [
+    ['A batch number is a recall boundary', 'Its real job is to answer one question under pressure: exactly which units share the problem? Everything the code encodes — date, line, shift — narrows that set. A code that only says "made in August" means recalling a month of production.'],
+    ['Julian dates are the manufacturing standard', 'A <code>YYJJJ</code> code is always five digits, has no month/day ambiguity between regions, and prints compactly. <code>26221</code> is day 221 of 2026. The trade-off is that nobody can read it by eye, which is why the Decode tab exists.'],
+    ['Line and shift narrow the blast radius', 'When a fault traces to one filling head or one changeover, a line and shift code lets you recall a few hours of output instead of a week. That difference is measured directly in money.'],
+    ['Batch and lot are not always the same', 'Usage varies by industry and is often used interchangeably. Broadly, a batch is what was produced in one run under uniform conditions; a lot is a quantity grouped for distribution, which may combine batches. If your sector regulates one specifically, follow its definition rather than a general convention.'],
+    ['Print legibility limits the format', 'Codes are applied by inkjet or laser onto moving, curved, sometimes textured packaging. Long codes smear, wrap or land on a seam. Keeping under about 14 characters is a practical constraint, not a stylistic one.'],
+    ['Record what the code cannot hold', 'The batch number is an index, not a record. Raw material lots, equipment IDs, operators, QC results and environmental conditions all live in your batch record, keyed by this number. Design the code to be short and the record to be complete.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('') +
+  '<div class="note note-warn">' + I.warn + '<span>General guidance only. Regulated sectors — food, pharmaceutical, medical devices, aerospace — have specific traceability requirements. Confirm what applies to you before changing a production coding scheme.</span></div>';
+
+  GTSeq.bindCopy('#primary', function () { return ids; });
+  GTSeq.bindCopy('#more', function () { return ids; });
+  GTSeq.bindTokenHelp('#tokenHelp', '#pattern', build);
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Batch numbers generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+  $('#regen').addEventListener('click', build);
+  $('#exportAs').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'batch-number-generator',
+    lede: 'Generate traceable manufacturing batch codes with Julian date codes, line and shift identifiers — plus a decoder for reading a Julian code back to a real date.',
+    steps: [
+      { icon: 'gear', title: 'Set the date code', text: 'Julian YYJJJ is the manufacturing standard: fixed width and internationally unambiguous.' },
+      { icon: 'box', title: 'Add line and shift', text: 'These are what narrow a recall from a week of output to a few hours.' },
+      { icon: 'copy', title: 'Export to production', text: 'CSV for your coder, MES or batch record system.' }
+    ],
+    guideTitle: 'Design the code around the recall, not the paperwork',
+    guide:
+      '<p style="color:var(--muted)">Every decision in a batch coding scheme should be tested against one scenario: a quality issue is found, and you have hours to determine precisely which units are affected. The code printed on the packaging is often the only information available at that moment — retailers and consumers do not have your production records.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">What each segment buys you</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><strong>Date</strong> — narrows to a day. Non-negotiable.</li><li><strong>Line</strong> — isolates one machine when a fault is mechanical.</li><li><strong>Shift</strong> — isolates a crew, a changeover, or a set of conditions.</li><li><strong>Sequence</strong> — separates runs within a shift, so a single tank or mix can be recalled alone.</li></ul></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Why Julian dates</h4><p style="color:var(--muted);font-size:13.8px"><code>26221</code> is always five characters, sorts correctly as text, and cannot be misread as a different date the way <code>08/09/26</code> can between regions. It is the reason Julian coding remains standard on production lines despite being unreadable by eye.</p>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">Use the Decode tab to convert in either direction — it is genuinely useful when a customer reads a code over the phone.</p></div></div>' +
+      '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>Keep the code short and the batch record complete. Raw material lots, equipment, operators and QC results belong in the record keyed by this number, not encoded into the number itself.</span></div>',
+    related: ['lot-number-generator', 'asset-tag-number-generator', 'purchase-order-number-generator'],
+    faqs: [
+      { q: 'What is a batch number?', a: 'A code identifying a specific production run — units made under uniform conditions on one line during one period. It is the key that links physical product back to production and quality records.' },
+      { q: 'What is a Julian date code?', a: 'A compact date format written as <code>YYJJJ</code>: the last two digits of the year plus the day of year from 001 to 366. <code>26221</code> means day 221 of 2026. It is fixed width and avoids month/day ambiguity between regions.' },
+      { q: 'What is the difference between a batch number and a lot number?', a: 'Usage varies and the terms are often interchangeable. Broadly, a batch is one production run under uniform conditions, while a lot is a quantity grouped for distribution that may combine batches. Follow your sector\'s definition where one is regulated.' },
+      { q: 'Should the batch number include the production line?', a: 'Yes if you have more than one. When a fault traces to a specific machine, a line code lets you recall that line\'s output rather than everything made that day.' },
+      { q: 'How long should a batch code be?', a: 'Under about 14 characters. Codes are printed by inkjet or laser onto moving, often curved packaging — longer codes smear, wrap around seams or become illegible.' },
+      { q: 'Do batch numbers need check digits?', a: 'They help wherever codes are typed manually from packaging into a system, since printed codes are frequently smudged or partly obscured. They are less important where scanning is reliable.' }
+    ],
+    seo: {
+      title: 'Batch numbers: Julian date codes, line identifiers and recall-driven design',
+      lead: 'This <strong>batch number generator</strong> builds traceable manufacturing codes with Julian dates, line and shift segments, and decodes a Julian code back to a real date. Below: how to design the code around a recall rather than around paperwork, and what each segment buys you.',
+      blocks: [
+        {
+          h: 'Design the code around the recall',
+          html: '<p>A batch number exists for one moment: the day something is wrong and you have to work out exactly what to withdraw. Every design decision should be judged against that moment.</p>' +
+            '<p>The question a recall asks is <em>how narrowly can you scope it?</em> If your batch code identifies only the day, you recall a day\'s production. If it identifies the day, the line and the shift, you recall a shift on one line — perhaps an eighth of the volume. The difference is measured directly in money, and the cost of the extra characters is zero.</p>' +
+            '<p>The second question is <em>how fast can you scope it?</em> A code that requires a database lookup to interpret slows every conversation. A code where a quality manager can read the date and line straight off the packaging does not.</p>',
+          callout: { type: 'warn', text: '<strong>Never recycle batch codes.</strong> A code reused a year later means a recall notice matches two production runs, and you either withdraw both or cannot prove which is affected. Include the year in the code, or keep a counter that never resets.' }
+        },
+        {
+          h: 'What is a Julian date code?',
+          html: '<p>A <strong>Julian date code</strong> encodes a date as the day of the year — 1 to 365, or 366 in a leap year — usually with a year digit in front. 10 August 2026 is day 222, so the code is <code>6222</code> for a single-digit year or <code>26222</code> for two.</p>' +
+            '<p>It is used across food, pharmaceutical and industrial manufacturing for practical reasons: it is compact, it is unambiguous across regions (unlike <code>08/10</code>, which is two different dates depending on the reader), and it sorts correctly as plain digits.</p>',
+          table: {
+            head: ['Date', '1-digit year', '2-digit year', 'Notes'],
+            rows: [
+              ['1 January 2026', '<code>6001</code>', '<code>26001</code>', 'Pad the day to three digits always.'],
+              ['10 August 2026', '<code>6222</code>', '<code>26222</code>', 'Day 222 of the year.'],
+              ['31 December 2026', '<code>6365</code>', '<code>26365</code>', '365 in a non-leap year.'],
+              ['31 December 2028', '<code>8366</code>', '<code>28366</code>', 'Leap year — day 366 exists.']
+            ]
+          },
+          after: '<p>Use two year digits unless label space genuinely forbids it. A single digit repeats every ten years, and product with a long shelf life outlives that.</p>'
+        },
+        {
+          h: 'Batch number or lot number?',
+          html: '<p>In everyday use they are interchangeable, and most regulations treat them as synonyms. Where a distinction is drawn, it is one of scope:</p>',
+          cards: [
+            { t: 'Batch', d: 'A quantity produced in one continuous run under uniform conditions — one mix, one line, one shift. Manufacturing language.' },
+            { t: 'Lot', d: 'A quantity handled as a unit for traceability, which may be one batch, part of a batch, or several batches combined for packing. Regulatory and distribution language.' },
+            { t: 'In practice', d: 'One code usually serves both. Problems arise only when one batch is split across several packing runs, at which point the lot is the narrower unit.' }
+          ],
+          after: '<p>If you are subject to food, cosmetic or pharmaceutical labelling rules, the regulated term is normally "lot" — see the <a href="lot-number-generator.html">lot number generator</a> for GS1 application identifiers and expiry handling.</p>'
+        },
+        {
+          h: 'Segments worth including',
+          steps: [
+            { t: 'Date, always', d: 'Julian or <code>YYMMDD</code>. Without it the code is just a serial number and the recall scope is whatever your records say.' },
+            { t: 'Production line, usually', d: 'A single character. If a fault is mechanical — a worn seal, a mis-set filler — it is line-specific, and the line segment is what confines the recall.' },
+            { t: 'Shift, if you run more than one', d: 'Faults often correlate with a shift changeover or a specific crew. Another single character.' },
+            { t: 'Site, if you have several', d: 'Two or three characters. Essential the moment the same product is made in two plants.' },
+            { t: 'Sequence within the day', d: 'Distinguishes multiple runs of the same product on the same line.' },
+            { t: 'Not the product', d: 'The product is already identified by its own code and its GTIN. Repeating it lengthens the batch code for nothing.' }
+          ]
+        },
+        {
+          h: 'How long, and does it need a check digit?',
+          html: '<p>Eight to twelve characters covers date, line, shift and sequence with room to read. Beyond about fourteen, the code stops being printed legibly on small packaging and starts being transcribed wrongly.</p>' +
+            '<p>Check digits are usually unnecessary. Batch codes are read from a label and typed rarely — most systems scan them as part of a GS1-128 barcode, where the symbology already carries error detection. The exception is manual goods-in entry, where a warehouse operator keys the batch code from a printed label into a receiving screen; there, a <a href="reference-number-generator.html">Luhn digit</a> catches the common transposition errors.</p>',
+          callout: { type: 'tip', text: 'Print the code in a fixed position and a fixed format on every product. Recall notices are read under pressure by people who have never looked at your packaging before, and "the code is somewhere on the base" costs hours across thousands of retail sites.' }
+        },
+        {
+          h: 'Recording what the code cannot carry',
+          html: '<p>The code is an index, not a record. What makes traceability work is the data behind it: which raw material lots went into that batch, which equipment was used, which operators ran it, what the in-process checks recorded, and where the finished goods were despatched.</p>' +
+            '<p>Both directions matter. Backward traceability answers "what went into this" when a customer complains; forward traceability answers "where did this go" when a supplier notifies you of a contaminated ingredient. Most traceability failures are forward failures — the batch is identified correctly and nobody can say which distributors received it.</p>' +
+            '<p>Keep records for at least the product\'s shelf life plus a margin, and longer where regulation specifies. The batch code is worthless if the records behind it have been archived past retrieval.</p>'
+        },
+        {
+          h: 'Related traceability tools',
+          list: [
+            '<a href="lot-number-generator.html">Lot Number Generator</a> — GS1 lot codes with expiry calculation.',
+            '<a href="barcode-number-generator.html">Barcode Number Generator</a> — GTINs for the products themselves.',
+            '<a href="shipping-reference-generator.html">Shipping Reference Generator</a> — where the batch went.',
+            '<a href="asset-tag-number-generator.html">Asset Tag Number Generator</a> — identify the equipment that produced it.',
+            '<a href="purchase-order-number-generator.html">Purchase Order Number Generator</a> — the raw materials that went in.'
+          ]
+        }
+      ],
+      keywords: [
+        'batch number generator', 'julian date code', 'batch code format',
+        'manufacturing traceability codes', 'julian date decoder', 'production batch numbering',
+        'batch vs lot number', 'recall traceability', 'shift and line codes',
+        'food batch code', 'batch code length', 'gs1-128 batch'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

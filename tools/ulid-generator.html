@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ULID Generator — Sortable, URL-Safe Identifiers | Manage My Batch</title>
+<meta name="description" content="Free ULID generator. Create lexicographically sortable 26-character Crockford Base32 identifiers with monotonic ordering, bulk output and a built-in ULID decoder.">
+<link rel="canonical" href="https://managemybatch.com/tools/ulid-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="ULID Generator — Sortable, URL-Safe Identifiers">
+<meta property="og:description" content="Free ULID generator. Create lexicographically sortable 26-character Crockford Base32 identifiers with monotonic ordering, bulk output and a built-in ULID decoder.">
+<meta property="og:url" content="https://managemybatch.com/tools/ulid-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ULID Generator — Sortable, URL-Safe Identifiers">
+<meta name="twitter:description" content="Free ULID generator. Create lexicographically sortable 26-character Crockford Base32 identifiers with monotonic ordering, bulk output and a built-in ULID decoder.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Generator Settings</div>
+
+    <div class="field">
+      <label for="count">How many?</label>
+      <div class="row" style="grid-template-columns:minmax(0,1fr) auto">
+        <input type="number" id="count" value="10" min="1" max="10000">
+        <button type="button" class="btn btn-ghost" id="regen"><span id="icoReset"></span> Regenerate</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="tsMode">Timestamp source</label>
+      <select id="tsMode">
+        <option value="now">Now</option>
+        <option value="custom">Custom date/time</option>
+        <option value="spread">Spread across a range</option>
+      </select>
+      <input type="datetime-local" id="customTs" style="margin-top:8px" hidden>
+      <div class="row" id="rangeWrap" style="margin-top:8px" hidden>
+        <input type="date" id="fromDate">
+        <input type="date" id="toDate">
+      </div>
+      <div class="hint">ULIDs encode the millisecond they were created, so generating for a past date lets you build realistic historical fixtures.</div>
+    </div>
+
+    <div class="field">
+      <label>Case</label>
+      <div class="seg" id="caseSeg">
+        <button type="button" class="on" data-c="upper">UPPERCASE</button>
+        <button type="button" data-c="lower">lowercase</button>
+      </div>
+      <div class="hint">The spec is uppercase. Crockford Base32 decoding is case-insensitive, so lowercase still parses.</div>
+    </div>
+
+    <div class="field">
+      <label for="output">Output as</label>
+      <select id="output">
+        <option value="lines">Plain list (one per line)</option>
+        <option value="json">JSON array</option>
+        <option value="jsonl">JSON objects with timestamps</option>
+        <option value="csv">CSV</option>
+        <option value="sql">SQL INSERT values</option>
+        <option value="quoted">Quoted &amp; comma-separated</option>
+      </select>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Options</legend>
+      <div class="check-list">
+        <label class="check"><input type="checkbox" id="optMono" checked><span><span class="t">Monotonic within a millisecond</span><span class="d">Increments the random half so same-tick ULIDs still sort correctly.</span></span></label>
+        <label class="check"><input type="checkbox" id="optSorted"><span><span class="t">Sort output ascending</span><span class="d">Proves the lexicographic ordering property.</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label for="decode">Decode a ULID</label>
+      <input type="text" id="decode" placeholder="01ARZ3NDEKTSV4RRFFQ69G5FAV">
+      <div id="decodeOut" style="margin-top:12px"></div>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated ULIDs<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="file">Output</button>
+      <button type="button" data-tab="anatomy">Anatomy</button>
+      <button type="button" data-tab="code">Code snippets</button>
+    </div>
+
+    <div data-panel="file">
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">ulids.txt</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy all</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+        <button class="btn btn-soft" id="copyOne">Copy first</button>
+      </div>
+    </div>
+
+    <div data-panel="anatomy" hidden><div id="anatomy"></div></div>
+    <div data-panel="code" hidden><div id="code"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoCopy:copy','icoDl:download','icoReset:reset']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  /* Crockford Base32 — excludes I, L, O and U to avoid transcription errors */
+  var A = '0123456789ABCDEFGHJKMNPQRSTVWXYZ';
+  var caseMode = 'upper', ids = [];
+
+  function encodeTime(ms, len) {
+    var s = '';
+    for (var i = len - 1; i >= 0; i--) { s = A[ms % 32] + s; ms = Math.floor(ms / 32); }
+    return s;
+  }
+  function randomChars(len) {
+    var b = new Uint8Array(len); crypto.getRandomValues(b);
+    var s = '';
+    for (var i = 0; i < len; i++) s += A[b[i] % 32];
+    return s;
+  }
+  function incrementRandom(r) {
+    var chars = r.split('');
+    for (var i = chars.length - 1; i >= 0; i--) {
+      var idx = A.indexOf(chars[i]);
+      if (idx < 31) { chars[i] = A[idx + 1]; return chars.join(''); }
+      chars[i] = A[0];
+    }
+    return randomChars(16);
+  }
+
+  var lastMs = -1, lastRand = '';
+  function ulid(ms) {
+    ms = ms == null ? Date.now() : ms;
+    var rand;
+    if ($('#optMono').checked && ms === lastMs) { rand = incrementRandom(lastRand); }
+    else { rand = randomChars(16); }
+    lastMs = ms; lastRand = rand;
+    return encodeTime(ms, 10) + rand;
+  }
+
+  function decodeTime(s) {
+    var t = 0, part = s.slice(0, 10).toUpperCase();
+    for (var i = 0; i < part.length; i++) {
+      var v = A.indexOf(part[i]);
+      if (v < 0) return null;
+      t = t * 32 + v;
+    }
+    return t;
+  }
+
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'ulids.txt', mime: 'text/plain' });
+
+  function timestamps(n) {
+    var mode = $('#tsMode').value;
+    if (mode === 'custom' && $('#customTs').value) {
+      var t = new Date($('#customTs').value).getTime();
+      return Array.from({ length: n }, function () { return t; });
+    }
+    if (mode === 'spread') {
+      var a = $('#fromDate').value ? new Date($('#fromDate').value).getTime() : Date.now() - 30 * 86400000;
+      var b = $('#toDate').value ? new Date($('#toDate').value).getTime() : Date.now();
+      if (b < a) { var tmp = a; a = b; b = tmp; }
+      var arr = Array.from({ length: n }, function () { return a + Math.floor(Math.random() * (b - a)); });
+      arr.sort(function (x, y) { return x - y; });
+      return arr;
+    }
+    return Array.from({ length: n }, function () { return Date.now(); });
+  }
+
+  function build() {
+    var n = Math.max(1, Math.min(10000, parseInt($('#count').value, 10) || 1));
+    var ts = timestamps(n);
+    lastMs = -1; lastRand = '';
+    ids = ts.map(function (t) { return ulid(t); });
+    if ($('#optSorted').checked) ids = ids.slice().sort();
+    var shown = ids.map(function (u) { return caseMode === 'lower' ? u.toLowerCase() : u; });
+
+    var mode = $('#output').value, text, file = 'ulids.txt';
+    if (mode === 'json') { text = JSON.stringify(shown, null, 2); file = 'ulids.json'; }
+    else if (mode === 'jsonl') {
+      text = JSON.stringify(ids.map(function (u, i) {
+        return { index: i + 1, ulid: shown[i], createdAt: new Date(decodeTime(u)).toISOString() };
+      }), null, 2); file = 'ulids.json';
+    }
+    else if (mode === 'csv') {
+      text = 'index,ulid,created_at\n' + ids.map(function (u, i) {
+        return (i + 1) + ',' + shown[i] + ',' + new Date(decodeTime(u)).toISOString();
+      }).join('\n'); file = 'ulids.csv';
+    }
+    else if (mode === 'sql') {
+      text = 'INSERT INTO records (id) VALUES\n' + shown.map(function (u) { return "  ('" + u + "')"; }).join(',\n') + ';';
+      file = 'ulids.sql';
+    }
+    else if (mode === 'quoted') text = shown.map(function (u) { return '"' + u + '"'; }).join(', ');
+    else text = shown.join('\n');
+
+    out.set(text, file);
+    $('#pill').textContent = n.toLocaleString() + ' generated';
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+    renderAnatomy();
+  }
+
+  function renderAnatomy() {
+    var u = ids[0] || ulid();
+    var t = decodeTime(u);
+    $('#anatomy').innerHTML =
+      '<div class="output-box" style="margin-bottom:16px"><pre class="code">' +
+      u.slice(0, 10) + '  ' + u.slice(10) + '\n' +
+      '└─ time ─┘  └───── randomness ─────┘</pre></div>' +
+      [['Characters 1–10', u.slice(0, 10), '48-bit Unix timestamp in milliseconds, Crockford Base32'],
+       ['Characters 11–26', u.slice(10), '80 bits of cryptographic randomness'],
+       ['Total length', '26 characters', 'Always fixed — no padding, no dashes'],
+       ['Encoded time', new Date(t).toISOString(), 'Readable by anyone holding the ULID'],
+       ['Alphabet', A, 'Excludes I, L, O and U to prevent transcription mistakes'],
+       ['Valid until', new Date(281474976710655).toISOString().slice(0, 10), 'The 48-bit timestamp overflows in the year 10889']
+      ].map(function (r) {
+        return '<div class="kv"><span class="k">' + r[0] + '<br><span style="font-size:12.5px">' + r[2] + '</span></span>' +
+          '<span class="v" style="max-width:52%;word-break:break-all;text-align:right">' + GT.esc(r[1]) + '</span></div>';
+      }).join('') +
+      '<div class="note note-info" style="margin-top:14px">' + I.info +
+      '<span>Because the timestamp is the high-order part and Base32 preserves order, sorting ULIDs as plain strings sorts them chronologically. No parsing required — <code>ORDER BY id</code> just works.</span></div>';
+  }
+
+  $('#code').innerHTML = [
+    ['JavaScript', "// npm i ulid\nimport { ulid, monotonicFactory } from 'ulid';\n\nconst id = ulid();\n\n// guaranteed ordering within the same millisecond\nconst next = monotonicFactory();\nconst a = next(), b = next();"],
+    ['Python', "# pip install python-ulid\nfrom ulid import ULID\n\nid = ULID()\nprint(str(id), id.datetime)"],
+    ['Go', '// go get github.com/oklog/ulid/v2\nid := ulid.MustNew(ulid.Timestamp(time.Now()), rand.Reader)'],
+    ['PHP', '// composer require robinvdvleuten/ulid\n$id = Ulid::generate();'],
+    ['PostgreSQL storage', '-- 26 chars, but only 16 bytes of real data.\n-- Store as bytea/uuid if space matters, or:\nCREATE TABLE records (\n  id CHAR(26) PRIMARY KEY\n);'],
+    ['Sorting proof', "['01J0…A', '01J0…B'].sort()\n// chronological, because the timestamp is the prefix"]
+  ].map(function (b) {
+    return '<div style="margin-bottom:18px"><h4 style="font-size:14.5px;margin-bottom:8px">' + b[0] + '</h4>' +
+      '<pre class="code">' + GT.esc(b[1]) + '</pre></div>';
+  }).join('');
+
+  $('#decode').addEventListener('input', function () {
+    var v = this.value.trim().toUpperCase(), el = $('#decodeOut');
+    if (!v) { el.innerHTML = ''; return; }
+    if (v.length !== 26) {
+      el.innerHTML = '<div class="note note-err">' + I.warn + '<span>A ULID is exactly 26 characters — this one has ' + v.length + '.</span></div>';
+      return;
+    }
+    var bad = v.split('').filter(function (c) { return A.indexOf(c) === -1; });
+    if (bad.length) {
+      el.innerHTML = '<div class="note note-err">' + I.warn + '<span>Invalid Crockford Base32 characters: ' + GT.uniq(bad).join(', ') +
+        '. The letters I, L, O and U are deliberately excluded.</span></div>';
+      return;
+    }
+    if (v[0] > '7') {
+      el.innerHTML = '<div class="note note-err">' + I.warn + '<span>Timestamp overflow — the first character cannot exceed 7.</span></div>';
+      return;
+    }
+    var t = decodeTime(v);
+    el.innerHTML = [['Created at', new Date(t).toISOString()], ['Unix ms', String(t)],
+      ['Age', Math.round((Date.now() - t) / 1000) + ' seconds ago'], ['Random part', v.slice(10)]]
+      .map(function (r) { return '<div class="kv"><span class="k">' + r[0] + '</span><span class="v">' + r[1] + '</span></div>'; }).join('');
+  });
+
+  $('#tsMode').addEventListener('change', function () {
+    $('#customTs').hidden = this.value !== 'custom';
+    $('#rangeWrap').hidden = this.value !== 'spread';
+    build();
+  });
+  $('#caseSeg').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#caseSeg button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    caseMode = b.getAttribute('data-c'); build();
+  });
+  $('#copyOne').addEventListener('click', function () {
+    GT.copy(caseMode === 'lower' ? (ids[0] || '').toLowerCase() : ids[0] || '', 'ULID');
+  });
+  $('#regen').addEventListener('click', build);
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); });
+  ['#count','#output','#optMono','#optSorted','#customTs','#fromDate','#toDate'].forEach(function (s) {
+    $(s).addEventListener('change', build); $(s).addEventListener('input', build);
+  });
+
+  build();
+
+  GT.page({
+    slug: 'ulid-generator',
+    lede: 'Generate ULIDs — 26 characters, sortable by creation time, safe in URLs, and readable without the dashes and ambiguity of a UUID.',
+    steps: [
+      { icon: 'gear', title: 'Set count and timestamp', text: 'Generate for now, a fixed moment, or spread across a date range for historical fixtures.' },
+      { icon: 'clock', title: 'Keep monotonic on', text: 'IDs created in the same millisecond still sort in creation order.' },
+      { icon: 'copy', title: 'Export or decode', text: 'Copy as a list, JSON, CSV or SQL — or paste an existing ULID to read its timestamp.' }
+    ],
+    guideTitle: 'ULID vs UUID v7 — how to choose',
+    guide:
+      '<p style="color:var(--muted)">Both solve the same problem: globally unique identifiers that sort by creation time. They differ mainly in encoding and ecosystem, and the right answer usually comes down to where the ID will be seen.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">ULID wins on ergonomics</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>26 characters instead of 36 — noticeably shorter in URLs and logs.</li><li>No dashes, so double-click selects the whole ID.</li><li>Crockford Base32 excludes I, L, O and U, so nobody misreads a 1 for an l when copying from a screen or reading over the phone.</li><li>Case-insensitive when decoding.</li></ul></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">UUID v7 wins on ecosystem</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>It is a real IETF standard (RFC 9562); ULID is a community spec.</li><li>Native database column types exist — PostgreSQL <code>uuid</code>, 16 bytes on disk with real index support.</li><li>Every language and ORM already understands the format.</li><li>Stored as text, a ULID needs <code>CHAR(26)</code> unless you convert to binary yourself.</li></ul></div></div>' +
+      '<p style="color:var(--muted);margin-top:16px"><strong>A reasonable default:</strong> UUID v7 for internal database keys where native types and tooling matter, ULID for identifiers that humans see, type or read aloud — order numbers, support tickets, short share links.</p>' +
+      '<div class="note note-warn" style="margin-top:16px">' + GTI.warn + '<span>Like UUID v7, a ULID publishes its creation time. If the moment a record was created is sensitive — or if an attacker could infer volume from watching IDs — use a fully random identifier such as a NanoID instead.</span></div>',
+    related: ['uuid-v7-generator', 'nanoid-generator', 'mongodb-objectid-generator'],
+    faqs: [
+      { q: 'What is a ULID?', a: 'A Universally Unique Lexicographically Sortable Identifier: 26 characters of Crockford Base32, made up of a 48-bit millisecond timestamp followed by 80 bits of randomness. Sorting them as strings sorts them by creation time.' },
+      { q: 'Is a ULID better than a UUID?', a: 'It is shorter, URL-safe and easier for humans to read, and it sorts chronologically. UUID v7 offers the same ordering with the benefit of being a formal standard with native database support. Both are good; ULID favours readability, UUID v7 favours ecosystem.' },
+      { q: 'Can two ULIDs collide?', a: 'Within the same millisecond you would need a collision across 80 random bits — roughly 1.2 × 10²⁴ possibilities. Generating a million IDs in one millisecond gives a collision probability far below one in a trillion. Monotonic mode removes the risk entirely for a single generator.' },
+      { q: 'Why does the alphabet skip I, L, O and U?', a: 'Crockford Base32 excludes them so that identifiers cannot be misread — 1 versus l, 0 versus O — and to avoid accidentally spelling offensive words. It makes ULIDs far safer to transcribe by hand.' },
+      { q: 'Are ULIDs case sensitive?', a: 'The canonical form is uppercase, but Crockford Base32 decoding is case-insensitive, so a lowercase ULID still parses to the same value. Pick one form and store it consistently.' },
+      { q: 'How should I store ULIDs in a database?', a: '<code>CHAR(26)</code> is the simple option. If storage or index size matters, convert to the underlying 16 bytes and store as <code>BINARY(16)</code>, <code>bytea</code> or even a <code>uuid</code> column, converting at the application boundary.' }
+    ],
+    seo: {
+      title: 'ULID: sortable, URL-safe identifiers and how they compare to UUID',
+      lead: 'This <strong>ULID generator</strong> creates 26-character identifiers that sort by creation time, survive a double-click, and read back without the ambiguity of a UUID. Below: the encoding, the monotonic guarantee, and how to store them efficiently.',
+      blocks: [
+        {
+          h: 'What is a ULID?',
+          html: '<p>A <strong>ULID</strong> — Universally Unique Lexicographically Sortable Identifier — is 128 bits rendered as 26 characters in Crockford Base32:</p>' +
+            '<p><code>01ARZ3NDEKTSV4RRFFQ69G5FAV</code></p>' +
+            '<p>The first 10 characters encode a 48-bit millisecond timestamp; the remaining 16 encode 80 bits of randomness. Because the timestamp leads and Base32 preserves ordering, sorting ULIDs as plain strings sorts them by creation time. No parsing, no separate column, no database-specific function.</p>' +
+            '<p>It carries the same 128 bits as a UUID in 26 characters instead of 36, with no dashes — so it survives a double-click selection, fits cleanly in a URL, and can be typed by a human without hyphen confusion.</p>'
+        },
+        {
+          h: 'ULID vs UUID v7',
+          html: '<p>They solve the same problem and differ mostly in encoding and status.</p>',
+          table: {
+            head: ['', 'ULID', 'UUID v7'],
+            rows: [
+              ['Bits', '128', '128'],
+              ['Text length', '26 characters', '36 with dashes'],
+              ['Encoding', 'Crockford Base32, no dashes', 'Hex with dashes'],
+              ['Timestamp', '48-bit ms, first 10 chars', '48-bit ms, leading bits'],
+              ['Standardised', 'Community spec', 'RFC 9562 (2024)'],
+              ['Database native type', 'Store as 16-byte binary or CHAR(26)', 'Native UUID type in Postgres, SQL Server and others'],
+              ['Double-click select', 'Selects the whole ID', 'Dashes break selection in some editors'],
+              ['Tool support', 'Libraries in most languages', 'Broad, including database functions']
+            ]
+          },
+          after: '<p>Practical rule: if your database has a native UUID type and identifiers cross system boundaries, use <a href="uuid-v7-generator.html">UUID v7</a> — it is the standard and it stores in 16 bytes automatically. If identifiers appear in URLs, get read aloud, or you value the compact form, use ULID.</p>'
+        },
+        {
+          h: 'Why the alphabet skips I, L, O and U',
+          html: '<p>ULID uses <strong>Crockford Base32</strong>: the digits 0–9 and 22 uppercase letters, excluding <code>I</code>, <code>L</code>, <code>O</code> and <code>U</code>.</p>' +
+            '<p>The first three are excluded because they are visually confusable with <code>1</code>, <code>1</code> and <code>0</code> when read from a screen, a printed label or a support ticket. <code>U</code> is excluded for a more practical reason: it prevents the encoding from spontaneously producing certain offensive words.</p>' +
+            '<p>Crockford decoding is also forgiving by design — a decoder accepts <code>I</code> and <code>l</code> as <code>1</code>, and <code>O</code> as <code>0</code>. Someone transcribing an ID by hand gets the right value even when they guess wrong. This is the property that makes ULIDs pleasant in any system where a human reads an ID back to you.</p>'
+        },
+        {
+          h: 'Monotonicity within a millisecond',
+          html: '<p>Two ULIDs created in the same millisecond share a timestamp, so their order is decided by the random component — which means it is arbitrary. For most uses that is fine. When it is not, the spec defines a <strong>monotonic</strong> mode.</p>',
+          steps: [
+            { t: 'Same millisecond detected', d: 'The generator compares against the previously issued ULID.' },
+            { t: 'Increment instead of randomise', d: 'The 80-bit random component is incremented by one rather than regenerated.' },
+            { t: 'Strict ordering within the process', d: 'Consecutive ULIDs from one generator sort correctly even at high rates.' },
+            { t: 'Not a global guarantee', d: 'Two processes generating in the same millisecond still interleave unpredictably. Monotonicity is per-generator, never distributed.' }
+          ],
+          callout: { type: 'tip', text: 'Use monotonic mode when insert order must match ID order within a single service — an append-only log, an event stream, a paginated feed keyed on ID. Do not assume it holds across replicas; if global ordering matters, you need a sequence or a coordination service, not an identifier format.' }
+        },
+        {
+          h: 'Collisions and case',
+          html: '<p>Within a millisecond, uniqueness depends on 80 random bits. Generating a thousand ULIDs in the same millisecond gives a collision probability around 10<sup>-18</sup> — you would need to sustain that rate for longer than the age of the universe for a collision to be likely. Across different milliseconds, collision is impossible by construction.</p>' +
+            '<p>ULIDs are canonically <strong>uppercase</strong>. Crockford decoding accepts lowercase and maps it to the same value, so <code>01arz3…</code> and <code>01ARZ3…</code> represent the same ID — but string comparison in your database does not know that. Normalise to uppercase on input and store one canonical form, or a case-sensitive unique index will happily accept both.</p>',
+          callout: { type: 'warn', text: '<strong>ULIDs disclose creation time to anyone who has one.</strong> The first ten characters decode to a millisecond timestamp with no key required. For public identifiers where timing is sensitive — or where the sequence would reveal how many records you create — use a <a href="nanoid-generator.html">NanoID</a> or a UUID v4 as the external ID.' }
+        },
+        {
+          h: 'Storing ULIDs in a database',
+          cards: [
+            { t: 'BINARY(16) / bytea', d: 'The efficient choice. Half the storage of the text form, smaller indexes, and byte order preserves sort order. Costs you readability in ad-hoc queries.' },
+            { t: 'CHAR(26)', d: 'Readable, greppable, and sorts correctly as text. Fixed-width so no varchar overhead. The pragmatic default for most applications.' },
+            { t: 'Native UUID column', d: 'A ULID is 128 bits, so it fits a UUID column exactly. You get 16-byte storage plus database tooling, at the cost of it displaying as a UUID rather than a ULID.' },
+            { t: 'Avoid VARCHAR with no length', d: 'It invites inconsistent casing and padded values, and neither shows up until a lookup mysteriously misses.' }
+          ]
+        },
+        {
+          h: 'Related identifier tools',
+          list: [
+            '<a href="uuid-v7-generator.html">UUID v7 Generator</a> — the RFC-standardised time-ordered UUID.',
+            '<a href="nanoid-generator.html">NanoID Generator</a> — shorter, fully random, no timestamp.',
+            '<a href="mongodb-objectid-generator.html">MongoDB ObjectId Generator</a> — the 12-byte MongoDB equivalent.',
+            '<a href="random-hex-string-generator.html">Random Hex String Generator</a> — raw hex tokens.',
+            '<a href="json-test-data-generator.html">JSON Test Data Generator</a> — fixtures with ULID keys.'
+          ]
+        }
+      ],
+      keywords: [
+        'ulid generator', 'what is a ulid', 'ulid vs uuid', 'sortable unique id',
+        'crockford base32', 'ulid monotonic', 'lexicographically sortable id',
+        'ulid decode timestamp', 'ulid database storage', 'time ordered identifier',
+        'ulid online', 'uuid alternative'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

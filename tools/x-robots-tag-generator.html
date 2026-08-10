@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>X-Robots-Tag Generator — Nginx, Apache, Cloudflare &amp; More | Manage My Batch</title>
+<meta name="description" content="Free X-Robots-Tag header generator. Produce noindex headers for PDFs, images and whole directories as Nginx, Apache, IIS, Cloudflare Workers, Next.js, Netlify or Vercel config.">
+<link rel="canonical" href="https://managemybatch.com/tools/x-robots-tag-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="X-Robots-Tag Generator — Nginx, Apache, Cloudflare &amp; More">
+<meta property="og:description" content="Free X-Robots-Tag header generator. Produce noindex headers for PDFs, images and whole directories as Nginx, Apache, IIS, Cloudflare Workers, Next.js, Netlify or Vercel config.">
+<meta property="og:url" content="https://managemybatch.com/tools/x-robots-tag-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="X-Robots-Tag Generator — Nginx, Apache, Cloudflare &amp; More">
+<meta name="twitter:description" content="Free X-Robots-Tag header generator. Produce noindex headers for PDFs, images and whole directories as Nginx, Apache, IIS, Cloudflare Workers, Next.js, Netlify or Vercel config.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Generator Settings</div>
+
+    <div class="field">
+      <label>What are you targeting?</label>
+      <div class="seg" id="target">
+        <button type="button" class="on" data-t="ext">File types</button>
+        <button type="button" data-t="dir">A directory</button>
+        <button type="button" data-t="path">One exact path</button>
+        <button type="button" data-t="all">Everything</button>
+      </div>
+    </div>
+
+    <div class="field" id="extField">
+      <label>File extensions</label>
+      <div class="check-list two" id="exts"></div>
+      <input type="text" id="extCustom" placeholder="Extra extensions, comma separated (e.g. epub, csv)" style="margin-top:10px">
+    </div>
+
+    <div class="field" id="dirField" hidden>
+      <label for="dir">Directory path</label>
+      <input type="text" id="dir" value="/private/" placeholder="/private/">
+      <div class="hint">Applies to everything under this prefix, including nested folders.</div>
+    </div>
+
+    <div class="field" id="pathField" hidden>
+      <label for="path">Exact path</label>
+      <input type="text" id="path" value="/reports/q3-2026.pdf" placeholder="/reports/file.pdf">
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label for="bot">Applies to</label>
+      <select id="bot">
+        <option value="">All crawlers</option>
+        <option value="googlebot">googlebot</option>
+        <option value="googlebot-news">googlebot-news</option>
+        <option value="bingbot">bingbot</option>
+        <option value="google-extended">google-extended</option>
+        <option value="custom">Custom…</option>
+      </select>
+      <input type="text" id="botCustom" placeholder="user-agent token" style="margin-top:8px" hidden>
+      <div class="hint">Prefixing the value with a bot name scopes the rule to that crawler only.</div>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Directives</legend>
+      <div class="check-list two" id="dirs"></div>
+    </fieldset>
+
+    <div class="row">
+      <div class="field">
+        <label for="imgPreview">max-image-preview</label>
+        <select id="imgPreview">
+          <option value="">Not set</option><option value="none">none</option>
+          <option value="standard">standard</option><option value="large">large</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="snippet">max-snippet</label>
+        <select id="snippet">
+          <option value="">Not set</option><option value="-1">-1 (unlimited)</option>
+          <option value="0">0 (none)</option><option value="160">160</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="unavailable">unavailable_after</label>
+      <input type="date" id="unavailable">
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label for="server">Server / platform</label>
+      <select id="server">
+        <option value="nginx">Nginx</option>
+        <option value="apache">Apache (.htaccess)</option>
+        <option value="apache-conf">Apache (vhost conf)</option>
+        <option value="iis">IIS (web.config)</option>
+        <option value="cloudflare">Cloudflare Worker</option>
+        <option value="nextjs">Next.js (next.config.js)</option>
+        <option value="netlify">Netlify (_headers)</option>
+        <option value="vercel">Vercel (vercel.json)</option>
+        <option value="express">Express / Node</option>
+        <option value="caddy">Caddy</option>
+        <option value="php">PHP</option>
+        <option value="all">All platforms</option>
+      </select>
+    </div>
+
+    <div class="out-actions" style="margin-top:20px">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate config</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated Config<span class="spacer"></span>
+      <span class="result-pill" id="pill">ready</span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="file">Config</button>
+      <button type="button" data-tab="header">Raw header</button>
+      <button type="button" data-tab="verify">Verify</button>
+    </div>
+
+    <div data-panel="file">
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">nginx.conf</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+      <div id="warnBox"></div>
+    </div>
+
+    <div data-panel="header" hidden>
+      <div class="output-box"><div class="output-bar"><span class="fname">HTTP response header</span></div>
+        <pre class="code" id="rawHeader"></pre></div>
+      <div class="out-actions"><button class="btn btn-ghost" id="copyHdr">Copy header</button></div>
+      <div class="note note-info" style="margin-top:4px"><span id="icoInfo"></span><span>Multiple <code>X-Robots-Tag</code> headers on one response are combined. Google applies the most restrictive union of them.</span></div>
+    </div>
+
+    <div data-panel="verify" hidden><div id="verify"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoCopy:copy','icoDl:download','icoInfo:info']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var EXTS = [
+    { e: 'pdf', d: 'PDFs — the most common reason to use this header at all', on: true },
+    { e: 'doc|docx', d: 'Word documents' },
+    { e: 'xls|xlsx', d: 'Spreadsheets' },
+    { e: 'ppt|pptx', d: 'Presentations' },
+    { e: 'zip|rar|7z', d: 'Archives and downloads' },
+    { e: 'jpg|jpeg|png|gif|webp|avif', d: 'Images' },
+    { e: 'svg', d: 'Vector images' },
+    { e: 'mp4|webm|mov', d: 'Video files' },
+    { e: 'mp3|wav', d: 'Audio files' },
+    { e: 'txt', d: 'Plain-text files' },
+    { e: 'json|xml', d: 'Data endpoints and feeds' },
+    { e: 'csv', d: 'Data exports' }
+  ];
+  var DIRS = [
+    { v: 'noindex', d: 'Keep out of search results', on: true },
+    { v: 'nofollow', d: 'Do not follow links in the resource' },
+    { v: 'noarchive', d: 'No cached copy' },
+    { v: 'nosnippet', d: 'No snippet or preview' },
+    { v: 'noimageindex', d: 'Do not index images' },
+    { v: 'none', d: 'Shorthand for noindex, nofollow' },
+    { v: 'notranslate', d: 'No translation offer' },
+    { v: 'all', d: 'Explicit default: index, follow' }
+  ];
+
+  $('#exts').innerHTML = EXTS.map(function (x) {
+    return '<label class="check' + (x.on ? ' on' : '') + '"><input type="checkbox" data-e="' + x.e + '"' + (x.on ? ' checked' : '') + '>' +
+      '<span><span class="t">.' + x.e.split('|').join(', .') + '</span><span class="d">' + x.d + '</span></span></label>';
+  }).join('');
+  $('#dirs').innerHTML = DIRS.map(function (x) {
+    return '<label class="check' + (x.on ? ' on' : '') + '"><input type="checkbox" data-d="' + x.v + '"' + (x.on ? ' checked' : '') + '>' +
+      '<span><span class="t">' + x.v + '</span><span class="d">' + x.d + '</span></span></label>';
+  }).join('');
+
+  var mode = 'ext';
+  $('#target').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#target button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    mode = b.getAttribute('data-t');
+    $('#extField').hidden = mode !== 'ext';
+    $('#dirField').hidden = mode !== 'dir';
+    $('#pathField').hidden = mode !== 'path';
+    build();
+  });
+  $('#bot').addEventListener('change', function () { $('#botCustom').hidden = this.value !== 'custom'; build(); });
+
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'x-robots-tag.conf', mime: 'text/plain' });
+
+  function botToken() {
+    var v = $('#bot').value;
+    return v === 'custom' ? $('#botCustom').value.trim() : v;
+  }
+  function value() {
+    var d = $$('#dirs input:checked').map(function (i) { return i.getAttribute('data-d'); });
+    if ($('#snippet').value !== '') d.push('max-snippet:' + $('#snippet').value);
+    if ($('#imgPreview').value) d.push('max-image-preview:' + $('#imgPreview').value);
+    if ($('#unavailable').value) d.push('unavailable_after: ' + new Date($('#unavailable').value + 'T23:59:59Z').toISOString().replace(/\.\d{3}Z$/, 'Z'));
+    if (!d.length) d = ['noindex'];
+    var v = d.join(', ');
+    var b = botToken();
+    return b ? b + ': ' + v : v;
+  }
+  function extList() {
+    var l = $$('#exts input:checked').map(function (i) { return i.getAttribute('data-e'); });
+    var extra = $('#extCustom').value.split(',').map(function (x) { return x.trim().replace(/^\./, ''); }).filter(Boolean);
+    return l.concat(extra);
+  }
+  function extRegex() {
+    var l = extList(); if (!l.length) l = ['pdf'];
+    return '\\.(' + l.join('|') + ')$';
+  }
+  function globList() { return extList().join('|').split('|'); }
+
+  var FILES = { nginx: 'nginx.conf', apache: '.htaccess', 'apache-conf': 'apache.conf', iis: 'web.config',
+    cloudflare: 'worker.js', nextjs: 'next.config.js', netlify: '_headers', vercel: 'vercel.json',
+    express: 'server.js', caddy: 'Caddyfile', php: 'headers.php', all: 'x-robots-tag-all.txt' };
+
+  function snippet(server) {
+    var v = value(), rx = extRegex(), dir = $('#dir').value.trim() || '/private/', p = $('#path').value.trim() || '/file.pdf';
+    var comment = '# X-Robots-Tag — generated ' + GT.today() + ' by managemybatch.com';
+
+    function nginxLoc() {
+      if (mode === 'ext') return 'location ~* "' + rx + '" {';
+      if (mode === 'dir') return 'location ^~ ' + dir + ' {';
+      if (mode === 'path') return 'location = ' + p + ' {';
+      return 'server {  # or place inside an existing server block';
+    }
+    function apachePattern() {
+      if (mode === 'ext') return '<FilesMatch "' + rx + '">';
+      if (mode === 'dir') return '<Directory "' + dir + '">';
+      if (mode === 'path') return '<Files "' + p.split('/').pop() + '">';
+      return null;
+    }
+
+    switch (server) {
+      case 'nginx':
+        return comment + '\n' + nginxLoc() + '\n  add_header X-Robots-Tag "' + v + '" always;\n' +
+          (mode === 'all' ? '  # ...\n' : '') + '}\n\n' +
+          '# Note: add_header in a nested block DISCARDS headers inherited from the parent.\n' +
+          '# Re-declare any Cache-Control/security headers you need inside this block too.';
+
+      case 'apache':
+        var ap = apachePattern();
+        return comment + '\n' + (ap ? ap + '\n  Header set X-Robots-Tag "' + v + '"\n' + ap.replace('<', '</').replace(/ .*/, '>') : 'Header set X-Robots-Tag "' + v + '"') +
+          '\n\n# Requires mod_headers to be enabled:\n#   a2enmod headers && systemctl reload apache2';
+
+      case 'apache-conf':
+        return comment + '\n<VirtualHost *:443>\n  ' + (mode === 'ext'
+          ? '<FilesMatch "' + rx + '">\n    Header set X-Robots-Tag "' + v + '"\n  </FilesMatch>'
+          : mode === 'dir' ? '<Location "' + dir + '">\n    Header set X-Robots-Tag "' + v + '"\n  </Location>'
+          : 'Header set X-Robots-Tag "' + v + '"') + '\n</VirtualHost>';
+
+      case 'iis':
+        return comment.replace('#', '<!--') + ' -->\n<configuration>\n  <system.webServer>\n    <httpProtocol>\n      <customHeaders>\n' +
+          '        <add name="X-Robots-Tag" value="' + v + '" />\n      </customHeaders>\n    </httpProtocol>\n  </system.webServer>\n</configuration>\n' +
+          '\n<!-- For a subset of files, place this web.config inside the target folder. -->';
+
+      case 'cloudflare':
+        var test = mode === 'ext' ? '/' + rx.replace(/\\/g, '\\\\') + '/i.test(url.pathname)'
+          : mode === 'dir' ? 'url.pathname.startsWith("' + dir + '")'
+          : mode === 'path' ? 'url.pathname === "' + p + '"' : 'true';
+        return comment.replace('#', '//') + '\nexport default {\n  async fetch(request) {\n' +
+          '    const url = new URL(request.url);\n    const response = await fetch(request);\n' +
+          '    if (' + test + ') {\n' +
+          '      const r = new Response(response.body, response);\n' +
+          '      r.headers.set("X-Robots-Tag", "' + v + '");\n      return r;\n    }\n' +
+          '    return response;\n  }\n};';
+
+      case 'nextjs':
+        var src = mode === 'ext' ? '/:path*.(' + extList().join('|') + ')' : mode === 'dir' ? dir.replace(/\/$/, '') + '/:path*' : mode === 'path' ? p : '/:path*';
+        return comment.replace('#', '//') + '\nmodule.exports = {\n  async headers() {\n    return [\n      {\n' +
+          '        source: "' + src + '",\n        headers: [{ key: "X-Robots-Tag", value: "' + v + '" }]\n      }\n    ];\n  }\n};';
+
+      case 'netlify':
+        var np = mode === 'ext' ? extList().map(function (e) { return '/*.' + e.split('|')[0]; }).join('\n')
+          : mode === 'dir' ? dir.replace(/\/$/, '') + '/*' : mode === 'path' ? p : '/*';
+        return comment + '\n' + np.split('\n').map(function (x) { return x + '\n  X-Robots-Tag: ' + v; }).join('\n\n');
+
+      case 'vercel':
+        var vsrc = mode === 'ext' ? '/(.*)\\.(' + extList().join('|') + ')' : mode === 'dir' ? dir.replace(/\/$/, '') + '/(.*)' : mode === 'path' ? p : '/(.*)';
+        return JSON.stringify({ headers: [{ source: vsrc, headers: [{ key: 'X-Robots-Tag', value: v }] }] }, null, 2);
+
+      case 'express':
+        var etest = mode === 'ext' ? 'new RegExp("' + rx.replace(/\\/g, '\\\\') + '", "i")' : mode === 'dir' ? '"' + dir + '*"' : mode === 'path' ? '"' + p + '"' : '"*"';
+        return comment.replace('#', '//') + '\napp.use(' + etest + ', (req, res, next) => {\n' +
+          '  res.set("X-Robots-Tag", "' + v + '");\n  next();\n});';
+
+      case 'caddy':
+        var cm = mode === 'ext' ? 'path_regexp files ' + rx : mode === 'dir' ? 'path ' + dir + '*' : mode === 'path' ? 'path ' + p : 'path /*';
+        return comment + '\nexample.com {\n  @target {\n    ' + cm + '\n  }\n  header @target X-Robots-Tag "' + v + '"\n}';
+
+      case 'php':
+        return comment.replace('#', '//') + '\n<?php\nheader(\'X-Robots-Tag: ' + v + '\', true);\n' +
+          '// Must be called before any output is sent.';
+
+      case 'all':
+        return ['nginx', 'apache', 'iis', 'cloudflare', 'nextjs', 'netlify', 'vercel', 'caddy'].map(function (s) {
+          return '### ' + s.toUpperCase() + ' ###\n' + snippet(s) + '\n';
+        }).join('\n');
+    }
+    return '';
+  }
+
+  function build() {
+    var s = $('#server').value;
+    out.set(snippet(s), FILES[s]);
+    $('#rawHeader').textContent = 'X-Robots-Tag: ' + value();
+    renderWarn();
+    renderVerify();
+  }
+
+  function renderWarn() {
+    var w = [], d = $$('#dirs input:checked').map(function (i) { return i.getAttribute('data-d'); });
+    if (d.indexOf('noindex') > -1 && d.indexOf('nofollow') > -1) w.push(['warn', 'noindex + nofollow makes the resource a dead end. For files this is usually fine; for HTML pages prefer <code>noindex</code> alone.']);
+    if (d.indexOf('all') > -1 && d.indexOf('noindex') > -1) w.push(['err', '<code>all</code> and <code>noindex</code> contradict each other.']);
+    if ($('#server').value === 'nginx') w.push(['warn', 'In Nginx, <code>add_header</code> inside a <code>location</code> block <strong>replaces</strong> all inherited headers from the parent context. Re-add your security and caching headers inside the same block.']);
+    if (mode === 'all') w.push(['warn', 'You are applying this to every response on the host. Confirm you really want site-wide behaviour — this is how staging rules accidentally reach production.']);
+    if (d.indexOf('noindex') > -1) w.push(['warn', 'The URL must remain crawlable for this header to be read. If robots.txt disallows it, the noindex is never seen.']);
+    if (!w.length) w.push(['ok', 'Configuration looks consistent.']);
+    $('#warnBox').innerHTML = w.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : x[0] === 'warn' ? 'note-warn' : 'note-err') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+    var errs = w.filter(function (x) { return x[0] === 'err'; }).length;
+    var pill = $('#pill');
+    pill.textContent = errs ? errs + ' conflict' : $('#server').value;
+    pill.style.background = errs ? 'var(--red-bg)' : 'var(--blue-50)';
+    pill.style.color = errs ? 'var(--red)' : 'var(--blue)';
+  }
+
+  function renderVerify() {
+    var sample = mode === 'ext' ? '/docs/report.' + (extList()[0] || 'pdf').split('|')[0]
+      : mode === 'dir' ? ($('#dir').value || '/private/') + 'page.html'
+      : mode === 'path' ? $('#path').value : '/any-page';
+    $('#verify').innerHTML =
+      '<h4 style="font-size:14.5px;margin-bottom:8px">1. Check the live header</h4>' +
+      '<pre class="code">curl -sSI https://example.com' + sample + ' | grep -i x-robots-tag</pre>' +
+      '<h4 style="font-size:14.5px;margin:18px 0 8px">2. Expected output</h4>' +
+      '<pre class="code">x-robots-tag: ' + value() + '</pre>' +
+      '<h4 style="font-size:14.5px;margin:18px 0 8px">3. Confirm in Search Console</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">Use the URL Inspection tool → “Test live URL”. Under Indexing it should report “Excluded by ‘noindex’ tag” once the header is live.</p>' +
+      '<h4 style="font-size:14.5px;margin:18px 0 8px">4. Give it time</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">Removal from the index happens on the next crawl of each URL, which can take days to weeks for low-priority files. For urgent removals use the Search Console Removals tool as a stopgap while the header propagates.</p>' +
+      '<div class="note note-warn" style="margin-top:16px">' + I.warn +
+      '<span>If a CDN sits in front of your origin, cached responses may still carry the old headers. Purge the cache after deploying.</span></div>';
+  }
+
+  $('#copyHdr').addEventListener('click', function () { GT.copy('X-Robots-Tag: ' + value(), 'Header'); });
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Config generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'x-robots-tag-generator',
+    lede: 'Apply noindex and snippet rules to PDFs, images and entire directories — as ready-to-paste config for eleven servers and platforms.',
+    steps: [
+      { icon: 'gear', title: 'Pick your target', text: 'File extensions, a directory, a single path, or the whole host.' },
+      { icon: 'header', title: 'Choose directives', text: 'noindex, nofollow, snippet limits, expiry — optionally scoped to one crawler.' },
+      { icon: 'server', title: 'Deploy and verify', text: 'Paste the config for your stack, then confirm with the curl command in the Verify tab.' }
+    ],
+    guideTitle: 'When a header beats a meta tag',
+    guide:
+      '<p style="color:var(--muted)">A meta robots tag only works inside an HTML document. The moment you need to control a PDF, a JPEG, an XML feed or a whole folder of generated files, the tag has nowhere to live — and <code>X-Robots-Tag</code>, sent as an HTTP response header, is the only mechanism that works.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Where it earns its keep</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>PDF whitepapers and price lists outranking the landing pages that should convert.</li><li>Staging or preview hosts — a single site-wide rule beats editing every template.</li><li>User-uploaded media you never want in Google Images.</li><li>Generated exports (<code>.csv</code>, <code>.json</code>) that leak internal data into search.</li><li>Legacy directories you cannot edit the markup of.</li></ul></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Operational gotchas</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><strong>Nginx:</strong> <code>add_header</code> in a nested block silently drops every inherited header. Re-declare them.</li><li><strong>Apache:</strong> needs <code>mod_headers</code>; without it the directive is a no-op.</li><li><strong>CDNs:</strong> a cached response keeps its old headers until you purge.</li><li><strong>robots.txt:</strong> blocking the URL prevents the header from ever being read — the same trap as meta robots.</li><li><strong>Staging leaks:</strong> a host-wide noindex that ships to production is a catastrophic and very common outage.</li></ul></div></div>' +
+      '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>You can send several <code>X-Robots-Tag</code> headers on one response — for example a generic rule plus <code>googlebot: noindex</code>. Google takes the union and applies the most restrictive result.</span></div>',
+    related: ['meta-robots-tag-generator', 'ai-crawler-robots-txt-generator', 'nginx-redirect-generator'],
+    faqs: [
+      { q: 'What is the X-Robots-Tag header?', a: 'An HTTP response header carrying the same directives as the meta robots tag — noindex, nofollow, nosnippet and so on. Because it travels with the response rather than the markup, it works for any file type.' },
+      { q: 'How do I noindex a PDF?', a: 'You cannot use a meta tag, so send <code>X-Robots-Tag: noindex</code> for that file. This tool generates the matching FilesMatch, location or headers rule for your server.' },
+      { q: 'Does X-Robots-Tag override the meta robots tag?', a: 'Neither overrides the other. When both are present Google combines them and applies the most restrictive result. Directives scoped to a specific bot take precedence over generic ones for that bot.' },
+      { q: 'Why is my header not appearing?', a: 'Usual causes: mod_headers is disabled on Apache, an Nginx location block is not matching, or a CDN is serving a cached response. Check with <code>curl -I</code> against the origin and then through the CDN.' },
+      { q: 'Can I apply it to a whole directory?', a: 'Yes — that is one of its main advantages. Use a Directory or Location block on Apache, a prefix location on Nginx, or a path pattern on Netlify, Vercel and Next.js.' },
+      { q: 'How long before pages drop out of search?', a: 'On the next crawl of each URL, which ranges from hours for popular pages to weeks for rarely fetched files. Search Console\'s Removals tool can hide URLs temporarily while the header propagates.' }
+    ],
+    seo: {
+      title: 'X-Robots-Tag: how to noindex PDFs, images and whole directories',
+      lead: 'This <strong>X-Robots-Tag generator</strong> turns indexing directives into ready-to-paste configuration for Nginx, Apache, Cloudflare Workers, Netlify, Vercel, IIS and more. Below: when a header beats a meta tag, how to scope it to file types, and why the header sometimes never arrives.',
+      blocks: [
+        {
+          h: 'What is the X-Robots-Tag header?',
+          html: '<p><strong>X-Robots-Tag</strong> is an HTTP response header carrying the same directives as the meta robots tag — <code>noindex</code>, <code>nofollow</code>, <code>nosnippet</code>, <code>max-snippet</code> and the rest — but delivered with the response instead of embedded in the document:</p>' +
+            '<p><code>X-Robots-Tag: noindex, nofollow</code></p>' +
+            '<p>Because it travels in the headers, it works for any file type. A PDF, a JPEG, a CSV export or a ZIP archive has nowhere to put a <code>&lt;meta&gt;</code> tag; it can still carry a header. And because it is applied at the server, one rule can cover an entire directory or file extension without touching a single document.</p>'
+        },
+        {
+          h: 'When a header beats a meta tag',
+          cards: [
+            { t: 'Non-HTML files', d: 'PDFs, images, spreadsheets, plain-text exports. The header is the only way to keep these out of the index.' },
+            { t: 'Bulk rules', d: 'Noindexing 4,000 generated PDFs by file extension is one server rule versus 4,000 edits.' },
+            { t: 'No template access', d: 'When you control infrastructure but not the application — a legacy CMS, a third-party app — the header is your only lever.' },
+            { t: 'Whole environments', d: 'A blanket noindex on a staging host is one line in the server config and cannot be forgotten on a new page.' }
+          ],
+          after: '<p>For a single HTML page you control, the <a href="meta-robots-tag-generator.html">meta robots tag</a> is simpler and easier for the next person to find.</p>'
+        },
+        {
+          h: 'Scoping rules by file type',
+          html: '<p>Every platform supports matching on path or extension. The pattern is always the same — match the request, add the header.</p>',
+          table: {
+            head: ['Platform', 'Approach'],
+            rows: [
+              ['Nginx', '<code>location ~* \\.(pdf|docx)$ { add_header X-Robots-Tag "noindex, nofollow"; }</code>'],
+              ['Apache', '<code>&lt;FilesMatch "\\.(pdf|docx)$"&gt;</code> with <code>Header set X-Robots-Tag</code>'],
+              ['Cloudflare Workers', 'Clone the response and set the header on matching paths.'],
+              ['Netlify / Vercel', 'A headers rule keyed on a path glob in the project config file.'],
+              ['IIS', 'An outbound rewrite rule adding a custom response header.'],
+              ['Express / Node', 'Middleware matching the route prefix.'],
+              ['Cloud storage / CDN', 'Object metadata, set at upload or in bulk afterwards.']
+            ]
+          },
+          callout: { type: 'warn', text: '<strong>In Nginx, <code>add_header</code> in a child block discards headers inherited from the parent.</strong> If a <code>location</code> block adds any header of its own, every <code>add_header</code> from the enclosing <code>server</code> block stops applying inside it. Repeat the directive in that block, or use <code>always</code> and check the live response.' }
+        },
+        {
+          h: 'How to use this generator',
+          steps: [
+            { t: 'Choose your directives', d: 'noindex, nofollow, noarchive, nosnippet, noimageindex, max-snippet, max-image-preview and unavailable_after are all supported.' },
+            { t: 'Optionally target a crawler', d: 'Prefix with a user-agent — <code>X-Robots-Tag: googlebot: noindex</code> — to address one engine and leave the others alone.' },
+            { t: 'Set the scope', d: 'A file extension list, a path prefix, or everything. The generated rule reflects the scope exactly.' },
+            { t: 'Pick your platform', d: 'The tool emits config for your server or host, ready to paste into the right file.' },
+            { t: 'Verify on the live response', d: '<code>curl -I https://example.com/file.pdf</code> and confirm the header is present. If it is not, nothing else you did matters.' }
+          ]
+        },
+        {
+          h: 'Why the header is not appearing',
+          list: [
+            '<strong>A CDN is stripping or caching it.</strong> Purge the cache and check whether your CDN forwards custom headers on cached objects.',
+            '<strong>The rule is in a block that never matches.</strong> Test with the exact URL, including case — most extension matches are case-sensitive unless you say otherwise.',
+            '<strong>Nginx header inheritance.</strong> As above: a nested <code>add_header</code> silently drops the parent ones.',
+            '<strong>The response is a 304.</strong> Not-modified responses may omit headers. Test with a cache-busting request.',
+            '<strong>The path is disallowed in robots.txt.</strong> The crawler never requests the file, so it never sees the header — exactly the same trap as with meta noindex.',
+            '<strong>You checked the HTML page instead of the file.</strong> The header must be on the response for the PDF itself, not the page linking to it.'
+          ]
+        },
+        {
+          h: 'How long until pages drop out?',
+          html: '<p>Removal happens on recrawl. For a frequently crawled URL that can be a day or two; for a rarely visited PDF buried three clicks deep it can be weeks or months.</p>' +
+            '<p>To speed it up: keep the URL crawlable, submit it in Search Console\'s URL inspection tool, and make sure the file still returns 200 with the header rather than a 404. A deleted file gets removed eventually too, but a 404 discards the directive and any signals the URL had accumulated.</p>' +
+            '<p>If something sensitive is exposed and needs to go now, use the Search Console removal tool for a temporary block while the noindex propagates — and fix the underlying exposure, because the URL remains publicly reachable either way.</p>',
+          callout: { type: 'tip', text: 'A blanket <code>X-Robots-Tag: noindex</code> on your staging host is one of the highest-value single lines of config you can write. Every staging leak into Google starts with someone assuming a robots.txt <code>Disallow</code> was enough.' }
+        },
+        {
+          h: 'Related indexing tools',
+          list: [
+            '<a href="meta-robots-tag-generator.html">Meta Robots Tag Generator</a> — the in-document equivalent for HTML pages.',
+            '<a href="ai-crawler-robots-txt-generator.html">AI Crawler robots.txt Generator</a> — crawl control, including AI user-agents.',
+            '<a href="nginx-redirect-generator.html">Nginx Redirect Generator</a> — server rules for URLs that have moved.',
+            '<a href="canonical-tag-generator.html">Canonical Tag Generator</a> — consolidate duplicates instead of removing them.'
+          ]
+        }
+      ],
+      keywords: [
+        'x-robots-tag generator', 'x-robots-tag noindex', 'noindex pdf', 'noindex header',
+        'x-robots-tag nginx', 'x-robots-tag apache', 'noindex a directory',
+        'x-robots-tag vs meta robots', 'noindex images', 'http header noindex',
+        'staging site noindex', 'remove pdf from google'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meta Robots Tag Generator — noindex, nofollow &amp; Snippet Controls | Manage My Batch</title>
+<meta name="description" content="Free meta robots tag generator. Build noindex, nofollow, max-snippet, max-image-preview and unavailable_after directives, with per-bot rules and conflict detection.">
+<link rel="canonical" href="https://managemybatch.com/tools/meta-robots-tag-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Meta Robots Tag Generator — noindex, nofollow &amp; Snippet Controls">
+<meta property="og:description" content="Free meta robots tag generator. Build noindex, nofollow, max-snippet, max-image-preview and unavailable_after directives, with per-bot rules and conflict detection.">
+<meta property="og:url" content="https://managemybatch.com/tools/meta-robots-tag-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Meta Robots Tag Generator — noindex, nofollow &amp; Snippet Controls">
+<meta name="twitter:description" content="Free meta robots tag generator. Build noindex, nofollow, max-snippet, max-image-preview and unavailable_after directives, with per-bot rules and conflict detection.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Generator Settings</div>
+
+    <div class="field">
+      <label>Common scenario</label>
+      <div class="seg" id="preset">
+        <button type="button" class="on" data-p="index">Index normally</button>
+        <button type="button" data-p="noindex">Hide from search</button>
+        <button type="button" data-p="thin">Thin / paginated</button>
+        <button type="button" data-p="news">News &amp; media</button>
+        <button type="button" data-p="expiry">Expiring page</button>
+      </div>
+      <div class="hint" id="presetHint"></div>
+    </div>
+
+    <div class="field">
+      <label for="bot">Applies to</label>
+      <select id="bot">
+        <option value="robots">All crawlers (robots)</option>
+        <option value="googlebot">Googlebot only</option>
+        <option value="googlebot-news">Googlebot-News</option>
+        <option value="bingbot">Bingbot only</option>
+        <option value="google-extended">Google-Extended (AI training)</option>
+        <option value="custom">Custom user-agent…</option>
+      </select>
+      <input type="text" id="botCustom" placeholder="e.g. slurp" style="margin-top:8px" hidden>
+      <div class="hint">A bot-specific tag overrides the generic <code>robots</code> tag for that bot only.</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <fieldset class="field">
+      <legend class="label">Indexing directives</legend>
+      <div class="check-list two" id="core"></div>
+    </fieldset>
+
+    <div class="divider"></div>
+
+    <fieldset class="field">
+      <legend class="label">Snippet &amp; preview controls</legend>
+      <div class="field">
+        <label for="snippet">max-snippet</label>
+        <select id="snippet">
+          <option value="">Not set (Google decides)</option>
+          <option value="-1">-1 — no limit</option>
+          <option value="0">0 — no text snippet at all</option>
+          <option value="50">50 characters</option>
+          <option value="100">100 characters</option>
+          <option value="160">160 characters</option>
+          <option value="custom">Custom…</option>
+        </select>
+        <input type="number" id="snippetCustom" placeholder="Characters" style="margin-top:8px" hidden>
+      </div>
+      <div class="field">
+        <label for="imgPreview">max-image-preview</label>
+        <select id="imgPreview">
+          <option value="">Not set</option>
+          <option value="none">none — no image thumbnail</option>
+          <option value="standard">standard</option>
+          <option value="large">large — required for Discover &amp; Top Stories</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="videoPreview">max-video-preview (seconds)</label>
+        <select id="videoPreview">
+          <option value="">Not set</option>
+          <option value="-1">-1 — full length</option>
+          <option value="0">0 — static image only</option>
+          <option value="15">15</option>
+          <option value="30">30</option>
+        </select>
+      </div>
+    </fieldset>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label for="unavailable">unavailable_after</label>
+      <input type="datetime-local" id="unavailable">
+      <div class="hint">Google drops the page from results after this moment. Ideal for events, job listings and limited offers.</div>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Output</legend>
+      <div class="check-list">
+        <label class="check"><input type="checkbox" id="optHttp" checked><span><span class="t">Also show X-Robots-Tag header</span><span class="d">Same rules as an HTTP header, for non-HTML files.</span></span></label>
+        <label class="check"><input type="checkbox" id="optFrameworks" checked><span><span class="t">Show framework snippets</span><span class="d">Next.js, WordPress, Yoast, React Helmet.</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="out-actions" style="margin-top:20px">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate tag</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated Tag<span class="spacer"></span>
+      <span class="result-pill" id="pill">ready</span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="file">HTML</button>
+      <button type="button" data-tab="effect">What this does</button>
+      <button type="button" data-tab="fw">Frameworks</button>
+    </div>
+
+    <div data-panel="file">
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">&lt;head&gt; snippet</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+      <div class="note note-info"><span id="icoInfo"></span><span>Place the tag inside <code>&lt;head&gt;</code>. Tags injected by JavaScript after load are honoured by Google but may be missed by other crawlers — render it server-side when it matters.</span></div>
+      <div id="warnBox"></div>
+    </div>
+
+    <div data-panel="effect" hidden><div id="effect"></div></div>
+    <div data-panel="fw" hidden><div id="fw"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoCopy:copy','icoDl:download','icoInfo:info']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var DIRECTIVES = [
+    { v: 'index',     t: 'index',     d: 'Allow this page in search results (the default — rarely needs stating).' },
+    { v: 'noindex',   t: 'noindex',   d: 'Remove this page from search results entirely.' },
+    { v: 'follow',    t: 'follow',    d: 'Follow links on this page and pass signals (the default).' },
+    { v: 'nofollow',  t: 'nofollow',  d: 'Do not follow any link on this page.' },
+    { v: 'noarchive', t: 'noarchive', d: 'No cached copy link in results.' },
+    { v: 'nosnippet', t: 'nosnippet', d: 'No text snippet or video preview at all.' },
+    { v: 'noimageindex', t: 'noimageindex', d: 'Do not index images hosted on this page.' },
+    { v: 'notranslate',  t: 'notranslate',  d: 'Do not offer a translation of this page in results.' },
+    { v: 'nositelinkssearchbox', t: 'nositelinkssearchbox', d: 'Suppress the sitelinks search box.' },
+    { v: 'indexifembedded', t: 'indexifembedded', d: 'Allow indexing when embedded via iframe, despite noindex.' },
+    { v: 'none',      t: 'none',      d: 'Shorthand for noindex, nofollow.' },
+    { v: 'all',       t: 'all',       d: 'Shorthand for index, follow (explicit default).' }
+  ];
+
+  var state = { index: true, follow: true };
+
+  $('#core').innerHTML = DIRECTIVES.map(function (d) {
+    return '<label class="check"><input type="checkbox" data-d="' + d.v + '"><span><span class="t">' + d.t + '</span><span class="d">' + d.d + '</span></span></label>';
+  }).join('');
+
+  function setChecks(list) {
+    $$('#core input').forEach(function (i) {
+      i.checked = list.indexOf(i.getAttribute('data-d')) > -1;
+      i.closest('.check').classList.toggle('on', i.checked);
+    });
+  }
+
+  var PRESETS = {
+    index:   { checks: ['index', 'follow'], img: 'large', hint: 'The standard tag for a page you want ranked. Explicitly stating index, follow is optional but makes intent obvious in audits.' },
+    noindex: { checks: ['noindex', 'follow'], img: '', hint: 'Removes the page from search while still letting link equity flow through it — the right choice for thank-you pages, internal search results and filtered listings.' },
+    thin:    { checks: ['noindex', 'follow'], img: '', snippet: '', hint: 'Paginated archives and thin tag pages: keep them crawlable so deeper URLs are discovered, but out of the index.' },
+    news:    { checks: ['index', 'follow'], img: 'large', video: '-1', snippet: '-1', hint: 'Publishers: large image previews and unlimited snippets are prerequisites for Google Discover and Top Stories eligibility.' },
+    expiry:  { checks: ['index', 'follow'], img: 'large', expiry: true, hint: 'Time-limited content. Set unavailable_after and Google will drop the URL automatically once it passes.' }
+  };
+
+  $('#preset').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#preset button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    var p = PRESETS[b.getAttribute('data-p')];
+    setChecks(p.checks);
+    $('#imgPreview').value = p.img || '';
+    $('#videoPreview').value = p.video || '';
+    $('#snippet').value = p.snippet || '';
+    $('#snippetCustom').hidden = true;
+    if (p.expiry && !$('#unavailable').value) {
+      var d = new Date(); d.setDate(d.getDate() + 30);
+      $('#unavailable').value = d.toISOString().slice(0, 16);
+    }
+    $('#presetHint').textContent = p.hint;
+    build();
+  });
+
+  $('#bot').addEventListener('change', function () { $('#botCustom').hidden = this.value !== 'custom'; build(); });
+  $('#snippet').addEventListener('change', function () { $('#snippetCustom').hidden = this.value !== 'custom'; build(); });
+
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'meta-robots.html', mime: 'text/html' });
+
+  function botName() {
+    var v = $('#bot').value;
+    return v === 'custom' ? ($('#botCustom').value.trim() || 'robots') : v;
+  }
+
+  function directives() {
+    var d = $$('#core input:checked').map(function (i) { return i.getAttribute('data-d'); });
+    var s = $('#snippet').value;
+    if (s === 'custom') { var c = $('#snippetCustom').value; if (c !== '') d.push('max-snippet:' + c); }
+    else if (s !== '') d.push('max-snippet:' + s);
+    if ($('#imgPreview').value) d.push('max-image-preview:' + $('#imgPreview').value);
+    if ($('#videoPreview').value !== '') d.push('max-video-preview:' + $('#videoPreview').value);
+    var u = $('#unavailable').value;
+    if (u) {
+      var dt = new Date(u);
+      d.push('unavailable_after: ' + dt.toISOString().replace(/\.\d{3}Z$/, 'Z'));
+    }
+    return d;
+  }
+
+  function build() {
+    var d = directives();
+    if (!d.length) d = ['index', 'follow'];
+    var content = d.join(', ');
+    var tag = '<meta name="' + botName() + '" content="' + content + '">';
+    var text = tag;
+    if ($('#optHttp').checked) {
+      var hdr = botName() === 'robots' ? content : botName() + ': ' + content;
+      text += '\n\n<!-- Equivalent HTTP header (use for PDFs, images and other non-HTML files) -->\n' +
+        'X-Robots-Tag: ' + hdr;
+    }
+    out.set(text, 'meta-robots.html');
+    renderEffect(d, content);
+    renderWarnings(d);
+    renderFw(content);
+    return text;
+  }
+
+  function renderEffect(d, content) {
+    var has = function (x) { return d.indexOf(x) > -1; };
+    var noindex = has('noindex') || has('none');
+    var nofollow = has('nofollow') || has('none');
+    var rows = [
+      ['Appears in search results', noindex ? 'No' : 'Yes', !noindex],
+      ['Links are followed', nofollow ? 'No' : 'Yes', !nofollow],
+      ['Text snippet shown', has('nosnippet') ? 'No' : (/max-snippet:0\b/.test(content) ? 'No (length 0)' : 'Yes'), !has('nosnippet')],
+      ['Image thumbnail', /max-image-preview:none/.test(content) || has('noimageindex') ? 'No' : (/max-image-preview:large/.test(content) ? 'Large' : 'Default'), !/max-image-preview:none/.test(content)],
+      ['Cached copy offered', has('noarchive') ? 'No' : 'Yes', !has('noarchive')],
+      ['Discover / Top Stories eligible', /max-image-preview:large/.test(content) && !noindex ? 'Yes' : 'No — needs max-image-preview:large', /max-image-preview:large/.test(content) && !noindex],
+      ['Applies to', botName() === 'robots' ? 'Every crawler that reads meta robots' : 'Only ' + botName(), true]
+    ];
+    $('#effect').innerHTML = rows.map(function (r) {
+      return '<div class="kv"><span class="k">' + r[0] + '</span><span class="v" style="color:' + (r[2] ? 'var(--green)' : 'var(--red)') + '">' + r[1] + '</span></div>';
+    }).join('') +
+    '<div class="note note-info" style="margin-top:16px">' + I.info +
+    '<span>Google treats the <strong>most restrictive</strong> directive it finds as authoritative when a page has several. A bot-specific tag wins over the generic <code>robots</code> tag for that bot.</span></div>';
+  }
+
+  function renderWarnings(d) {
+    var w = [], has = function (x) { return d.indexOf(x) > -1; };
+    if (has('noindex') && has('nofollow')) w.push(['warn', 'noindex + nofollow orphans this page: crawlers stop following its links, so anything only linked from here becomes undiscoverable. Prefer <code>noindex, follow</code> unless you truly want a dead end.']);
+    if (has('index') && has('noindex')) w.push(['err', 'index and noindex conflict. Google resolves conflicts in favour of the restrictive directive, so this behaves as noindex.']);
+    if (has('follow') && has('nofollow')) w.push(['err', 'follow and nofollow conflict — nofollow wins.']);
+    if (has('none') && (has('index') || has('follow'))) w.push(['err', '<code>none</code> already means noindex, nofollow; combining it with index or follow is contradictory.']);
+    if (has('noindex')) w.push(['warn', 'For noindex to work, the page must stay crawlable. If robots.txt disallows this URL, Google never sees the tag and the page can remain indexed as a URL-only result.']);
+    if (has('nosnippet') && /max-snippet/.test(d.join(','))) w.push(['warn', 'nosnippet overrides max-snippet — remove one of them.']);
+    if (has('noindex') && $('#unavailable').value) w.push(['warn', 'unavailable_after is redundant on a page already marked noindex.']);
+    if (!w.length) w.push(['ok', 'No conflicting directives detected.']);
+
+    $('#warnBox').innerHTML = w.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : x[0] === 'warn' ? 'note-warn' : 'note-err') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+
+    var errs = w.filter(function (x) { return x[0] === 'err'; }).length;
+    var pill = $('#pill');
+    pill.textContent = errs ? errs + ' conflict' + (errs > 1 ? 's' : '') : 'valid';
+    pill.style.background = errs ? 'var(--red-bg)' : 'var(--green-bg)';
+    pill.style.color = errs ? 'var(--red)' : 'var(--green)';
+  }
+
+  function renderFw(content) {
+    if (!$('#optFrameworks').checked) { $('#fw').innerHTML = '<p style="color:var(--muted);font-size:13.8px">Enable “Show framework snippets” in the settings panel.</p>'; return; }
+    var name = botName();
+    var blocks = [
+      ['Next.js (App Router)', 'export const metadata = {\n  robots: {\n    index: ' + (content.indexOf('noindex') === -1) + ',\n    follow: ' + (content.indexOf('nofollow') === -1) + ',\n    googleBot: { "max-image-preview": "' + ($('#imgPreview').value || 'standard') + '" }\n  }\n};'],
+      ['Next.js (Pages Router)', 'import Head from "next/head";\n\n<Head>\n  <meta name="' + name + '" content="' + content + '" />\n</Head>'],
+      ['React Helmet', '<Helmet>\n  <meta name="' + name + '" content="' + content + '" />\n</Helmet>'],
+      ['WordPress (functions.php)', 'add_action("wp_head", function () {\n  if (is_page("thank-you")) {\n    echo \'<meta name="' + name + '" content="' + content + '">\' . "\\n";\n  }\n});'],
+      ['Yoast SEO', 'Edit the post → Advanced tab → set “Allow search engines to show this page in search results?” to No, then add the extra directives under Meta robots advanced.'],
+      ['Astro / plain HTML', '<meta name="' + name + '" content="' + content + '" />']
+    ];
+    $('#fw').innerHTML = blocks.map(function (b) {
+      var body = b[1].indexOf('<') === 0 || /\n/.test(b[1])
+        ? '<pre class="code">' + GT.esc(b[1]) + '</pre>'
+        : '<p style="color:var(--muted);font-size:13.8px">' + b[1] + '</p>';
+      return '<div style="margin-bottom:18px"><h4 style="font-size:14.5px;margin-bottom:8px">' + b[0] + '</h4>' + body + '</div>';
+    }).join('');
+  }
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Meta robots tag generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+
+  setChecks(['index', 'follow']);
+  $('#imgPreview').value = 'large';
+  $('#presetHint').textContent = PRESETS.index.hint;
+  build();
+
+  GT.page({
+    slug: 'meta-robots-tag-generator',
+    lede: 'Build meta robots tags with snippet, image and expiry controls — and see exactly which conflicts would make Google ignore what you intended.',
+    steps: [
+      { icon: 'gear', title: 'Choose a scenario', text: 'Start from a preset like “Hide from search” or “News & media”, then adjust individual directives.' },
+      { icon: 'tag', title: 'Check the effect table', text: 'See in plain language whether snippets, thumbnails and Discover eligibility survive your combination.' },
+      { icon: 'copy', title: 'Paste into <head>', text: 'Copy the tag, or grab the framework snippet for Next.js, WordPress or React.' }
+    ],
+    guideTitle: 'Meta robots, robots.txt and X-Robots-Tag — which one to reach for',
+    guide:
+      '<p style="color:var(--muted)">These three mechanisms look interchangeable and are not. Choosing wrong is the single most common cause of “I added noindex and the page is still in Google”.</p>' +
+      '<div class="grid g3" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">robots.txt</h4><p style="color:var(--muted);font-size:13.8px">Controls <strong>crawling</strong>. It stops a bot fetching the URL — which also stops it seeing any meta tag on that page. A blocked URL can still appear in results as a bare link.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Meta robots</h4><p style="color:var(--muted);font-size:13.8px">Controls <strong>indexing</strong> for a single HTML page. Requires the page to be crawlable. This is the correct tool for “keep it off Google but let crawlers walk its links”.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">X-Robots-Tag</h4><p style="color:var(--muted);font-size:13.8px">Same directives as an HTTP response header. The only option for non-HTML files — PDFs, images, feeds — and the easiest way to apply rules across whole directories at the server.</p></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>The classic mistake:</strong> adding <code>noindex</code> to a page and simultaneously blocking it in robots.txt. Googlebot never fetches the page, never reads the tag, and the URL stays indexed indefinitely. Let it crawl, and let the tag do its job.</span></div>' +
+      '<div class="note note-info" style="margin-top:12px">' + GTI.info + '<span><code>max-image-preview:large</code> is not cosmetic — it is a hard requirement for Google Discover and Top Stories. Many publishers lose those surfaces without realising a restrictive default is the cause.</span></div>',
+    related: ['x-robots-tag-generator', 'canonical-tag-generator', 'ai-crawler-robots-txt-generator'],
+    faqs: [
+      { q: 'What does noindex, follow mean?', a: 'The page will not appear in search results, but crawlers will still follow its links and discover the pages it points to. It is the right setting for paginated archives, internal search pages and filtered listings.' },
+      { q: 'Why is my noindex page still in Google?', a: 'Almost always because robots.txt blocks the URL, so Googlebot never fetches the page and never sees the tag. Unblock it, and the noindex will be honoured on the next crawl.' },
+      { q: 'Is the meta robots tag case-sensitive?', a: 'No. Directive names and values are case-insensitive, and whitespace around the commas is ignored. Keep to lowercase for readability.' },
+      { q: 'Should I add index, follow to every page?', a: 'It is unnecessary — index, follow is the default when no tag is present. Some teams add it anyway so that intent is explicit during audits. It does not help or hurt rankings.' },
+      { q: 'What does unavailable_after do?', a: 'It tells Google to drop the URL from results after a given date and time. It is useful for events, expiring offers and job listings. The page still returns 200 for users.' },
+      { q: 'Can I target one search engine only?', a: 'Yes — use the bot name instead of <code>robots</code>, for example <code>&lt;meta name="googlebot" content="noindex"&gt;</code>. A bot-specific tag overrides the generic one for that crawler.' }
+    ],
+    seo: {
+      title: 'Meta robots tags: noindex, nofollow and everything in between',
+      lead: 'This <strong>meta robots tag generator</strong> builds the exact <code>&lt;meta name="robots"&gt;</code> directive you need, including snippet, image and expiry controls, and warns about combinations Google will ignore. Below: what each value does, why noindexed pages still show up, and when to reach for a header instead.',
+      blocks: [
+        {
+          h: 'What the meta robots tag does',
+          html: '<p>The <strong>meta robots tag</strong> is a single line in the <code>&lt;head&gt;</code> that controls how search engines index one page and how they display it in results:</p>' +
+            '<p><code>&lt;meta name="robots" content="noindex, follow"&gt;</code></p>' +
+            '<p>The crucial difference from robots.txt is <em>when</em> it applies. robots.txt stops a crawler requesting the page at all. The meta robots tag is read after the page has been fetched — which means the crawler must be allowed to fetch it for the directive to be seen.</p>' +
+            '<p>That single fact explains most of the confusion around noindex, and most of the cases where it appears not to work.</p>'
+        },
+        {
+          h: 'The directives, and what they actually mean',
+          table: {
+            head: ['Value', 'Effect'],
+            rows: [
+              ['<code>index</code> / <code>follow</code>', 'The defaults. Adding them changes nothing — omit the tag entirely instead.'],
+              ['<code>noindex</code>', 'Keep this page out of the index. Links on it are still followed unless you say otherwise.'],
+              ['<code>nofollow</code>', 'Do not pass ranking signals through links on this page. It does not stop the URLs being discovered elsewhere.'],
+              ['<code>none</code>', 'Shorthand for <code>noindex, nofollow</code>.'],
+              ['<code>noarchive</code>', 'No cached copy offered in results.'],
+              ['<code>nosnippet</code>', 'No text snippet and no video preview. Usually costs you clicks.'],
+              ['<code>max-snippet:150</code>', 'Cap the snippet at 150 characters. <code>-1</code> means no limit.'],
+              ['<code>max-image-preview:large</code>', 'Allow a large image preview. Recommended for editorial and ecommerce.'],
+              ['<code>max-video-preview:-1</code>', 'No limit on video preview length.'],
+              ['<code>noimageindex</code>', 'Do not index images hosted on this page.'],
+              ['<code>unavailable_after:2026-12-31T23:59:59Z</code>', 'Drop the page from the index after this date. Useful for events and limited offers.'],
+              ['<code>notranslate</code>', 'Do not offer a translation of this page in results.']
+            ]
+          }
+        },
+        {
+          h: 'Why a noindexed page is still in Google',
+          html: '<p>Almost always one of four reasons, in descending order of frequency:</p>',
+          ol: [
+            '<strong>The page is also disallowed in robots.txt.</strong> Google never fetched it, so it never saw the noindex. It stays in the index as a bare URL with no snippet. Remove the <code>Disallow</code> and let it be crawled.',
+            '<strong>It has not been recrawled yet.</strong> Removal happens on the next crawl, which can take days or weeks on a low-priority URL. Request indexing in Search Console to speed it up.',
+            '<strong>The tag is injected by JavaScript.</strong> Google may index the page during the initial HTML pass before rendering. Serve the directive in the source HTML or as an HTTP header.',
+            '<strong>There are conflicting directives.</strong> Two robots meta tags, or a meta tag saying one thing and an <code>X-Robots-Tag</code> header saying another. Where they conflict, the most restrictive wins — but a duplicated tag can simply be ignored.'
+          ],
+          callout: { type: 'warn', text: '<strong>Never combine <code>Disallow</code> in robots.txt with <code>noindex</code> on the page.</strong> They cancel each other out. If you want a page gone from the index, it must remain crawlable so the noindex can be read.' }
+        },
+        {
+          h: 'Which tool for which job',
+          cards: [
+            { t: 'robots.txt', d: 'Controls crawling of paths. Use it to save crawl budget on infinite facets, search results and admin areas. It cannot reliably remove anything from the index.' },
+            { t: 'Meta robots', d: 'Controls indexing and display of a single HTML page. The right default for thin pages, thank-you pages, staging content and internal search results.' },
+            { t: 'X-Robots-Tag', d: 'The same directives sent as an HTTP header. The only option for PDFs, images and other non-HTML files, and the efficient way to cover a whole directory.' }
+          ],
+          after: '<p>See the <a href="ai-crawler-robots-txt-generator.html">robots.txt generator</a> and the <a href="x-robots-tag-generator.html">X-Robots-Tag generator</a> for the other two.</p>'
+        },
+        {
+          h: 'Targeting specific crawlers',
+          html: '<p>Replace <code>robots</code> with a crawler token to address one engine. <code>googlebot</code>, <code>bingbot</code>, <code>googlebot-news</code> and <code>googlebot-image</code> are the common ones:</p>' +
+            '<p><code>&lt;meta name="googlebot" content="noindex"&gt;</code></p>' +
+            '<p>A crawler-specific tag overrides the generic <code>robots</code> tag for that crawler only. Everyone else follows the generic one. Values are case-insensitive and whitespace around commas is ignored, so <code>NoIndex, Follow</code> is valid — but pick a convention and keep it consistent, because inconsistent casing makes bulk auditing painful.</p>'
+        },
+        {
+          h: 'Pages that usually deserve noindex',
+          list: [
+            'Internal search result pages — infinite, thin, and a classic source of index bloat.',
+            'Thank-you, confirmation and download-delivery pages.',
+            'Login, account and checkout steps.',
+            'Faceted navigation combinations beyond the handful with genuine search demand.',
+            'Tag and author archives on small blogs where they duplicate the main listing.',
+            'Staging, preview and print-view URLs.',
+            'Expired jobs, events and out-of-stock products with no replacement — often best paired with <code>unavailable_after</code>.'
+          ],
+          callout: { type: 'tip', text: 'Prefer <code>noindex, follow</code> over <code>none</code> for internal pages. Keeping links followable lets ranking signals continue to flow to the pages you do want indexed, which matters most on the faceted and archive URLs where noindex is used heavily.' }
+        },
+        {
+          h: 'Related indexing tools',
+          list: [
+            '<a href="x-robots-tag-generator.html">X-Robots-Tag Generator</a> — header directives for PDFs, images and directories.',
+            '<a href="canonical-tag-generator.html">Canonical Tag Generator</a> — consolidate duplicates rather than noindexing them.',
+            '<a href="ai-crawler-robots-txt-generator.html">AI Crawler robots.txt Generator</a> — crawl-level control including AI user-agents.',
+            '<a href="sitemap-index-generator.html">Sitemap Index Generator</a> — never list a noindexed URL in a sitemap.'
+          ]
+        }
+      ],
+      keywords: [
+        'meta robots tag generator', 'noindex nofollow', 'meta robots noindex',
+        'meta name robots content', 'max-snippet', 'max-image-preview',
+        'unavailable_after', 'noindex not working', 'meta robots vs robots.txt',
+        'googlebot meta tag', 'noarchive nosnippet', 'stop page being indexed'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

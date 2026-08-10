@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bingo Card Generator — Print Unique Cards Free | Manage My Batch</title>
+<meta name="description" content="Free bingo card generator. Print unique bingo cards from numbers or your own word list, with free space, custom grid sizes, a call list and duplicate detection.">
+<link rel="canonical" href="https://managemybatch.com/tools/bingo-card-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Bingo Card Generator — Print Unique Cards Free">
+<meta property="og:description" content="Free bingo card generator. Print unique bingo cards from numbers or your own word list, with free space, custom grid sizes, a call list and duplicate detection.">
+<meta property="og:url" content="https://managemybatch.com/tools/bingo-card-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Bingo Card Generator — Print Unique Cards Free">
+<meta name="twitter:description" content="Free bingo card generator. Print unique bingo cards from numbers or your own word list, with free space, custom grid sizes, a call list and duplicate detection.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Card Settings</div>
+
+    <div class="field">
+      <label>Card content</label>
+      <div class="seg" id="source">
+        <button type="button" class="on" data-s="words">My own list</button>
+        <button type="button" data-s="numbers">Numbers</button>
+        <button type="button" data-s="classic">Classic BINGO 1–75</button>
+      </div>
+      <div class="hint" id="sourceHint"></div>
+    </div>
+
+    <div class="field" id="wordsField">
+      <label for="words">Words or phrases — one per line</label>
+      <textarea id="words" style="min-height:170px">addition
+subtraction
+fraction
+decimal
+multiply
+divide
+angle
+perimeter
+area
+volume
+average
+estimate
+rounding
+symmetry
+percentage
+ratio
+equation
+factor
+multiple
+sequence
+triangle
+rectangle
+diameter
+radius
+probability</textarea>
+      <div id="stats"></div>
+    </div>
+
+    <div class="row" id="numberField" hidden>
+      <div class="field"><label for="numMin">From</label><input type="number" id="numMin" value="1"></div>
+      <div class="field"><label for="numMax">To</label><input type="number" id="numMax" value="75"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="row">
+      <div class="field">
+        <label for="gridSize">Grid size</label>
+        <select id="gridSize">
+          <option value="3">3 × 3</option>
+          <option value="4">4 × 4</option>
+          <option value="5" selected>5 × 5</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="cards">Number of cards</label>
+        <input type="number" id="cards" value="12" min="1" max="200">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="perPage">Cards per page</label>
+        <select id="perPage">
+          <option value="1">1 — large</option>
+          <option value="2" selected>2</option>
+          <option value="4">4 — compact</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="title">Card title</label>
+        <input type="text" id="title" value="BINGO">
+      </div>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Options</legend>
+      <div class="check-list">
+        <label class="check on"><input type="checkbox" id="optFree" checked>
+          <span><span class="t">Free space in the centre</span><span class="d">Odd-sized grids only.</span></span></label>
+        <label class="check on"><input type="checkbox" id="optHeader" checked>
+          <span><span class="t">B-I-N-G-O header row</span></span></label>
+        <label class="check on"><input type="checkbox" id="optNumberCards" checked>
+          <span><span class="t">Number each card</span><span class="d">Makes it easy to verify a winning card.</span></span></label>
+        <label class="check"><input type="checkbox" id="optColumnRanges">
+          <span><span class="t">Classic column ranges</span><span class="d">B=1–15, I=16–30, N=31–45, G=46–60, O=61–75.</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="field">
+      <label for="seed">Seed</label>
+      <div class="row" style="grid-template-columns:minmax(0,1fr) auto;gap:8px">
+        <input type="text" id="seed" value="bingo-1">
+        <button type="button" class="btn btn-soft" id="newSeed"><span id="icoReset"></span></button>
+      </div>
+    </div>
+
+    <div class="out-actions">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate Cards</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Bingo Cards<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="preview">Cards</button>
+      <button type="button" data-tab="calls">Call list</button>
+      <button type="button" data-tab="guide">How to run it</button>
+    </div>
+
+    <div data-panel="preview">
+      <div id="preview"></div>
+      <div class="out-actions" style="margin-top:16px">
+        <button type="button" class="btn btn-primary" id="printBtn"><span id="icoFile"></span> Print all cards</button>
+        <button type="button" class="btn btn-soft" id="regen"><span id="icoReset2"></span> New cards</button>
+      </div>
+      <div id="checks"></div>
+    </div>
+
+    <div data-panel="calls" hidden>
+      <p style="color:var(--muted);font-size:13.8px;margin-bottom:12px">A shuffled call order, so you can tick items off as you read them out. Printing this alongside the cards keeps the game moving.</p>
+      <div id="calls"></div>
+      <div class="out-actions" style="margin-top:14px">
+        <button class="btn btn-ghost" id="printCalls"><span id="icoFile2"></span> Print call list</button>
+        <button class="btn btn-ghost" id="copyCalls"><span id="icoCopy"></span> Copy</button>
+      </div>
+    </div>
+
+    <div data-panel="guide" hidden><div id="guide"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/worksheet.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$, W = GTWorksheet;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoReset:reset','icoReset2:reset','icoFile:file','icoFile2:file','icoCopy:copy']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var HINTS = {
+    words: 'Vocabulary, times tables, sight words — anything you can call out.',
+    numbers: 'A simple numeric range.',
+    classic: 'Standard 75-ball bingo with column ranges and a free space.'
+  };
+
+  var cards = [], pool = [], callList = [];
+
+  function sourceMode() {
+    return $$('#source button').filter(function (b) { return b.classList.contains('on'); })[0].getAttribute('data-s');
+  }
+
+  function buildPool() {
+    var mode = sourceMode();
+    if (mode === 'words') {
+      var seen = {}, out = [];
+      GT.lines($('#words').value).forEach(function (l) {
+        var k = l.toLowerCase();
+        if (seen[k]) return;
+        seen[k] = 1; out.push(l);
+      });
+      return out;
+    }
+    var lo = mode === 'classic' ? 1 : (parseInt($('#numMin').value, 10) || 1);
+    var hi = mode === 'classic' ? 75 : (parseInt($('#numMax').value, 10) || 75);
+    if (lo > hi) { var t = lo; lo = hi; hi = t; }
+    var arr = [];
+    for (var i = lo; i <= hi && arr.length < 5000; i++) arr.push(String(i));
+    return arr;
+  }
+
+  function makeCard(rand, size, useColumns) {
+    var free = $('#optFree').checked && size % 2 === 1;
+    var grid = [];
+    for (var r = 0; r < size; r++) { grid.push([]); for (var c = 0; c < size; c++) grid[r].push(null); }
+
+    if (useColumns) {
+      /* Each column draws from its own slice of the range, as in 75-ball bingo. */
+      var per = Math.floor(pool.length / size);
+      for (var col = 0; col < size; col++) {
+        var slice = pool.slice(col * per, col === size - 1 ? pool.length : (col + 1) * per);
+        var chosen = rand.shuffle(slice).slice(0, size);
+        for (var row = 0; row < size; row++) grid[row][col] = chosen[row] === undefined ? '' : chosen[row];
+      }
+    } else {
+      var flat = rand.shuffle(pool).slice(0, size * size);
+      var k = 0;
+      for (var r2 = 0; r2 < size; r2++) for (var c2 = 0; c2 < size; c2++) grid[r2][c2] = flat[k++] === undefined ? '' : flat[k - 1];
+    }
+
+    if (free) {
+      var mid = Math.floor(size / 2);
+      grid[mid][mid] = '★ FREE';
+    }
+    return grid;
+  }
+
+  function cardKey(grid) {
+    return grid.map(function (r) { return r.join('|'); }).join('//');
+  }
+
+  function build() {
+    pool = buildPool();
+    var mode = sourceMode();
+    $('#sourceHint').textContent = HINTS[mode];
+    $('#wordsField').hidden = mode !== 'words';
+    $('#numberField').hidden = mode !== 'numbers';
+
+    if (mode === 'words') {
+      $('#stats').innerHTML = '<div class="note ' + (pool.length ? 'note-ok' : 'note-warn') + '" style="margin-top:10px">' +
+        (pool.length ? I.check : I.warn) + '<span>' + pool.length + ' unique item' + (pool.length === 1 ? '' : 's') + '</span></div>';
+    }
+
+    var size = parseInt($('#gridSize').value, 10);
+    var need = size * size - (($('#optFree').checked && size % 2 === 1) ? 1 : 0);
+    var nCards = Math.max(1, Math.min(200, parseInt($('#cards').value, 10) || 1));
+    var useColumns = $('#optColumnRanges').checked && mode !== 'words' && pool.length >= size * size;
+
+    if (pool.length < need) {
+      $('#preview').innerHTML = '<div class="empty">Not enough items — a ' + size + '×' + size +
+        ' card needs at least ' + need + ', you have ' + pool.length + '.</div>';
+      $('#pill').textContent = 'too few items';
+      $('#pill').style.background = 'var(--red-bg)'; $('#pill').style.color = 'var(--red)';
+      renderChecks(need, 0);
+      return;
+    }
+
+    var rand = W.rng($('#seed').value);
+    cards = [];
+    var seen = {}, dupes = 0, guard = 0;
+    while (cards.length < nCards && guard++ < nCards * 25) {
+      var g = makeCard(rand, size, useColumns);
+      var k = cardKey(g);
+      if (seen[k]) { dupes++; continue; }
+      seen[k] = 1;
+      cards.push(g);
+    }
+
+    callList = rand.shuffle(pool);
+
+    renderPreview(size);
+    renderCalls();
+    renderChecks(need, dupes);
+
+    $('#pill').textContent = cards.length + ' card' + (cards.length === 1 ? '' : 's') + ' · ' + size + '×' + size;
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+  }
+
+  function headerLetters(size) {
+    var word = ($('#title').value || 'BINGO').replace(/\s/g, '').toUpperCase();
+    var out = [];
+    for (var i = 0; i < size; i++) out.push(word[i] || '');
+    return out;
+  }
+
+  function cardHtml(grid, idx, size, compact) {
+    var fs = compact ? 10.5 : (size >= 5 ? 12 : 14);
+    var cellH = compact ? 30 : (size >= 5 ? 40 : 48);
+    var html = '<div style="border:2px solid var(--ink);border-radius:8px;padding:10px;background:#fff">';
+    if ($('#optNumberCards').checked) {
+      html += '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px">' +
+        '<strong style="font-size:' + (compact ? 12 : 14) + 'px;letter-spacing:.1em">' + GT.esc($('#title').value) + '</strong>' +
+        '<span style="font-size:11px;color:var(--muted)">Card ' + (idx + 1) + '</span></div>';
+    }
+    html += '<table style="border-collapse:collapse;width:100%;table-layout:fixed">';
+    if ($('#optHeader').checked) {
+      html += '<tr>' + headerLetters(size).map(function (l) {
+        return '<th style="border:1.5px solid var(--ink);padding:4px;font-size:' + (fs + 2) +
+          'px;background:var(--bg-soft)">' + l + '</th>';
+      }).join('') + '</tr>';
+    }
+    grid.forEach(function (row) {
+      html += '<tr>' + row.map(function (cell) {
+        var isFree = cell === '★ FREE';
+        return '<td style="border:1.5px solid var(--ink);height:' + cellH + 'px;text-align:center;vertical-align:middle;' +
+          'font-size:' + (isFree ? fs - 1 : fs) + 'px;font-weight:' + (isFree ? '700' : '500') + ';' +
+          'padding:2px;word-break:break-word;line-height:1.2;' +
+          (isFree ? 'background:var(--bg-soft);' : '') + '">' + GT.esc(cell) + '</td>';
+      }).join('') + '</tr>';
+    });
+    html += '</table></div>';
+    return html;
+  }
+
+  function renderPreview(size) {
+    var show = Math.min(cards.length, 4);
+    $('#preview').innerHTML =
+      '<p class="more-label">Showing ' + show + ' of ' + cards.length + ' cards</p>' +
+      '<div class="grid g2">' + cards.slice(0, show).map(function (g, i) {
+        return cardHtml(g, i, size, true);
+      }).join('') + '</div>';
+  }
+
+  function renderCalls() {
+    $('#calls').innerHTML = '<div style="columns:4;column-gap:16px;font-size:13.5px;line-height:2">' +
+      callList.map(function (c, i) {
+        return '<div style="break-inside:avoid"><span style="color:var(--muted-2);font-size:11px">' +
+          String(i + 1).padStart(2, '0') + '</span> ☐ ' + GT.esc(c) + '</div>';
+      }).join('') + '</div>';
+  }
+
+  function renderChecks(need, dupes) {
+    var c = [];
+    var size = parseInt($('#gridSize').value, 10);
+    var nCards = parseInt($('#cards').value, 10) || 1;
+
+    if (pool.length < need) {
+      c.push(['err', 'A ' + size + '×' + size + ' card needs ' + need + ' items but the list has ' + pool.length + '.']);
+    } else {
+      c.push(['ok', pool.length + ' items available for ' + need + ' squares per card.']);
+    }
+
+    if (dupes) {
+      c.push(['warn', dupes + ' duplicate card' + (dupes === 1 ? ' was' : 's were') +
+        ' discarded and regenerated. With a small item pool there are only so many distinct cards possible.']);
+    }
+
+    /* Rough guide to how many genuinely different cards the pool supports. */
+    if (pool.length && pool.length < need * 1.6) {
+      c.push(['warn', 'The pool is only slightly larger than a card. Cards will look very similar and several players will win simultaneously. Aim for at least twice as many items as squares.']);
+    } else if (pool.length >= need * 2) {
+      c.push(['ok', 'Pool is comfortably larger than a card, so cards vary well.']);
+    }
+
+    if ($('#optFree').checked && size % 2 === 0) {
+      c.push(['warn', 'Even-sized grids have no centre square, so the free space is skipped.']);
+    }
+    if ($('#optColumnRanges').checked && sourceMode() === 'words') {
+      c.push(['warn', 'Column ranges only apply to numeric cards — the option is ignored for word lists.']);
+    }
+    if (nCards > 60) {
+      c.push(['warn', nCards + ' cards is a lot of paper. Consider 4-per-page for a class set.']);
+    }
+    $('#checks').innerHTML = c.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : x[0] === 'warn' ? 'note-warn' : 'note-err') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+  }
+
+  function printWindow(title, body) {
+    var w = window.open('', '_blank');
+    if (!w) { GT.toast('Allow pop-ups to print'); return; }
+    w.document.write('<!DOCTYPE html><html><head><meta charset="utf-8"><title>' + GT.esc(title) + '</title><style>' +
+      'body{font-family:Arial,Helvetica,sans-serif;color:#0f172a;margin:10mm}' +
+      '.wrap{display:grid;gap:10mm}' +
+      '.p1{grid-template-columns:1fr}.p2{grid-template-columns:1fr 1fr}.p4{grid-template-columns:1fr 1fr}' +
+      '.card{border:2px solid #0f172a;border-radius:8px;padding:10px;break-inside:avoid;page-break-inside:avoid}' +
+      '.card table{border-collapse:collapse;width:100%;table-layout:fixed}' +
+      '.card td,.card th{border:1.5px solid #0f172a;text-align:center;vertical-align:middle;padding:3px;' +
+      'word-break:break-word;line-height:1.2}' +
+      '.card th{background:#f1f5f9}' +
+      '.hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}' +
+      '.hd strong{letter-spacing:.12em}.hd span{font-size:11px;color:#64748b}' +
+      '.free{background:#f1f5f9;font-weight:700}' +
+      '@media print{body{margin:8mm}.noprint{display:none}}' +
+      '</style></head><body>' + body +
+      '<script>window.onload=function(){window.print()}<' + '/script></body></html>');
+    w.document.close();
+  }
+
+  $('#printBtn').addEventListener('click', function () {
+    var size = parseInt($('#gridSize').value, 10);
+    var per = parseInt($('#perPage').value, 10);
+    var cellH = per === 4 ? 30 : per === 2 ? 42 : 60;
+    var fs = per === 4 ? 10 : per === 2 ? 12 : 16;
+
+    var body = '<div class="wrap p' + per + '">' + cards.map(function (g, i) {
+      var h = '<div class="card">';
+      if ($('#optNumberCards').checked) {
+        h += '<div class="hd"><strong style="font-size:' + (fs + 2) + 'px">' + GT.esc($('#title').value) +
+          '</strong><span>Card ' + (i + 1) + '</span></div>';
+      }
+      h += '<table>';
+      if ($('#optHeader').checked) {
+        h += '<tr>' + headerLetters(size).map(function (l) {
+          return '<th style="font-size:' + (fs + 3) + 'px">' + l + '</th>';
+        }).join('') + '</tr>';
+      }
+      g.forEach(function (row) {
+        h += '<tr>' + row.map(function (cell) {
+          var free = cell === '★ FREE';
+          return '<td class="' + (free ? 'free' : '') + '" style="height:' + cellH + 'px;font-size:' + fs + 'px">' +
+            GT.esc(cell) + '</td>';
+        }).join('') + '</tr>';
+      });
+      h += '</table></div>';
+      return h;
+    }).join('') + '</div>';
+
+    printWindow($('#title').value + ' cards', body);
+  });
+
+  $('#printCalls').addEventListener('click', function () {
+    printWindow('Bingo call list',
+      '<h2 style="margin:0 0 4px">' + GT.esc($('#title').value) + ' — call list</h2>' +
+      '<p style="color:#64748b;font-size:12px;margin:0 0 14px">' + callList.length +
+      ' items in shuffled order · tick each one as you call it</p>' +
+      '<div style="columns:4;column-gap:14px;font-size:13px;line-height:2.1">' +
+      callList.map(function (c, i) {
+        return '<div style="break-inside:avoid"><span style="color:#94a3b8;font-size:10px">' +
+          String(i + 1).padStart(2, '0') + '</span> ☐ ' + GT.esc(c) + '</div>';
+      }).join('') + '</div>');
+  });
+  $('#copyCalls').addEventListener('click', function () {
+    GT.copy(callList.map(function (c, i) { return (i + 1) + '. ' + c; }).join('\n'), 'Call list');
+  });
+
+  $('#source').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#source button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    var s = b.getAttribute('data-s');
+    if (s === 'classic') {
+      $('#gridSize').value = '5';
+      $('#optColumnRanges').checked = true;
+      $('#optColumnRanges').closest('.check').classList.add('on');
+      $('#optFree').checked = true;
+      $('#title').value = 'BINGO';
+    }
+    build();
+  });
+  $('#newSeed').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); });
+  $('#regen').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); GT.toast('New cards'); });
+
+  $('#guide').innerHTML = [
+    ['Pool size decides how good the game is', 'If your list barely covers one card, every card looks the same and half the room shouts bingo at once. Aim for at least twice as many items as squares — for a 5×5 card that means 50 or more items. The tool warns you when the pool is too thin.'],
+    ['Print the call list', 'Reading items off the original list means you lose track of what has been called. The shuffled call list with tick boxes solves that, and shuffling it means the game does not follow the order you typed.'],
+    ['Number the cards', 'When someone calls bingo, you need to check it. A card number lets you find the right grid instantly rather than squinting at a photo of a card.'],
+    ['Free space changes the odds', 'A centre free square makes lines through the middle much easier and shortens the game noticeably. Useful with younger children, worth turning off if you want a longer game.'],
+    ['Classic column ranges are what makes it 75-ball bingo', 'In traditional bingo, B holds 1–15, I holds 16–30 and so on. Without column ranges any number can appear in any column, which is fine for classroom vocabulary bingo but is not the traditional game.'],
+    ['Smaller grids for younger players', '3×3 finishes quickly and keeps attention. 5×5 is the standard but takes considerably longer, especially without a free space.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('');
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Cards generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'bingo-card-generator',
+    lede: 'Print unique bingo cards from your own word list or a number range — with duplicate detection, a shuffled call list, and a warning when your pool is too small.',
+    steps: [
+      { icon: 'gear', title: 'Add your items', text: 'Vocabulary, times tables, sight words or a number range.' },
+      { icon: 'bingo', title: 'Set grid and card count', text: '3×3 for younger players, 5×5 for the classic game.' },
+      { icon: 'file', title: 'Print cards and call list', text: 'One, two or four cards per page, plus a tickable call sheet.' }
+    ],
+    guideTitle: 'The mistake that ruins classroom bingo',
+    guide:
+      '<p style="color:var(--muted)">Someone types 25 vocabulary words, generates 30 cards for a 5×5 grid, and every single card contains all 25 words in a different arrangement. The first few calls produce a winner, several children win simultaneously, and the game is over in two minutes.</p>' +
+      '<p style="color:var(--muted);margin-top:12px">The fix is simple arithmetic: your item pool needs to be substantially larger than one card. A 5×5 grid with a free space uses 24 items, so you want at least 50 in the pool for cards that genuinely differ. This tool checks that ratio and tells you when it is too tight — most generators just hand you near-identical cards.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Pool size guide</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><strong>3×3</strong> — 9 squares, want 20+ items.</li><li><strong>4×4</strong> — 16 squares, want 35+ items.</li><li><strong>5×5 with free space</strong> — 24 squares, want 50+ items.</li></ul>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">Below those numbers the game still works, but expect multiple simultaneous winners.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Running it well</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>Print the shuffled call list and tick items off — do not read from your original list.</li><li>Number the cards so you can verify a winner quickly.</li><li>Free space shortens the game; drop it if you want it to last.</li><li>Four cards per page for a class set saves a lot of paper.</li></ul></div></div>' +
+      '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>Cards are checked against each other and any exact duplicate is discarded and regenerated, so two children never receive identical grids — which is otherwise a real possibility with a small pool.</span></div>',
+    related: ['word-search-puzzle-generator', 'vocabulary-quiz-generator', 'random-question-picker'],
+    faqs: [
+      { q: 'How many words do I need for bingo cards?', a: 'At least twice the number of squares. A 5×5 card with a free space uses 24, so aim for 50 or more items — otherwise every card contains nearly the same words and several players win at once.' },
+      { q: 'Are the cards guaranteed to be different?', a: 'Every generated card is compared against the others and exact duplicates are discarded and regenerated. With a small item pool the number of genuinely distinct cards is limited, and the tool warns you when that happens.' },
+      { q: 'What is the free space for?', a: 'The centre square is marked free and counts as already covered. It makes lines through the middle easier and shortens the game, which suits younger children. Turn it off for a longer game.' },
+      { q: 'What are classic column ranges?', a: 'In traditional 75-ball bingo, column B holds numbers 1–15, I holds 16–30, N 31–45, G 46–60 and O 61–75. Without this, any number can appear in any column — fine for classroom bingo, but not the traditional game.' },
+      { q: 'Can I print several cards per page?', a: 'Yes — one, two or four per page. Four is compact and sensible for a class set; one gives large cards that are easier for young children to mark.' },
+      { q: 'Is there a call list?', a: 'Yes. The Call list tab gives you every item in shuffled order with tick boxes, printable separately. Calling from your original typed list makes it very easy to lose your place.' }
+    ],
+    seo: {
+      title: 'Bingo cards: unique grids, pool size and the mistake that ruins the game',
+      lead: 'This <strong>bingo card generator</strong> prints unique cards from your own word list or a number range, with duplicate detection, a shuffled call list, and a warning when your pool is too small. Below: how many items you actually need, and why two identical cards ends a game badly.',
+      blocks: [
+        {
+          h: 'The mistake that ruins classroom bingo',
+          html: '<p>Too few items in the pool. With 20 words and a 5×5 grid, every card contains 24 of the same 20 — which is impossible — or, more commonly, the generator quietly repeats items and produces cards that are near-identical.</p>' +
+            '<p>The failure appears at the worst moment. Halfway through, six children call bingo simultaneously, because their cards were effectively the same card. The game ends, nobody believes it was fair, and the activity is over ten minutes early.</p>' +
+            '<p>The generator checks the pool size against the grid and the number of cards before printing, and refuses to produce cards it cannot make meaningfully distinct.</p>',
+          callout: { type: 'warn', text: '<strong>Check the warning before you print thirty cards.</strong> A pool that is technically large enough but only just produces cards that overlap heavily — the game still works, but several children finish together. The tool reports the overlap so you can add words rather than discover it live.' }
+        },
+        {
+          h: 'How many items you need',
+          table: {
+            head: ['Grid', 'Cells per card', 'Minimum pool', 'Comfortable pool'],
+            rows: [
+              ['3 × 3', '9', '12', '20+'],
+              ['4 × 4', '16', '20', '35+'],
+              ['5 × 5 with free space', '24', '30', '50+'],
+              ['5 × 5 no free space', '25', '30', '50+'],
+              ['Classic 75-ball', '24', '75', '75 (fixed)']
+            ]
+          },
+          after: '<p>The minimum makes distinct cards possible; the comfortable figure makes them meaningfully different. Roughly double the cell count is the rule of thumb — 50 words for a 5×5 grid gives cards that share few enough items for the game to last.</p>'
+        },
+        {
+          h: 'Are the cards actually different?',
+          html: '<p>Every card is checked against every other, and a duplicate is regenerated rather than printed. With an adequate pool, identical cards do not occur.</p>' +
+            '<p>What cannot be eliminated is <em>overlap</em>. Two cards drawing 24 items from a pool of 30 will share most of their contents by simple arithmetic — there is no arrangement that avoids it. Distinctness and independence are different properties, and only the first is achievable with a small pool.</p>' +
+            '<p>The practical implication: if you want a game that runs for twenty calls before anyone wins, the pool matters far more than the number of cards. Adding words lengthens the game; adding cards does not.</p>'
+        },
+        {
+          h: 'The free space',
+          html: '<p>The centre square marked free, or covered from the start. It comes from traditional 75-ball bingo and it does two useful things.</p>',
+          list: [
+            '<strong>It shortens the game.</strong> One fewer item to match on the most contested lines — the middle row, middle column and both diagonals.',
+            '<strong>It gives everyone an immediate mark.</strong> A card that is entirely blank for the first few calls feels discouraging to young children.',
+            '<strong>It makes a 5×5 grid need 24 items, not 25</strong>, which eases the pool requirement slightly.',
+            '<strong>It changes the win probabilities.</strong> Lines through the centre become easier than the outer rows, which is worth knowing if you are calling "any line".'
+          ],
+          after: '<p>Turn it off for older students or when you want a longer game. Turn it on for infants, for a short activity, or when the point is participation rather than competition.</p>'
+        },
+        {
+          h: 'Classic column ranges',
+          html: '<p>In traditional 75-ball bingo, each column draws from its own range: B from 1–15, I from 16–30, N from 31–45, G from 46–60, O from 61–75. A number therefore tells you which column it belongs to, which is what makes calling "B7" meaningful.</p>' +
+            '<p>The generator supports this mode for number bingo. It changes the game noticeably: because each column has its own pool of fifteen, cards are more evenly distributed and the caller can announce a column, which speeds up scanning for younger players.</p>' +
+            '<p>For word bingo, column ranges do not apply — every word is drawn from one pool. If you want the structure, group your words into five categories and assign one per column, which produces the same effect and doubles as a sorting exercise.</p>',
+          callout: { type: 'tip', text: 'For vocabulary bingo, call the <em>definition</em> and have students cover the word. It turns a matching game into genuine vocabulary practice, and it is the single change that makes classroom bingo worth the lesson time.' }
+        },
+        {
+          h: 'Printing and calling',
+          steps: [
+            { t: 'Paste your list or set a number range', d: 'Words, terms, numbers or answers to questions.' },
+            { t: 'Choose the grid and free space', d: '4×4 for a short game, 5×5 for a full one.' },
+            { t: 'Set the number of cards', d: 'One per student, plus a few spares — someone always spoils one.' },
+            { t: 'Choose cards per page', d: 'One for readability with infants, two or four to save paper.' },
+            { t: 'Print the call list', d: 'A shuffled list of every item, to tick off as you call. It is also the record that settles a disputed win.' },
+            { t: 'Keep the call list', d: 'When someone calls bingo, check their card against the ticked items rather than against memory.' }
+          ]
+        },
+        {
+          h: 'Related classroom tools',
+          list: [
+            '<a href="word-search-puzzle-generator.html">Word Search Puzzle Generator</a> — the same word list as a puzzle.',
+            '<a href="vocabulary-quiz-generator.html">Vocabulary Quiz Generator</a> — six printable quiz formats.',
+            '<a href="spelling-word-scramble-generator.html">Spelling Word Scramble Generator</a> — anagram practice.',
+            '<a href="random-question-picker.html">Random Question Picker</a> — draw calls at random on screen.',
+            '<a href="classroom-group-generator.html">Classroom Group Generator</a> — team bingo in groups.'
+          ]
+        }
+      ],
+      keywords: [
+        'bingo card generator', 'printable bingo cards', 'custom word bingo',
+        'classroom bingo maker', 'unique bingo cards', 'vocabulary bingo',
+        'number bingo generator', 'bingo call list', 'free space bingo',
+        '5x5 bingo card template', 'how many words for bingo', 'bingo cards pdf print'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

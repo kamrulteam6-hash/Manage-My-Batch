@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clock Reading Worksheet Generator — Telling the Time Printables | Manage My Batch</title>
+<meta name="description" content="Free clock worksheet generator. Printable analogue clock faces for telling the time, drawing hands, or matching digital times — with adjustable precision and answer keys.">
+<link rel="canonical" href="https://managemybatch.com/tools/clock-reading-worksheet-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Clock Reading Worksheet Generator — Telling the Time Printables">
+<meta property="og:description" content="Free clock worksheet generator. Printable analogue clock faces for telling the time, drawing hands, or matching digital times — with adjustable precision and answer keys.">
+<meta property="og:url" content="https://managemybatch.com/tools/clock-reading-worksheet-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Clock Reading Worksheet Generator — Telling the Time Printables">
+<meta name="twitter:description" content="Free clock worksheet generator. Printable analogue clock faces for telling the time, drawing hands, or matching digital times — with adjustable precision and answer keys.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Worksheet Settings</div>
+
+    <div class="field">
+      <label for="mode">Exercise type</label>
+      <select id="mode">
+        <option value="read" selected>Read the clock — write the time</option>
+        <option value="draw">Draw the hands to show the time</option>
+        <option value="match">Match analogue to digital</option>
+        <option value="wordy">Write the time in words</option>
+      </select>
+      <div class="hint" id="modeHint"></div>
+    </div>
+
+    <div class="field">
+      <label for="precision">Time precision</label>
+      <select id="precision">
+        <option value="60">O'clock only</option>
+        <option value="30" selected>Half past</option>
+        <option value="15">Quarter past / to</option>
+        <option value="5">Five-minute intervals</option>
+        <option value="1">Any minute</option>
+      </select>
+      <div class="hint" id="precHint"></div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="format">Digital format</label>
+        <select id="format">
+          <option value="12" selected>12-hour — 3:45</option>
+          <option value="24">24-hour — 15:45</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="count">Questions</label>
+        <input type="number" id="count" value="12" min="1" max="48">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="size">Clock size</label>
+        <select id="size">
+          <option value="100">Small</option>
+          <option value="130" selected>Medium</option>
+          <option value="165">Large</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="columns">Print columns</label>
+        <select id="columns">
+          <option value="2">2</option>
+          <option value="3" selected>3</option>
+          <option value="4">4</option>
+        </select>
+      </div>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Options</legend>
+      <div class="check-list">
+        <label class="check on"><input type="checkbox" id="optNumbers" checked>
+          <span><span class="t">Show clock numbers</span><span class="d">Turn off for a harder version with tick marks only.</span></span></label>
+        <label class="check"><input type="checkbox" id="optNoHalfHour">
+          <span><span class="t">Whole hours only for the hour hand</span><span class="d">Hour hand points exactly at the number — easier, but not how a real clock works.</span></span></label>
+        <label class="check on"><input type="checkbox" id="optKey" checked>
+          <span><span class="t">Include answer key page</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="row">
+      <div class="field">
+        <label for="title">Worksheet title</label>
+        <input type="text" id="title" value="Telling the Time">
+      </div>
+      <div class="field">
+        <label for="seed">Seed</label>
+        <div class="row" style="grid-template-columns:minmax(0,1fr) auto;gap:8px">
+          <input type="text" id="seed" value="clock-1">
+          <button type="button" class="btn btn-soft" id="newSeed"><span id="icoReset"></span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="out-actions">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate Worksheet</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Worksheet<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="preview">Preview</button>
+      <button type="button" data-tab="key">Answer key</button>
+      <button type="button" data-tab="guide">Teaching notes</button>
+    </div>
+
+    <div data-panel="preview">
+      <div id="preview"></div>
+      <div class="out-actions" style="margin-top:16px">
+        <button type="button" class="btn btn-primary" id="printBtn"><span id="icoFile"></span> Print / PDF</button>
+        <button type="button" class="btn btn-soft" id="regen"><span id="icoReset2"></span> New times</button>
+      </div>
+      <div id="checks"></div>
+    </div>
+
+    <div data-panel="key" hidden><div id="key"></div></div>
+    <div data-panel="guide" hidden><div id="guide"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/worksheet.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$, W = GTWorksheet;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoReset:reset','icoReset2:reset','icoFile:file']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var MODE_HINTS = {
+    read: 'A clock face is shown; the student writes the digital time.',
+    draw: 'A digital time is given; the student draws the hands on a blank face.',
+    match: 'Clocks and times are listed separately for the student to pair up.',
+    wordy: 'The student writes the time in words — "quarter past three".'
+  };
+  var PREC_HINTS = {
+    '60': 'Only o\'clock times. The first stage.',
+    '30': 'O\'clock and half past.',
+    '15': 'Adds quarter past and quarter to.',
+    '5': 'Five-minute intervals — the main Year 2–3 skill.',
+    '1': 'Any minute, including awkward ones like 7:23.'
+  };
+
+  var WORDS = ['twelve', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven'];
+  var MIN_WORDS = { 0: "o'clock", 15: 'quarter past', 30: 'half past', 45: 'quarter to' };
+
+  var items = [], times = [];
+
+  function digital(h, m) {
+    if ($('#format').value === '24') {
+      return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0');
+    }
+    var hh = h % 12 === 0 ? 12 : h % 12;
+    return hh + ':' + String(m).padStart(2, '0');
+  }
+
+  function inWords(h, m) {
+    var hh = h % 12;
+    var next = (hh + 1) % 12;
+    if (m === 0) return WORDS[hh] + " o'clock";
+    if (m === 15) return 'quarter past ' + WORDS[hh];
+    if (m === 30) return 'half past ' + WORDS[hh];
+    if (m === 45) return 'quarter to ' + WORDS[next];
+    if (m < 30) return m + ' minutes past ' + WORDS[hh];
+    return (60 - m) + ' minutes to ' + WORDS[next];
+  }
+
+  function build() {
+    var mode = $('#mode').value;
+    var step = parseInt($('#precision').value, 10);
+    $('#modeHint').textContent = MODE_HINTS[mode];
+    $('#precHint').textContent = PREC_HINTS[$('#precision').value];
+
+    var rand = W.rng($('#seed').value);
+    var n = Math.max(1, Math.min(48, parseInt($('#count').value, 10) || 1));
+    var size = parseInt($('#size').value, 10);
+
+    times = [];
+    for (var i = 0; i < n; i++) {
+      var h = rand.int(1, 12);
+      var m = step === 60 ? 0 : rand.int(0, Math.floor(59 / step)) * step;
+      if (m > 59) m = 0;
+      times.push({ h: h, m: m });
+    }
+
+    var handMinute = function (t) { return $('#optNoHalfHour').checked ? 0 : t.m; };
+
+    items = times.map(function (t) {
+      var clockOpts = { size: size, numbers: $('#optNumbers').checked };
+
+      if (mode === 'draw') {
+        return {
+          html: '<div style="font-weight:700;font-size:1.05em;margin-bottom:4px">' + digital(t.h, t.m) + '</div>' +
+            W.clockFace(t.h, t.m, Object.assign({}, clockOpts, { showHands: false })),
+          answer: digital(t.h, t.m)
+        };
+      }
+      if (mode === 'wordy') {
+        return {
+          html: W.clockFace($('#optNoHalfHour').checked ? t.h : t.h, handMinute(t) === 0 && !$('#optNoHalfHour').checked ? t.m : t.m, clockOpts) +
+            '<div style="border-bottom:1.5px solid #94a3b8;height:20px;margin-top:6px"></div>',
+          answer: inWords(t.h, t.m)
+        };
+      }
+      return {
+        html: W.clockFace(t.h, t.m, clockOpts) +
+          '<div style="border-bottom:1.5px solid #94a3b8;height:20px;margin-top:6px;max-width:110px"></div>',
+        answer: digital(t.h, t.m)
+      };
+    });
+
+    if (mode === 'match') {
+      var shuffled = rand.shuffle(times.map(function (t, i) { return { t: t, i: i }; }));
+      items = times.map(function (t, i) {
+        var letter = String.fromCharCode(65 + shuffled.findIndex(function (s) { return s.i === i; }));
+        return {
+          html: W.clockFace(t.h, t.m, { size: size, numbers: $('#optNumbers').checked }) +
+            '<div style="border-bottom:1.5px solid #94a3b8;height:18px;margin-top:6px;max-width:60px"></div>',
+          answer: letter + ' — ' + digital(t.h, t.m)
+        };
+      });
+      window.__matchList = shuffled.map(function (s) { return digital(s.t.h, s.t.m); });
+    }
+
+    renderPreview(mode);
+    W.answerKeyPreview('#key', items);
+    renderChecks(mode, step);
+
+    $('#pill').textContent = items.length + ' clocks';
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+  }
+
+  function matchBankHtml() {
+    var list = window.__matchList || [];
+    return '<div style="border:1.5px solid #cbd5e1;border-radius:8px;padding:10px 12px;margin-bottom:14px">' +
+      '<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#64748b;margin-bottom:6px">Times</div>' +
+      '<div style="font-size:14px;line-height:1.9">' +
+      list.map(function (d, i) {
+        return '<span style="display:inline-block;margin-right:16px"><strong>' +
+          String.fromCharCode(65 + i) + '.</strong> ' + d + '</span>';
+      }).join('') + '</div></div>';
+  }
+
+  function instructions(mode) {
+    return {
+      read: 'Write the time shown on each clock.',
+      draw: 'Draw the hour and minute hands to show each time.',
+      match: 'Write the letter of the matching time under each clock.',
+      wordy: 'Write each time in words.'
+    }[mode];
+  }
+
+  function renderPreview(mode) {
+    W.preview('#preview', {
+      title: $('#title').value,
+      instructions: instructions(mode),
+      items: items,
+      previewColumns: parseInt($('#columns').value, 10) || 3
+    });
+    if (mode === 'match') $('#preview > div').insertAdjacentHTML('afterbegin', matchBankHtml());
+  }
+
+  function renderChecks(mode, step) {
+    var c = [];
+    if (mode === 'draw' && $('#optNoHalfHour').checked) {
+      c.push(['warn', 'With whole-hour hand positions, a drawn clock showing half past three would have the hour hand pointing straight at 3 — which is not what a real clock does. Turn this off for anything past the o\'clock stage.']);
+    } else if ($('#optNoHalfHour').checked) {
+      c.push(['warn', 'The hour hand points exactly at the hour regardless of minutes. This is a simplification — real clocks move the hour hand gradually, and children who learn the simplified version often misread real clocks later.']);
+    } else {
+      c.push(['ok', 'The hour hand moves gradually between numbers, exactly as a real clock does.']);
+    }
+    if (step === 1) c.push(['warn', 'Any-minute precision includes times like 7:23 that have no simple wording. Best for digital reading rather than "past and to" language.']);
+    if (mode === 'wordy' && step === 1) c.push(['warn', 'Writing awkward minute times in words is very demanding. Consider five-minute precision for this exercise type.']);
+    if (!$('#optNumbers').checked) c.push(['warn', 'Numbers are hidden — a significantly harder version. Make sure students are secure with numbered faces first.']);
+    if (mode === 'match' && items.length > 12) c.push(['warn', 'Matching more than about 12 clocks gets unwieldy on one page.']);
+    $('#checks').innerHTML = c.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : 'note-warn') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+  }
+
+  $('#printBtn').addEventListener('click', function () {
+    var mode = $('#mode').value;
+    var opts = {
+      title: $('#title').value,
+      instructions: instructions(mode),
+      items: items,
+      columns: parseInt($('#columns').value, 10) || 3,
+      answerKey: $('#optKey').checked,
+      answerColumns: 4
+    };
+    if (mode === 'match') {
+      opts.items = items.slice();
+      opts.items[0] = { html: items[0].html, answer: items[0].answer };
+    }
+    W.print(opts);
+  });
+  $('#newSeed').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); });
+  $('#regen').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); GT.toast('New times'); });
+
+  $('#guide').innerHTML = [
+    ['The hour hand is the part children get wrong', 'On a real clock at half past three, the hour hand sits <em>between</em> 3 and 4 — not on the 3. Worksheets that draw it pointing exactly at the hour teach a habit that breaks the moment a child looks at an actual clock. This tool moves the hour hand proportionally by default, and warns you if you switch that off.'],
+    ['Follow the precision progression', 'O\'clock, then half past, then quarter past and quarter to, then five-minute intervals, then any minute. Each stage depends on the one before, and jumping to five-minute intervals before "past and to" language is secure is a common cause of stalling.'],
+    ['Reading and drawing are different skills', 'Reading a clock is recognition; drawing the hands is production, and it is considerably harder. Children who can read the time confidently often place the hour hand wrongly when asked to draw it — which is exactly why the drawing exercise is diagnostically useful.'],
+    ['Past and to is language, not maths', 'Quarter to four requires understanding that you are counting backwards towards the <em>next</em> hour. That is a linguistic hurdle as much as a numerical one, which is why "write the time in words" often reveals gaps that digital reading does not.'],
+    ['Hide the numbers only when secure', 'A face with tick marks and no numerals forces genuine understanding of the twelve positions. It is a good extension task and a poor introduction.'],
+    ['Twelve-hour first', 'Twenty-four-hour time adds an arithmetic step on top of the reading. Introduce it once analogue reading is fluent, not alongside it.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('');
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Worksheet generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'clock-reading-worksheet-generator',
+    lede: 'Printable analogue clock worksheets with hour hands that move like real clocks do — read, draw, match or write in words, at five levels of precision.',
+    steps: [
+      { icon: 'gear', title: 'Choose the exercise', text: 'Read the clock, draw the hands, match to digital, or write in words.' },
+      { icon: 'clock', title: 'Set the precision', text: "O'clock through to any minute — follow the teaching progression." },
+      { icon: 'file', title: 'Print with the key', text: 'Crisp vector clock faces that stay sharp at any size.' }
+    ],
+    guideTitle: 'The detail most clock worksheets get wrong',
+    guide:
+      '<p style="color:var(--muted)">At half past three, where does the hour hand point? A great many printable worksheets draw it pointing directly at the 3. On a real clock it sits halfway between the 3 and the 4, because the hour hand moves continuously as the minutes pass.</p>' +
+      '<p style="color:var(--muted);margin-top:12px">Children taught with the simplified version learn a rule that fails them on the classroom wall clock. Worse, when they later meet a correctly drawn clock showing 3:30, many read it as half past four, because the hour hand is closer to the 4 than they expect.</p>' +
+      '<p style="color:var(--muted);margin-top:12px">This generator positions the hour hand proportionally by default. The simplified behaviour is available as an option — for the very first o\'clock lessons — but the tool warns you when it is on.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">The precision progression</h4><ol style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>O\'clock — minute hand always at 12.</li><li>Half past — introduces the 6 position.</li><li>Quarter past and quarter to — introduces "to".</li><li>Five-minute intervals — counting in fives round the face.</li><li>Any minute — including awkward times like 7:23.</li></ol></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Why drawing is harder than reading</h4><p style="color:var(--muted);font-size:13.8px">Reading is recognition — the hands are already there. Drawing requires the child to decide where the hour hand belongs, which is where the proportional-movement misconception surfaces. A child who reads clocks fluently but draws 3:30 with the hour hand on the 3 has a gap worth addressing.</p></div></div>',
+    related: ['number-line-worksheet-generator', 'math-worksheet-generator', 'coordinate-grid-worksheet-generator'],
+    faqs: [
+      { q: 'Does the hour hand move between the numbers?', a: 'Yes, by default — at 3:30 it sits halfway between 3 and 4, exactly as a real clock does. You can switch to the simplified whole-hour version for very first lessons, but the tool warns you, because it teaches a habit that fails on real clocks.' },
+      { q: 'What order should I teach the times in?', a: "O'clock, then half past, then quarter past and quarter to, then five-minute intervals, then any minute. Each stage builds on the previous one and the precision setting follows this sequence." },
+      { q: 'What is the difference between reading and drawing exercises?', a: 'Reading shows the hands and asks for the time — recognition. Drawing gives the time and asks for the hands — production, which is harder and exposes misconceptions about the hour hand position.' },
+      { q: 'Can I make a harder version?', a: 'Turn off the clock numbers so only tick marks remain, choose any-minute precision, or use the write-in-words exercise. Each raises difficulty in a different way.' },
+      { q: 'Should I use 12-hour or 24-hour times?', a: 'Twelve-hour first. Twenty-four-hour adds an arithmetic conversion on top of the reading skill, so introduce it once analogue reading is already fluent.' },
+      { q: 'Do the clock faces print clearly?', a: 'Yes. They are drawn as SVG vectors, so they stay perfectly sharp at any size and print crisply on any printer.' }
+    ],
+    seo: {
+      title: 'Clock worksheets: the hour hand detail most generators get wrong',
+      lead: 'This <strong>clock reading worksheet generator</strong> draws analogue faces with hour hands that move like real clocks do — read, draw, match or write in words, at five levels of precision. Below: why that detail matters, what order to teach the times in, and 12- versus 24-hour notation.',
+      blocks: [
+        {
+          h: 'The hour hand moves',
+          html: '<p>At half past three, the hour hand is <em>halfway between</em> 3 and 4. At quarter to five it is three-quarters of the way from 4 to 5. On a real clock the hour hand moves continuously, and by twenty past it has visibly left the number behind.</p>' +
+            '<p>Many worksheet generators draw it pointing squarely at the hour all the way round. The result is a face that never occurs in reality, and it teaches a child a rule that fails the moment they look at an actual clock: "the hour hand points at the hour" works until it points between two numbers and they have no idea which.</p>' +
+            '<p>Every face here places the hour hand proportionally. At 3:45 it sits close to 4 — which is exactly what makes reading it a real skill and exactly what a child needs to practise.</p>',
+          callout: { type: 'warn', text: '<strong>The most common reading error follows directly from this.</strong> A child sees the hour hand near 4 at 3:45 and says "quarter to four" — sometimes even "four forty-five". Practising on faces where the hand actually moves is what corrects it; practising on faces where it does not is what causes it.' }
+        },
+        {
+          h: 'What order to teach the times',
+          table: {
+            head: ['Stage', 'Times', 'Why here'],
+            rows: [
+              ['1', "O'clock", 'Minute hand straight up. One hand to read.'],
+              ['2', 'Half past', 'Minute hand straight down, and the first sight of a moved hour hand.'],
+              ['3', 'Quarter past', 'Introduces the quarter language and the right-hand side.'],
+              ['4', 'Quarter to', 'Hardest of the four — counting backwards from the next hour.'],
+              ['5', 'Five-minute intervals', 'Requires counting in fives around the face.'],
+              ['6', 'To the minute', 'Full precision, including the awkward "twenty-three minutes past".']
+            ]
+          },
+          after: '<p>Quarter to is where most children stall, because it involves naming the <em>next</em> hour while the hour hand is still nearer the previous one. It deserves more practice than quarter past, not the same amount.</p>'
+        },
+        {
+          h: 'Reading, drawing, matching and writing',
+          cards: [
+            { t: 'Reading', d: 'A drawn clock, write the time. Decoding — the easier direction, and where most worksheets stop.' },
+            { t: 'Drawing', d: 'A time given, draw the hands. Much harder: the child must decide where <em>both</em> hands go, including the hour hand\'s partial position.' },
+            { t: 'Matching', d: 'Pair clock faces with written times. Good for consolidation and for children still gaining confidence, since the answer set is closed.' },
+            { t: 'Writing in words', d: '"Twenty-five past seven". Tests the language rather than the reading, and reveals children who can read a clock but not say the time.' }
+          ],
+          after: '<p>Drawing exercises are where the hour hand detail really bites. A child who draws the hour hand pointing exactly at 3 for half past three has not understood, and only a drawing task surfaces it.</p>'
+        },
+        {
+          h: 'Making it harder',
+          steps: [
+            { t: 'Increase the precision', d: 'From five-minute intervals to any minute. The jump is significant.' },
+            { t: 'Remove the minute numbers', d: 'A face with only the hour numbers, or only the four cardinal numbers, forces counting rather than reading.' },
+            { t: 'Remove the numbers entirely', d: 'Tick marks only. This is what most real clocks look like.' },
+            { t: 'Add elapsed-time questions', d: '"What time will it be 40 minutes later?" — combines reading with calculation.' },
+            { t: 'Mix drawing and reading on one sheet', d: 'Switching direction question by question is harder than either alone.' },
+            { t: 'Add 24-hour conversion', d: 'Read the analogue face, write the digital 24-hour equivalent.' }
+          ]
+        },
+        {
+          h: '12-hour or 24-hour?',
+          html: '<p>Teach analogue reading in 12-hour first. An analogue face only shows twelve hours, so asking for a 24-hour answer requires information the clock does not contain — the child has to be told whether it is morning or evening.</p>' +
+            '<p>Once analogue reading is secure, 24-hour notation becomes a conversion exercise: read the face, then apply the context. This is where it belongs, and it is genuinely useful — timetables, bookings and digital displays all use it.</p>' +
+            '<p>The conversion errors worth practising specifically are the two boundaries: 12:30 pm is 12:30, not 24:30, and 12:30 am is 00:30, not 12:30. Both are counterintuitive, and both appear constantly in real timetables.</p>',
+          callout: { type: 'tip', text: 'Add a.m. and p.m. to the question when asking for a 24-hour answer. Without it the question has two correct answers, and a child who gives the other one has reasoned correctly and been marked wrong.' }
+        },
+        {
+          h: 'Printing',
+          html: '<p>The clock faces are drawn as vectors, so they print at full printer resolution — hands stay crisp, tick marks stay even, and nothing pixelates when the page is scaled.</p>' +
+            '<p>Two things to check on a first printed copy. The hands must be distinguishable: the hour hand is drawn shorter and thicker, but a faint toner cartridge can flatten the difference. And if you photocopy, check that the minute marks survive — fine ticks are the first thing a worn copier loses, and a face with missing marks is unreadable for a child counting in fives.</p>'
+        },
+        {
+          h: 'Related worksheet tools',
+          list: [
+            '<a href="number-line-worksheet-generator.html">Number Line Worksheet Generator</a> — reading a linear scale.',
+            '<a href="math-worksheet-generator.html">Math Worksheet Generator</a> — the arithmetic behind elapsed time.',
+            '<a href="fraction-worksheet-generator.html">Fraction Worksheet Generator</a> — quarters and halves in symbolic form.',
+            '<a href="coordinate-grid-worksheet-generator.html">Coordinate Grid Worksheet Generator</a> — plotting and reading positions.',
+            '<a href="vocabulary-quiz-generator.html">Vocabulary Quiz Generator</a> — time vocabulary practice.'
+          ]
+        }
+      ],
+      keywords: [
+        'clock worksheet generator', 'telling the time worksheets', 'analogue clock printable',
+        'draw the hands clock worksheet', 'quarter past quarter to worksheet', 'time to the minute',
+        'reading clocks practice', '24 hour time conversion worksheet', 'blank clock faces printable',
+        'ks1 time worksheets', 'clock matching activity', 'elapsed time worksheet'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

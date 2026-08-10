@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>All Generators — Free SEO, Developer &amp; Business Tools | Manage My Batch</title>
+<meta name="description" content="Browse every free Manage My Batch generator: llms.txt, AI crawler robots.txt, security.txt, ads.txt, meta robots, X-Robots-Tag, hreflang, canonical, sitemap index and Nginx redirects.">
+<link rel="canonical" href="https://managemybatch.com/tools.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="All Generators — Free SEO, Developer &amp; Business Tools">
+<meta property="og:description" content="Browse every free Manage My Batch generator: llms.txt, AI crawler robots.txt, security.txt, ads.txt, meta robots, X-Robots-Tag, hreflang, canonical, sitemap index and Nginx redirects.">
+<meta property="og:url" content="https://managemybatch.com/tools.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="All Generators — Free SEO, Developer &amp; Business Tools">
+<meta name="twitter:description" content="Browse every free Manage My Batch generator: llms.txt, AI crawler robots.txt, security.txt, ads.txt, meta robots, X-Robots-Tag, hreflang, canonical, sitemap index and Nginx redirects.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="./">
+
+<section class="hero">
+  <div class="dots"></div>
+  <div class="wrap">
+    <div class="crumbs"><a href="index.html">Home</a><span>/</span><span>All Generators</span></div>
+    <h1 style="text-align:center;font-size:clamp(30px,5vw,46px)">All Generators</h1>
+    <p class="lede">Every tool is free, runs entirely in your browser, and needs no account.</p>
+    <form class="searchbar" id="searchForm" role="search" style="margin-top:26px">
+      <span class="wrapper"><span id="searchIcon"></span>
+        <label class="sr-only" for="q">Search generators</label>
+        <input id="q" type="search" placeholder="Search by name, keyword or category…" autocomplete="off">
+      </span>
+      <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="seg" id="catFilter" style="max-width:100%;margin-bottom:24px"></div>
+    <div class="grid g3" id="list"></div>
+    <p id="none" style="color:var(--muted);margin-top:20px" hidden>No generator matches that search.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap"><div class="card card-pad">
+    <h2 class="section-title"><span class="ico" id="icoStar"></span>Coming next</h2>
+    <p style="color:var(--muted);font-size:14px;margin-bottom:14px">These generators are in the build queue. Each ships with the same live validation and copy-ready output as the tools above.</p>
+    <div id="soon" style="display:flex;flex-wrap:wrap;gap:9px"></div>
+  </div></div>
+</section>
+
+<script src="assets/js/site.js"></script>
+<script>
+(function () {
+  var I = GTI, T = GT_TOOLS;
+  GT.shell('tools');
+  document.getElementById('searchIcon').innerHTML = I.search;
+  document.getElementById('icoStar').innerHTML = I.star;
+
+  var cats = ['All'].concat(GT.uniq(T.map(function (t) { return t.cat; })));
+  var active = new URLSearchParams(location.search).get('cat') || 'All';
+  if (cats.indexOf(active) === -1) active = 'All';
+
+  document.getElementById('catFilter').innerHTML = cats.map(function (c) {
+    return '<button type="button" data-c="' + c + '"' + (c === active ? ' class="on"' : '') + '>' + c + '</button>';
+  }).join('');
+
+  function render() {
+    var q = (document.getElementById('q').value || '').trim().toLowerCase();
+    var hits = T.filter(function (t) {
+      var okCat = active === 'All' || t.cat === active;
+      var okQ = !q || (t.name + ' ' + t.desc + ' ' + t.kw + ' ' + t.cat).toLowerCase().indexOf(q) > -1;
+      return okCat && okQ;
+    });
+    document.getElementById('list').innerHTML = hits.map(GT.toolCard).join('');
+    document.getElementById('none').hidden = hits.length > 0;
+  }
+
+  document.getElementById('catFilter').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    active = b.getAttribute('data-c');
+    GT.$$('#catFilter button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    render();
+  });
+  document.getElementById('q').addEventListener('input', render);
+  document.getElementById('searchForm').addEventListener('submit', function (e) { e.preventDefault(); render(); });
+
+  document.getElementById('soon').innerHTML = [
+    '.htaccess Redirect Generator', 'Content Security Policy Generator', 'Permissions Policy Header Generator',
+    'Referrer Policy Generator', 'CORS Header Generator', 'Breadcrumb Schema Generator', 'Video Schema Generator',
+    'Job Posting Schema Generator', 'Dataset Schema Generator', 'Software Application Schema Generator'
+  ].map(function (n) { return '<span class="chip" style="font-family:var(--sans)">' + n + '</span>'; }).join('');
+
+  document.title = 'All ' + T.length + ' Generators — Free SEO, Developer & Business Tools | Manage My Batch';
+
+  render();
+})();
+</script>
+</body>
+</html>

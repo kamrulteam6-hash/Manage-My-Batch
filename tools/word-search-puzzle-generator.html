@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Word Search Puzzle Generator — Printable with Solution Key | Manage My Batch</title>
+<meta name="description" content="Free word search generator. Build printable puzzles in up to 8 directions with adjustable grid size, difficulty levels, a word bank and a highlighted solution key.">
+<link rel="canonical" href="https://managemybatch.com/tools/word-search-puzzle-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Word Search Puzzle Generator — Printable with Solution Key">
+<meta property="og:description" content="Free word search generator. Build printable puzzles in up to 8 directions with adjustable grid size, difficulty levels, a word bank and a highlighted solution key.">
+<meta property="og:url" content="https://managemybatch.com/tools/word-search-puzzle-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Word Search Puzzle Generator — Printable with Solution Key">
+<meta name="twitter:description" content="Free word search generator. Build printable puzzles in up to 8 directions with adjustable grid size, difficulty levels, a word bank and a highlighted solution key.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Puzzle Settings</div>
+
+    <div class="field">
+      <label for="words">Words to hide — one per line</label>
+      <textarea id="words" style="min-height:180px">planet
+gravity
+orbit
+comet
+galaxy
+asteroid
+telescope
+eclipse
+meteor
+satellite
+nebula
+crater</textarea>
+      <div id="stats"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label for="difficulty">Difficulty</label>
+      <select id="difficulty">
+        <option value="easy">Easy — across and down only</option>
+        <option value="medium" selected>Medium — adds diagonals</option>
+        <option value="hard">Hard — all 8 directions including backwards</option>
+      </select>
+      <div class="hint" id="diffHint"></div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="size">Grid size: <strong id="sizeLabel">14</strong> × <strong id="sizeLabel2">14</strong></label>
+        <input type="range" id="size" min="8" max="24" value="14" style="width:100%;accent-color:var(--blue)">
+      </div>
+      <div class="field">
+        <label for="fill">Filler letters</label>
+        <select id="fill">
+          <option value="random" selected>Random A–Z</option>
+          <option value="fromWords">Letters from your words</option>
+        </select>
+      </div>
+    </div>
+    <div class="hint" style="margin:-8px 0 16px">Using letters from your own words makes the puzzle noticeably harder, because filler blends in.</div>
+
+    <fieldset class="field">
+      <legend class="label">Options</legend>
+      <div class="check-list">
+        <label class="check on"><input type="checkbox" id="optBank" checked>
+          <span><span class="t">Include word bank</span><span class="d">Hide it for a much harder puzzle.</span></span></label>
+        <label class="check on"><input type="checkbox" id="optKey" checked>
+          <span><span class="t">Include solution page</span></span></label>
+        <label class="check"><input type="checkbox" id="optLower">
+          <span><span class="t">Lowercase grid</span><span class="d">Easier for younger children who read lowercase more fluently.</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="row">
+      <div class="field">
+        <label for="title">Puzzle title</label>
+        <input type="text" id="title" value="Space Word Search">
+      </div>
+      <div class="field">
+        <label for="seed">Seed</label>
+        <div class="row" style="grid-template-columns:minmax(0,1fr) auto;gap:8px">
+          <input type="text" id="seed" value="ws-1">
+          <button type="button" class="btn btn-soft" id="newSeed"><span id="icoReset"></span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="out-actions">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate Puzzle</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Word Search<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="puzzle">Puzzle</button>
+      <button type="button" data-tab="solution">Solution</button>
+      <button type="button" data-tab="guide">Teaching notes</button>
+    </div>
+
+    <div data-panel="puzzle">
+      <div id="grid" style="overflow-x:auto"></div>
+      <div id="bank" style="margin-top:14px"></div>
+      <div class="out-actions" style="margin-top:16px">
+        <button type="button" class="btn btn-primary" id="printBtn"><span id="icoFile"></span> Print / PDF</button>
+        <button type="button" class="btn btn-soft" id="regen"><span id="icoReset2"></span> New puzzle</button>
+      </div>
+      <div id="checks"></div>
+    </div>
+
+    <div data-panel="solution" hidden>
+      <div id="solution" style="overflow-x:auto"></div>
+      <div id="placements" style="margin-top:14px"></div>
+    </div>
+
+    <div data-panel="guide" hidden><div id="guide"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/worksheet.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$, W = GTWorksheet;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoReset:reset','icoReset2:reset','icoFile:file']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var DIRS = {
+    easy: [[0, 1], [1, 0]],
+    medium: [[0, 1], [1, 0], [1, 1], [1, -1]],
+    hard: [[0, 1], [1, 0], [1, 1], [1, -1], [0, -1], [-1, 0], [-1, -1], [-1, 1]]
+  };
+  var HINTS = {
+    easy: 'Words read left-to-right and top-to-bottom only. Suitable for early readers.',
+    medium: 'Adds diagonals, still all forwards. The usual choice.',
+    hard: 'Words may run backwards and in any of eight directions.'
+  };
+
+  var grid = [], placed = [], failed = [], size = 14;
+
+  function words() {
+    var seen = {}, out = [];
+    GT.lines($('#words').value).forEach(function (l) {
+      var w = l.replace(/[^A-Za-z]/g, '').toUpperCase();
+      if (w.length < 2) return;
+      if (seen[w]) return;
+      seen[w] = 1;
+      out.push(w);
+    });
+    return out;
+  }
+
+  /* Try to place a word; returns the placement or null. Longer words first
+     gives a much higher overall success rate. */
+  function tryPlace(word, dirs, rand) {
+    var positions = [];
+    for (var r = 0; r < size; r++) for (var c = 0; c < size; c++) positions.push([r, c]);
+    positions = rand.shuffle(positions);
+    var dirList = rand.shuffle(dirs);
+
+    for (var d = 0; d < dirList.length; d++) {
+      var dir = dirList[d];
+      for (var p = 0; p < positions.length; p++) {
+        var r0 = positions[p][0], c0 = positions[p][1];
+        var endR = r0 + dir[0] * (word.length - 1);
+        var endC = c0 + dir[1] * (word.length - 1);
+        if (endR < 0 || endR >= size || endC < 0 || endC >= size) continue;
+
+        var ok = true, overlaps = 0;
+        for (var i = 0; i < word.length; i++) {
+          var rr = r0 + dir[0] * i, cc = c0 + dir[1] * i;
+          var cur = grid[rr][cc];
+          if (cur && cur !== word[i]) { ok = false; break; }
+          if (cur === word[i]) overlaps++;
+        }
+        if (!ok) continue;
+        /* Reject a placement that lies entirely on existing letters. */
+        if (overlaps === word.length) continue;
+
+        var cells = [];
+        for (var j = 0; j < word.length; j++) {
+          var r2 = r0 + dir[0] * j, c2 = c0 + dir[1] * j;
+          grid[r2][c2] = word[j];
+          cells.push([r2, c2]);
+        }
+        return { word: word, cells: cells, dir: dir, start: [r0, c0] };
+      }
+    }
+    return null;
+  }
+
+  function build() {
+    size = parseInt($('#size').value, 10);
+    $('#sizeLabel').textContent = size;
+    $('#sizeLabel2').textContent = size;
+    var diff = $('#difficulty').value;
+    $('#diffHint').textContent = HINTS[diff];
+
+    var list = words();
+    $('#stats').innerHTML = '<div class="note ' + (list.length ? 'note-ok' : 'note-warn') + '" style="margin-top:10px">' +
+      (list.length ? I.check : I.warn) + '<span>' + list.length + ' word' + (list.length === 1 ? '' : 's') +
+      (list.length ? ' · longest ' + Math.max.apply(null, list.map(function (w) { return w.length; })) + ' letters' : '') +
+      '</span></div>';
+
+    if (!list.length) {
+      $('#grid').innerHTML = '<div class="empty">Add some words to hide.</div>';
+      $('#bank').innerHTML = ''; $('#solution').innerHTML = ''; $('#placements').innerHTML = '';
+      $('#pill').textContent = 'empty';
+      return;
+    }
+
+    var rand = W.rng($('#seed').value);
+    grid = [];
+    for (var r = 0; r < size; r++) { grid.push([]); for (var c = 0; c < size; c++) grid[r].push(''); }
+
+    placed = []; failed = [];
+    /* Longest first — short words fit almost anywhere, long ones do not. */
+    var ordered = list.slice().sort(function (a, b) { return b.length - a.length; });
+    ordered.forEach(function (w) {
+      if (w.length > size) { failed.push(w); return; }
+      var p = tryPlace(w, DIRS[diff], rand);
+      if (p) placed.push(p); else failed.push(w);
+    });
+
+    /* Fill the gaps */
+    var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    if ($('#fill').value === 'fromWords') {
+      var letters = list.join('');
+      if (letters.length) alphabet = letters;
+    }
+    for (var r3 = 0; r3 < size; r3++) {
+      for (var c3 = 0; c3 < size; c3++) {
+        if (!grid[r3][c3]) grid[r3][c3] = alphabet[rand.int(0, alphabet.length - 1)];
+      }
+    }
+
+    renderGrid();
+    renderSolution();
+    renderChecks(list);
+
+    $('#pill').textContent = placed.length + ' of ' + list.length + ' placed';
+    $('#pill').style.background = failed.length ? 'var(--amber-bg)' : 'var(--green-bg)';
+    $('#pill').style.color = failed.length ? 'var(--amber)' : 'var(--green)';
+  }
+
+  function cellText(ch) {
+    return $('#optLower').checked ? ch.toLowerCase() : ch;
+  }
+
+  function gridHtml(highlight) {
+    var hl = {};
+    if (highlight) placed.forEach(function (p) { p.cells.forEach(function (c) { hl[c[0] + ',' + c[1]] = 1; }); });
+    var cell = size > 18 ? 20 : size > 14 ? 24 : 28;
+    var fs = size > 18 ? 11 : size > 14 ? 12.5 : 14;
+    return '<table style="border-collapse:collapse;margin:0 auto">' +
+      grid.map(function (row, r) {
+        return '<tr>' + row.map(function (ch, c) {
+          var on = hl[r + ',' + c];
+          return '<td style="width:' + cell + 'px;height:' + cell + 'px;text-align:center;' +
+            'border:1px solid var(--line);font-family:var(--mono);font-size:' + fs + 'px;font-weight:600;' +
+            (on ? 'background:#bfdbfe;color:#1e3a8a;' : 'color:var(--ink-2);') + '">' +
+            cellText(ch) + '</td>';
+        }).join('') + '</tr>';
+      }).join('') + '</table>';
+  }
+
+  function renderGrid() {
+    $('#grid').innerHTML = gridHtml(false);
+    $('#bank').innerHTML = $('#optBank').checked
+      ? '<p class="more-label">Find these words</p><div style="columns:3;column-gap:18px;font-size:13.5px;line-height:1.9">' +
+        placed.map(function (p) {
+          return '<div style="break-inside:avoid">☐ ' + GT.esc(p.word) + '</div>';
+        }).join('') + '</div>'
+      : '<p style="color:var(--muted);font-size:13px">Word bank hidden — students must find the words unaided.</p>';
+  }
+
+  function dirName(d) {
+    var map = { '0,1': '→ across', '1,0': '↓ down', '1,1': '↘ diagonal down-right', '1,-1': '↙ diagonal down-left',
+      '0,-1': '← backwards', '-1,0': '↑ up', '-1,-1': '↖ diagonal up-left', '-1,1': '↗ diagonal up-right' };
+    return map[d[0] + ',' + d[1]] || '';
+  }
+
+  function renderSolution() {
+    $('#solution').innerHTML = gridHtml(true);
+    $('#placements').innerHTML = '<p class="more-label">Word positions</p>' +
+      '<div style="columns:2;column-gap:20px;font-size:13px;line-height:1.9">' +
+      placed.map(function (p) {
+        return '<div style="break-inside:avoid"><strong>' + GT.esc(p.word) + '</strong> — row ' +
+          (p.start[0] + 1) + ', column ' + (p.start[1] + 1) + ', ' + dirName(p.dir) + '</div>';
+      }).join('') + '</div>';
+  }
+
+  function renderChecks(list) {
+    var c = [];
+    if (failed.length) {
+      var tooLong = failed.filter(function (w) { return w.length > size; });
+      var noRoom = failed.filter(function (w) { return w.length <= size; });
+      if (tooLong.length) {
+        c.push(['err', tooLong.map(GT.esc).join(', ') + ' ' + (tooLong.length === 1 ? 'is' : 'are') +
+          ' longer than the grid (' + size + '). Increase the grid size.']);
+      }
+      if (noRoom.length) {
+        c.push(['warn', 'Could not fit: ' + noRoom.map(GT.esc).join(', ') +
+          '. The grid is too crowded — increase the size, remove a few words, or try a different seed.']);
+      }
+    } else {
+      c.push(['ok', 'All ' + placed.length + ' words placed successfully.']);
+    }
+
+    var letters = placed.reduce(function (a, p) { return a + p.word.length; }, 0);
+    var density = Math.round((letters / (size * size)) * 100);
+    if (density > 60) {
+      c.push(['warn', 'Letter density is ' + density + '% — very crowded. Words will overlap heavily, which makes the puzzle harder and sometimes ambiguous.']);
+    } else if (density < 15) {
+      c.push(['warn', 'Letter density is only ' + density + '% — the grid is mostly filler and the puzzle will feel sparse. Add more words or reduce the grid size.']);
+    } else {
+      c.push(['ok', 'Letter density ' + density + '% — a comfortable balance.']);
+    }
+
+    if ($('#fill').value === 'fromWords') {
+      c.push(['warn', 'Filler letters are drawn from your own words, which makes false trails much more likely. A genuinely harder puzzle.']);
+    }
+    if (!$('#optBank').checked) {
+      c.push(['warn', 'No word bank — significantly harder, since students do not know what they are looking for.']);
+    }
+    if ($('#difficulty').value === 'hard') {
+      c.push(['warn', 'Backwards words are included. Worth telling students explicitly, or the puzzle can feel unfair.']);
+    }
+    $('#checks').innerHTML = c.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : x[0] === 'warn' ? 'note-warn' : 'note-err') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+  }
+
+  function printGridHtml(highlight) {
+    var hl = {};
+    if (highlight) placed.forEach(function (p) { p.cells.forEach(function (c) { hl[c[0] + ',' + c[1]] = 1; }); });
+    var cell = size > 18 ? 20 : size > 14 ? 23 : 27;
+    return '<table style="border-collapse:collapse;margin:0 auto">' +
+      grid.map(function (row, r) {
+        return '<tr>' + row.map(function (ch, c) {
+          var on = hl[r + ',' + c];
+          return '<td style="width:' + cell + 'px;height:' + cell + 'px;text-align:center;border:1px solid #cbd5e1;' +
+            'font-family:monospace;font-size:' + (cell * 0.52).toFixed(1) + 'px;font-weight:600;' +
+            (on ? 'background:#bfdbfe;' : '') + '">' + cellText(ch) + '</td>';
+        }).join('') + '</tr>';
+      }).join('') + '</table>';
+  }
+
+  $('#printBtn').addEventListener('click', function () {
+    var w = window.open('', '_blank');
+    if (!w) { GT.toast('Allow pop-ups to print'); return; }
+    var bank = $('#optBank').checked
+      ? '<div style="margin-top:16px"><div style="font-size:12px;font-weight:700;text-transform:uppercase;' +
+        'letter-spacing:.06em;color:#64748b;margin-bottom:6px">Find these words</div>' +
+        '<div style="columns:4;column-gap:16px;font-size:13px;line-height:2">' +
+        placed.map(function (p) { return '<div style="break-inside:avoid">☐ ' + GT.esc(p.word) + '</div>'; }).join('') +
+        '</div></div>' : '';
+
+    w.document.write('<!DOCTYPE html><html><head><meta charset="utf-8"><title>' + GT.esc($('#title').value) +
+      '</title><style>body{font-family:Arial,Helvetica,sans-serif;color:#0f172a;margin:14mm}' +
+      'h1{font-size:20px;margin:0 0 4px}.sub{color:#64748b;font-size:12px;margin:0 0 14px}' +
+      '.hdr{display:flex;gap:26px;border-bottom:1.5px solid #0f172a;padding-bottom:9px;margin-bottom:16px;font-size:13px}' +
+      '.hdr .rule{display:inline-block;width:120px;border-bottom:1px solid #94a3b8}' +
+      '.pagebreak{page-break-before:always}@media print{body{margin:10mm}.noprint{display:none}}</style></head><body>' +
+      '<h1>' + GT.esc($('#title').value) + '</h1>' +
+      '<div class="hdr"><span>Name: <span class="rule"></span></span><span>Date: <span class="rule"></span></span></div>' +
+      printGridHtml(false) + bank +
+      ($('#optKey').checked
+        ? '<div class="pagebreak"></div><h1>' + GT.esc($('#title').value) + ' — Solution</h1>' +
+          '<p class="sub">' + placed.length + ' words</p>' + printGridHtml(true) +
+          '<div style="columns:2;column-gap:20px;font-size:12px;line-height:1.9;margin-top:14px">' +
+          placed.map(function (p) {
+            return '<div style="break-inside:avoid"><strong>' + GT.esc(p.word) + '</strong> — row ' +
+              (p.start[0] + 1) + ', col ' + (p.start[1] + 1) + ', ' + dirName(p.dir) + '</div>';
+          }).join('') + '</div>'
+        : '') +
+      '<script>window.onload=function(){window.print()}<' + '/script></body></html>');
+    w.document.close();
+  });
+
+  $('#newSeed').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); });
+  $('#regen').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); GT.toast('New puzzle'); });
+
+  $('#guide').innerHTML = [
+    ['Longest words are placed first', 'A ten-letter word has very few valid positions once the grid is half full, while a four-letter word fits almost anywhere. Placing longest-first is why this generator fits word lists that others reject — and when a word genuinely will not fit, it tells you which one rather than silently dropping it.'],
+    ['Letter density is the difficulty dial', 'Around 25–45% of squares occupied by real words gives a satisfying puzzle. Below that it is mostly filler and words stand out. Above 60% words overlap so heavily that false trails appear everywhere, which is either excellent or frustrating depending on your class.'],
+    ['Filler letters matter more than people expect', 'Random A–Z filler contains lots of letters your words never use, so words visually pop out. Drawing filler from your own word list makes every letter plausible, which is the single most effective way to make a puzzle harder without changing anything else.'],
+    ['Hiding the word bank changes the task', 'With a bank, it is a visual search. Without one, students must recall the topic vocabulary and then find it — a genuinely different and much harder exercise, and a good extension activity.'],
+    ['Tell them if words run backwards', 'Hard mode includes reversed and upward words. Students who assume everything reads forwards will scan straight past them and conclude the puzzle is broken. A one-line instruction avoids that.'],
+    ['Lowercase for younger children', 'Early readers are usually more fluent with lowercase than block capitals. It is a small change that makes a real difference for infant classes.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('');
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Puzzle generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'word-search-puzzle-generator',
+    lede: 'Generate word search puzzles that actually fit your whole word list — longest-first placement, a real solution key, and honest reporting when a word will not go in.',
+    steps: [
+      { icon: 'gear', title: 'Paste your words', text: 'Topic vocabulary, spelling lists or names.' },
+      { icon: 'puzzle', title: 'Set difficulty and size', text: 'Two directions for early readers, up to eight including backwards.' },
+      { icon: 'file', title: 'Print puzzle and solution', text: 'The solution page highlights every word and lists its position.' }
+    ],
+    guideTitle: 'Why some generators drop your words silently',
+    guide:
+      '<p style="color:var(--muted)">Placing words in a grid is a constraint problem, and the order matters enormously. If you place words in the order they were typed, a ten-letter word arriving after the grid is half full has almost nowhere to go — so it gets dropped. Many generators drop it without saying anything, and you only notice when a child cannot find it.</p>' +
+      '<p style="color:var(--muted);margin-top:12px">This tool sorts by length and places the longest words first, when the grid is empty and options are plentiful. Short words fill the gaps afterwards, since they fit almost anywhere. When a word still cannot be placed, you are told which one and why — too long for the grid, or no room left.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Three ways to make it harder</h4><ol style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><strong>More directions.</strong> Diagonals, then backwards.</li><li><strong>Filler from your own words.</strong> Every letter becomes plausible, so nothing stands out.</li><li><strong>Remove the word bank.</strong> Turns searching into recall plus searching.</li></ol>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">The second is the most underrated — it changes nothing visible about the layout but makes the puzzle substantially harder.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Getting density right</h4><p style="color:var(--muted);font-size:13.8px">Aim for roughly a quarter to a half of the squares occupied by real words. Too sparse and the words visually separate from the filler; too dense and overlapping words create false trails everywhere.</p>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">The tool calculates this for you and flags it in both directions, so you can adjust the grid size rather than guessing.</p></div></div>' +
+      '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>The solution page highlights every word in the grid <em>and</em> lists its starting row, column and direction — which is much faster to check against than a highlighted grid alone when a child is convinced a word is missing.</span></div>',
+    related: ['bingo-card-generator', 'spelling-word-scramble-generator', 'vocabulary-quiz-generator'],
+    faqs: [
+      { q: 'Why could one of my words not be placed?', a: 'Either it is longer than the grid, or the grid became too crowded for it to fit in any direction. The tool tells you which words failed and why — it never drops them silently. Increase the grid size or remove a few words.' },
+      { q: 'How big should the grid be?', a: 'Large enough for your longest word, and sized so roughly a quarter to a half of the squares hold real letters. The tool reports the density and warns when the puzzle is too sparse or too crowded.' },
+      { q: 'How do I make the puzzle harder?', a: 'Enable all eight directions including backwards, draw filler letters from your own words so nothing stands out, and hide the word bank so students must recall the vocabulary first.' },
+      { q: 'Does it include a solution?', a: 'Yes. The solution page highlights every word in the grid and lists each one\'s starting row, column and direction, which is far quicker for checking than a highlighted grid alone.' },
+      { q: 'Should words run backwards?', a: 'Only for older or more confident students — and tell them. Children who assume words read forwards will scan past reversed words entirely and think the puzzle is faulty.' },
+      { q: 'Can I use lowercase letters?', a: 'Yes. Early readers are usually more fluent with lowercase than block capitals, so it is worth switching on for infant classes.' }
+    ],
+    seo: {
+      title: 'Word search puzzles: placement, grid size and words that will not fit',
+      lead: 'This <strong>word search generator</strong> places your whole word list using longest-first placement, produces a real solution key, and tells you honestly when a word cannot be fitted. Below: why other generators drop words silently, how to size the grid, and how to make a puzzle genuinely harder.',
+      blocks: [
+        {
+          h: 'Why some generators drop your words silently',
+          html: '<p>Placing words in a grid is a constraint problem, and a greedy algorithm can paint itself into a corner. Place the short words first and they scatter across the grid, leaving no clear run of eleven cells for <code>photosynthesis</code>.</p>' +
+            '<p>Many generators handle this by giving up quietly. The puzzle is produced, the word list is printed underneath, and one word is not in the grid at all. A class spends ten minutes hunting for something that was never there — and the child who searches most carefully is the one who suffers.</p>' +
+            '<p>Two things fix it. <strong>Longest-first placement</strong> puts the hardest words in while the grid is empty and space is plentiful. And when a word still cannot be placed, the tool says so explicitly rather than printing an impossible puzzle.</p>',
+          callout: { type: 'warn', text: '<strong>Always check the solution key against your word list before photocopying.</strong> If a generator does not offer a solution, that is the reason to distrust it — a solution key is also the only proof that every word is actually in the grid.' }
+        },
+        {
+          h: 'Sizing the grid',
+          html: '<p>The grid must be at least as wide as your longest word, and comfortably larger if the puzzle is to be interesting.</p>',
+          table: {
+            head: ['Grid', 'Words', 'Suits'],
+            rows: [
+              ['10 × 10', '8–10 short words', 'Infants, quick starters, words up to 8 letters.'],
+              ['12 × 12', '10–14 words', 'The general-purpose classroom size.'],
+              ['15 × 15', '15–20 words', 'Upper primary and secondary topic vocabulary.'],
+              ['20 × 20', '20–30 words', 'Long lists and long words. Needs a full page.'],
+              ['25 × 25+', '30+ words', 'Homework and cover work. Prints small — check legibility.']
+            ]
+          },
+          after: '<p>A useful rule of thumb: the total letters in your word list should be roughly a quarter to a third of the grid\'s cells. Much less and the words float in a sea of random letters; much more and they overlap so heavily that the puzzle becomes trivially easy to spot.</p>'
+        },
+        {
+          h: 'Making it harder',
+          steps: [
+            { t: 'Add diagonal directions', d: 'The single biggest jump in difficulty. Horizontal and vertical only is a puzzle for young children.' },
+            { t: 'Allow backwards words', d: 'Doubles the directions to search. Appropriate once reading is fluent.' },
+            { t: 'Increase the grid without increasing the words', d: 'More filler letters, longer search.' },
+            { t: 'Use a themed filler alphabet', d: 'Filling with letters drawn from the word list itself makes false leads far more common than random filler does.' },
+            { t: 'Remove the word list', d: 'Give a topic and a count instead — "find 12 words about the water cycle". Far harder, and much better vocabulary practice.' },
+            { t: 'Allow overlaps', d: 'Words sharing letters are harder to isolate visually.' }
+          ]
+        },
+        {
+          h: 'Backwards words',
+          cards: [
+            { t: 'Ages 4–6', d: 'No. Reversed words work against the left-to-right reading being established, which matters more than puzzle difficulty.' },
+            { t: 'Ages 7–9', d: 'Horizontal backwards is fine. Vertical upwards is a reasonable next step.' },
+            { t: 'Ages 10+', d: 'All eight directions. This is the standard adult word search.' },
+            { t: 'Spelling practice specifically', d: 'Consider leaving them off. Repeated exposure to correctly ordered letters is part of what a spelling activity is doing.' }
+          ]
+        },
+        {
+          h: 'Case and characters',
+          html: '<p>Traditional word searches use uppercase throughout, and there is a practical reason beyond convention: uppercase letters are uniform in height and width, so the grid aligns and every cell is the same size. Lowercase introduces ascenders and descenders that make columns look uneven and cells harder to scan.</p>' +
+            '<p>Lowercase is nonetheless the right choice for early readers, who have usually met lowercase first and read it more fluently. The generator supports both.</p>' +
+            '<p>Spaces, hyphens and apostrophes are removed before placement — <code>ice cream</code> becomes <code>ICECREAM</code> in the grid. Print the word list with its normal punctuation so children know what they are looking for, and be aware that accented characters are stripped to their base letter, which matters for a languages worksheet.</p>',
+          callout: { type: 'tip', text: 'For a vocabulary lesson, print the word list on the reverse rather than beneath the grid. Children complete the search from memory of the topic first, then turn over to check — which turns a copying exercise into a recall one.' }
+        },
+        {
+          h: 'What a word search is good for',
+          html: '<p>Honestly: less than its popularity suggests. Finding <code>PHOTOSYNTHESIS</code> in a grid requires letter matching, not meaning — a child can complete a word search perfectly without knowing what a single word means.</p>' +
+            '<p>Where it genuinely helps is <strong>orthographic familiarity</strong>: repeated exposure to a word\'s letter pattern supports spelling and later recognition. It is also a legitimate settling activity, and it works as cover work because it is self-explanatory.</p>' +
+            '<p>To make it do more, pair it with meaning. Ask for a definition beside each found word, or supply definitions instead of the word list. The searching is then a route into the vocabulary rather than the whole task — and the <a href="vocabulary-quiz-generator.html">vocabulary quiz generator</a> covers the meaning side directly.</p>'
+        },
+        {
+          h: 'Related puzzle tools',
+          list: [
+            '<a href="bingo-card-generator.html">Bingo Card Generator</a> — unique cards from the same word list.',
+            '<a href="spelling-word-scramble-generator.html">Spelling Word Scramble Generator</a> — anagram practice.',
+            '<a href="vocabulary-quiz-generator.html">Vocabulary Quiz Generator</a> — six quiz formats with automatic distractors.',
+            '<a href="random-question-picker.html">Random Question Picker</a> — draw words for oral practice.',
+            '<a href="math-worksheet-generator.html">Math Worksheet Generator</a> — printable practice for the other half of the timetable.'
+          ]
+        }
+      ],
+      keywords: [
+        'word search generator', 'printable word search', 'custom word search maker',
+        'word search with answers', 'word search grid size', 'make your own word search',
+        'vocabulary word search', 'word search solution key', 'spelling word search',
+        'free word search puzzle maker', 'diagonal word search', 'classroom word search'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

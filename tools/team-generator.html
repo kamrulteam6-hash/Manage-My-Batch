@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Team Generator — Balanced Random Teams with Skill Ratings | Manage My Batch</title>
+<meta name="description" content="Free team generator. Split players into balanced random teams, optionally by skill rating, with captains, team names and keep-apart rules. Printable team sheets.">
+<link rel="canonical" href="https://managemybatch.com/tools/team-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Team Generator — Balanced Random Teams with Skill Ratings">
+<meta property="og:description" content="Free team generator. Split players into balanced random teams, optionally by skill rating, with captains, team names and keep-apart rules. Printable team sheets.">
+<meta property="og:url" content="https://managemybatch.com/tools/team-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Team Generator — Balanced Random Teams with Skill Ratings">
+<meta name="twitter:description" content="Free team generator. Split players into balanced random teams, optionally by skill rating, with captains, team names and keep-apart rules. Printable team sheets.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Players</div>
+
+    <div class="field">
+      <label for="players">Player list — one per line</label>
+      <textarea id="players" style="min-height:200px">Amara
+Ben
+Chen
+Diego
+Elena
+Farah
+Grace
+Hugo
+Ines
+Jonas
+Layla
+Mateo
+Nadia
+Omar</textarea>
+      <div class="hint">Add a skill rating after a colon to balance teams: <code>Amara: 8</code></div>
+      <div id="stats"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label>Split by</label>
+      <div class="seg" id="mode">
+        <button type="button" class="on" data-m="count">Number of teams</button>
+        <button type="button" data-m="size">Players per team</button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field"><label for="value" id="valueLabel">Number of teams</label><input type="number" id="value" value="2" min="1" max="40"></div>
+      <div class="field">
+        <label for="naming">Team names</label>
+        <select id="naming">
+          <option value="number" selected>Team 1, Team 2…</option>
+          <option value="colour">Colours</option>
+          <option value="letter">Team A, Team B…</option>
+          <option value="animal">Animals</option>
+          <option value="custom">Custom list…</option>
+        </select>
+      </div>
+    </div>
+    <input type="text" id="customNames" placeholder="Comma separated team names" style="margin-bottom:16px" hidden>
+
+    <fieldset class="field">
+      <legend class="label">Balancing</legend>
+      <div class="check-list">
+        <label class="check"><input type="checkbox" id="optSkill">
+          <span><span class="t">Balance by skill rating</span><span class="d">Uses the numbers after each name. Snake draft keeps totals close.</span></span></label>
+        <label class="check"><input type="checkbox" id="optCaptains">
+          <span><span class="t">Name a captain per team</span><span class="d">Highest rated, or first drawn if no ratings.</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="field">
+      <label for="apart">Keep apart — one pair per line</label>
+      <textarea id="apart" style="min-height:60px" placeholder="Ben & Chen"></textarea>
+    </div>
+
+    <div class="field">
+      <label for="together">Keep together — one pair per line</label>
+      <textarea id="together" style="min-height:60px" placeholder="Ines & Jonas"></textarea>
+    </div>
+
+    <div class="field">
+      <label for="seed">Seed</label>
+      <div class="row" style="grid-template-columns:minmax(0,1fr) auto;gap:8px">
+        <input type="text" id="seed" value="teams-1">
+        <button type="button" class="btn btn-soft" id="newSeed"><span id="icoReset"></span></button>
+      </div>
+    </div>
+
+    <div class="out-actions">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate Teams</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Teams<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="teams">Teams</button>
+      <button type="button" data-tab="export">Export</button>
+      <button type="button" data-tab="guide">Notes</button>
+    </div>
+
+    <div data-panel="teams">
+      <div id="teams"></div>
+      <div class="out-actions" style="margin-top:18px">
+        <button type="button" class="btn btn-primary" id="printBtn"><span id="icoFile"></span> Print team sheets</button>
+        <button type="button" class="btn btn-ghost" id="copyBtn"><span id="icoCopy"></span> Copy</button>
+        <button type="button" class="btn btn-soft" id="regen"><span id="icoReset2"></span> Reshuffle</button>
+      </div>
+      <div id="checks"></div>
+    </div>
+
+    <div data-panel="export" hidden>
+      <div class="field">
+        <label for="exportAs">Format</label>
+        <select id="exportAs">
+          <option value="text">Readable list</option>
+          <option value="csv">CSV — player, team</option>
+          <option value="json">JSON</option>
+        </select>
+      </div>
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">teams.txt</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyAllBtn"><span id="icoCopy2"></span> Copy all</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+    </div>
+
+    <div data-panel="guide" hidden><div id="guide"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/schedule.js"></script>
+<script src="../assets/js/roster.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$, S = GTSched;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoCopy:copy','icoCopy2:copy','icoDl:download','icoReset:reset','icoReset2:reset','icoFile:file']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var NAMES = {
+    colour: ['Red', 'Blue', 'Green', 'Yellow', 'Purple', 'Orange', 'Black', 'White', 'Teal', 'Pink'],
+    animal: ['Falcons', 'Otters', 'Foxes', 'Bears', 'Sharks', 'Hawks', 'Wolves', 'Lynx', 'Ravens', 'Bulls']
+  };
+
+  var mode = 'count', teams = [], players = [];
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyAllBtn', downloadBtn: '#dlBtn', filename: 'teams.txt', mime: 'text/plain' });
+
+  function parsePlayers() {
+    var seen = {}, list = [];
+    GT.lines($('#players').value).forEach(function (l) {
+      var m = l.match(/^(.*?)\s*[:=]\s*(-?\d+(?:\.\d+)?)\s*$/);
+      var name = (m ? m[1] : l).replace(/^\s*\d+\s*[.)]\s*/, '').trim();
+      if (!name) return;
+      var k = name.toLowerCase();
+      if (seen[k]) return;
+      seen[k] = 1;
+      list.push({ name: name, skill: m ? parseFloat(m[2]) : null });
+    });
+    return list;
+  }
+
+  function teamName(i) {
+    var n = $('#naming').value;
+    if (n === 'letter') return 'Team ' + String.fromCharCode(65 + i);
+    if (n === 'custom') {
+      var l = $('#customNames').value.split(',').map(function (x) { return x.trim(); }).filter(Boolean);
+      return l[i] || ('Team ' + (i + 1));
+    }
+    if (NAMES[n]) return NAMES[n][i % NAMES[n].length] + (i >= NAMES[n].length ? ' ' + (Math.floor(i / NAMES[n].length) + 1) : '');
+    return 'Team ' + (i + 1);
+  }
+
+  function build() {
+    players = parsePlayers();
+    var rated = players.filter(function (p) { return p.skill !== null; }).length;
+
+    $('#stats').innerHTML = '<div class="note ' + (players.length ? 'note-ok' : 'note-warn') + '" style="margin-top:10px">' +
+      (players.length ? I.check : I.warn) + '<span>' + players.length + ' player' + (players.length === 1 ? '' : 's') +
+      (rated ? ' · ' + rated + ' with skill ratings' : '') + '</span></div>';
+
+    if (players.length < 2) {
+      $('#teams').innerHTML = '<div class="empty">Add at least two players.</div>';
+      $('#pill').textContent = '—';
+      return;
+    }
+
+    var v = Math.max(1, parseInt($('#value').value, 10) || 1);
+    var teamCount = mode === 'count' ? Math.min(v, players.length) : Math.ceil(players.length / v);
+    var rand = S.rng($('#seed').value);
+
+    if ($('#optSkill').checked && rated) {
+      teams = snakeDraft(players, teamCount, rand);
+    } else {
+      /* Reuse the constraint-aware grouping engine. */
+      var res = GTRoster.makeGroups(players.map(function (p) { return p.name; }), {
+        seed: $('#seed').value, mode: 'count', value: teamCount,
+        apart: GTRoster.parsePairs($('#apart').value),
+        together: GTRoster.parsePairs($('#together').value)
+      });
+      teams = res.groups.map(function (g) {
+        return g.map(function (n) {
+          return players.filter(function (p) { return p.name === n; })[0] || { name: n, skill: null };
+        });
+      });
+      window.__violations = res.violations;
+    }
+
+    renderTeams();
+    renderExport();
+    renderChecks(rated);
+
+    $('#pill').textContent = teams.length + ' teams · ' + players.length + ' players';
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+  }
+
+  /* Snake draft: strongest to team 1..n, then reverse, which keeps totals close. */
+  function snakeDraft(list, teamCount, rand) {
+    var sorted = list.slice().sort(function (a, b) {
+      var sa = a.skill === null ? -Infinity : a.skill;
+      var sb = b.skill === null ? -Infinity : b.skill;
+      if (sb !== sa) return sb - sa;
+      return rand() - 0.5;
+    });
+    var t = [];
+    for (var i = 0; i < teamCount; i++) t.push([]);
+    var dir = 1, idx = 0;
+    sorted.forEach(function (p) {
+      t[idx].push(p);
+      idx += dir;
+      if (idx === teamCount) { idx = teamCount - 1; dir = -1; }
+      else if (idx < 0) { idx = 0; dir = 1; }
+    });
+    return t;
+  }
+
+  function total(team) {
+    return team.reduce(function (a, p) { return a + (p.skill || 0); }, 0);
+  }
+
+  function renderTeams() {
+    var showSkill = $('#optSkill').checked && players.some(function (p) { return p.skill !== null; });
+    $('#teams').innerHTML = '<div class="grid g2">' + teams.map(function (t, i) {
+      var cap = $('#optCaptains').checked ? t[0] : null;
+      return '<div class="card" style="padding:16px;box-shadow:none">' +
+        '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">' +
+        '<h3 style="font-size:15px">' + GT.esc(teamName(i)) + '</h3>' +
+        '<span class="chip" style="font-family:var(--sans)">' + t.length +
+        (showSkill ? ' · ' + total(t) : '') + '</span></div>' +
+        '<ol style="margin:0;padding-left:20px;font-size:14px;line-height:1.9;color:var(--ink-2)">' +
+        t.map(function (p) {
+          return '<li>' + GT.esc(p.name) +
+            (cap && p === cap ? ' <span style="font-size:11px;color:var(--blue);font-weight:700">(C)</span>' : '') +
+            (showSkill && p.skill !== null ? ' <span style="color:var(--muted-2);font-size:12px">' + p.skill + '</span>' : '') +
+            '</li>';
+        }).join('') + '</ol></div>';
+    }).join('') + '</div>';
+  }
+
+  function renderExport() {
+    var m = $('#exportAs').value, text, file = 'teams.txt';
+    if (m === 'csv') {
+      text = 'player,team\n' + teams.map(function (t, i) {
+        return t.map(function (p) { return '"' + p.name.replace(/"/g, '""') + '","' + teamName(i) + '"'; }).join('\n');
+      }).join('\n');
+      file = 'teams.csv';
+    } else if (m === 'json') {
+      text = JSON.stringify(teams.map(function (t, i) {
+        return { team: teamName(i), players: t.map(function (p) { return p.name; }) };
+      }), null, 2);
+      file = 'teams.json';
+    } else {
+      text = teams.map(function (t, i) {
+        return teamName(i) + '\n' + t.map(function (p) { return '  · ' + p.name; }).join('\n');
+      }).join('\n\n');
+    }
+    out.set(text, file);
+  }
+
+  function renderChecks(rated) {
+    var c = [];
+    var sizes = teams.map(function (t) { return t.length; });
+    var min = Math.min.apply(null, sizes), max = Math.max.apply(null, sizes);
+    c.push(['ok', teams.length + ' teams, sizes ' + (min === max ? 'all ' + min : min + ' to ' + max) + '.']);
+
+    if ($('#optSkill').checked) {
+      if (!rated) {
+        c.push(['warn', 'Skill balancing is on but no ratings were found. Add them after each name, like <code>Amara: 8</code>.']);
+      } else {
+        if (rated < players.length) {
+          c.push(['warn', (players.length - rated) + ' player' + (players.length - rated === 1 ? '' : 's') +
+            ' have no rating and are treated as the lowest. Rate everyone for a proper balance.']);
+        }
+        var totals = teams.map(total);
+        var spread = Math.max.apply(null, totals) - Math.min.apply(null, totals);
+        c.push([spread <= 2 ? 'ok' : 'warn', 'Team strength totals: ' + totals.join(', ') +
+          ' — spread of ' + spread + '. ' + (spread <= 2
+            ? 'Well balanced.'
+            : 'A snake draft cannot always equalise perfectly; reshuffle or adjust a rating if it matters.')]);
+      }
+      if ($('#apart').value.trim() || $('#together').value.trim()) {
+        c.push(['warn', 'Keep-apart and keep-together rules are ignored when skill balancing is on — the draft order is determined by rating. Turn skill balancing off to apply them.']);
+      }
+    } else {
+      var v = window.__violations || [];
+      if (v.length) {
+        c.push(['err', 'Could not honour every keep-apart rule: ' +
+          v.map(function (x) { return GT.esc(x[0]) + ' & ' + GT.esc(x[1]); }).join(', ') +
+          '. Add more teams or remove a constraint.']);
+      } else if ($('#apart').value.trim()) {
+        c.push(['ok', 'All keep-apart rules satisfied.']);
+      }
+    }
+
+    if (max - min > 1) c.push(['warn', 'Team sizes differ by more than one — usually caused by keep-together pairs.']);
+    if (min === 1) c.push(['warn', 'At least one team has a single player. Reduce the number of teams.']);
+    $('#checks').innerHTML = c.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : x[0] === 'warn' ? 'note-warn' : 'note-err') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+  }
+
+  $('#copyBtn').addEventListener('click', function () {
+    GT.copy(teams.map(function (t, i) {
+      return teamName(i) + ': ' + t.map(function (p) { return p.name; }).join(', ');
+    }).join('\n'), 'Teams');
+  });
+  $('#printBtn').addEventListener('click', function () {
+    GTRoster.printHtml('Teams',
+      '<h1>Teams</h1><p class="sub">' + players.length + ' players · ' + teams.length + ' teams · ' +
+      new Date().toLocaleDateString() + '</p><div class="grid g3">' +
+      teams.map(function (t, i) {
+        return '<div class="card"><h3>' + GT.esc(teamName(i)) + '</h3><ol>' +
+          t.map(function (p) { return '<li>' + GT.esc(p.name) + '</li>'; }).join('') + '</ol></div>';
+      }).join('') + '</div>');
+  });
+
+  $('#mode').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#mode button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    mode = b.getAttribute('data-m');
+    $('#valueLabel').textContent = mode === 'count' ? 'Number of teams' : 'Players per team';
+    build();
+  });
+  $('#naming').addEventListener('change', function () { $('#customNames').hidden = this.value !== 'custom'; });
+  $('#newSeed').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); });
+  $('#regen').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); GT.toast('Reshuffled'); });
+
+  $('#guide').innerHTML = [
+    ['Snake draft is how you balance by skill', 'Sorting players by rating and dealing them out in order gives team 1 every strongest player. A snake draft reverses direction each pass — 1,2,3 then 3,2,1 — so the team that picked last gets the next best player. It equalises totals far better than straight dealing, and it is what real drafts use.'],
+    ['Ratings do not need to be precise', 'A 1–10 scale from memory is enough. The purpose is to stop all the strongest players landing together, not to model ability accurately. Even rough ratings dramatically improve the result over pure random.'],
+    ['Random teams are genuinely unbalanced sometimes', 'With no ratings, chance regularly puts the four best players on one side. That is fine for a warm-up and frustrating for a competitive game. If the match matters, rate the players.'],
+    ['Keep-apart and skill balancing conflict', 'Skill balancing fixes the draft order by rating, so it cannot also honour separation rules. Pick whichever matters more — the tool tells you when both are set.'],
+    ['Captains from the top of each team', 'With ratings on, the captain is the highest-rated player in each team. Without ratings it is whoever was drawn first, which is arbitrary but at least consistent.'],
+    ['Reshuffle in front of everyone', 'The value of a generator here is the same as with any draw — it is visibly nobody\'s decision. Pressing reshuffle in front of the group settles arguments before they start.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('');
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Teams generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+  $('#exportAs').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'team-generator',
+    lede: 'Split players into teams that are actually balanced — snake-draft skill ratings, captains, keep-apart rules and printable team sheets.',
+    steps: [
+      { icon: 'gear', title: 'Paste your players', text: 'Add a rating after a colon if you want skill balancing.' },
+      { icon: 'users', title: 'Set teams or team size', text: 'Sizes stay as even as the numbers allow.' },
+      { icon: 'file', title: 'Print or project', text: 'Team sheets for the wall, or CSV for your records.' }
+    ],
+    guideTitle: 'Why random teams feel unfair, and how a draft fixes it',
+    guide:
+      '<p style="color:var(--muted)">Purely random teams are unbiased but not balanced. With fourteen players, chance will regularly put your four strongest on the same side — and everyone notices within about two minutes of play starting.</p>' +
+      '<p style="color:var(--muted);margin-top:12px">Adding rough skill ratings and using a snake draft fixes it. Players are sorted by rating and dealt out in order, but the direction reverses each pass: team 1, 2, 3, then 3, 2, 1, then 1, 2, 3 again. The team that picked last on one pass picks first on the next, so no team accumulates all the top players.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Rating players</h4><p style="color:var(--muted);font-size:13.8px">Write <code>Amara: 8</code> after each name. A rough 1–10 scale is plenty — the goal is to avoid stacking one side, not to model ability precisely. Even approximate ratings beat random by a wide margin.</p>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">Unrated players are treated as the lowest, so rate everyone or nobody.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">When to skip ratings</h4><p style="color:var(--muted);font-size:13.8px">For a PE warm-up, a social kickabout or any situation where the point is mixing rather than competing, random is the right choice — and it lets you use keep-apart and keep-together rules, which skill balancing cannot honour.</p></div></div>' +
+      '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>Whichever mode you use, generate the teams in front of the group. A visible draw settles the "that\'s not fair" conversation before it starts, because the outcome is demonstrably nobody\'s choice.</span></div>',
+    related: ['classroom-group-generator', 'tournament-bracket-generator', 'round-robin-schedule-generator'],
+    faqs: [
+      { q: 'How do I make teams fair?', a: 'Add a rough skill rating after each name (<code>Amara: 8</code>) and turn on skill balancing. The snake draft deals players out in reversing order so no team accumulates all the strongest players.' },
+      { q: 'What is a snake draft?', a: 'Players are picked in order 1, 2, 3 then 3, 2, 1 then 1, 2, 3 again. Reversing each pass means the team that picked last gets the next best player, which keeps team totals much closer than straight dealing.' },
+      { q: 'Do ratings need to be accurate?', a: 'No. A rough 1–10 scale from memory works fine. The aim is to avoid stacking one side, not to measure ability precisely.' },
+      { q: 'Can I keep two players apart?', a: 'Yes, in random mode — list them under keep apart. It does not work with skill balancing, because the draft order is fixed by rating; the tool warns you if you set both.' },
+      { q: 'Why are my teams different sizes?', a: 'Because the player count does not divide evenly, or a keep-together pair had to be placed as a unit. Sizes are kept as close as the numbers allow.' },
+      { q: 'Can I get the same teams again?', a: 'Yes — keep the seed and the player list identical. Press Reshuffle for a new arrangement.' }
+    ],
+    seo: {
+      title: 'Making fair teams: snake drafts, skill ratings and keep-apart rules',
+      lead: 'This <strong>team generator</strong> splits players into teams that are actually balanced — snake-draft skill ratings, captains, keep-apart rules and printable team sheets. Below: why purely random teams feel unfair, how a snake draft fixes it, and when random is the right answer after all.',
+      blocks: [
+        {
+          h: 'Random is unbiased, not balanced',
+          html: '<p>These are different properties and conflating them is why "we picked randomly" rarely settles an argument.</p>' +
+            '<p><strong>Unbiased</strong> means nobody was favoured in the process. <strong>Balanced</strong> means the resulting teams are of similar strength. A fair coin is unbiased, and it will still land heads four times in a row often enough to notice.</p>' +
+            '<p>With fourteen players and two teams, chance regularly puts the four strongest on the same side. The draw was perfectly fair and the game is over in ten minutes. Everyone can see it, and "it was random" does not help.</p>',
+          callout: { type: 'tip', text: 'Whichever mode you use, generate the teams <em>in front of the group</em>. A visible draw settles the "that\'s not fair" conversation before it starts, because the outcome is demonstrably nobody\'s choice. Doing it privately and announcing the result invites exactly the suspicion the generator exists to remove.' }
+        },
+        {
+          h: 'How a snake draft works',
+          html: '<p>Players are sorted by rating and dealt out in order, but the direction reverses on each pass:</p>',
+          table: {
+            head: ['Pass', 'Order', 'Effect'],
+            rows: [
+              ['1', 'Team 1, 2, 3', 'Team 1 gets the strongest player.'],
+              ['2', 'Team 3, 2, 1', 'Team 3 picks first, compensating.'],
+              ['3', 'Team 1, 2, 3', 'And so on, alternating.'],
+              ['4', 'Team 3, 2, 1', 'Cumulative totals stay close.']
+            ]
+          },
+          after: '<p>Straight dealing gives team 1 the best player in every round, which compounds. Reversing means the team that picked last gets the next best player, and total team strength converges. It is the same mechanism sports drafts use, for the same reason.</p>'
+        },
+        {
+          h: 'Rating players',
+          steps: [
+            { t: 'Add a rating after each name', d: 'Write <code>Amara: 8</code>. Anything on a consistent scale works — 1 to 10 is plenty.' },
+            { t: 'Rate from memory, roughly', d: 'The goal is to avoid stacking one side, not to model ability precisely. Approximate ratings beat random by a wide margin.' },
+            { t: 'Rate everyone or nobody', d: 'Unrated players are treated as the lowest, so a half-rated list produces worse teams than an unrated one.' },
+            { t: 'Use the same scale each week', d: 'A rating that means 8 one week and 5 the next is noise.' },
+            { t: 'Keep ratings private', d: 'The tool prints team sheets without them. A visible rating list is a conversation nobody enjoys.' }
+          ],
+          callout: { type: 'warn', text: '<strong>Ratings are judgements about people.</strong> Handle the list the way you would handle any other assessment — keep it to the organiser, do not print it, and do not project it. The value is in the balanced teams, not in the numbers that produced them.' }
+        },
+        {
+          h: 'When to skip ratings',
+          cards: [
+            { t: 'PE and school groups', d: 'The point is mixing, not competing. Random is appropriate and visibly neutral.' },
+            { t: 'Social games', d: 'Where nobody is keeping score seriously, balancing adds process for no benefit.' },
+            { t: 'When you need keep-apart rules', d: 'Keep-apart and keep-together constraints work in random mode; skill balancing fixes the draft order and cannot honour them.' },
+            { t: 'New groups', d: 'You do not know anyone\'s ability yet, and guessing produces confidently wrong teams.' }
+          ]
+        },
+        {
+          h: 'Keep-apart and keep-together',
+          html: '<p>Constraints that matter in practice: two players who cannot be on the same side, a pair who arrived together and want to play together, siblings who should be separated for everyone\'s sake.</p>' +
+            '<p>These work in random mode. The generator places constrained players first, then fills the remaining slots randomly around them. Keep-together pairs are placed as a unit, which is why they sometimes make team sizes uneven — a pair cannot be split to even up the numbers.</p>' +
+            '<p>They do not work with skill balancing, because the snake draft order is determined entirely by rating. Setting both produces a warning rather than a silently ignored constraint. If you need both, the workable approach is to rate the group, generate balanced teams, then swap two players of similar rating by hand.</p>'
+        },
+        {
+          h: 'Uneven team sizes',
+          html: '<p>Teams come out different sizes for exactly three reasons, and the tool tells you which applies:</p>',
+          list: [
+            '<strong>The player count does not divide evenly.</strong> Thirteen players into three teams is 5, 4, 4. Nothing can change that.',
+            '<strong>A keep-together pair had to be placed as a unit.</strong> The pair goes somewhere whole, and the counts shift around it.',
+            '<strong>You set a team size rather than a team count.</strong> Requesting teams of four from fourteen players gives three full teams and one of two.'
+          ],
+          after: '<p>Sizes are kept as close as the numbers allow. Where a difference is unavoidable, give the extra player to the team with the lower total rating — it is the one adjustment that improves balance rather than compromising it.</p>'
+        },
+        {
+          h: 'Reproducing the same teams',
+          html: '<p>Keep the seed and the player list identical and you get identical teams. Change either and you get a new arrangement.</p>' +
+            '<p>This matters more than it sounds for a recurring game. Recording the seed lets you reproduce last week\'s teams exactly — useful when a session is rained off and resumed, or when someone disputes what the teams were. Press reshuffle for a genuinely new draw.</p>' +
+            '<p>The printable team sheets carry the seed in the footer, so the record travels with the paper.</p>'
+        },
+        {
+          h: 'Related team tools',
+          list: [
+            '<a href="classroom-group-generator.html">Classroom Group Generator</a> — the same problem with teaching constraints.',
+            '<a href="tournament-bracket-generator.html">Tournament Bracket Generator</a> — seed the teams into a draw.',
+            '<a href="round-robin-schedule-generator.html">Round Robin Generator</a> — everyone plays everyone.',
+            '<a href="random-student-pair-generator.html">Random Student Pair Generator</a> — pairs rather than teams.',
+            '<a href="league-schedule-generator.html">League Schedule Generator</a> — a full season for the teams you built.'
+          ]
+        }
+      ],
+      keywords: [
+        'team generator', 'random team picker', 'balanced teams generator',
+        'snake draft team maker', 'split players into teams', 'fair team selection',
+        'team randomiser', 'skill balanced teams', 'keep players apart teams',
+        'printable team sheets', 'pick teams online', 'group splitter'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

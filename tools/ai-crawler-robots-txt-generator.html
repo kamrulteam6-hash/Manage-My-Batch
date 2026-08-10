@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Crawler Robots.txt Generator — Block or Allow GPTBot, ClaudeBot &amp; More | Manage My Batch</title>
+<meta name="description" content="Free AI crawler robots.txt generator. Allow or block GPTBot, ClaudeBot, PerplexityBot, Google-Extended, Bytespider and 25+ AI bots with one click. Copy-ready robots.txt.">
+<link rel="canonical" href="https://managemybatch.com/tools/ai-crawler-robots-txt-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="AI Crawler Robots.txt Generator — Block or Allow GPTBot, ClaudeBot &amp; More">
+<meta property="og:description" content="Free AI crawler robots.txt generator. Allow or block GPTBot, ClaudeBot, PerplexityBot, Google-Extended, Bytespider and 25+ AI bots with one click. Copy-ready robots.txt.">
+<meta property="og:url" content="https://managemybatch.com/tools/ai-crawler-robots-txt-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI Crawler Robots.txt Generator — Block or Allow GPTBot, ClaudeBot &amp; More">
+<meta name="twitter:description" content="Free AI crawler robots.txt generator. Allow or block GPTBot, ClaudeBot, PerplexityBot, Google-Extended, Bytespider and 25+ AI bots with one click. Copy-ready robots.txt.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Generator Settings</div>
+
+    <div class="field">
+      <label>Quick preset</label>
+      <div class="seg" id="preset">
+        <button type="button" data-p="block-all">Block all AI</button>
+        <button type="button" data-p="allow-search" class="on">Block AI, keep search</button>
+        <button type="button" data-p="allow-all">Allow all AI</button>
+        <button type="button" data-p="custom">Custom</button>
+      </div>
+      <div class="hint" id="presetHint">Blocks model-training and answer-engine bots while leaving Googlebot, Bingbot and other classic search crawlers untouched.</div>
+    </div>
+
+    <div class="field">
+      <label for="siteUrl">Site URL <span style="font-weight:400;color:var(--muted)">(for the sitemap line)</span></label>
+      <input type="url" id="siteUrl" value="https://example.com" placeholder="https://example.com">
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <div class="label" style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+        <span>AI crawlers</span>
+        <input type="search" id="filter" placeholder="Filter bots…" style="max-width:170px;padding:7px 11px;font-size:13px">
+      </div>
+      <div class="hint" style="margin:0 0 12px">Checked = <strong>blocked</strong> (<code>Disallow: /</code>). Unchecked = allowed.</div>
+      <div id="botGroups"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <fieldset class="field">
+      <legend class="label">Search &amp; social crawlers</legend>
+      <div class="hint" style="margin:0 0 10px">These drive organic traffic and rich previews. Blocking them removes you from search results.</div>
+      <div id="searchBots" class="check-list two"></div>
+    </fieldset>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label for="paths">Additionally disallow these paths for <em>every</em> bot</label>
+      <textarea id="paths" placeholder="/admin/&#10;/cart&#10;/*.json$" style="min-height:88px">/admin/
+/cgi-bin/
+/*?*utm_</textarea>
+      <div class="hint">One path per line. <code>*</code> and <code>$</code> wildcards are supported by Google and Bing.</div>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Extras</legend>
+      <div class="check-list">
+        <label class="check"><input type="checkbox" id="optSitemap" checked><span><span class="t">Include Sitemap line</span><span class="d">Absolute URL, as the spec requires.</span></span></label>
+        <label class="check"><input type="checkbox" id="optDelay"><span><span class="t">Add Crawl-delay</span><span class="d">Honoured by Bing and Yandex; ignored by Google.</span></span></label>
+        <label class="check"><input type="checkbox" id="optComments" checked><span><span class="t">Include explanatory comments</span><span class="d">Names each bot's operator so future-you knows why.</span></span></label>
+        <label class="check"><input type="checkbox" id="optGroup" checked><span><span class="t">Group blocked bots into one rule</span><span class="d">Shorter file; one User-agent list sharing a Disallow.</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="field" id="delayWrap" hidden style="margin-top:14px">
+      <label for="delay">Crawl-delay (seconds)</label>
+      <input type="number" id="delay" value="10" min="1" max="120">
+    </div>
+
+    <div class="out-actions" style="margin-top:20px">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate robots.txt</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated File<span class="spacer"></span>
+      <span class="result-pill" id="pill">ready</span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="file">robots.txt</button>
+      <button type="button" data-tab="tester">Rule tester</button>
+      <button type="button" data-tab="ref">Bot reference</button>
+    </div>
+
+    <div data-panel="file">
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">robots.txt</span><span class="chip" id="meta">0 lines</span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+      <div id="summaryBox"></div>
+    </div>
+
+    <div data-panel="tester" hidden>
+      <p style="color:var(--muted);font-size:13.8px;margin-bottom:14px">Check how the rules above resolve for a specific bot and path — matching uses Google's longest-match-wins algorithm.</p>
+      <div class="row">
+        <div class="field"><label for="tBot">User-agent</label><select id="tBot"></select></div>
+        <div class="field"><label for="tPath">Path</label><input type="text" id="tPath" value="/blog/my-post"></div>
+      </div>
+      <div id="testResult"></div>
+    </div>
+
+    <div data-panel="ref" hidden><div id="refTable"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoCopy:copy','icoDl:download'].forEach(function (p) {
+    var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]];
+  });
+
+  /* ------------------------------- bot database ------------------------------- */
+  var BOTS = [
+    // group: purpose
+    { ua: 'GPTBot', org: 'OpenAI', g: 'training', note: 'Crawls pages to train future OpenAI models.' },
+    { ua: 'OAI-SearchBot', org: 'OpenAI', g: 'search', note: 'Indexes pages for ChatGPT Search results and links.' },
+    { ua: 'ChatGPT-User', org: 'OpenAI', g: 'fetch', note: 'One-off fetch when a user pastes your link into ChatGPT.' },
+    { ua: 'ClaudeBot', org: 'Anthropic', g: 'training', note: 'General crawler for Anthropic models.' },
+    { ua: 'Claude-User', org: 'Anthropic', g: 'fetch', note: 'Fetches a page on behalf of a Claude user request.' },
+    { ua: 'Claude-SearchBot', org: 'Anthropic', g: 'search', note: 'Indexes pages to support Claude search results.' },
+    { ua: 'anthropic-ai', org: 'Anthropic', g: 'training', note: 'Legacy Anthropic user-agent; keep for older deployments.' },
+    { ua: 'Google-Extended', org: 'Google', g: 'training', note: 'Gemini / Vertex AI training opt-out. Does NOT affect Google Search ranking.' },
+    { ua: 'Google-CloudVertexBot', org: 'Google', g: 'training', note: 'Vertex AI agent crawling on behalf of Google Cloud customers.' },
+    { ua: 'PerplexityBot', org: 'Perplexity', g: 'search', note: 'Indexes pages for Perplexity answer citations.' },
+    { ua: 'Perplexity-User', org: 'Perplexity', g: 'fetch', note: 'User-triggered fetch inside a Perplexity session.' },
+    { ua: 'Applebot-Extended', org: 'Apple', g: 'training', note: 'Apple Intelligence training opt-out. Applebot itself still powers Siri/Spotlight.' },
+    { ua: 'meta-externalagent', org: 'Meta', g: 'training', note: 'Crawls content for Meta AI model training.' },
+    { ua: 'meta-externalfetcher', org: 'Meta', g: 'fetch', note: 'Fetches links shared inside Meta products.' },
+    { ua: 'FacebookBot', org: 'Meta', g: 'training', note: 'Legacy Meta language-model crawler.' },
+    { ua: 'Bytespider', org: 'ByteDance', g: 'training', note: 'TikTok/Doubao crawler. Frequently reported as aggressive.' },
+    { ua: 'Amazonbot', org: 'Amazon', g: 'training', note: 'Powers Alexa answers and Amazon AI products.' },
+    { ua: 'Applebot', org: 'Apple', g: 'search', note: 'Siri and Spotlight suggestions. Blocking removes you from Apple surfaces.' },
+    { ua: 'CCBot', org: 'Common Crawl', g: 'training', note: 'Open dataset used as training input by nearly every lab.' },
+    { ua: 'cohere-ai', org: 'Cohere', g: 'training', note: 'Crawler for Cohere models.' },
+    { ua: 'cohere-training-data-crawler', org: 'Cohere', g: 'training', note: 'Explicit Cohere training crawler.' },
+    { ua: 'Diffbot', org: 'Diffbot', g: 'training', note: 'Builds a commercial knowledge graph resold to AI vendors.' },
+    { ua: 'omgili', org: 'Webz.io', g: 'training', note: 'Resells crawled web data to AI companies.' },
+    { ua: 'omgilibot', org: 'Webz.io', g: 'training', note: 'Second Webz.io user-agent.' },
+    { ua: 'ImagesiftBot', org: 'Hive AI', g: 'training', note: 'Harvests images for vision-model training.' },
+    { ua: 'YouBot', org: 'You.com', g: 'search', note: 'Indexes for the You.com answer engine.' },
+    { ua: 'Timpibot', org: 'Timpi', g: 'training', note: 'Decentralised search/AI index crawler.' },
+    { ua: 'AI2Bot', org: 'Allen Institute', g: 'training', note: 'Crawls for open AI research datasets.' },
+    { ua: 'Kangaroo Bot', org: 'Kangaroo LLM', g: 'training', note: 'Open-source LLM dataset crawler.' },
+    { ua: 'DuckAssistBot', org: 'DuckDuckGo', g: 'search', note: 'Powers DuckAssist instant answers.' },
+    { ua: 'MistralAI-User', org: 'Mistral', g: 'fetch', note: 'Fetches pages for Le Chat users.' },
+    { ua: 'Devin', org: 'Cognition', g: 'fetch', note: 'Agentic coding tool fetching docs on demand.' },
+    { ua: 'SemrushBot-OCOB', org: 'Semrush', g: 'training', note: 'Semrush AI content crawler.' }
+  ];
+
+  var SEARCH_BOTS = [
+    { ua: 'Googlebot', note: 'Google Search — blocking removes you from Google entirely.' },
+    { ua: 'Bingbot', note: 'Bing and, indirectly, Copilot web results.' },
+    { ua: 'DuckDuckBot', note: 'DuckDuckGo crawler.' },
+    { ua: 'Slurp', note: 'Yahoo Search.' },
+    { ua: 'YandexBot', note: 'Yandex Search.' },
+    { ua: 'Baiduspider', note: 'Baidu Search.' },
+    { ua: 'facebookexternalhit', note: 'Open Graph link previews on Facebook/Instagram.' },
+    { ua: 'Twitterbot', note: 'X/Twitter card previews.' },
+    { ua: 'LinkedInBot', note: 'LinkedIn post previews.' },
+    { ua: 'Discordbot', note: 'Discord link embeds.' }
+  ];
+
+  var GROUPS = {
+    training: { title: 'Model-training crawlers', desc: 'Collect content to train or fine-tune models. Blocking these is the usual “opt out of AI training” move.' },
+    search:   { title: 'AI answer engines', desc: 'Index content to cite it in AI answers. Blocking these removes your brand from AI search results.' },
+    fetch:    { title: 'User-triggered fetchers', desc: 'Fetch a single page only when a human asks. Blocking these breaks link sharing into AI chats.' }
+  };
+
+  var blocked = {}; // ua -> true
+  var searchBlocked = {};
+
+  /* ------------------------------- rendering ------------------------------- */
+  function renderBots() {
+    var f = ($('#filter').value || '').toLowerCase();
+    var html = '';
+    Object.keys(GROUPS).forEach(function (g) {
+      var list = BOTS.filter(function (b) {
+        return b.g === g && (!f || (b.ua + ' ' + b.org).toLowerCase().indexOf(f) > -1);
+      });
+      if (!list.length) return;
+      var allOn = list.every(function (b) { return blocked[b.ua]; });
+      html += '<div class="rep"><div class="rep-head"><span class="n">' + GROUPS[g].title + '</span>' +
+        '<button type="button" class="btn btn-soft btn-sm" data-toggle-group="' + g + '">' + (allOn ? 'Allow all' : 'Block all') + '</button></div>' +
+        '<div class="hint" style="margin:-4px 0 10px">' + GROUPS[g].desc + '</div><div class="check-list">' +
+        list.map(function (b) {
+          return '<label class="check' + (blocked[b.ua] ? ' on' : '') + '"><input type="checkbox" data-bot="' + b.ua + '"' + (blocked[b.ua] ? ' checked' : '') + '>' +
+            '<span><span class="t">' + b.ua + ' <span style="color:var(--muted);font-weight:500">· ' + b.org + '</span></span>' +
+            '<span class="d">' + b.note + '</span></span></label>';
+        }).join('') + '</div></div>';
+    });
+    $('#botGroups').innerHTML = html || '<p style="color:var(--muted);font-size:13.8px">No bot matches that filter.</p>';
+  }
+
+  function renderSearchBots() {
+    $('#searchBots').innerHTML = SEARCH_BOTS.map(function (b) {
+      return '<label class="check' + (searchBlocked[b.ua] ? ' on' : '') + '"><input type="checkbox" data-sbot="' + b.ua + '"' + (searchBlocked[b.ua] ? ' checked' : '') + '>' +
+        '<span><span class="t">' + b.ua + '</span><span class="d">' + b.note + '</span></span></label>';
+    }).join('');
+  }
+
+  /* ------------------------------- presets ------------------------------- */
+  var PRESET_HINTS = {
+    'block-all': 'Blocks every AI crawler including user-triggered fetchers. Maximum protection, but links shared into ChatGPT or Claude will not resolve.',
+    'allow-search': 'Blocks model-training and answer-engine bots while leaving Googlebot, Bingbot and social preview bots untouched.',
+    'allow-all': 'Allows everything. Choose this if AI citations are a traffic channel you want to grow.',
+    'custom': 'Pick exactly which crawlers to block below.'
+  };
+  function applyPreset(p) {
+    blocked = {}; searchBlocked = {};
+    if (p === 'block-all') BOTS.forEach(function (b) { blocked[b.ua] = true; });
+    if (p === 'allow-search') BOTS.forEach(function (b) { if (b.g !== 'fetch') blocked[b.ua] = true; });
+    $('#presetHint').textContent = PRESET_HINTS[p];
+    renderBots(); renderSearchBots(); build();
+  }
+  $('#preset').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#preset button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    applyPreset(b.getAttribute('data-p'));
+  });
+  function markCustom() {
+    $$('#preset button').forEach(function (x) { x.classList.toggle('on', x.getAttribute('data-p') === 'custom'); });
+    $('#presetHint').textContent = PRESET_HINTS.custom;
+  }
+
+  $('#botGroups').addEventListener('change', function (e) {
+    var ua = e.target.getAttribute('data-bot'); if (!ua) return;
+    if (e.target.checked) blocked[ua] = true; else delete blocked[ua];
+    markCustom(); build();
+  });
+  $('#botGroups').addEventListener('click', function (e) {
+    var g = e.target.getAttribute && e.target.getAttribute('data-toggle-group'); if (!g) return;
+    var list = BOTS.filter(function (b) { return b.g === g; });
+    var allOn = list.every(function (b) { return blocked[b.ua]; });
+    list.forEach(function (b) { if (allOn) delete blocked[b.ua]; else blocked[b.ua] = true; });
+    markCustom(); renderBots(); build();
+  });
+  $('#searchBots').addEventListener('change', function (e) {
+    var ua = e.target.getAttribute('data-sbot'); if (!ua) return;
+    if (e.target.checked) searchBlocked[ua] = true; else delete searchBlocked[ua];
+    markCustom(); build();
+  });
+  $('#filter').addEventListener('input', renderBots);
+  $('#optDelay').addEventListener('change', function () { $('#delayWrap').hidden = !this.checked; });
+
+  /* ------------------------------- build ------------------------------- */
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'robots.txt', mime: 'text/plain' });
+
+  function extraPaths() { return GT.lines($('#paths').value); }
+
+  function build() {
+    var L = [], comments = $('#optComments').checked;
+    var base = GT.normUrl($('#siteUrl').value || '').replace(/\/+$/, '');
+
+    if (comments) {
+      L.push('# robots.txt — generated ' + GT.today() + ' by managemybatch.com');
+      L.push('# Crawlers honour these rules voluntarily; they are not access control.');
+      L.push('');
+    }
+
+    var blockedList = BOTS.filter(function (b) { return blocked[b.ua]; });
+    var sBlockedList = SEARCH_BOTS.filter(function (b) { return searchBlocked[b.ua]; });
+    var allBlocked = blockedList.concat(sBlockedList);
+
+    if (allBlocked.length) {
+      if (comments) L.push('# ---- Blocked crawlers ----');
+      if ($('#optGroup').checked) {
+        allBlocked.forEach(function (b) {
+          if (comments && b.org) L.push('# ' + b.ua + ' — ' + b.org);
+          L.push('User-agent: ' + b.ua);
+        });
+        L.push('Disallow: /');
+        if ($('#optDelay').checked) L.push('Crawl-delay: ' + ($('#delay').value || 10));
+        L.push('');
+      } else {
+        allBlocked.forEach(function (b) {
+          if (comments) L.push('# ' + b.ua + (b.org ? ' — ' + b.org : ''));
+          L.push('User-agent: ' + b.ua, 'Disallow: /');
+          if ($('#optDelay').checked) L.push('Crawl-delay: ' + ($('#delay').value || 10));
+          L.push('');
+        });
+      }
+    }
+
+    if (comments) L.push('# ---- Everyone else ----');
+    L.push('User-agent: *');
+    var paths = extraPaths();
+    if (paths.length) paths.forEach(function (p) { L.push('Disallow: ' + (p.charAt(0) === '/' ? p : '/' + p)); });
+    else L.push('Disallow:');
+    if ($('#optDelay').checked) L.push('Crawl-delay: ' + ($('#delay').value || 10));
+    L.push('');
+
+    if ($('#optSitemap').checked && base) L.push('Sitemap: ' + base + '/sitemap.xml');
+
+    var text = L.join('\n').replace(/\n{3,}/g, '\n\n').replace(/\s+$/, '') + '\n';
+    out.set(text, 'robots.txt');
+
+    var n = allBlocked.length;
+    var pill = $('#pill');
+    pill.textContent = n ? n + ' bot' + (n > 1 ? 's' : '') + ' blocked' : 'all crawlers allowed';
+    pill.style.background = n ? 'var(--blue-50)' : 'var(--green-bg)';
+    pill.style.color = n ? 'var(--blue)' : 'var(--green)';
+
+    renderSummary(blockedList, sBlockedList, base);
+    renderTester();
+    return text;
+  }
+
+  function renderSummary(bots, sbots, base) {
+    var h = '';
+    if (sbots.length) {
+      h += '<div class="note note-err">' + I.warn + '<span><strong>You are blocking search crawlers:</strong> ' +
+        sbots.map(function (b) { return b.ua; }).join(', ') + '. This removes you from those results and previews. Only do this deliberately.</span></div>';
+    }
+    var fetchers = bots.filter(function (b) { return b.g === 'fetch'; });
+    if (fetchers.length) {
+      h += '<div class="note note-warn">' + I.warn + '<span>Blocking user-triggered fetchers (' + fetchers.map(function (b) { return b.ua; }).join(', ') +
+        ') means a person pasting your URL into that assistant gets an error instead of your content.</span></div>';
+    }
+    if (!base) h += '<div class="note note-warn">' + I.warn + '<span>Add your site URL to emit a valid absolute <code>Sitemap:</code> line.</span></div>';
+    h += '<div class="note note-info">' + I.info + '<span>robots.txt must live at <code>' + (base || 'https://example.com') +
+      '/robots.txt</code>. It is advisory — bots that ignore it need blocking at the firewall or CDN instead.</span></div>';
+    $('#summaryBox').innerHTML = h;
+  }
+
+  /* ------------------------------- tester ------------------------------- */
+  function fillTesterBots() {
+    var all = BOTS.map(function (b) { return b.ua; }).concat(SEARCH_BOTS.map(function (b) { return b.ua; }));
+    $('#tBot').innerHTML = all.sort().map(function (u) { return '<option>' + u + '</option>'; }).join('') +
+      '<option>SomeOtherBot</option>';
+  }
+  function ruleToRegex(rule) {
+    var r = rule.replace(/[.+^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*');
+    if (/\$$/.test(rule)) r = r.replace(/\\?\$$/, '') + '$';
+    return new RegExp('^' + r);
+  }
+  function renderTester() {
+    var ua = $('#tBot').value, path = $('#tPath').value || '/';
+    var isBlocked = blocked[ua] || searchBlocked[ua];
+    var res, why;
+    if (isBlocked) { res = false; why = 'Matched <code>User-agent: ' + ua + '</code> → <code>Disallow: /</code>'; }
+    else {
+      var hit = null;
+      extraPaths().forEach(function (p) {
+        var pp = p.charAt(0) === '/' ? p : '/' + p;
+        try { if (ruleToRegex(pp).test(path) && (!hit || pp.length > hit.length)) hit = pp; } catch (e) {}
+      });
+      if (hit) { res = false; why = 'Matched the site-wide rule <code>Disallow: ' + GT.esc(hit) + '</code> under <code>User-agent: *</code>'; }
+      else { res = true; why = 'No <code>Disallow</code> rule matches this path under <code>User-agent: *</code>'; }
+    }
+    $('#testResult').innerHTML = '<div class="note ' + (res ? 'note-ok' : 'note-err') + '">' + (res ? I.check : I.warn) +
+      '<span><strong>' + ua + ' ' + (res ? 'MAY crawl' : 'is BLOCKED from') + ' ' + GT.esc(path) + '</strong><br>' + why + '</span></div>' +
+      '<div class="note note-info" style="margin-top:10px">' + I.info +
+      '<span>Google resolves conflicts by the <em>longest matching rule</em>, not by order. A specific <code>Allow:</code> beats a broader <code>Disallow:</code>.</span></div>';
+  }
+  $('#tBot').addEventListener('change', renderTester);
+  $('#tPath').addEventListener('input', renderTester);
+
+  /* ------------------------------- reference ------------------------------- */
+  function renderRef() {
+    var rows = BOTS.map(function (b) {
+      return '<div class="kv"><span class="k"><code>' + b.ua + '</code><br><span style="font-size:12.5px">' + b.note + '</span></span>' +
+        '<span class="v" style="text-align:right;white-space:nowrap">' + b.org + '<br><span style="font-weight:500;color:var(--muted);font-family:var(--sans);font-size:12.5px">' + GROUPS[b.g].title + '</span></span></div>';
+    }).join('');
+    $('#refTable').innerHTML = '<p style="color:var(--muted);font-size:13.8px;margin-bottom:12px">' + BOTS.length +
+      ' AI user-agents tracked. Names are case-insensitive in robots.txt, but matching is on a prefix of the token — use the exact strings below.</p>' + rows;
+  }
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('robots.txt generated'); });
+  ['#siteUrl','#paths','#delay'].forEach(function (s) { $(s).addEventListener('input', build); });
+  ['#optSitemap','#optDelay','#optComments','#optGroup'].forEach(function (s) { $(s).addEventListener('change', build); });
+
+  fillTesterBots(); renderRef(); applyPreset('allow-search');
+
+  GT.page({
+    slug: 'ai-crawler-robots-txt-generator',
+    lede: 'Decide exactly which AI crawlers may read your site. ' + BOTS.length + ' user-agents, four one-click presets, and a rule tester that mirrors Google’s matching logic.',
+    steps: [
+      { icon: 'gear', title: 'Pick a preset', text: 'Block all AI, block training only, or allow everything — then fine-tune any individual bot.' },
+      { icon: 'bolt', title: 'Review the warnings', text: 'The tool flags choices that would remove you from search results or break link sharing.' },
+      { icon: 'copy', title: 'Upload to your root', text: 'Replace /robots.txt, then re-test a few paths in the Rule tester tab.' }
+    ],
+    guideTitle: 'Blocking AI crawlers without wrecking your SEO',
+    guide:
+      '<p style="color:var(--muted)">Not every “AI bot” does the same job, and treating them as one category is the mistake that costs traffic. There are three distinct kinds, and the right answer is usually different for each.</p>' +
+      '<div class="grid g3" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Training crawlers</h4><p style="color:var(--muted);font-size:13.8px">GPTBot, ClaudeBot, CCBot, Google-Extended. They ingest your content into model weights. You get nothing back — no link, no visit. This is the group most publishers block.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Answer engines</h4><p style="color:var(--muted);font-size:13.8px">PerplexityBot, OAI-SearchBot, Claude-SearchBot. They cite you with a clickable link. Blocking them is exactly like blocking Googlebot in 2005 — it removes you from a growing referral channel.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">User fetchers</h4><p style="color:var(--muted);font-size:13.8px">ChatGPT-User, Claude-User, Perplexity-User. These fire only when a human pastes your URL. Blocking them means your own customers cannot get your page summarised.</p></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>Google-Extended is not Googlebot.</strong> Disallowing <code>Google-Extended</code> opts you out of Gemini training with zero effect on Google Search rankings. Disallowing <code>Googlebot</code> deindexes your site. They are separate tokens for a reason.</span></div>' +
+      '<div class="note note-info" style="margin-top:12px">' + GTI.info + '<span>robots.txt is a request, not a wall. Crawlers that ignore it — and scrapers that spoof a browser user-agent — must be stopped at your CDN or WAF with rate limits and bot-management rules.</span></div>',
+    related: ['llms-txt-generator', 'x-robots-tag-generator', 'meta-robots-tag-generator'],
+    faqs: [
+      { q: 'Does blocking GPTBot remove my site from ChatGPT?', a: 'It stops OpenAI using your pages for model training, and it stops them being fetched live. If you want to stay citable in ChatGPT Search while opting out of training, block <code>GPTBot</code> but allow <code>OAI-SearchBot</code> and <code>ChatGPT-User</code>.' },
+      { q: 'Will blocking AI crawlers hurt my Google rankings?', a: 'No — as long as you leave <code>Googlebot</code> allowed. <code>Google-Extended</code> is a separate token that only controls Gemini and Vertex AI training data; blocking it has no effect on Search.' },
+      { q: 'Do AI crawlers actually obey robots.txt?', a: 'The major labs — OpenAI, Anthropic, Google, Apple, Meta, Perplexity — publish their user-agents and state that they honour robots.txt. Smaller and adversarial scrapers do not. For those, use CDN bot management or rate limiting.' },
+      { q: 'Where does robots.txt go?', a: 'Only at the root of each host: <code>https://example.com/robots.txt</code>. Subdomains need their own file, and it must return a 200 with content type <code>text/plain</code>.' },
+      { q: 'Is Crawl-delay worth adding?', a: 'Only for Bing and Yandex — Google ignores it entirely. If Googlebot is overloading your server, adjust the crawl rate in Search Console instead.' },
+      { q: 'What happens if I block everything with Disallow: / for User-agent: *?', a: 'You disappear from every search engine and AI product. Almost nobody wants that. Use targeted per-bot rules like the ones this generator produces.' }
+    ],
+    seo: {
+      title: 'AI crawler robots.txt: how to block GPTBot, ClaudeBot and the rest',
+      lead: 'This <strong>AI crawler robots.txt generator</strong> writes the exact <code>User-agent</code> and <code>Disallow</code> lines that control which AI companies may read your site. Below: what each bot actually does, why blocking a training crawler is different from blocking a search crawler, and the rules that quietly cost you traffic.',
+      blocks: [
+        {
+          h: 'What an AI crawler robots.txt does',
+          html: '<p><strong>robots.txt</strong> is a plain-text file at your domain root that tells automated clients which paths they may request. It has controlled search engine crawling since 1994; the only thing that changed with generative AI is the <em>list of user-agents</em> you now have to think about.</p>' +
+            '<p>Each AI company publishes one or more named crawlers. Adding a <code>User-agent</code> block for a bot and a <code>Disallow: /</code> line under it asks that specific crawler to stay away, while leaving Googlebot, Bingbot and everyone else untouched. Nothing is hidden and nothing is enforced — robots.txt is a published request, not a firewall.</p>' +
+            '<p>That distinction matters. If a crawler ignores the file, robots.txt cannot stop it. Blocking at the edge — a WAF rule, a Cloudflare bot rule, a server-level user-agent deny — is the only thing that actually enforces the decision.</p>'
+        },
+        {
+          h: 'The AI crawlers worth knowing',
+          html: '<p>Not every bot from an AI company does the same job, and blocking the wrong one has very different consequences.</p>',
+          table: {
+            head: ['User-agent', 'Operator', 'What it does', 'Blocking cost'],
+            rows: [
+              ['<code>GPTBot</code>', 'OpenAI', 'Collects pages used to train future models.', 'None to search traffic. Content is excluded from training.'],
+              ['<code>OAI-SearchBot</code>', 'OpenAI', 'Builds the index behind ChatGPT search results.', 'You lose ChatGPT search visibility and citations.'],
+              ['<code>ChatGPT-User</code>', 'OpenAI', 'Fetches a page live when a user asks about a URL.', 'Users who paste your link get nothing back.'],
+              ['<code>ClaudeBot</code>', 'Anthropic', 'Training and index collection.', 'Excluded from training data.'],
+              ['<code>Claude-User</code>', 'Anthropic', 'Live retrieval on a user\'s behalf.', 'Blocks user-initiated fetches of your pages.'],
+              ['<code>PerplexityBot</code>', 'Perplexity', 'Indexes pages for answer citation.', 'You lose Perplexity citations and referral clicks.'],
+              ['<code>Google-Extended</code>', 'Google', 'Opt-out token for Gemini training only.', 'None. It does not affect Google Search at all.'],
+              ['<code>Bytespider</code>', 'ByteDance', 'Aggressive training collection.', 'Usually none — commonly blocked for load reasons.'],
+              ['<code>CCBot</code>', 'Common Crawl', 'Public web corpus reused by many model builders.', 'Removes you from a dataset dozens of labs train on.']
+            ]
+          },
+          callout: { type: 'warn', text: '<strong><code>Google-Extended</code> is not Googlebot.</strong> Blocking it opts you out of Gemini training and grounding while leaving Google Search crawling and ranking completely unaffected. Blocking <code>Googlebot</code> instead removes you from Google Search — a mistake that is easy to make and slow to notice.' }
+        },
+        {
+          h: 'How to block AI crawlers in robots.txt',
+          steps: [
+            { t: 'Pick a preset or select bots individually', d: 'Block-all, allow-search-only, block-training-only and allow-all cover most policies. Fine-tune from the full user-agent list afterwards.' },
+            { t: 'Decide per bot, not per company', d: 'Blocking <code>GPTBot</code> while allowing <code>OAI-SearchBot</code> keeps you out of training data but visible in ChatGPT search — usually the outcome publishers actually want.' },
+            { t: 'Add path rules if the block is partial', d: 'Disallow <code>/premium/</code> or <code>/members/</code> rather than the whole site when only some content is sensitive.' },
+            { t: 'Test the rules', d: 'Paste a URL into the tester. It applies the same longest-match precedence Google uses, so you can see which directive actually wins.' },
+            { t: 'Upload to your root', d: 'The file must be reachable at <code>https://example.com/robots.txt</code> and served as <code>text/plain</code> with a 200 response.' }
+          ]
+        },
+        {
+          h: 'Does blocking AI crawlers hurt SEO?',
+          html: '<p>No — provided you block AI user-agents and nothing else. Google Search ranking is driven by <code>Googlebot</code>, and Bing by <code>Bingbot</code>. Neither is affected by a <code>Disallow</code> aimed at <code>GPTBot</code>, <code>ClaudeBot</code> or <code>Google-Extended</code>.</p>' +
+            '<p>The real risks are collateral. Two mistakes account for nearly every case of self-inflicted deindexing:</p>',
+          list: [
+            'Putting <code>Disallow: /</code> under <code>User-agent: *</code>, which blocks every crawler including Googlebot.',
+            'Blocking <code>Googlebot</code> or <code>Bingbot</code> while trying to block a similarly named AI bot.',
+            'Disallowing <code>/assets/</code> or <code>/static/</code>, which stops Google rendering your pages and can hurt rankings indirectly.',
+            'Blocking the crawler that powers AI search citations, then wondering why referral traffic from AI assistants disappeared.'
+          ],
+          callout: { type: 'tip', text: 'A <code>Disallow</code>-ed page can still appear in search results as a bare URL if other sites link to it. robots.txt controls <em>crawling</em>, not <em>indexing</em>. To keep a page out of the index, allow crawling and serve <a href="meta-robots-tag-generator.html">meta robots noindex</a> or an <a href="x-robots-tag-generator.html">X-Robots-Tag header</a> instead.' }
+        },
+        {
+          h: 'Choosing a policy',
+          cards: [
+            { t: 'Block everything', d: 'Every AI user-agent disallowed. Suits paywalled journalism, proprietary research and membership content where the text itself is the product.' },
+            { t: 'Allow search, block training', d: 'The common publisher position: appear and get cited in AI answers, stay out of model training corpora.' },
+            { t: 'Block training only', d: 'Nothing that affects live retrieval or citation. The lowest-cost opt-out available.' },
+            { t: 'Allow everything', d: 'Maximum reach. Sensible for documentation, marketing sites and anything whose value is being quoted widely.' }
+          ]
+        },
+        {
+          h: 'Do AI crawlers obey robots.txt?',
+          html: '<p>The major operators — OpenAI, Anthropic, Google, Microsoft, Perplexity, Apple and Common Crawl — publish their user-agent strings and state that they honour robots.txt. In practice, compliance from those names is good and is checked publicly by researchers.</p>' +
+            '<p>Smaller scrapers and unnamed clients are a different matter. Many ignore the file entirely, and some spoof a browser user-agent so there is nothing to match on. If your content genuinely must not be collected, robots.txt is the polite front door, not the lock: rate limiting, bot-management rules and authentication are what actually enforce it.</p>' +
+            '<p>Also remember the file is public. Anyone can read <code>/robots.txt</code>, so a <code>Disallow: /internal-pricing/</code> line advertises the existence of a directory you would rather nobody knew about. Never use robots.txt as a secrecy mechanism.</p>'
+        },
+        {
+          h: 'Related crawler and indexing tools',
+          list: [
+            '<a href="llms-txt-generator.html">llms.txt Generator</a> — tell AI assistants which pages to read, rather than which to avoid.',
+            '<a href="meta-robots-tag-generator.html">Meta Robots Tag Generator</a> — per-page indexing and snippet control.',
+            '<a href="x-robots-tag-generator.html">X-Robots-Tag Generator</a> — the same directives for PDFs, images and whole directories.',
+            '<a href="canonical-tag-generator.html">Canonical Tag Generator</a> — consolidate duplicate URLs into one indexable address.',
+            '<a href="sitemap-index-generator.html">Sitemap Index Generator</a> — point crawlers at everything you do want read.'
+          ]
+        }
+      ],
+      keywords: [
+        'ai crawler robots.txt', 'block gptbot', 'robots.txt generator', 'block ai crawlers',
+        'gptbot robots.txt', 'claudebot block', 'google-extended robots.txt',
+        'block chatgpt from my website', 'perplexitybot block', 'ccbot disallow',
+        'stop ai scraping website', 'ai training opt out', 'bytespider block', 'robots.txt user-agent list'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

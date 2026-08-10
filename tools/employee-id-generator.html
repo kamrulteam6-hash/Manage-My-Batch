@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Employee ID Generator — Free HR Staff Number Builder | Manage My Batch</title>
+<meta name="description" content="Free employee ID generator for HR. Create stable, privacy-safe staff numbers with department, site and hire-year segments, plus optional check digits. Bulk export.">
+<link rel="canonical" href="https://managemybatch.com/tools/employee-id-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Employee ID Generator — Free HR Staff Number Builder">
+<meta property="og:description" content="Free employee ID generator for HR. Create stable, privacy-safe staff numbers with department, site and hire-year segments, plus optional check digits. Bulk export.">
+<meta property="og:url" content="https://managemybatch.com/tools/employee-id-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Employee ID Generator — Free HR Staff Number Builder">
+<meta name="twitter:description" content="Free employee ID generator for HR. Create stable, privacy-safe staff numbers with department, site and hire-year segments, plus optional check digits. Bulk export.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Generator Settings</div>
+
+    <div class="field">
+      <label>Scheme</label>
+      <div class="seg" id="preset">
+        <button type="button" class="on" data-p="simple">Simple sequence</button>
+        <button type="button" data-p="dept">With department</button>
+        <button type="button" data-p="year">With hire year</button>
+      </div>
+      <div class="hint" id="presetHint"></div>
+    </div>
+
+    <div class="row">
+      <div class="field"><label for="prefix">Prefix</label><input type="text" id="prefix" value="EMP"></div>
+      <div class="field">
+        <label for="sep">Separator</label>
+        <select id="sep">
+          <option value="-" selected>Hyphen (-)</option>
+          <option value="">None</option>
+          <option value=".">Dot (.)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field"><label for="dept">Department code</label><input type="text" id="dept" placeholder="e.g. ENG, HR, OPS"></div>
+      <div class="field"><label for="site">Site code</label><input type="text" id="site" placeholder="e.g. LON, NYC"></div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="dateFormat">Hire period segment</label>
+        <select id="dateFormat"></select>
+      </div>
+      <div class="field">
+        <label for="pad">Number length</label>
+        <select id="pad">
+          <option value="3">3 digits</option>
+          <option value="4" selected>4 digits</option>
+          <option value="5">5 digits</option>
+          <option value="6">6 digits</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field"><label for="start">Starting number</label><input type="number" id="start" value="1001" min="0"></div>
+      <div class="field">
+        <label for="checkDigit">Check digit</label>
+        <select id="checkDigit"></select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="preview">Preview format</label>
+      <div class="seq-preview" id="preview">EMP-1001</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="row">
+      <div class="field"><label for="count">How many</label><input type="number" id="count" value="8" min="1" max="5000"></div>
+      <div class="field"><label for="date">Hire date</label><input type="date" id="date"></div>
+    </div>
+
+    <details class="faq" style="box-shadow:none;margin-bottom:16px">
+      <summary style="padding:12px 14px;font-size:13.8px">Advanced format</summary>
+      <div class="body" style="padding:0 14px 14px">
+        <label for="pattern" style="margin-top:6px">Custom pattern</label>
+        <input type="text" id="pattern" placeholder="e.g. {PREFIX}{SEP}{YY}{SEP}{SEQ:4}">
+        <div class="token-help" id="tokenHelp"></div>
+        <label for="suffix" style="margin-top:12px">Suffix</label>
+        <input type="text" id="suffix" placeholder="optional">
+      </div>
+    </details>
+
+    <div class="out-actions">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate Employee IDs</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated Results<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="results">Results</button>
+      <button type="button" data-tab="export">Export</button>
+      <button type="button" data-tab="checks">Validation</button>
+      <button type="button" data-tab="guide">HR guidance</button>
+    </div>
+
+    <div data-panel="results">
+      <div id="primary"></div>
+      <div id="more"></div>
+      <button type="button" class="btn btn-soft btn-block" id="regen" style="margin-top:18px">
+        <span id="icoReset"></span> Regenerate</button>
+      <div class="note note-warn" style="margin-top:14px"><span id="icoWarn"></span>
+        <span><strong>Never build personal data into an employee ID.</strong> No dates of birth, initials, national insurance or social security numbers. The ID appears on badges, spreadsheets and third-party systems where that data does not belong.</span></div>
+    </div>
+
+    <div data-panel="export" hidden>
+      <div class="field">
+        <label for="exportAs">Export format</label>
+        <select id="exportAs">
+          <option value="lines">Plain list</option>
+          <option value="csvIndexed">CSV with index</option>
+          <option value="json">JSON array</option>
+          <option value="sql">SQL INSERT</option>
+        </select>
+      </div>
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">employee-ids.txt</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy all</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+    </div>
+
+    <div data-panel="checks" hidden><div id="checks"></div></div>
+    <div data-panel="guide" hidden><div id="guide"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/seqid.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoCopy:copy','icoDl:download','icoReset:reset','icoWarn:warn']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  $('#dateFormat').innerHTML = GTSeq.DATE_FORMATS.map(function (f) {
+    return '<option value="' + f.id + '"' + (f.id === 'none' ? ' selected' : '') + '>' + f.label + '</option>';
+  }).join('');
+  $('#checkDigit').innerHTML = GTSeq.CHECK_DIGITS.map(function (c) {
+    return '<option value="' + c.id + '">' + c.label + '</option>';
+  }).join('');
+  $('#tokenHelp').innerHTML = GTSeq.tokenHelpHtml();
+  $('#date').value = GT.today();
+
+  var HINTS = {
+    simple: 'One flat sequence for the whole organisation. The most durable choice — nothing in the ID can ever become wrong.',
+    dept: 'Department code embedded. Convenient for reporting, but the ID becomes misleading when someone transfers.',
+    year: 'Hire year embedded. Groups joiners by cohort, and reveals tenure to anyone who sees the badge.'
+  };
+  var PRESETS = {
+    simple: { prefix: 'EMP', dept: '', site: '', date: 'none', pad: 4, start: 1001 },
+    dept: { prefix: 'EMP', dept: 'ENG', site: '', date: 'none', pad: 4, start: 1001 },
+    year: { prefix: 'EMP', dept: '', site: '', date: 'YYYY', pad: 4, start: 1 }
+  };
+
+  var ids = [];
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'employee-ids.txt', mime: 'text/plain' });
+
+  function opts() {
+    var sep = $('#sep').value;
+    var dept = $('#dept').value.trim().toUpperCase();
+    var site = $('#site').value.trim().toUpperCase();
+    var pattern = $('#pattern').value.trim();
+    if (!pattern && (dept || site)) {
+      var df = GTSeq.DATE_FORMATS.filter(function (f) { return f.id === $('#dateFormat').value; })[0];
+      var parts = ['{PREFIX}'];
+      if (site) parts.push(site);
+      if (dept) parts.push(dept);
+      if (df && df.pattern) parts.push(df.pattern);
+      parts.push('{SEQ}');
+      if ($('#suffix').value.trim()) parts.push('{SUFFIX}');
+      pattern = parts.join(sep === '' ? '' : '{SEP}');
+    }
+    return {
+      prefix: $('#prefix').value.trim(),
+      suffix: $('#suffix').value.trim(),
+      dateFormat: $('#dateFormat').value,
+      sep: sep,
+      start: $('#start').value,
+      pad: parseInt($('#pad').value, 10),
+      count: parseInt($('#count').value, 10),
+      checkDigit: $('#checkDigit').value,
+      date: $('#date').value ? new Date($('#date').value + 'T12:00:00') : new Date(),
+      pattern: pattern
+    };
+  }
+
+  function build() {
+    var o = opts();
+    ids = GTSeq.generate(o).ids;
+
+    $('#preview').textContent = ids[0] || '—';
+    GTSeq.renderResults({ ids: ids, primary: '#primary', more: '#more', noun: 'Employee ID' });
+    $('#pill').textContent = ids.length.toLocaleString() + ' generated';
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+
+    var mode = $('#exportAs').value;
+    var ext = mode === 'json' ? 'json' : mode === 'sql' ? 'sql' : /csv/.test(mode) ? 'csv' : 'txt';
+    out.set(GTSeq.exportAs(ids, mode, { column: 'employee_id', table: 'employees' }), 'employee-ids.' + ext);
+
+    var extra = [];
+    if ($('#dept').value.trim()) {
+      extra.push({ s: 'warn', m: 'Department code embedded. When someone transfers between teams their ID will contradict their actual department — and changing the ID breaks payroll history, access logs and every downstream system. Consider keeping department in a field instead.' });
+    }
+    if ($('#site').value.trim()) {
+      extra.push({ s: 'warn', m: 'Site code embedded. Relocations and office closures make it stale for the same reason.' });
+    }
+    if ($('#dateFormat').value !== 'none') {
+      extra.push({ s: 'warn', m: 'Hire year embedded. It groups cohorts neatly, but it also puts tenure on every badge and in every exported list — which can feed age or length-of-service inference.' });
+    }
+    if (parseInt($('#pad').value, 10) < 4) {
+      extra.push({ s: 'warn', m: 'Three digits caps you at 999 employees ever, including leavers whose IDs must never be reused.' });
+    }
+    GTSeq.renderChecks('#checks', GTSeq.validate(ids, { checkDigit: o.checkDigit, humanEntry: true }).concat(extra));
+  }
+
+  $('#guide').innerHTML = [
+    ['Stability beats descriptiveness', 'An employee ID is a permanent key. It appears in payroll runs, access control logs, pension records and archived files that must remain readable for years. Anything encoded in it that can change — department, site, job grade — will eventually make the ID wrong, and by then it is far too late to alter.'],
+    ['Never encode personal data', 'No initials, birth dates, national insurance or social security numbers. Employee IDs are shared with benefits providers, printed on badges and exported into spreadsheets that circulate widely. Personal identifiers in that context create real data-protection exposure.'],
+    ['Do not reuse a leaver\'s ID', 'Reassigning an ID makes historical records ambiguous: a payroll entry or an access log from three years ago now appears to belong to a current employee. Retire IDs permanently and pad generously so you never feel pressure to recycle.'],
+    ['Rehires keep their original ID', 'When someone returns, restoring the original ID reconnects their service history, pension record and prior training. Issuing a new one silently splits their record in two.'],
+    ['Contractors need a distinguishable series', 'A separate prefix such as <code>CON-</code> makes it obvious in access reviews and audits who is permanent staff and who is not, without needing to look anyone up.'],
+    ['Check digits help at the door', 'If IDs are typed into time clocks or door systems, a check digit rejects a mistyped number immediately instead of failing a lookup or, worse, matching a different employee.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('');
+
+  $('#preset').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#preset button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    var k = b.getAttribute('data-p'), p = PRESETS[k];
+    $('#prefix').value = p.prefix; $('#dept').value = p.dept; $('#site').value = p.site;
+    $('#dateFormat').value = p.date; $('#pad').value = p.pad; $('#start').value = p.start;
+    $('#pattern').value = '';
+    $('#presetHint').textContent = HINTS[k];
+    build();
+  });
+  $('#presetHint').textContent = HINTS.simple;
+
+  GTSeq.bindCopy('#primary', function () { return ids; });
+  GTSeq.bindCopy('#more', function () { return ids; });
+  GTSeq.bindTokenHelp('#tokenHelp', '#pattern', build);
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Employee IDs generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+  $('#regen').addEventListener('click', build);
+  $('#exportAs').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'employee-id-generator',
+    lede: 'Generate employee IDs that stay correct for an entire career — stable, privacy-safe, never reused, with optional check digits for badge and time-clock entry.',
+    steps: [
+      { icon: 'gear', title: 'Choose a scheme', text: 'A flat sequence is the most durable; department and year segments trade stability for convenience.' },
+      { icon: 'user', title: 'Generate a block', text: 'Create IDs for a new intake or a whole migration.' },
+      { icon: 'copy', title: 'Export to HR', text: 'Copy as CSV or SQL for your HRIS import.' }
+    ],
+    guideTitle: 'The employee ID mistake almost every company makes once',
+    guide:
+      '<p style="color:var(--muted)">It is tempting to make an employee ID descriptive: <code>EMP-ENG-LON-2021-042</code> tells you the person is an engineer in London who joined in 2021. It reads beautifully on the day it is issued. Three years later they have moved to the New York product team, and the ID now states three things that are false — in payroll history, in access logs and in every archived export.</p>' +
+      '<p style="color:var(--muted);margin-top:12px">You cannot fix it by changing the ID, because the ID is the key that links years of records. So the wrong data stays, and everyone learns to ignore it.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Safe to encode</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>A prefix distinguishing employees from contractors.</li><li>Nothing else, in most organisations.</li></ul>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">Keep in fields instead</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>Department, team, cost centre</li><li>Site or country</li><li>Job grade or title</li><li>Hire date and tenure</li></ul></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Never encode</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>Date of birth or age</li><li>National insurance or social security numbers</li><li>Initials or surname fragments</li><li>Anything that identifies the person directly</li></ul>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:12px">Employee IDs travel further than people expect — badges, benefits providers, training platforms, shared spreadsheets. Treat the ID as public within the organisation and design accordingly.</p></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>Never reuse a leaver\'s ID.</strong> It makes historical payroll and access records ambiguous, and it is the kind of thing nobody notices until an investigation depends on it. Pad the sequence generously so recycling never looks attractive.</span></div>',
+    related: ['asset-tag-number-generator', 'reference-number-generator', 'ticket-number-generator'],
+    faqs: [
+      { q: 'What is a good employee ID format?', a: 'A stable prefix plus a padded sequence, such as <code>EMP-1001</code>. Keep department, site and job details in database fields rather than in the ID, because those change and the ID cannot.' },
+      { q: 'Should employee IDs include the department?', a: 'Generally no. It is convenient on day one and wrong the first time someone transfers. Since changing the ID breaks payroll and access history, the incorrect code simply stays forever.' },
+      { q: 'Can I reuse an employee ID after someone leaves?', a: 'No. Reusing an ID makes historical records ambiguous — old payroll entries and access logs would appear to belong to the current holder. Retire IDs permanently.' },
+      { q: 'What happens if a former employee returns?', a: 'Restore their original ID. That reconnects service history, pension records and prior training. A new ID silently splits their record into two unrelated people.' },
+      { q: 'Is it safe to put the hire year in the ID?', a: 'It is stable, unlike department, but it does expose tenure on every badge and export, which can feed age or length-of-service inference. Use it only if cohort grouping is genuinely valuable to you.' },
+      { q: 'Should employee IDs have check digits?', a: 'Worth it if IDs are typed into time clocks, door systems or payroll forms. A check digit rejects a mistyped number immediately instead of failing a lookup or matching the wrong person.' }
+    ],
+    seo: {
+      title: 'Employee IDs: identifiers that stay correct for an entire career',
+      lead: 'This <strong>employee ID generator</strong> produces stable, privacy-safe identifiers that are never reused, with optional check digits for badge and time-clock entry. Below: the encoding mistake almost every company makes once, what to do when someone returns, and why the hire year is riskier than it looks.',
+      blocks: [
+        {
+          h: 'The mistake almost every company makes once',
+          html: '<p>It is encoding the department. <code>ENG-0142</code> looks helpful on day one: an HR system, a badge and a directory entry that all say what someone does.</p>' +
+            '<p>Then someone transfers. Now an engineer with <code>SLS-0087</code> is on the engineering team, or you re-issue the ID and break every historical record — payroll runs, expense claims, access logs, performance reviews and the training records that are supposed to be permanent.</p>' +
+            '<p>The general principle is that an identifier must encode only what is <strong>true for life</strong>. Department, job title, location, grade and manager are all attributes that change. They belong in fields, where changing them is a routine update, not in the key, where changing them is a migration.</p>',
+          callout: { type: 'warn', text: '<strong>Never re-issue an employee ID when someone changes role.</strong> The ID is the join key across payroll, HR, access control, IT provisioning and archived records. Changing it either breaks the history or silently splits one person\'s record into two — and the second failure is the one nobody notices for years.' }
+        },
+        {
+          h: 'What a good format looks like',
+          html: '<p>Boring, short, opaque and fixed-width:</p>',
+          table: {
+            head: ['Format', 'Example', 'Assessment'],
+            rows: [
+              ['Plain sequence', '<code>004821</code>', 'Best default. Nothing to become wrong.'],
+              ['Prefix + sequence', '<code>EMP-004821</code>', 'Also good — the prefix identifies the type of number, not the person.'],
+              ['Sequence + check digit', '<code>0048217</code>', 'Best where IDs are typed into terminals and time clocks.'],
+              ['Site + sequence', '<code>LDN-4821</code>', 'Acceptable if people rarely move site — but they do relocate.'],
+              ['Department + sequence', '<code>ENG-0142</code>', 'Avoid. Breaks on the first transfer.'],
+              ['Initials + number', '<code>JS-0421</code>', 'Avoid. Names change, and it leaks identity.'],
+              ['Year + sequence', '<code>26-0421</code>', 'Avoid for the reasons below.']
+            ]
+          },
+          after: '<p>Six digits covers 999,999 employees and will outlast the company. Fix the width immediately — an ID that grows a digit sorts wrongly in every export and breaks fixed-width interfaces to payroll.</p>'
+        },
+        {
+          h: 'Why the hire year is a risk',
+          html: '<p>Embedding <code>26</code> for a 2026 start looks harmless and is quietly problematic.</p>',
+          list: [
+            '<strong>It discloses tenure to everyone.</strong> An ID on a visible badge tells any colleague, contractor or visitor how long that person has been there. Tenure correlates with seniority and pay, and it is information the individual did not choose to publish.',
+            '<strong>It enables age inference.</strong> Combined with a graduate-intake pattern, a hire year narrows an age range — which is protected characteristic territory in most jurisdictions.',
+            '<strong>It breaks on rehire.</strong> A returning employee either gets a misleading year or a new identity.',
+            '<strong>It offers little in return.</strong> The start date is already in the HR record, where it belongs.'
+          ],
+          after: '<p>The same reasoning rules out initials, date of birth fragments and anything derived from a national insurance or social security number — the last of these being a serious data protection problem rather than merely an inelegant one.</p>'
+        },
+        {
+          h: 'Generating a set',
+          steps: [
+            { t: 'Choose a starting number', d: 'Not 1. Start at 1000 or 10000 so every ID is the same width and there is room below for historical imports.' },
+            { t: 'Fix the width', d: 'Zero-padded. Decide once and never widen.' },
+            { t: 'Skip the department and the year', d: 'For the reasons above.' },
+            { t: 'Add a check digit if IDs are keyed', d: 'Time clocks, canteen tills and access terminals all involve typing. A <a href="reference-number-generator.html">Luhn digit</a> catches most mistypes at the point of entry.' },
+            { t: 'Reserve a block for non-employees', d: 'Contractors, agency staff and volunteers need identifiers too, and mixing them into the employee sequence confuses headcount reporting. A separate prefix or range solves it.' },
+            { t: 'Export and import once', d: 'Assign IDs in one operation rather than letting several systems allocate independently.' }
+          ]
+        },
+        {
+          h: 'Reuse and returning employees',
+          cards: [
+            { t: 'Never reuse an ID', d: 'Payroll history, pension records, access logs and training certifications outlive employment by years — often by statutory requirement. A reused ID merges two people\'s records.' },
+            { t: 'A returning employee keeps their original ID', d: 'It reconnects them to their own history: prior service for pension purposes, previous training, past reviews. This is the case the "never reuse" rule exists to serve.' },
+            { t: 'Flag the employment periods separately', d: 'One person, one ID, two employment records with their own start and end dates. This is how HR systems are designed to model it.' },
+            { t: 'Do not let the ID space run out', d: 'With six digits it will not. If it might, extend the range rather than recycling retired numbers.' }
+          ],
+          callout: { type: 'tip', text: 'Write the "IDs are never reused" rule into your HR process documentation explicitly. It is invariably broken by someone tidying up a list of unused numbers years later, with the best of intentions and no idea what depends on them.' }
+        },
+        {
+          h: 'Badges and privacy',
+          html: '<p>An employee ID printed on a visible badge is public within the building — and often outside it, since badges are worn in cafés and on trains. Two consequences follow.</p>' +
+            '<p>First, keep the ID meaningless. An opaque number discloses nothing; a structured one discloses department, site and tenure to anyone who learns the scheme, which takes about a day.</p>' +
+            '<p>Second, do not treat the ID as a credential. It is an identifier, not a secret: it appears on badges, in directories, on timesheets and in emails. Any system where knowing an employee ID grants access — a phone-based HR line, a self-service kiosk, a password reset flow — is authenticating on public information. Pair it with something the person actually knows or holds.</p>'
+        },
+        {
+          h: 'Related identifier tools',
+          list: [
+            '<a href="asset-tag-number-generator.html">Asset Tag Number Generator</a> — equipment assigned to employees.',
+            '<a href="student-roll-number-generator.html">Student Roll Number Generator</a> — the education equivalent.',
+            '<a href="reference-number-generator.html">Reference Number Generator</a> — Luhn and mod-97 check digits.',
+            '<a href="ticket-number-generator.html">Ticket Number Generator</a> — support references raised by staff.',
+            '<a href="work-shift-rotation-generator.html">Work Shift Rotation Generator</a> — rota planning for the same people.'
+          ]
+        }
+      ],
+      keywords: [
+        'employee id generator', 'employee number format', 'staff id numbering system',
+        'employee id best practices', 'hr identifier design', 'employee id check digit',
+        'reuse employee id', 'badge number format', 'payroll number generator',
+        'contractor id numbering', 'employee id privacy', 'stable identifier design'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

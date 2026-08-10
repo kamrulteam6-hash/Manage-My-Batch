@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HTML Select Option Generator — Dropdowns, Optgroups &amp; Presets | Manage My Batch</title>
+<meta name="description" content="Free HTML select option generator. Build dropdown markup from a list with optgroups, selected and disabled states, plus presets for countries, US states, months, years and more.">
+<link rel="canonical" href="https://managemybatch.com/tools/html-select-option-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="HTML Select Option Generator — Dropdowns, Optgroups &amp; Presets">
+<meta property="og:description" content="Free HTML select option generator. Build dropdown markup from a list with optgroups, selected and disabled states, plus presets for countries, US states, months, years and more.">
+<meta property="og:url" content="https://managemybatch.com/tools/html-select-option-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="HTML Select Option Generator — Dropdowns, Optgroups &amp; Presets">
+<meta name="twitter:description" content="Free HTML select option generator. Build dropdown markup from a list with optgroups, selected and disabled states, plus presets for countries, US states, months, years and more.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Select Settings</div>
+
+    <div class="field">
+      <label for="preset">Preset list</label>
+      <select id="preset">
+        <option value="custom" selected>My own list</option>
+        <option value="countries">Countries (ISO 3166-1)</option>
+        <option value="usstates">US states</option>
+        <option value="months">Months</option>
+        <option value="days">Days of the week</option>
+        <option value="years">Years (range)</option>
+        <option value="hours">Hours (00–23)</option>
+        <option value="minutes">Minutes (00–55, step 5)</option>
+        <option value="currencies">Currencies</option>
+        <option value="timezones">Common time zones</option>
+        <option value="languages">Languages</option>
+        <option value="ratings">Ratings 1–5</option>
+        <option value="numbers">Number range</option>
+      </select>
+    </div>
+
+    <div class="row" id="rangeWrap" hidden>
+      <div class="field"><label for="rangeFrom">From</label><input type="number" id="rangeFrom" value="2020"></div>
+      <div class="field"><label for="rangeTo">To</label><input type="number" id="rangeTo" value="2030"></div>
+    </div>
+
+    <div class="field">
+      <label for="items">Options — one per line</label>
+      <textarea id="items" style="min-height:180px">-- Fruit
+apple: Apple
+banana: Banana
+cherry: Cherry
+-- Vegetables
+carrot: Carrot
+potato: Potato</textarea>
+      <div class="hint">Use <code>value: Label</code> to set both, or one word for both. Start a line with <code>--</code> to open an optgroup.</div>
+    </div>
+
+    <div class="field">
+      <label for="sep">Value / label separator</label>
+      <select id="sep">
+        <option value=":" selected>Colon (value: Label)</option>
+        <option value="|">Pipe (value|Label)</option>
+        <option value=",">Comma (value,Label)</option>
+        <option value="=">Equals (value=Label)</option>
+        <option value="none">No separator — label only</option>
+      </select>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="row">
+      <div class="field"><label for="name">name attribute</label><input type="text" id="name" value="choice"></div>
+      <div class="field"><label for="id">id attribute</label><input type="text" id="id" value="choice"></div>
+    </div>
+
+    <div class="field">
+      <label for="placeholder">Placeholder option</label>
+      <input type="text" id="placeholder" value="Select an option…">
+      <div class="hint">Rendered as a disabled, selected, empty-value option so the browser's required validation still fires.</div>
+    </div>
+
+    <div class="field">
+      <label for="selected">Pre-selected value</label>
+      <input type="text" id="selected" placeholder="e.g. banana">
+    </div>
+
+    <div class="field">
+      <label for="disabled">Disabled values</label>
+      <input type="text" id="disabled" placeholder="comma,separated,values">
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Options</legend>
+      <div class="check-list">
+        <label class="check on"><input type="checkbox" id="optWrap" checked><span><span class="t">Include the &lt;select&gt; wrapper</span><span class="d">Off gives bare &lt;option&gt; tags to paste into an existing select.</span></span></label>
+        <label class="check on"><input type="checkbox" id="optLabel" checked><span><span class="t">Include a &lt;label&gt;</span><span class="d">Required for accessibility — a placeholder is not a label.</span></span></label>
+        <label class="check"><input type="checkbox" id="optRequired"><span><span class="t">required</span></span></label>
+        <label class="check"><input type="checkbox" id="optMultiple"><span><span class="t">multiple</span></span></label>
+        <label class="check"><input type="checkbox" id="optSort"><span><span class="t">Sort alphabetically by label</span></span></label>
+        <label class="check"><input type="checkbox" id="optSlug"><span><span class="t">Auto-generate values from labels</span><span class="d">Lowercased and hyphenated.</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="field">
+      <label for="format">Output format</label>
+      <select id="format">
+        <option value="html" selected>HTML</option>
+        <option value="jsx">JSX / React</option>
+        <option value="vue">Vue template</option>
+        <option value="json">JSON array</option>
+        <option value="js">JS array + render loop</option>
+      </select>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated Markup<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="file">Code</button>
+      <button type="button" data-tab="preview">Live preview</button>
+      <button type="button" data-tab="a11y">Accessibility</button>
+    </div>
+
+    <div data-panel="file">
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">select.html</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+      <div id="warnBox"></div>
+    </div>
+
+    <div data-panel="preview" hidden><div id="preview" style="padding:8px 0"></div></div>
+    <div data-panel="a11y" hidden><div id="a11y"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoCopy:copy','icoDl:download']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var COUNTRIES = 'AF:Afghanistan,AL:Albania,DZ:Algeria,AR:Argentina,AU:Australia,AT:Austria,BD:Bangladesh,BE:Belgium,BR:Brazil,BG:Bulgaria,CA:Canada,CL:Chile,CN:China,CO:Colombia,HR:Croatia,CZ:Czechia,DK:Denmark,EG:Egypt,EE:Estonia,FI:Finland,FR:France,DE:Germany,GR:Greece,HK:Hong Kong,HU:Hungary,IS:Iceland,IN:India,ID:Indonesia,IE:Ireland,IL:Israel,IT:Italy,JP:Japan,KE:Kenya,MY:Malaysia,MX:Mexico,MA:Morocco,NL:Netherlands,NZ:New Zealand,NG:Nigeria,NO:Norway,PK:Pakistan,PE:Peru,PH:Philippines,PL:Poland,PT:Portugal,RO:Romania,RU:Russia,SA:Saudi Arabia,RS:Serbia,SG:Singapore,SK:Slovakia,SI:Slovenia,ZA:South Africa,KR:South Korea,ES:Spain,LK:Sri Lanka,SE:Sweden,CH:Switzerland,TW:Taiwan,TH:Thailand,TR:Turkey,UA:Ukraine,AE:United Arab Emirates,GB:United Kingdom,US:United States,VN:Vietnam';
+  var USSTATES = 'AL:Alabama,AK:Alaska,AZ:Arizona,AR:Arkansas,CA:California,CO:Colorado,CT:Connecticut,DE:Delaware,FL:Florida,GA:Georgia,HI:Hawaii,ID:Idaho,IL:Illinois,IN:Indiana,IA:Iowa,KS:Kansas,KY:Kentucky,LA:Louisiana,ME:Maine,MD:Maryland,MA:Massachusetts,MI:Michigan,MN:Minnesota,MS:Mississippi,MO:Missouri,MT:Montana,NE:Nebraska,NV:Nevada,NH:New Hampshire,NJ:New Jersey,NM:New Mexico,NY:New York,NC:North Carolina,ND:North Dakota,OH:Ohio,OK:Oklahoma,OR:Oregon,PA:Pennsylvania,RI:Rhode Island,SC:South Carolina,SD:South Dakota,TN:Tennessee,TX:Texas,UT:Utah,VT:Vermont,VA:Virginia,WA:Washington,WV:West Virginia,WI:Wisconsin,WY:Wyoming,DC:District of Columbia';
+  var CURRENCIES = 'USD:US Dollar,EUR:Euro,GBP:British Pound,JPY:Japanese Yen,CNY:Chinese Yuan,INR:Indian Rupee,CAD:Canadian Dollar,AUD:Australian Dollar,CHF:Swiss Franc,SEK:Swedish Krona,NOK:Norwegian Krone,BRL:Brazilian Real,MXN:Mexican Peso,ZAR:South African Rand,SGD:Singapore Dollar,NGN:Nigerian Naira,KES:Kenyan Shilling';
+  var LANGS = 'en:English,es:Spanish,fr:French,de:German,it:Italian,pt:Portuguese,nl:Dutch,pl:Polish,ru:Russian,ar:Arabic,hi:Hindi,bn:Bengali,zh:Chinese,ja:Japanese,ko:Korean,tr:Turkish,vi:Vietnamese,th:Thai,sw:Swahili,uk:Ukrainian';
+  var TZ = 'UTC:UTC,America/New_York:New York (Eastern),America/Chicago:Chicago (Central),America/Denver:Denver (Mountain),America/Los_Angeles:Los Angeles (Pacific),America/Sao_Paulo:São Paulo,Europe/London:London,Europe/Paris:Paris,Europe/Berlin:Berlin,Europe/Moscow:Moscow,Africa/Lagos:Lagos,Africa/Nairobi:Nairobi,Asia/Dubai:Dubai,Asia/Kolkata:Kolkata,Asia/Shanghai:Shanghai,Asia/Tokyo:Tokyo,Asia/Singapore:Singapore,Australia/Sydney:Sydney';
+  var MONTHS = '1:January,2:February,3:March,4:April,5:May,6:June,7:July,8:August,9:September,10:October,11:November,12:December';
+  var DAYS = '1:Monday,2:Tuesday,3:Wednesday,4:Thursday,5:Friday,6:Saturday,0:Sunday';
+  var RATINGS = '1:1 — Poor,2:2 — Fair,3:3 — Good,4:4 — Very good,5:5 — Excellent';
+
+  function fromPairs(s) { return s.split(',').map(function (p) { var i = p.indexOf(':'); return p.slice(0, i) + ': ' + p.slice(i + 1); }).join('\n'); }
+
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'select.html', mime: 'text/html' });
+
+  function slug(s) { return String(s).toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
+
+  var groups = [];
+
+  function parse() {
+    var sep = $('#sep').value;
+    var lines = $('#items').value.replace(/\r\n/g, '\n').split('\n');
+    var res = [], current = { label: null, items: [] };
+    lines.forEach(function (raw) {
+      var line = raw.trim();
+      if (!line) return;
+      if (/^--\s*/.test(line)) {
+        if (current.items.length || current.label) res.push(current);
+        current = { label: line.replace(/^--\s*/, ''), items: [] };
+        return;
+      }
+      var value, label;
+      if (sep === 'none') { label = line; value = $('#optSlug').checked ? slug(line) : line; }
+      else {
+        var i = line.indexOf(sep);
+        if (i === -1) { label = line; value = $('#optSlug').checked ? slug(line) : line; }
+        else { value = line.slice(0, i).trim(); label = line.slice(i + 1).trim(); }
+      }
+      current.items.push({ value: value, label: label });
+    });
+    if (current.items.length || current.label) res.push(current);
+
+    if ($('#optSort').checked) {
+      res.forEach(function (g) {
+        g.items.sort(function (a, b) { return a.label.localeCompare(b.label); });
+      });
+    }
+    return res;
+  }
+
+  function build() {
+    groups = parse();
+    var fmt = $('#format').value;
+    var name = $('#name').value || 'choice';
+    var id = $('#id').value || name;
+    var sel = $('#selected').value.trim();
+    var dis = $('#disabled').value.split(',').map(function (x) { return x.trim(); }).filter(Boolean);
+    var ph = $('#placeholder').value.trim();
+    var multiple = $('#optMultiple').checked;
+    var required = $('#optRequired').checked;
+
+    var total = groups.reduce(function (a, g) { return a + g.items.length; }, 0);
+    var text = '';
+
+    function optHtml(o, pad) {
+      var attrs = ' value="' + GT.escAttr(o.value) + '"';
+      if (!multiple && sel && o.value === sel) attrs += ' selected';
+      if (dis.indexOf(o.value) > -1) attrs += ' disabled';
+      return pad + '<option' + attrs + '>' + GT.esc(o.label) + '</option>';
+    }
+
+    if (fmt === 'html') {
+      var L = [];
+      var innerPad = $('#optWrap').checked ? '  ' : '';
+      if ($('#optWrap').checked) {
+        if ($('#optLabel').checked) {
+          L.push('<label for="' + GT.escAttr(id) + '">' + GT.esc(labelText()) + '</label>');
+        }
+        L.push('<select name="' + GT.escAttr(name) + (multiple ? '[]' : '') + '" id="' + GT.escAttr(id) + '"' +
+          (required ? ' required' : '') + (multiple ? ' multiple size="6"' : '') + '>');
+      }
+      if (ph && !multiple) {
+        L.push(innerPad + '<option value="" disabled' + (sel ? '' : ' selected') + '>' + GT.esc(ph) + '</option>');
+      }
+      groups.forEach(function (g) {
+        if (g.label) {
+          L.push(innerPad + '<optgroup label="' + GT.escAttr(g.label) + '">');
+          g.items.forEach(function (o) { L.push(optHtml(o, innerPad + '  ')); });
+          L.push(innerPad + '</optgroup>');
+        } else {
+          g.items.forEach(function (o) { L.push(optHtml(o, innerPad)); });
+        }
+      });
+      if ($('#optWrap').checked) L.push('</select>');
+      text = L.join('\n');
+    } else if (fmt === 'jsx') {
+      var J = [];
+      J.push('<label htmlFor="' + id + '">' + GT.esc(labelText()) + '</label>');
+      J.push('<select');
+      J.push('  id="' + id + '"');
+      J.push('  name="' + name + '"');
+      J.push('  value={value}');
+      J.push('  onChange={(e) => setValue(e.target.value)}');
+      if (required) J.push('  required');
+      if (multiple) J.push('  multiple');
+      J.push('>');
+      if (ph && !multiple) J.push('  <option value="" disabled>' + GT.esc(ph) + '</option>');
+      groups.forEach(function (g) {
+        if (g.label) {
+          J.push('  <optgroup label="' + GT.escAttr(g.label) + '">');
+          g.items.forEach(function (o) {
+            J.push('    <option value="' + GT.escAttr(o.value) + '"' + (dis.indexOf(o.value) > -1 ? ' disabled' : '') + '>' + GT.esc(o.label) + '</option>');
+          });
+          J.push('  </optgroup>');
+        } else {
+          g.items.forEach(function (o) {
+            J.push('  <option value="' + GT.escAttr(o.value) + '"' + (dis.indexOf(o.value) > -1 ? ' disabled' : '') + '>' + GT.esc(o.label) + '</option>');
+          });
+        }
+      });
+      J.push('</select>');
+      J.push('');
+      J.push('// In React, use value + onChange on the select — never `selected` on an option.');
+      text = J.join('\n');
+    } else if (fmt === 'vue') {
+      var V = [];
+      V.push('<label :for="\'' + id + '\'">' + GT.esc(labelText()) + '</label>');
+      V.push('<select id="' + id + '" v-model="selected"' + (required ? ' required' : '') + (multiple ? ' multiple' : '') + '>');
+      if (ph && !multiple) V.push('  <option value="" disabled>' + GT.esc(ph) + '</option>');
+      V.push('  <option v-for="opt in options" :key="opt.value" :value="opt.value">');
+      V.push('    {{ opt.label }}');
+      V.push('  </option>');
+      V.push('</select>');
+      V.push('');
+      V.push('<script setup>');
+      V.push('const selected = ref(' + (sel ? "'" + sel + "'" : "''") + ');');
+      V.push('const options = ' + JSON.stringify(flat(), null, 2) + ';');
+      V.push('<' + '/script>');
+      text = V.join('\n');
+    } else if (fmt === 'json') {
+      text = JSON.stringify(groups.length > 1 || groups[0] && groups[0].label
+        ? groups.map(function (g) { return { group: g.label, options: g.items }; })
+        : flat(), null, 2);
+    } else if (fmt === 'js') {
+      text = 'const options = ' + JSON.stringify(flat(), null, 2) + ';\n\n' +
+        "const select = document.getElementById('" + id + "');\n" +
+        'select.innerHTML = options\n' +
+        "  .map((o) => `<option value=\"${o.value}\">${o.label}</option>`)\n" +
+        "  .join('');";
+    }
+
+    out.set(text, fmt === 'json' ? 'options.json' : fmt === 'js' ? 'options.js' : fmt === 'jsx' ? 'Select.jsx' : 'select.html');
+    $('#pill').textContent = total + ' options' + (groups.filter(function (g) { return g.label; }).length ? ' · ' + groups.filter(function (g) { return g.label; }).length + ' groups' : '');
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+
+    renderPreview(ph, sel, dis, multiple);
+    renderWarn(total, sel);
+    renderA11y();
+  }
+
+  function labelText() {
+    var n = $('#name').value || 'choice';
+    return n.charAt(0).toUpperCase() + n.slice(1).replace(/[-_]/g, ' ');
+  }
+
+  function flat() {
+    var r = [];
+    groups.forEach(function (g) { g.items.forEach(function (o) { r.push(o); }); });
+    return r;
+  }
+
+  function renderPreview(ph, sel, dis, multiple) {
+    var h = '<label style="display:block;font-size:13.5px;font-weight:600;margin-bottom:7px">' + GT.esc(labelText()) + '</label>';
+    h += '<select style="width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:10px;font:inherit;font-size:14.5px"' +
+      (multiple ? ' multiple size="8"' : '') + '>';
+    if (ph && !multiple) h += '<option value="" disabled' + (sel ? '' : ' selected') + '>' + GT.esc(ph) + '</option>';
+    groups.forEach(function (g) {
+      if (g.label) h += '<optgroup label="' + GT.escAttr(g.label) + '">';
+      g.items.forEach(function (o) {
+        h += '<option' + (o.value === sel ? ' selected' : '') + (dis.indexOf(o.value) > -1 ? ' disabled' : '') + '>' + GT.esc(o.label) + '</option>';
+      });
+      if (g.label) h += '</optgroup>';
+    });
+    h += '</select>';
+    $('#preview').innerHTML = h;
+  }
+
+  function renderWarn(total, sel) {
+    var w = [];
+    if (!total) w.push(['err', 'No options — add at least one line.']);
+    var vals = flat().map(function (o) { return o.value; });
+    var dup = vals.filter(function (v, i) { return vals.indexOf(v) !== i; });
+    if (dup.length) w.push(['err', 'Duplicate values: ' + GT.uniq(dup).join(', ') + '. Only one can ever be submitted.']);
+    var empty = flat().filter(function (o) { return !o.value; });
+    if (empty.length && !$('#placeholder').value) w.push(['warn', 'Some options have an empty value, which submits as an empty string — usually only intended for a placeholder.']);
+    if (sel && vals.indexOf(sel) === -1) w.push(['warn', 'The pre-selected value “' + GT.esc(sel) + '” is not in the list.']);
+    if (!$('#optLabel').checked && $('#optWrap').checked) {
+      w.push(['err', 'No <code>&lt;label&gt;</code>. A select without an associated label is unusable with a screen reader, and a placeholder option does not count as one.']);
+    }
+    if ($('#optMultiple').checked) w.push(['warn', 'Multi-selects are widely disliked — users often do not discover that ctrl-click is required. A checkbox group is usually the better control.']);
+    if (total > 100) w.push(['warn', total + ' options in a native select is hard to navigate. Consider a searchable combobox, or a <a href="html-datalist-generator.html">datalist</a> for type-ahead.']);
+    if (!w.length) w.push(['ok', 'Valid, labelled select markup.']);
+    $('#warnBox').innerHTML = w.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : x[0] === 'warn' ? 'note-warn' : 'note-err') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+  }
+
+  function renderA11y() {
+    $('#a11y').innerHTML = [
+      ['Always pair a label with the select', 'The <code>for</code> attribute must match the select\'s <code>id</code>. Without it, a screen reader announces "combo box" with no indication of what is being chosen. A placeholder option is not a substitute — it disappears as soon as a value is picked.'],
+      ['Placeholders should be disabled and empty-valued', 'Marking the first option <code>disabled</code> with <code>value=""</code> means it cannot be re-selected and <code>required</code> validation still fires. Without the empty value, the browser considers the field filled.'],
+      ['Use optgroup for long lists', 'Grouping breaks a hundred options into scannable sections and is announced by screen readers. Note that <code>optgroup</code> cannot be nested — one level only.'],
+      ['Do not rely on colour or emoji in labels', 'Option text is read literally. An emoji flag prefix is announced in full, which quickly becomes noise in a country list.'],
+      ['Native selects are usually the right choice', 'They work with keyboard, touch and assistive technology, and mobile browsers render them as an optimised native picker. Reach for a custom combobox only when you genuinely need search or multi-select, and then implement the full ARIA combobox pattern.'],
+      ['React uses value, not selected', 'Setting <code>selected</code> on an option in JSX triggers a warning. Control the select with <code>value</code> and <code>onChange</code> on the <code>&lt;select&gt;</code> itself.']
+    ].map(function (x) {
+      return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+        '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+    }).join('');
+  }
+
+  $('#preset').addEventListener('change', function () {
+    var v = this.value;
+    $('#rangeWrap').hidden = (v !== 'years' && v !== 'numbers');
+    var map = { countries: COUNTRIES, usstates: USSTATES, currencies: CURRENCIES, languages: LANGS, timezones: TZ, months: MONTHS, days: DAYS, ratings: RATINGS };
+    if (map[v]) { $('#items').value = fromPairs(map[v]); $('#sep').value = ':'; }
+    else if (v === 'hours') {
+      var h = []; for (var i = 0; i < 24; i++) { var p = String(i).padStart(2, '0'); h.push(p + ': ' + p + ':00'); }
+      $('#items').value = h.join('\n');
+    } else if (v === 'minutes') {
+      var m = []; for (var j = 0; j < 60; j += 5) { var q = String(j).padStart(2, '0'); m.push(q + ': ' + q); }
+      $('#items').value = m.join('\n');
+    } else if (v === 'years' || v === 'numbers') {
+      if (v === 'numbers') { $('#rangeFrom').value = 1; $('#rangeTo').value = 20; }
+      else { $('#rangeFrom').value = new Date().getFullYear() - 5; $('#rangeTo').value = new Date().getFullYear() + 5; }
+      fillRange();
+    }
+    build();
+  });
+
+  function fillRange() {
+    var a = parseInt($('#rangeFrom').value, 10) || 0, b = parseInt($('#rangeTo').value, 10) || 0;
+    var step = a <= b ? 1 : -1, arr = [], guard = 0;
+    for (var i = a; step > 0 ? i <= b : i >= b; i += step) {
+      arr.push(i + ': ' + i);
+      if (++guard > 2000) break;
+    }
+    $('#items').value = arr.join('\n');
+  }
+  ['#rangeFrom', '#rangeTo'].forEach(function (s) {
+    $(s).addEventListener('input', function () {
+      if (!$('#rangeWrap').hidden) { fillRange(); build(); }
+    });
+  });
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'html-select-option-generator',
+    lede: 'Turn a plain list into complete select markup — optgroups, placeholder, selected and disabled states — with presets for countries, states, months, currencies and time zones.',
+    steps: [
+      { icon: 'gear', title: 'Paste a list or pick a preset', text: 'Use value: Label to control both, and -- to start an optgroup.' },
+      { icon: 'dropdown', title: 'Configure the select', text: 'Name, id, placeholder, pre-selected value, disabled options, required and multiple.' },
+      { icon: 'copy', title: 'Export', text: 'HTML, JSX, Vue, a JSON array or a JS render loop.' }
+    ],
+    guideTitle: 'Small element, several easy mistakes',
+    guide:
+      '<p style="color:var(--muted)">The <code>&lt;select&gt;</code> element is one of the few controls that works flawlessly across keyboard, touch and screen readers with no JavaScript at all. Most of the ways it goes wrong are in the details around it rather than the element itself.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">The placeholder pattern</h4><p style="color:var(--muted);font-size:13.8px">A first option that is <code>disabled</code>, <code>selected</code> and has <code>value=""</code> gives you a prompt the user cannot return to, while keeping <code>required</code> validation working. Give it a non-empty value and the browser thinks the field is already filled.</p>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">Values are what get submitted</h4><p style="color:var(--muted);font-size:13.8px">The label is for humans, the value is for your backend. Use stable codes — <code>GB</code>, not <code>United Kingdom</code> — so renaming a label never breaks stored data.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">When a select is the wrong control</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><strong>Two or three options:</strong> radio buttons show every choice at once and take one click instead of two.</li><li><strong>Over about fifty options:</strong> people cannot scan them. Use a searchable combobox, or an input with a <a href="html-datalist-generator.html">datalist</a>.</li><li><strong>Multiple selection:</strong> native <code>multiple</code> requires ctrl-click, which most users never discover. A checkbox group is clearer.</li><li><strong>Yes/no:</strong> a checkbox.</li></ul></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>In React, never put <code>selected</code> on an option.</strong> It produces a console warning and does not behave as expected. Control the select with <code>value</code> and <code>onChange</code> on the <code>&lt;select&gt;</code> element — the JSX output here does this.</span></div>',
+    related: ['html-datalist-generator', 'html-table-generator', 'json-array-generator'],
+    faqs: [
+      { q: 'How do I add a placeholder to a select?', a: 'Add a first option with <code>value=""</code>, marked <code>disabled</code> and <code>selected</code>. It shows as a prompt, cannot be chosen again, and keeps <code>required</code> validation working.' },
+      { q: 'What is an optgroup?', a: 'A way to group related options under a non-selectable heading inside a select. It makes long lists scannable and is announced by screen readers. Optgroups cannot be nested.' },
+      { q: 'How do I pre-select an option?', a: 'Add the <code>selected</code> attribute in plain HTML. In React, set <code>value</code> on the <code>&lt;select&gt;</code> instead — <code>selected</code> on an option triggers a warning.' },
+      { q: 'Should I use value: Label or just labels?', a: 'Use both. The value is what your server stores, so it should be a stable code such as an ISO country code. The label can then be reworded or translated without any data migration.' },
+      { q: 'How many options is too many?', a: 'Beyond about fifty a native select becomes hard to navigate. Countries are the usual exception because people expect the pattern. For anything longer, use a searchable combobox or an input with a datalist.' },
+      { q: 'Is a multiple select a good idea?', a: 'Rarely. It requires ctrl-click or cmd-click, which many users never discover, and it is awkward on touch devices. A group of checkboxes communicates the same thing far more clearly.' }
+    ],
+    seo: {
+      title: 'HTML select options: placeholders, optgroups and the mistakes in between',
+      lead: 'This <strong>select option generator</strong> turns a plain list into complete <code>&lt;select&gt;</code> markup — optgroups, placeholder, selected and disabled states — with presets for countries, states, months, currencies and time zones. Below: how to do a placeholder correctly, and when a select is the wrong control entirely.',
+      blocks: [
+        {
+          h: 'The anatomy of a select',
+          html: '<p>A <code>&lt;select&gt;</code> is one of the few controls that works identically everywhere, needs no JavaScript, and is accessible by default. The markup is small enough that the mistakes are all in the details:</p>',
+          list: [
+            '<strong>Always pair it with a <code>&lt;label&gt;</code>.</strong> A placeholder option is not a label — it disappears on selection, leaving the field unlabelled for anyone who returns to it.',
+            '<strong>Give every option a <code>value</code>.</strong> Without one, the submitted value is the visible text, so renaming a label silently changes your data.',
+            '<strong>Use <code>name</code> on the select, not on the options.</strong> The select is the field.',
+            '<strong>Set <code>autocomplete</code> where relevant</strong> — <code>country</code>, <code>bday-month</code>, <code>address-level1</code>. Browsers fill these instantly.',
+            '<strong>Do not submit on change.</strong> Keyboard users step through options with the arrow keys; submitting on the first change navigates away from the second item in the list.'
+          ]
+        },
+        {
+          h: 'Placeholders, done properly',
+          html: '<p>HTML has no <code>placeholder</code> attribute for <code>&lt;select&gt;</code>. The standard technique is a first option that is empty, selected, disabled and hidden:</p>' +
+            '<p><code>&lt;option value="" selected disabled hidden&gt;Choose a country&lt;/option&gt;</code></p>' +
+            '<p>Each attribute earns its place: <code>value=""</code> so <code>required</code> validation rejects it, <code>selected</code> so it shows initially, <code>disabled</code> so it cannot be re-chosen, and <code>hidden</code> so it does not clutter the open list.</p>',
+          callout: { type: 'warn', text: '<strong>The placeholder option must have an empty value.</strong> Give it <code>value="none"</code> or <code>value="0"</code> and the field passes <code>required</code> validation while carrying meaningless data — which then reaches your database as a real answer.' }
+        },
+        {
+          h: 'Optgroups',
+          html: '<p><code>&lt;optgroup&gt;</code> groups related options under a non-selectable heading — continents above countries, categories above products, regions above time zones.</p>',
+          steps: [
+            { t: 'Use it above about fifteen options', d: 'Below that, grouping adds noise. Above it, scanning an ungrouped list becomes work.' },
+            { t: 'Set a label on each group', d: 'The <code>label</code> attribute is what renders as the heading, and it is announced by screen readers as the group name.' },
+            { t: 'Do not nest them', d: 'Nested optgroups are invalid HTML and are ignored — every browser flattens them.' },
+            { t: 'Keep groups meaningful', d: 'A group of one is worse than no group. If a category has a single member, put it in the nearest sensible group.' },
+            { t: 'Order predictably', d: 'Alphabetical unless there is a stronger order. A "most common first" group at the top is the one justified exception.' }
+          ],
+          after: '<p>In the generator, indent a line to make it a member of the group above it, or use the built-in presets which are already grouped sensibly.</p>'
+        },
+        {
+          h: 'Value and label separately',
+          table: {
+            head: ['Input line', 'Generated option', 'When to use'],
+            rows: [
+              ['<code>France</code>', '<code>&lt;option value="France"&gt;France&lt;/option&gt;</code>', 'Quick lists where the text is the data.'],
+              ['<code>FR: France</code>', '<code>&lt;option value="FR"&gt;France&lt;/option&gt;</code>', 'Anything stored or compared — the label can be translated or corrected without a migration.'],
+              ['<code>FR: France *</code>', 'Adds <code>selected</code>', 'A sensible default.'],
+              ['<code>FR: France !</code>', 'Adds <code>disabled</code>', 'Temporarily unavailable choices you still want visible.']
+            ]
+          },
+          after: '<p>Use explicit values for anything persisted. Storing display text means every label fix becomes a data migration, and translating the interface breaks your queries.</p>'
+        },
+        {
+          h: 'When a select is the wrong control',
+          cards: [
+            { t: 'Under 5 options', d: 'Radio buttons show every choice at once with no interaction. Faster to scan and to hit.' },
+            { t: 'Two options', d: 'A checkbox or a pair of radios. A yes/no dropdown is a click nobody needs.' },
+            { t: 'Over ~50 options', d: 'A searchable combobox, or a text input with a <a href="html-datalist-generator.html">datalist</a>. Scrolling to "United Kingdom" past 190 countries is a genuine cost.' },
+            { t: 'Multiple selection', d: 'A native <code>multiple</code> select is notoriously unusable — users do not discover ctrl-click, and mobile rendering is inconsistent. Use checkboxes or a tag input.' },
+            { t: 'Dates', d: 'Three selects for day, month and year lose to a single <code>type="date"</code> input in almost every case.' }
+          ],
+          callout: { type: 'tip', text: 'For long lists, put the likely answers first in their own optgroup — "Frequently selected" above the full alphabetical list. It removes most of the scrolling for most users without hiding anything from anyone.' }
+        },
+        {
+          h: 'Presets included',
+          html: '<p>The lists nobody should be typing by hand are built in, with the values they are conventionally stored as:</p>',
+          list: [
+            '<strong>Countries</strong> — ISO 3166-1 alpha-2 values, optionally grouped by continent.',
+            '<strong>US states and Canadian provinces</strong> — two-letter postal codes.',
+            '<strong>Months and days</strong> — numeric or name values, long or abbreviated.',
+            '<strong>Currencies</strong> — ISO 4217 codes with names and symbols.',
+            '<strong>Time zones</strong> — IANA identifiers grouped by region.',
+            '<strong>Numeric ranges</strong> — years, quantities, ratings, with padding options.'
+          ]
+        },
+        {
+          h: 'Related form tools',
+          list: [
+            '<a href="html-datalist-generator.html">HTML Datalist Generator</a> — native autocomplete for free-text inputs.',
+            '<a href="html-table-generator.html">HTML Table Generator</a> — accessible tabular markup.',
+            '<a href="json-array-generator.html">JSON Array Generator</a> — the same list as data for a framework.',
+            '<a href="markdown-table-generator.html">Markdown Table Generator</a> — document your option values.'
+          ]
+        }
+      ],
+      keywords: [
+        'html select option generator', 'select placeholder html', 'optgroup example',
+        'country dropdown html', 'us states select options', 'select selected option',
+        'html select accessibility', 'list to select options', 'currency dropdown',
+        'timezone select html', 'disabled option html', 'select vs radio buttons'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

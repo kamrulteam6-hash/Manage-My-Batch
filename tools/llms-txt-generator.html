@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LLMs.txt Generator — Create a Free llms.txt File Online | Manage My Batch</title>
+<meta name="description" content="Free llms.txt generator. Build a spec-compliant llms.txt (and llms-full.txt) so ChatGPT, Claude, Perplexity and Gemini understand and cite your site correctly.">
+<link rel="canonical" href="https://managemybatch.com/tools/llms-txt-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="LLMs.txt Generator — Create a Free llms.txt File Online">
+<meta property="og:description" content="Free llms.txt generator. Build a spec-compliant llms.txt (and llms-full.txt) so ChatGPT, Claude, Perplexity and Gemini understand and cite your site correctly.">
+<meta property="og:url" content="https://managemybatch.com/tools/llms-txt-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="LLMs.txt Generator — Create a Free llms.txt File Online">
+<meta name="twitter:description" content="Free llms.txt generator. Build a spec-compliant llms.txt (and llms-full.txt) so ChatGPT, Claude, Perplexity and Gemini understand and cite your site correctly.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <!-- ============ settings ============ -->
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Generator Settings</div>
+
+    <div class="field">
+      <label for="siteName">Site / project name <span style="color:var(--red)">*</span></label>
+      <input type="text" id="siteName" placeholder="Acme Analytics" value="Acme Analytics" required>
+    </div>
+
+    <div class="field">
+      <label for="siteUrl">Site URL <span style="color:var(--red)">*</span></label>
+      <input type="url" id="siteUrl" placeholder="https://example.com" value="https://example.com">
+      <div class="hint">Used to resolve relative links into absolute URLs.</div>
+    </div>
+
+    <div class="field">
+      <label for="summary">One-line summary (blockquote)</label>
+      <input type="text" id="summary" placeholder="Acme Analytics is a privacy-first web analytics platform." value="Acme Analytics is a privacy-first, cookieless web analytics platform for small teams.">
+      <div class="hint">Rendered as the <code>&gt;</code> blockquote directly under the H1.</div>
+    </div>
+
+    <div class="field">
+      <label for="details">Extra context <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
+      <textarea id="details" placeholder="Anything an LLM should know: what you do, who it's for, naming conventions, licensing…">Docs are written for developers integrating the JavaScript snippet or the REST API. Pricing is per-site, not per-pageview. "Acme" always refers to Acme Analytics, not Acme Corp.</textarea>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <div class="label" style="display:flex;justify-content:space-between;align-items:center">
+        <span>Link sections</span>
+        <button type="button" class="btn btn-soft btn-sm" id="addSection"><span id="icoPlus"></span> Add section</button>
+      </div>
+      <div class="hint" style="margin:0 0 12px">One <code>##</code> heading per section. Put must-read pages first — the <em>Optional</em> section is the only one crawlers may skip.</div>
+      <div id="sections"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <fieldset class="field">
+      <legend class="label">Output options</legend>
+      <div class="check-list">
+        <label class="check"><input type="checkbox" id="optAbsolute" checked>
+          <span><span class="t">Absolute URLs</span><span class="d">Expand <code>/docs</code> to <code>https://example.com/docs</code>.</span></span></label>
+        <label class="check"><input type="checkbox" id="optMd">
+          <span><span class="t">Append <code>.md</code> to link targets</span><span class="d">If you serve markdown mirrors of each page.</span></span></label>
+        <label class="check"><input type="checkbox" id="optOptional" checked>
+          <span><span class="t">Keep “Optional” section last</span><span class="d">Spec convention — this section may be skipped for shorter context.</span></span></label>
+        <label class="check"><input type="checkbox" id="optComment" checked>
+          <span><span class="t">Include generated-on comment</span><span class="d">Adds an HTML comment with today's date.</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="field" style="margin-top:16px">
+      <label for="variant">File variant</label>
+      <select id="variant">
+        <option value="llms.txt">llms.txt — curated index (recommended)</option>
+        <option value="llms-full.txt">llms-full.txt — index + expanded notes</option>
+      </select>
+    </div>
+
+    <div class="out-actions" style="margin-top:20px">
+      <button type="submit" class="btn btn-primary btn-block" id="genBtn"><span id="icoBolt"></span> Generate llms.txt</button>
+    </div>
+    <button type="button" class="btn btn-soft btn-block btn-sm" id="resetBtn" style="margin-top:10px"><span id="icoReset"></span> Reset to example</button>
+  </form>
+
+  <!-- ============ output ============ -->
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated File<span class="spacer"></span>
+      <span class="result-pill" id="pill">ready</span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="file">File</button>
+      <button type="button" data-tab="checks">Validation</button>
+      <button type="button" data-tab="deploy">How to deploy</button>
+    </div>
+
+    <div data-panel="file">
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">llms.txt</span><span class="chip" id="meta">0 lines</span></div>
+        <pre class="code" id="out">Fill in the form and press Generate.</pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+      <div class="note note-info"><span id="icoInfo"></span>
+        <span>Upload the file to your web root so it resolves at <code id="rootPath">https://example.com/llms.txt</code>. Serve it as <code>text/plain; charset=utf-8</code>.</span></div>
+    </div>
+
+    <div data-panel="checks" hidden><div id="checks"></div></div>
+
+    <div data-panel="deploy" hidden>
+      <div id="deploy"></div>
+    </div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoCopy:copy','icoDl:download','icoReset:reset','icoInfo:info','icoPlus:plus']
+    .forEach(function (p) { var a = p.split(':'); var el = document.getElementById(a[0]); if (el) el.innerHTML = I[a[1]]; });
+
+  /* ---------------- sections model ---------------- */
+  var DEFAULT_SECTIONS = [
+    { title: 'Docs', links: [
+      { name: 'Quickstart', url: '/docs/quickstart', note: 'Install the snippet in under 5 minutes' },
+      { name: 'API Reference', url: '/docs/api', note: 'REST endpoints, auth and rate limits' }
+    ]},
+    { title: 'Product', links: [
+      { name: 'Pricing', url: '/pricing', note: 'Per-site plans, no pageview limits' },
+      { name: 'Changelog', url: '/changelog', note: 'Release notes, updated weekly' }
+    ]},
+    { title: 'Optional', links: [
+      { name: 'Blog archive', url: '/blog', note: 'Long-form articles, not required for support answers' }
+    ]}
+  ];
+  var sections = JSON.parse(JSON.stringify(DEFAULT_SECTIONS));
+
+  var host = $('#sections');
+  function renderSections() {
+    host.innerHTML = sections.map(function (s, si) {
+      var links = s.links.map(function (l, li) {
+        return '<div class="row-3" style="margin-bottom:8px;grid-template-columns:1fr 1fr auto">' +
+          '<input type="text" placeholder="Link title" value="' + GT.escAttr(l.name) + '" data-s="' + si + '" data-l="' + li + '" data-f="name">' +
+          '<input type="text" placeholder="/path or full URL" value="' + GT.escAttr(l.url) + '" data-s="' + si + '" data-l="' + li + '" data-f="url">' +
+          '<button type="button" class="icon-btn" data-del-link="' + si + ':' + li + '" aria-label="Remove link">' + I.trash + '</button>' +
+          '<input type="text" placeholder="Short note (optional)" value="' + GT.escAttr(l.note || '') + '" data-s="' + si + '" data-l="' + li + '" data-f="note" style="grid-column:1/-1">' +
+          '</div>';
+      }).join('');
+      return '<div class="rep"><div class="rep-head">' +
+        '<input type="text" value="' + GT.escAttr(s.title) + '" data-s="' + si + '" data-f="title" style="max-width:240px;font-weight:600">' +
+        '<button type="button" class="icon-btn" data-del-section="' + si + '" aria-label="Remove section">' + I.trash + '</button></div>' +
+        links +
+        '<button type="button" class="btn btn-soft btn-sm" data-add-link="' + si + '">' + I.plus + ' Add link</button></div>';
+    }).join('');
+  }
+
+  host.addEventListener('input', function (e) {
+    var el = e.target, si = el.getAttribute('data-s');
+    if (si == null) return;
+    var f = el.getAttribute('data-f'), li = el.getAttribute('data-l');
+    if (f === 'title') sections[si].title = el.value;
+    else sections[si].links[li][f] = el.value;
+    build();
+  });
+  host.addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    var a;
+    if ((a = b.getAttribute('data-add-link')) != null) { sections[a].links.push({ name: '', url: '', note: '' }); }
+    else if ((a = b.getAttribute('data-del-link')) != null) { var p = a.split(':'); sections[p[0]].links.splice(p[1], 1); }
+    else if ((a = b.getAttribute('data-del-section')) != null) { sections.splice(a, 1); }
+    else return;
+    renderSections(); build();
+  });
+  $('#addSection').addEventListener('click', function () {
+    sections.push({ title: 'New section', links: [{ name: '', url: '', note: '' }] });
+    renderSections(); build();
+  });
+
+  /* ---------------- generation ---------------- */
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'llms.txt', mime: 'text/plain' });
+
+  function base() {
+    var v = $('#siteUrl').value.trim();
+    if (!v) return '';
+    return GT.normUrl(v).replace(/\/+$/, '');
+  }
+
+  function resolve(u) {
+    u = String(u || '').trim();
+    if (!u) return '';
+    if ($('#optMd').checked && !/\.md$/i.test(u) && !/^(https?:)?\/\//i.test(u) === false) { /* handled below */ }
+    var abs = u;
+    if ($('#optAbsolute').checked && !/^https?:\/\//i.test(u)) abs = base() + (u.charAt(0) === '/' ? '' : '/') + u;
+    if ($('#optMd').checked && !/\.[a-z0-9]{1,5}$/i.test(abs)) abs = abs.replace(/\/$/, '') + '.md';
+    return abs;
+  }
+
+  function orderedSections() {
+    if (!$('#optOptional').checked) return sections;
+    var opt = [], rest = [];
+    sections.forEach(function (s) { (/^optional$/i.test((s.title || '').trim()) ? opt : rest).push(s); });
+    return rest.concat(opt);
+  }
+
+  function build() {
+    var name = $('#siteName').value.trim() || 'Untitled site';
+    var L = [];
+    if ($('#optComment').checked) L.push('<!-- llms.txt · generated ' + GT.today() + ' by managemybatch.com -->', '');
+    L.push('# ' + name, '');
+    var sum = $('#summary').value.trim();
+    if (sum) L.push('> ' + sum, '');
+    var det = $('#details').value.trim();
+    if (det) { det.split(/\n{2,}/).forEach(function (p) { L.push(p.trim(), ''); }); }
+
+    var full = $('#variant').value === 'llms-full.txt';
+    orderedSections().forEach(function (s) {
+      var links = s.links.filter(function (l) { return (l.name || '').trim() && (l.url || '').trim(); });
+      if (!links.length) return;
+      L.push('## ' + (s.title || 'Links').trim(), '');
+      links.forEach(function (l) {
+        var line = '- [' + l.name.trim() + '](' + resolve(l.url) + ')';
+        if (l.note && l.note.trim()) line += ': ' + l.note.trim();
+        L.push(line);
+        if (full && l.note && l.note.trim()) L.push('  ' + l.note.trim());
+      });
+      L.push('');
+    });
+
+    var text = L.join('\n').replace(/\n{3,}/g, '\n\n').replace(/\s+$/, '') + '\n';
+    out.set(text, $('#variant').value);
+    $('#rootPath').textContent = (base() || 'https://example.com') + '/' + $('#variant').value;
+    validate(text);
+    renderDeploy();
+    return text;
+  }
+
+  /* ---------------- validation ---------------- */
+  function validate(text) {
+    var c = [], ok = 0;
+    function add(state, msg) { c.push({ s: state, m: msg }); if (state === 'ok') ok++; }
+
+    add(/^#\s+\S/m.test(text) ? 'ok' : 'err', 'Exactly one H1 with the site name (required by the spec)');
+    add(/^>\s+\S/m.test(text) ? 'ok' : 'warn', 'Blockquote summary present — this is the line most models quote');
+    var linkCount = (text.match(/^- \[/gm) || []).length;
+    add(linkCount ? 'ok' : 'err', linkCount + ' markdown links found across ' + (text.match(/^## /gm) || []).length + ' sections');
+
+    var bad = [];
+    sections.forEach(function (s) {
+      s.links.forEach(function (l) {
+        if (!l.url) return;
+        var r = resolve(l.url);
+        if (/^https?:\/\//i.test(r) && !GT.isValidUrl(r)) bad.push(l.url);
+      });
+    });
+    add(bad.length ? 'err' : 'ok', bad.length ? 'Invalid URLs: ' + bad.join(', ') : 'All link targets resolve to valid URLs');
+
+    var b = base();
+    add(b && GT.isValidUrl(b) ? 'ok' : 'warn', b ? 'Site URL is valid (' + b + ')' : 'Add a site URL to produce absolute links');
+    add(/^https:/i.test(b) ? 'ok' : 'warn', 'Site served over HTTPS');
+
+    var size = GT.byteLen(text);
+    add(size < 60000 ? 'ok' : 'warn', 'File size ' + GT.bytes(size) + (size < 60000 ? ' — comfortably inside a single context window' : ' — consider trimming, some crawlers truncate'));
+    add(/^## Optional/m.test(text) ? 'ok' : 'warn', 'An “Optional” section lets models drop low-priority pages first');
+
+    var dupes = {}, dupFound = [];
+    (text.match(/\]\(([^)]+)\)/g) || []).forEach(function (m) {
+      var u = m.slice(2, -1); if (dupes[u]) dupFound.push(u); dupes[u] = 1;
+    });
+    add(dupFound.length ? 'warn' : 'ok', dupFound.length ? 'Duplicate link targets: ' + GT.uniq(dupFound).join(', ') : 'No duplicate link targets');
+
+    var errs = c.filter(function (x) { return x.s === 'err'; }).length;
+    var pill = $('#pill');
+    pill.textContent = errs ? errs + ' issue' + (errs > 1 ? 's' : '') : ok + '/' + c.length + ' checks passed';
+    pill.style.background = errs ? 'var(--red-bg)' : 'var(--green-bg)';
+    pill.style.color = errs ? 'var(--red)' : 'var(--green)';
+
+    $('#checks').innerHTML = c.map(function (x) {
+      var cls = x.s === 'ok' ? 'note-ok' : x.s === 'warn' ? 'note-warn' : 'note-err';
+      var ic = x.s === 'ok' ? I.check : x.s === 'warn' ? I.warn : I.warn;
+      return '<div class="note ' + cls + '" style="margin-top:8px">' + ic + '<span>' + x.m + '</span></div>';
+    }).join('');
+  }
+
+  /* ---------------- deploy tab ---------------- */
+  function renderDeploy() {
+    var v = $('#variant').value;
+    var blocks = [
+      ['Static host (Netlify, Vercel, Cloudflare Pages)',
+        'Drop the file into your <code>public/</code> or <code>static/</code> folder — it ships at the root automatically.'],
+      ['Nginx', '<pre class="code">location = /' + v + ' {\n  default_type text/plain;\n  charset utf-8;\n  add_header Cache-Control "public, max-age=3600";\n}</pre>'],
+      ['Apache (.htaccess)', '<pre class="code">&lt;Files "' + v + '"&gt;\n  ForceType text/plain\n  Header set Cache-Control "public, max-age=3600"\n&lt;/Files&gt;</pre>'],
+      ['Next.js', 'Save as <code>public/' + v + '</code> — it is served verbatim at <code>/' + v + '</code>.'],
+      ['WordPress', 'Upload to the site root via FTP or your host\'s file manager. Do not paste it into a page — it must be a real file.'],
+      ['Verify', 'Open <code>' + (base() || 'https://example.com') + '/' + v + '</code> in a private window. You should see plain text, not HTML, and a <code>200</code> status.']
+    ];
+    $('#deploy').innerHTML = blocks.map(function (b) {
+      return '<div style="margin-bottom:18px"><h4 style="font-size:14.5px;margin-bottom:8px">' + b[0] + '</h4>' +
+        '<div style="color:var(--muted);font-size:13.8px">' + b[1] + '</div></div>';
+    }).join('');
+  }
+
+  /* ---------------- tabs ---------------- */
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('llms.txt generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+  $('#resetBtn').addEventListener('click', function () {
+    sections = JSON.parse(JSON.stringify(DEFAULT_SECTIONS));
+    renderSections(); build(); GT.toast('Reset to the example');
+  });
+
+  renderSections(); build();
+
+  /* ---------------- page chrome ---------------- */
+  GT.page({
+    slug: 'llms-txt-generator',
+    lede: 'Build a spec-compliant llms.txt so ChatGPT, Claude, Perplexity and Gemini read the right pages — and cite you accurately.',
+    steps: [
+      { icon: 'gear', title: 'Describe your site', text: 'Add your name, URL and a one-line summary. That summary is what models quote back to users.' },
+      { icon: 'bolt', title: 'Curate the links', text: 'Group your most useful pages into sections. Put anything skippable under “Optional”.' },
+      { icon: 'copy', title: 'Publish at your root', text: 'Download the file and upload it so it resolves at /llms.txt as plain text.' }
+    ],
+    guideTitle: 'What llms.txt is (and what it is not)',
+    guide:
+      '<p style="color:var(--muted)">llms.txt is a markdown file at your site root that gives large language models a curated, low-noise map of your content. Where <code>robots.txt</code> says <em>who may crawl</em>, llms.txt says <em>what actually matters</em> — a single fetch that fits in a context window instead of a crawl of a thousand templated pages.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">The structure the spec expects</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>One <code>#</code> H1 — the site or project name.</li><li>An optional <code>&gt;</code> blockquote summary.</li><li>Free-form paragraphs for context.</li><li><code>##</code> sections containing markdown link lists, each link optionally followed by <code>: a short note</code>.</li><li>A final <code>## Optional</code> section that models may drop when context is tight.</li></ul></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Common mistakes this tool prevents</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>Relative links that break once the file is fetched out of context — we expand them.</li><li>Multiple H1s, which make the file ambiguous.</li><li>Dumping your whole sitemap in; curation is the entire point.</li><li>Serving it as <code>text/html</code>, which some fetchers reject.</li><li>Duplicate targets that waste context budget.</li></ul></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span>llms.txt is a proposed convention, not a standard that every model obeys today. It costs nothing to publish, helps assistants that do read it, and it is not a substitute for <a href="ai-crawler-robots-txt-generator.html">robots.txt rules</a> if your goal is to <em>block</em> AI crawlers.</span></div>',
+    related: ['ai-crawler-robots-txt-generator', 'security-txt-generator', 'sitemap-index-generator'],
+    faqs: [
+      { q: 'What is an llms.txt file?', a: 'It is a markdown file published at <code>/llms.txt</code> that lists the pages you want AI assistants to read, with short notes explaining each one. It gives models a clean, curated entry point instead of forcing them to crawl and guess.' },
+      { q: 'Does llms.txt block AI crawlers?', a: 'No. It is purely informational — an index, not a permission system. To allow or block crawlers such as GPTBot, ClaudeBot or PerplexityBot, use robots.txt directives instead.' },
+      { q: 'What is the difference between llms.txt and llms-full.txt?', a: 'llms.txt is the compact curated index. llms-full.txt expands each entry with additional inline context for models that can afford a larger fetch. Publishing both is common; start with llms.txt.' },
+      { q: 'Where do I upload the file?', a: 'The web root, so it resolves at <code>https://yourdomain.com/llms.txt</code>. Serve it with the content type <code>text/plain; charset=utf-8</code> and a 200 status.' },
+      { q: 'Should the links be absolute or relative?', a: 'Absolute. The file is frequently fetched and processed away from your domain, so relative paths can be resolved against the wrong base. This generator expands them for you.' },
+      { q: 'How often should I update it?', a: 'Whenever your key pages change — a release, new docs, restructured pricing. It is a curated index, so a quarterly review is usually enough for a stable site.' }
+    ],
+    seo: {
+      title: 'llms.txt: the file that tells AI assistants what to read',
+      lead: 'This <strong>llms.txt generator</strong> builds a spec-compliant Markdown file that points ChatGPT, Claude, Perplexity and Gemini at the pages you want them to read and cite. Below: what the proposal actually specifies, how it differs from robots.txt, and how to structure one that gets used.',
+      blocks: [
+        {
+          h: 'What is llms.txt?',
+          html: '<p><strong>llms.txt</strong> is a Markdown file at your domain root that gives large language models a curated map of your site. Where a sitemap lists everything, llms.txt lists the handful of pages that actually answer questions — documentation, API references, pricing, policies — with a one-line description of each.</p>' +
+            '<p>The reason it exists is context windows. An assistant asked about your product cannot read your entire site; it fetches a few pages. Left to guess, it may pick a 2019 blog post over your current docs. llms.txt is you making that choice instead.</p>' +
+            '<p>It is a <em>proposal</em>, introduced in 2024, not a ratified standard. No search engine or model provider is obliged to read it. Adoption is growing steadily among documentation and developer-tool sites, and the cost of publishing one is a few minutes.</p>'
+        },
+        {
+          h: 'llms.txt vs robots.txt vs sitemap.xml',
+          table: {
+            head: ['File', 'Format', 'Purpose', 'Status'],
+            rows: [
+              ['<code>llms.txt</code>', 'Markdown', 'Curated reading list with context for AI assistants.', 'Community proposal.'],
+              ['<code>robots.txt</code>', 'Plain text', 'Which paths crawlers may or may not request.', 'De facto standard since 1994, RFC 9309.'],
+              ['<code>sitemap.xml</code>', 'XML', 'Exhaustive machine list of indexable URLs.', 'sitemaps.org protocol.'],
+              ['<code>llms-full.txt</code>', 'Markdown', 'The full text of your documentation in one file.', 'Optional companion to llms.txt.']
+            ]
+          },
+          callout: { type: 'warn', text: '<strong>llms.txt does not block anything.</strong> It is an invitation, not a restriction. To keep AI crawlers out, you need <code>Disallow</code> rules — see the <a href="ai-crawler-robots-txt-generator.html">AI crawler robots.txt generator</a>. Publishing llms.txt while trying to block scraping achieves the opposite of what you intended.' }
+        },
+        {
+          h: 'The file format',
+          html: '<p>The spec is deliberately small. A valid llms.txt has, in order:</p>',
+          ol: [
+            'An <code>H1</code> with the site or project name. Required, and there must be exactly one.',
+            'An optional blockquote summarising what the site is, in a sentence or two.',
+            'Optional free paragraphs of context — audience, scope, caveats.',
+            'Any number of <code>H2</code> sections, each containing a Markdown list of links in the form <code>[Title](url): description</code>.',
+            'An optional final <code>## Optional</code> section for links that may be skipped when context is tight.'
+          ],
+          after: '<p>That last section is the one people miss and it is genuinely useful: it gives a model an explicit signal about what to drop first.</p>'
+        },
+        {
+          h: 'How to build yours',
+          steps: [
+            { t: 'Name the site and summarise it', d: 'One clear sentence. This is what an assistant repeats when describing you, so write it as you would want to be quoted.' },
+            { t: 'Group links into sections', d: 'Documentation, API reference, guides, policies, about. Group by what a question would be about, not by your navigation structure.' },
+            { t: 'Write real descriptions', d: 'Not "Docs" but "REST API reference including authentication, rate limits and error codes." The description is what a model uses to decide whether to fetch the page.' },
+            { t: 'Use absolute URLs', d: 'Relative paths resolve unpredictably when the file is fetched and cached out of context. Always include the full origin.' },
+            { t: 'Mark the skippable links optional', d: 'Move changelogs, press pages and archives into the Optional section.' },
+            { t: 'Publish at the root', d: 'The file must be at <code>https://example.com/llms.txt</code>, served as <code>text/plain</code> or <code>text/markdown</code> with a 200 response.' }
+          ]
+        },
+        {
+          h: 'What to include, and what to leave out',
+          cards: [
+            { t: 'Include', d: 'Documentation, API references, getting-started guides, pricing, security and privacy policies, and any page that answers a question people actually ask about you.' },
+            { t: 'Leave out', d: 'Login pages, checkout, search results, tag archives, paginated listings and anything behind authentication. They waste a fetch and return nothing useful.' },
+            { t: 'Consider carefully', d: 'Blog archives and changelogs. Valuable when current, actively harmful when a model quotes a three-year-old post as your present position.' }
+          ]
+        },
+        {
+          h: 'llms-full.txt',
+          html: '<p>Some sites also publish <code>llms-full.txt</code>: the entire documentation set concatenated into one Markdown file. Instead of following links, an assistant fetches one document and has everything.</p>' +
+            '<p>It suits focused documentation — a library, an API, a single product. It does not suit a large content site, where the file becomes hundreds of thousands of tokens and no model will read it. If your docs would exceed roughly 50,000 words, keep the curated index and skip the full dump.</p>' +
+            '<p>Where you do publish both, link to the full file from llms.txt so the choice is discoverable.</p>'
+        },
+        {
+          h: 'Does llms.txt actually work?',
+          html: '<p>Honestly: it depends who is asking. No major provider has committed publicly to reading llms.txt as a ranked signal, and none of them will confirm a fetch. What is observable is that assistants performing live retrieval do fetch root-level text files, and that sites publishing a well-structured llms.txt tend to be summarised more accurately.</p>' +
+            '<p>Treat it as low-cost, low-risk positioning rather than a guaranteed channel. The file takes ten minutes to write, sits at your root doing no harm, and the exercise of choosing your ten most important pages is worth doing regardless of who reads the result.</p>',
+          callout: { type: 'tip', text: 'Revisit the file whenever your documentation structure changes. A stale llms.txt pointing at 404s is worse than none at all — it teaches assistants that your links do not resolve.' }
+        },
+        {
+          h: 'Related AI and crawler tools',
+          list: [
+            '<a href="ai-crawler-robots-txt-generator.html">AI Crawler robots.txt Generator</a> — control which AI bots may crawl at all.',
+            '<a href="sitemap-index-generator.html">Sitemap Index Generator</a> — the exhaustive machine-readable counterpart.',
+            '<a href="security-txt-generator.html">security.txt Generator</a> — the RFC 9116 root file for vulnerability contacts.',
+            '<a href="meta-robots-tag-generator.html">Meta Robots Tag Generator</a> — per-page indexing and snippet control.'
+          ]
+        }
+      ],
+      keywords: [
+        'llms.txt generator', 'llms txt', 'what is llms.txt', 'llms-full.txt',
+        'llms.txt format', 'llms.txt example', 'ai seo file', 'generative engine optimisation',
+        'llms.txt vs robots.txt', 'chatgpt site file', 'perplexity llms.txt', 'llms.txt spec'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

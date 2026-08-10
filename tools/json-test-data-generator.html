@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JSON Test Data Generator — Realistic Mock Fixtures, Free | Manage My Batch</title>
+<meta name="description" content="Free JSON test data generator. Design a schema from 40 field types, set a seed for reproducible output, and export JSON, NDJSON, a mock API response or TypeScript types.">
+<link rel="canonical" href="https://managemybatch.com/tools/json-test-data-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="JSON Test Data Generator — Realistic Mock Fixtures, Free">
+<meta property="og:description" content="Free JSON test data generator. Design a schema from 40 field types, set a seed for reproducible output, and export JSON, NDJSON, a mock API response or TypeScript types.">
+<meta property="og:url" content="https://managemybatch.com/tools/json-test-data-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="JSON Test Data Generator — Realistic Mock Fixtures, Free">
+<meta name="twitter:description" content="Free JSON test data generator. Design a schema from 40 field types, set a seed for reproducible output, and export JSON, NDJSON, a mock API response or TypeScript types.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Schema Builder</div>
+
+    <div class="field">
+      <label for="template">Start from a template</label>
+      <select id="template">
+        <option value="users" selected>Users</option>
+        <option value="products">Products</option>
+        <option value="orders">Orders</option>
+        <option value="posts">Blog posts</option>
+        <option value="events">Analytics events</option>
+        <option value="empty">Empty schema</option>
+      </select>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="count">Rows</label>
+        <input type="number" id="count" value="10" min="1" max="10000">
+      </div>
+      <div class="field">
+        <label for="seed">Seed</label>
+        <div class="row" style="grid-template-columns:minmax(0,1fr) auto;gap:8px">
+          <input type="text" id="seed" value="gentools">
+          <button type="button" class="btn btn-soft" id="newSeed"><span id="icoReset"></span></button>
+        </div>
+      </div>
+    </div>
+    <div class="hint" style="margin:-8px 0 16px">The same seed always produces the same data — commit it and your test fixtures stay stable across runs.</div>
+
+    <div class="field">
+      <div class="label" style="display:flex;justify-content:space-between;align-items:center">
+        <span>Fields</span>
+        <button type="button" class="btn btn-soft btn-sm" id="addField"><span id="icoPlus"></span> Add field</button>
+      </div>
+      <div id="fields"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label for="output">Output shape</label>
+      <select id="output">
+        <option value="array">Array of objects</option>
+        <option value="wrapped">Wrapped in a data envelope</option>
+        <option value="paginated">Paginated API response</option>
+        <option value="ndjson">NDJSON (one object per line)</option>
+        <option value="keyed">Object keyed by id</option>
+        <option value="ts">TypeScript interface + data</option>
+      </select>
+      <input type="text" id="rootKey" value="data" placeholder="data" style="margin-top:8px" hidden>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Formatting</legend>
+      <div class="check-list">
+        <label class="check on"><input type="checkbox" id="optPretty" checked><span><span class="t">Pretty-print</span><span class="d">Two-space indentation. Off gives minified output.</span></span></label>
+        <label class="check"><input type="checkbox" id="optSort"><span><span class="t">Sort keys alphabetically</span></span></label>
+      </div>
+    </fieldset>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated JSON<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="file">JSON</button>
+      <button type="button" data-tab="table">Preview table</button>
+      <button type="button" data-tab="types">Types &amp; schema</button>
+    </div>
+
+    <div data-panel="file">
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">data.json</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+      <div id="warnBox"></div>
+    </div>
+
+    <div data-panel="table" hidden><div id="table" style="overflow-x:auto"></div></div>
+    <div data-panel="types" hidden><div id="types"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/fake.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoCopy:copy','icoDl:download','icoReset:reset','icoPlus:plus']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var TEMPLATES = {
+    users: [
+      { name: 'id', type: 'id' }, { name: 'uuid', type: 'uuid' },
+      { name: 'name', type: 'fullName' }, { name: 'email', type: 'email' },
+      { name: 'role', type: 'role' }, { name: 'active', type: 'bool' },
+      { name: 'country', type: 'country' }, { name: 'createdAt', type: 'datetime' }
+    ],
+    products: [
+      { name: 'id', type: 'id' }, { name: 'sku', type: 'sku' },
+      { name: 'name', type: 'product' }, { name: 'price', type: 'price' },
+      { name: 'currency', type: 'currency' }, { name: 'stock', type: 'int', min: 0, max: 500 },
+      { name: 'active', type: 'bool' }
+    ],
+    orders: [
+      { name: 'orderId', type: 'uuid7' }, { name: 'customer', type: 'fullName' },
+      { name: 'email', type: 'email' }, { name: 'total', type: 'price' },
+      { name: 'currency', type: 'currency' }, { name: 'status', type: 'status' },
+      { name: 'placedAt', type: 'datetime' }, { name: 'city', type: 'city' }
+    ],
+    posts: [
+      { name: 'id', type: 'id' }, { name: 'slug', type: 'slug' },
+      { name: 'title', type: 'sentence' }, { name: 'body', type: 'paragraph' },
+      { name: 'author', type: 'fullName' }, { name: 'publishedAt', type: 'date' },
+      { name: 'views', type: 'int', min: 0, max: 50000 }
+    ],
+    events: [
+      { name: 'eventId', type: 'nanoid' }, { name: 'userId', type: 'uuid' },
+      { name: 'event', type: 'enum', values: 'page_view,click,signup,purchase,logout' },
+      { name: 'ip', type: 'ipv4' }, { name: 'url', type: 'url' },
+      { name: 'timestamp', type: 'timestamp' }
+    ],
+    empty: [{ name: 'id', type: 'id' }]
+  };
+
+  var fields = JSON.parse(JSON.stringify(TEMPLATES.users));
+  var editor = GTFake.mountFields($('#fields'), fields, build);
+
+  $('#addField').addEventListener('click', function () {
+    fields.push({ name: 'field_' + (fields.length + 1), type: 'word' });
+    editor.render(); build();
+  });
+  $('#template').addEventListener('change', function () {
+    fields.length = 0;
+    JSON.parse(JSON.stringify(TEMPLATES[this.value] || [])).forEach(function (f) { fields.push(f); });
+    editor.render(); build();
+  });
+  $('#newSeed').addEventListener('click', function () {
+    $('#seed').value = Math.random().toString(36).slice(2, 10); build();
+  });
+
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'data.json', mime: 'application/json' });
+
+  var rows = [];
+
+  function build() {
+    var n = Math.max(1, Math.min(10000, parseInt($('#count').value, 10) || 1));
+    var valid = fields.filter(function (f) { return (f.name || '').trim(); });
+    rows = GTFake.rows(valid, n, $('#seed').value);
+
+    if ($('#optSort').checked) {
+      rows = rows.map(function (r) {
+        var o = {}; Object.keys(r).sort().forEach(function (k) { o[k] = r[k]; }); return o;
+      });
+    }
+
+    var indent = $('#optPretty').checked ? 2 : 0;
+    var mode = $('#output').value, text, file = 'data.json';
+    var key = $('#rootKey').value || 'data';
+
+    if (mode === 'wrapped') {
+      var w = {}; w[key] = rows;
+      text = JSON.stringify(w, null, indent);
+    } else if (mode === 'paginated') {
+      text = JSON.stringify({
+        data: rows,
+        meta: { page: 1, perPage: n, total: n * 7, totalPages: 7 },
+        links: { self: '/api/items?page=1', next: '/api/items?page=2', prev: null }
+      }, null, indent);
+    } else if (mode === 'ndjson') {
+      text = rows.map(function (r) { return JSON.stringify(r); }).join('\n');
+      file = 'data.ndjson';
+    } else if (mode === 'keyed') {
+      var idField = valid.find(function (f) { return /^(id|uuid|_id)$/i.test(f.name); }) || valid[0];
+      var o = {};
+      rows.forEach(function (r) { o[String(r[idField.name])] = r; });
+      text = JSON.stringify(o, null, indent);
+    } else if (mode === 'ts') {
+      text = tsInterface(valid) + '\n\nexport const data: Item[] = ' + JSON.stringify(rows, null, 2) + ';';
+      file = 'data.ts';
+    } else {
+      text = JSON.stringify(rows, null, indent);
+    }
+
+    out.set(text, file);
+    $('#pill').textContent = n.toLocaleString() + ' rows · ' + valid.length + ' fields';
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+
+    renderTable(valid);
+    renderTypes(valid);
+    renderWarn(valid);
+  }
+
+  function tsInterface(valid) {
+    return 'export interface Item {\n' + valid.map(function (f) {
+      var t = GTFake.typeMeta(f.type).ts;
+      return '  ' + f.name + (f.nullable ? '?' : '') + ': ' + t + (f.nullable ? ' | null' : '') + ';';
+    }).join('\n') + '\n}';
+  }
+
+  function renderTable(valid) {
+    var head = valid.map(function (f) { return f.name; });
+    var slice = rows.slice(0, 15);
+    $('#table').innerHTML =
+      '<p style="color:var(--muted);font-size:13.5px;margin-bottom:12px">First ' + slice.length + ' of ' + rows.length + ' rows.</p>' +
+      '<table style="border-collapse:collapse;width:100%;font-size:12.5px;font-family:var(--mono)">' +
+      '<tr>' + head.map(function (h) {
+        return '<th style="text-align:left;padding:8px;border-bottom:1px solid var(--line);white-space:nowrap">' + GT.esc(h) + '</th>';
+      }).join('') + '</tr>' +
+      slice.map(function (r) {
+        return '<tr>' + head.map(function (h) {
+          var v = r[h];
+          var s = v === null ? '<span style="color:var(--muted-2)">null</span>' : GT.esc(String(v)).slice(0, 40);
+          return '<td style="padding:8px;border-bottom:1px solid var(--line-2);white-space:nowrap;max-width:220px;overflow:hidden;text-overflow:ellipsis">' + s + '</td>';
+        }).join('') + '</tr>';
+      }).join('') + '</table>';
+  }
+
+  function renderTypes(valid) {
+    var props = {};
+    valid.forEach(function (f) {
+      var t = GTFake.typeMeta(f.type).ts;
+      props[f.name] = { type: t === 'null' ? 'null' : t };
+    });
+    $('#types').innerHTML =
+      '<h4 style="font-size:14.5px;margin-bottom:8px">TypeScript</h4>' +
+      '<pre class="code">' + GT.esc(tsInterface(valid)) + '</pre>' +
+      '<h4 style="font-size:14.5px;margin:18px 0 8px">JSON Schema</h4>' +
+      '<pre class="code">' + GT.esc(JSON.stringify({
+        $schema: 'https://json-schema.org/draft/2020-12/schema',
+        type: 'array',
+        items: { type: 'object', properties: props, required: valid.filter(function (f) { return !f.nullable; }).map(function (f) { return f.name; }) }
+      }, null, 2)) + '</pre>' +
+      '<h4 style="font-size:14.5px;margin:18px 0 8px">Load in a test</h4>' +
+      '<pre class="code">' + GT.esc("import data from './data.json';\n\ntest('renders every row', () => {\n  render(<List items={data} />);\n  expect(screen.getAllByRole('listitem')).toHaveLength(data.length);\n});") + '</pre>';
+  }
+
+  function renderWarn(valid) {
+    var w = [];
+    var names = valid.map(function (f) { return f.name; });
+    var dup = names.filter(function (n, i) { return names.indexOf(n) !== i; });
+    if (dup.length) w.push(['err', 'Duplicate field names: ' + GT.uniq(dup).join(', ') + ' — later fields silently overwrite earlier ones in a JSON object.']);
+    if (!valid.length) w.push(['err', 'Add at least one field.']);
+    var badName = valid.filter(function (f) { return !/^[A-Za-z_$][\w$]*$/.test(f.name); });
+    if (badName.length) w.push(['warn', 'These names need bracket access in JavaScript: ' + badName.map(function (f) { return f.name; }).join(', ') + '.']);
+    if (rows.length > 2000) w.push(['warn', rows.length.toLocaleString() + ' rows is a large fixture. Consider generating a smaller sample for unit tests and keeping the full set for load testing.']);
+    if (!w.length) w.push(['ok', 'Deterministic output — seed “' + $('#seed').value + '” will reproduce this exact dataset.']);
+    $('#warnBox').innerHTML = w.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : x[0] === 'warn' ? 'note-warn' : 'note-err') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+  }
+
+  $('#output').addEventListener('change', function () { $('#rootKey').hidden = this.value !== 'wrapped'; build(); });
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); });
+  ['#count','#seed','#optPretty','#optSort','#rootKey'].forEach(function (s) {
+    $(s).addEventListener('change', build); $(s).addEventListener('input', build);
+  });
+
+  build();
+
+  GT.page({
+    slug: 'json-test-data-generator',
+    lede: 'Design a schema, pick a seed, and get realistic JSON fixtures that are identical on every run — plus the TypeScript interface and JSON Schema to match.',
+    steps: [
+      { icon: 'gear', title: 'Build the schema', text: 'Start from a template, then add fields from 40 realistic types.' },
+      { icon: 'braces', title: 'Set a seed', text: 'The same seed always produces the same data, so committed fixtures never drift.' },
+      { icon: 'copy', title: 'Export', text: 'Array, envelope, paginated response, NDJSON, keyed object or a typed TypeScript module.' }
+    ],
+    guideTitle: 'Why seeded fixtures beat random ones',
+    guide:
+      '<p style="color:var(--muted)">Test data that changes on every run produces tests that fail on every third CI build for reasons nobody can reproduce locally. A seeded generator gives you the best of both: data that looks real enough to catch layout and encoding bugs, and values that are byte-identical every time you run it.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">What realistic data catches</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>Layouts that break on a long name or a 4-line paragraph.</li><li>Sorting that only looks right because every fixture row said "Test User".</li><li>Currency and date formatting assumptions.</li><li>Null handling — turn on “sometimes null” and watch what falls over.</li><li>Pagination logic, using the paginated output shape.</li></ul></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Choosing an output shape</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><strong>Array</strong> — the default for component fixtures.</li><li><strong>Envelope / paginated</strong> — match a real API contract so your client code is exercised properly.</li><li><strong>NDJSON</strong> — streaming, log pipelines, bulk import into Elasticsearch or BigQuery.</li><li><strong>Keyed object</strong> — normalized store shapes such as Redux or a lookup cache.</li><li><strong>TypeScript</strong> — typed fixtures that fail compilation when the schema drifts.</li></ul></div></div>' +
+      '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>All the names, emails and domains here come from reserved example ranges (<code>example.com</code>, <code>example.org</code>) and invented word lists. Nothing corresponds to a real person, and no email in the output can reach a live inbox.</span></div>',
+    related: ['csv-test-data-generator', 'sql-insert-data-generator', 'json-array-generator'],
+    faqs: [
+      { q: 'What is the seed for?', a: 'It makes generation deterministic. The same seed and schema always produce the same rows, so a fixture committed today still matches in six months and CI never sees phantom diffs.' },
+      { q: 'Is the fake data based on real people?', a: 'No. Names are assembled from invented word lists and all emails use IANA-reserved example domains, so nothing resolves to a real person or a deliverable mailbox.' },
+      { q: 'How many rows can I generate?', a: 'Up to 10,000 in one pass. Everything runs in your browser, so very large sets are limited by memory rather than any server quota — for load-test volumes, generate NDJSON in a few batches.' },
+      { q: 'Can I get TypeScript types for the data?', a: 'Yes. The Types tab emits a matching interface and a JSON Schema, and the TypeScript output option ships the interface and the typed data together in one file.' },
+      { q: 'What does “sometimes null” do?', a: 'It makes roughly 15% of that field null, which is the fastest way to find code paths that assume a value is always present.' },
+      { q: 'Can I generate nested objects?', a: 'Not yet — the schema is flat. For nested fixtures, generate the flat data and reshape it in your test setup, which usually keeps the fixture more readable anyway.' }
+    ],
+    seo: {
+      title: 'JSON test data: seeded fixtures, schemas and TypeScript types',
+      lead: 'This <strong>JSON test data generator</strong> turns a schema into realistic fixtures that are byte-identical on every run, plus the TypeScript interface and JSON Schema to match. Below: why seeded data beats random data, how to model nulls and nesting, and where fake data stops being safe.',
+      blocks: [
+        {
+          h: 'Why seeded fixtures beat random ones',
+          html: '<p>Random test data finds bugs. Random test data you cannot reproduce <em>wastes</em> the bug it found.</p>' +
+            '<p>A seeded generator is deterministic: the same seed produces the same records, in the same order, with the same values, on every machine. When a test fails in CI you re-run it locally with the recorded seed and get the identical dataset. Without a seed you get a screenshot of a failure and a shrug.</p>' +
+            '<p>The other half of the argument is diffs. Committed fixtures regenerate identically, so a change in the file means a change in your schema — not noise. Unseeded fixtures produce a full-file diff on every regeneration and quickly stop being reviewed at all.</p>',
+          callout: { type: 'tip', text: 'Record the seed in the test name or the fixture header. "Fails with seed 4821" is a bug report someone can act on; "fails intermittently" is one that gets closed as unreproducible.' }
+        },
+        {
+          h: 'Designing a schema',
+          steps: [
+            { t: 'Add a field per column', d: 'Name it exactly as your API or table does — a fixture whose keys do not match the real payload tests your typos, not your code.' },
+            { t: 'Pick a type per field', d: 'Names, emails, addresses, companies, dates, booleans, integers, decimals, enums, UUIDs and free text are all available.' },
+            { t: 'Constrain the ranges', d: 'A price between 1 and 500, a date within the last year. Realistic bounds surface formatting and rounding bugs that <code>0.1</code> never will.' },
+            { t: 'Mark optional fields', d: 'Set a null rate so some records omit the field — this is what exercises your null handling.' },
+            { t: 'Nest where your data nests', d: 'Objects within objects, and arrays of objects, so the fixture has the same shape as the real response.' },
+            { t: 'Set a seed and a row count', d: 'Then export the JSON, the TypeScript interface and the JSON Schema together.' }
+          ]
+        },
+        {
+          h: 'Model the awkward cases deliberately',
+          html: '<p>Fixtures made only of tidy values test only the happy path. The values that break production are the ones nobody thought to type into a form.</p>',
+          cards: [
+            { t: 'Nulls and absent keys', d: 'Not the same thing. A field that is <code>null</code> and a field that is missing take different branches in most languages — generate both.' },
+            { t: 'Empty and boundary values', d: 'Empty strings, zero, empty arrays, the first and last day of a range. Off-by-one bugs live here.' },
+            { t: 'Unicode and long strings', d: 'Accents, emoji, right-to-left text and a name at your column limit. Truncation and encoding bugs surface immediately.' },
+            { t: 'Structural extremes', d: 'A record with an empty child array and one with fifty. Pagination and rendering both care.' }
+          ]
+        },
+        {
+          h: 'TypeScript interfaces and JSON Schema',
+          html: '<p>A fixture whose shape drifts from your types is worse than no fixture — it passes while the real payload fails. Generating both from the same definition keeps them aligned.</p>',
+          list: [
+            '<strong>TypeScript interface</strong> — optional fields marked <code>?</code> where a null rate is set, nested objects emitted as named interfaces, and unions for enum fields.',
+            '<strong>JSON Schema</strong> — for runtime validation with Ajv or any validator, and for contract tests against a real API response.',
+            '<strong>The JSON itself</strong> — an array of records, or a single object where that is what the endpoint returns.'
+          ],
+          after: '<p>The useful pattern is to validate the <em>real</em> API response against the generated schema in a contract test. When the backend changes a field, the test fails immediately rather than three sprints later in the client.</p>'
+        },
+        {
+          h: 'Is the fake data based on real people?',
+          html: '<p>No. Names, emails, companies and addresses are assembled from generic word lists at generation time. Nothing is scraped, nothing is sampled from a real dataset, and everything runs in your browser — no data is transmitted anywhere.</p>' +
+            '<p>Two caveats worth stating plainly. Generated email domains are placeholders such as <code>example.com</code>, which is reserved by RFC 2606 precisely so that test mail never leaves the building — but if you configure a fixture with a real domain, mail sent to it goes to a real server. And with enough rows, a plausible-looking name will coincide with a real person, so a public demo dataset deserves a "these are not real people" note.</p>',
+          callout: { type: 'warn', text: '<strong>Never use generated data as a substitute for anonymising production data.</strong> They solve different problems. If you need production-shaped data, mask the real dataset properly — a fixture that merely <em>looks</em> like the production schema will not reproduce the distribution, cardinality or edge cases that cause real incidents.' }
+        },
+        {
+          h: 'How much data to generate',
+          html: '<p>Different quantities answer different questions, and the common mistake is generating 100,000 rows for a test that needed three.</p>',
+          table: {
+            head: ['Rows', 'Good for'],
+            rows: [
+              ['3–10', 'Unit tests and snapshot fixtures. Small enough to read and to commit.'],
+              ['50–500', 'UI development — pagination, empty states, long lists, sorting.'],
+              ['1,000–10,000', 'Local performance checks and index behaviour on realistic volumes.'],
+              ['100,000+', 'Load testing and query planning. Generate to file rather than to the clipboard.']
+            ]
+          },
+          after: '<p>Everything runs client-side, so very large sets are limited by browser memory. Above a few hundred thousand records, stream to a file from a script using the same seed rather than generating in a tab.</p>'
+        },
+        {
+          h: 'Related test data tools',
+          list: [
+            '<a href="csv-test-data-generator.html">CSV Test Data Generator</a> — the same fixtures as RFC 4180 CSV or TSV.',
+            '<a href="sql-insert-data-generator.html">SQL Insert Data Generator</a> — seed scripts for five database dialects.',
+            '<a href="json-array-generator.html">JSON Array Generator</a> — flat arrays without a schema.',
+            '<a href="uuid-v7-generator.html">UUID v7 Generator</a> — time-ordered primary keys.',
+            '<a href="dummy-api-key-generator.html">Dummy API Key Generator</a> — fake credentials in the right formats.'
+          ]
+        }
+      ],
+      keywords: [
+        'json test data generator', 'fake json data', 'mock api data', 'json fixtures',
+        'seeded test data', 'json schema generator', 'typescript interface from json',
+        'sample json data', 'nested json generator', 'faker alternative online',
+        'reproducible test fixtures', 'mock rest api response'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

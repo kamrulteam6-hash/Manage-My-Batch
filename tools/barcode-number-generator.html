@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Barcode Number Generator — EAN-13, UPC-A &amp; GTIN Check Digits | Manage My Batch</title>
+<meta name="description" content="Free barcode number generator and check digit calculator. Create valid EAN-13, UPC-A, EAN-8 and GTIN-14 numbers, validate existing barcodes, and understand GS1 prefixes.">
+<link rel="canonical" href="https://managemybatch.com/tools/barcode-number-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Barcode Number Generator — EAN-13, UPC-A &amp; GTIN Check Digits">
+<meta property="og:description" content="Free barcode number generator and check digit calculator. Create valid EAN-13, UPC-A, EAN-8 and GTIN-14 numbers, validate existing barcodes, and understand GS1 prefixes.">
+<meta property="og:url" content="https://managemybatch.com/tools/barcode-number-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Barcode Number Generator — EAN-13, UPC-A &amp; GTIN Check Digits">
+<meta name="twitter:description" content="Free barcode number generator and check digit calculator. Create valid EAN-13, UPC-A, EAN-8 and GTIN-14 numbers, validate existing barcodes, and understand GS1 prefixes.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Generator Settings</div>
+
+    <div class="note note-warn" style="margin-top:0;margin-bottom:18px"><span id="icoWarn"></span>
+      <span><strong>For testing, not for retail sale.</strong> Real retail barcodes must come from a GS1 company prefix licensed to your business. Numbers generated here are structurally valid but not assigned to you.</span></div>
+
+    <div class="field">
+      <label for="format">Barcode format</label>
+      <select id="format">
+        <option value="ean13" selected>EAN-13 — 13 digits, global retail</option>
+        <option value="upca">UPC-A — 12 digits, North America</option>
+        <option value="ean8">EAN-8 — 8 digits, small packages</option>
+        <option value="gtin14">GTIN-14 / ITF-14 — 14 digits, cases</option>
+      </select>
+      <div class="hint" id="formatHint"></div>
+    </div>
+
+    <div class="field">
+      <label for="prefix">Company prefix <span style="font-weight:400;color:var(--muted)">(leave blank for a test range)</span></label>
+      <input type="text" id="prefix" placeholder="e.g. 5012345" inputmode="numeric">
+      <div class="hint" id="prefixHint">Your GS1-issued prefix. Without one, codes use a restricted internal-use range.</div>
+    </div>
+
+    <div class="row">
+      <div class="field"><label for="start">Starting item number</label><input type="number" id="start" value="1" min="0"></div>
+      <div class="field"><label for="count">How many</label><input type="number" id="count" value="8" min="1" max="5000"></div>
+    </div>
+
+    <div class="field" id="indicatorField" hidden>
+      <label for="indicator">Packaging indicator (GTIN-14)</label>
+      <select id="indicator">
+        <option value="1">1 — inner pack</option>
+        <option value="2" selected>2 — carton</option>
+        <option value="3">3 — case</option>
+        <option value="4">4 — pallet layer</option>
+        <option value="5">5 — pallet</option>
+        <option value="9">9 — variable measure</option>
+      </select>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Options</legend>
+      <div class="check-list">
+        <label class="check on"><input type="checkbox" id="optInternal" checked><span><span class="t">Use the internal-use prefix range</span><span class="d">GS1 reserves prefixes starting 02 and 20–29 for in-store use, so these can never clash with a real product.</span></span></label>
+        <label class="check"><input type="checkbox" id="optHuman"><span><span class="t">Format with separators</span><span class="d">Human-readable grouping under the bars.</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="field">
+      <label for="preview">Preview</label>
+      <div class="seq-preview" id="preview">2000000000015</div>
+    </div>
+
+    <div class="out-actions">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate Barcode Numbers</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated Numbers<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="results">Results</button>
+      <button type="button" data-tab="validate">Validate / calculate</button>
+      <button type="button" data-tab="export">Export</button>
+      <button type="button" data-tab="guide">GS1 explained</button>
+    </div>
+
+    <div data-panel="results">
+      <div id="primary"></div>
+      <div id="more"></div>
+      <div id="anatomy" style="margin-top:16px"></div>
+      <button type="button" class="btn btn-soft btn-block" id="regen" style="margin-top:18px">
+        <span id="icoReset"></span> Regenerate</button>
+    </div>
+
+    <div data-panel="validate" hidden>
+      <p style="color:var(--muted);font-size:13.8px;margin-bottom:14px">Paste a barcode number to verify its check digit, or enter one without the final digit to calculate it.</p>
+      <div class="field">
+        <label for="checkInput">Barcode number</label>
+        <input type="text" id="checkInput" placeholder="e.g. 5012345678900 or 501234567890" inputmode="numeric">
+      </div>
+      <div id="checkOut"></div>
+    </div>
+
+    <div data-panel="export" hidden>
+      <div class="field">
+        <label for="exportAs">Export format</label>
+        <select id="exportAs">
+          <option value="lines">Plain list</option>
+          <option value="csvIndexed">CSV with index</option>
+          <option value="json">JSON array</option>
+          <option value="sql">SQL INSERT</option>
+        </select>
+      </div>
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">barcode-numbers.txt</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy all</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+    </div>
+
+    <div data-panel="guide" hidden><div id="guide"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/seqid.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoCopy:copy','icoDl:download','icoReset:reset','icoWarn:warn']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  /* GS1 modulo-10 check digit: weight 3 and 1 alternately, starting from the
+     rightmost data digit. Identical for EAN-8, UPC-A, EAN-13 and GTIN-14. */
+  function gs1Check(body) {
+    var d = String(body).replace(/\D/g, '');
+    var sum = 0, w = 3;
+    for (var i = d.length - 1; i >= 0; i--) {
+      sum += (+d[i]) * w;
+      w = w === 3 ? 1 : 3;
+    }
+    return (10 - (sum % 10)) % 10;
+  }
+
+  var FORMATS = {
+    ean13: { len: 13, body: 12, label: 'EAN-13', hint: 'The global retail standard. 12 data digits plus one check digit.' },
+    upca:  { len: 12, body: 11, label: 'UPC-A',  hint: 'Used in the US and Canada. An EAN-13 with a leading zero is the same number.' },
+    ean8:  { len: 8,  body: 7,  label: 'EAN-8',  hint: 'For packs too small for EAN-13. Prefixes are issued sparingly by GS1.' },
+    gtin14:{ len: 14, body: 13, label: 'GTIN-14',hint: 'Identifies a case or pallet of a retail item, not the item itself.' }
+  };
+
+  var codes = [];
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'barcode-numbers.txt', mime: 'text/plain' });
+
+  function fmt() { return FORMATS[$('#format').value]; }
+
+  function humanFormat(code, f) {
+    if (!$('#optHuman').checked) return code;
+    if (f === 'ean13') return code[0] + ' ' + code.slice(1, 7) + ' ' + code.slice(7, 13);
+    if (f === 'upca') return code[0] + ' ' + code.slice(1, 6) + ' ' + code.slice(6, 11) + ' ' + code[11];
+    if (f === 'ean8') return code.slice(0, 4) + ' ' + code.slice(4);
+    return code[0] + ' ' + code.slice(1, 8) + ' ' + code.slice(8, 13) + ' ' + code[13];
+  }
+
+  function build() {
+    var f = $('#format').value, spec = fmt();
+    var bodyLen = spec.body;
+    var start = parseInt($('#start').value, 10) || 0;
+    var n = Math.max(1, Math.min(5000, parseInt($('#count').value, 10) || 1));
+
+    var prefix = $('#prefix').value.replace(/\D/g, '');
+    if (!prefix) prefix = $('#optInternal').checked ? (f === 'ean8' ? '20' : '200') : '';
+    if (f === 'gtin14') prefix = $('#indicator').value + (prefix || '200');
+
+    codes = [];
+    for (var i = 0; i < n; i++) {
+      var item = String(start + i);
+      var fill = bodyLen - prefix.length;
+      if (fill < 1) { prefix = prefix.slice(0, bodyLen - 1); fill = 1; }
+      var body = prefix + item.padStart(fill, '0').slice(-fill);
+      body = body.slice(0, bodyLen);
+      codes.push(body + gs1Check(body));
+    }
+
+    $('#formatHint').textContent = spec.hint;
+    $('#indicatorField').hidden = f !== 'gtin14';
+    $('#preview').textContent = humanFormat(codes[0] || '', f);
+
+    GTSeq.renderResults({
+      ids: codes.map(function (c) { return humanFormat(c, f); }),
+      primary: '#primary', more: '#more', noun: spec.label + ' Number', maxMore: 12
+    });
+    $('#pill').textContent = codes.length.toLocaleString() + ' × ' + spec.label;
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+
+    var mode = $('#exportAs').value;
+    var ext = mode === 'json' ? 'json' : mode === 'sql' ? 'sql' : /csv/.test(mode) ? 'csv' : 'txt';
+    out.set(GTSeq.exportAs(codes, mode, { column: 'gtin', table: 'products' }), 'barcode-numbers.' + ext);
+
+    renderAnatomy();
+  }
+
+  function renderAnatomy() {
+    var c = codes[0]; if (!c) { $('#anatomy').innerHTML = ''; return; }
+    var f = $('#format').value;
+    var body = c.slice(0, -1), check = c.slice(-1);
+    var prefixShown = $('#prefix').value.replace(/\D/g, '') || (f === 'gtin14' ? $('#indicator').value + '200' : (f === 'ean8' ? '20' : '200'));
+
+    var rows = [
+      ['Full number', c],
+      ['Data digits', body],
+      ['Check digit', check + '  (computed, not chosen)'],
+      ['Company prefix portion', prefixShown],
+      ['Item reference', body.slice(prefixShown.length) || '—'],
+      ['Length', c.length + ' digits']
+    ];
+    if (f === 'gtin14') rows.splice(3, 0, ['Packaging indicator', c[0]]);
+
+    $('#anatomy').innerHTML = '<p class="more-label">Anatomy</p>' +
+      rows.map(function (r) {
+        return '<div class="kv"><span class="k">' + r[0] + '</span><span class="v">' + GT.esc(r[1]) + '</span></div>';
+      }).join('') +
+      '<div class="note note-info" style="margin-top:12px">' + I.info +
+      '<span>The check digit is derived from the other digits — weight each by 3 and 1 alternately from the right, sum, then take the difference to the next multiple of 10. A scanner recomputes it on every read, which is how misreads are rejected.</span></div>';
+  }
+
+  /* ---------- validator ---------- */
+  $('#checkInput').addEventListener('input', function () {
+    var v = this.value.replace(/\D/g, ''), el = $('#checkOut');
+    if (!v) { el.innerHTML = ''; return; }
+
+    var full = [8, 12, 13, 14], partial = [7, 11, 12, 13];
+    var html = '';
+
+    if (full.indexOf(v.length) > -1) {
+      var body = v.slice(0, -1), given = v.slice(-1), expected = String(gs1Check(body));
+      var ok = given === expected;
+      var name = { 8: 'EAN-8', 12: 'UPC-A', 13: 'EAN-13', 14: 'GTIN-14' }[v.length];
+      html = '<div class="note ' + (ok ? 'note-ok' : 'note-err') + '">' + (ok ? I.check : I.warn) +
+        '<span><strong>' + (ok ? 'Valid ' + name : 'Invalid check digit') + '</strong><br>' +
+        'Data digits <code>' + body + '</code> require check digit <code>' + expected + '</code>' +
+        (ok ? '.' : ', but the number ends in <code>' + given + '</code>. The correct number would be <code>' + body + expected + '</code>.') +
+        '</span></div>';
+    } else if (partial.indexOf(v.length) > -1) {
+      var name2 = { 7: 'EAN-8', 11: 'UPC-A', 12: 'EAN-13', 13: 'GTIN-14' }[v.length];
+      var cd = gs1Check(v);
+      html = '<div class="note note-ok">' + I.check +
+        '<span><strong>Check digit: ' + cd + '</strong><br>Complete ' + name2 + ': <code>' + v + cd + '</code></span></div>';
+    } else {
+      html = '<div class="note note-warn">' + I.warn +
+        '<span>Enter 7, 11, 12 or 13 digits to calculate a check digit, or 8, 12, 13 or 14 digits to validate a complete number. You entered ' + v.length + '.</span></div>';
+    }
+
+    /* UPC-A to EAN-13 conversion note */
+    if (v.length === 12) {
+      html += '<div class="note note-info" style="margin-top:10px">' + I.info +
+        '<span>A 12-digit UPC-A is the same product as the EAN-13 formed by prefixing a zero: <code>0' + v + '</code>. Both scan to the same item.</span></div>';
+    }
+    el.innerHTML = html;
+  });
+
+  $('#guide').innerHTML = [
+    ['You cannot invent a retail barcode', 'A GTIN must be globally unique, which only works because GS1 issues each company a unique prefix. Retailers verify that a barcode resolves to the brand selling it. A self-invented number will be rejected at onboarding by any major retailer, and may collide with a real product.'],
+    ['How you get real numbers', 'License a GS1 company prefix from your national GS1 organisation. The prefix length determines how many products you can number — a longer prefix means fewer item digits. Small ranges are available cheaply for businesses with only a handful of products.'],
+    ['The internal-use prefixes', 'Numbers beginning 02 and 20–29 are reserved for in-store use — variable-weight items, own-brand shelf labels, internal asset tracking. They never leave the store, so they cannot clash with real products. That is what this tool defaults to.'],
+    ['Check digits are computed, not chosen', 'The last digit is a function of all the others. Weight each digit by 3 and 1 alternately from the right, sum them, and subtract from the next multiple of ten. Scanners recompute it every read, which is how a partial or smudged scan gets rejected instead of ringing up the wrong item.'],
+    ['UPC-A and EAN-13 are the same thing', 'A 12-digit UPC-A is an EAN-13 with a leading zero. Modern scanners and systems treat them identically, so store GTINs padded to 14 digits internally and you avoid an entire class of matching bugs.'],
+    ['GTIN-14 identifies packaging, not products', 'A case of 24 units gets its own GTIN-14, built from the item GTIN plus a leading packaging indicator. It is scanned in the warehouse, never at a retail till.'],
+    ['One product, one GTIN — forever', 'Every distinct sellable variant needs its own number, and a retired GTIN should not be reused for at least several years. Reusing one causes the old product to appear in sales data for the new one.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('');
+
+  GTSeq.bindCopy('#primary', function () { return codes; });
+  GTSeq.bindCopy('#more', function () { return codes; });
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Barcode numbers generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+  $('#regen').addEventListener('click', build);
+  $('#exportAs').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'barcode-number-generator',
+    lede: 'Generate structurally valid EAN-13, UPC-A, EAN-8 and GTIN-14 numbers with correct GS1 check digits — plus a validator that fixes a wrong check digit for you.',
+    steps: [
+      { icon: 'gear', title: 'Choose a format', text: 'EAN-13 for global retail, UPC-A for North America, GTIN-14 for cases.' },
+      { icon: 'barcode', title: 'Generate a block', text: 'Sequential item numbers with the check digit computed for each.' },
+      { icon: 'check', title: 'Validate anything', text: 'Paste any barcode to verify its check digit, or omit the last digit to calculate it.' }
+    ],
+    guideTitle: 'Why you cannot just make up a barcode',
+    guide:
+      '<p style="color:var(--muted)">A barcode number is not a format you satisfy — it is an entry in a global registry. GTINs are unique worldwide only because GS1 issues each company its own prefix, and every number a company creates begins with it. That is the entire mechanism.</p>' +
+      '<p style="color:var(--muted);margin-top:12px">A number that merely has a correct check digit will scan perfectly on your own equipment and still be rejected by any major retailer, because they verify the prefix resolves to the brand selling the product. Worse, an invented number may already belong to somebody else\'s item.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Legitimate uses for this tool</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>Test data for a POS, ecommerce or WMS build.</li><li>Calculating or verifying a check digit on a real number.</li><li>Internal-use codes for shelf labels and variable-weight items.</li><li>Learning how GTIN structure works.</li><li>Populating a staging catalogue before real GTINs arrive.</li></ul></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">The internal-use range</h4><p style="color:var(--muted);font-size:13.8px">Prefixes 02 and 20–29 are reserved by GS1 for in-store use and are never issued to a company. Barcodes in this range are used for deli counter labels, variable-weight goods and internal tracking — they are guaranteed not to collide with a real product because they are never meant to leave the store.</p>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">This tool defaults to that range precisely so the numbers it produces are safe to use internally and obviously unsuitable for retail.</p></div></div>' +
+      '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span><strong>The check digit maths is the same for every GTIN length.</strong> Weight digits by 3 and 1 alternately from the right, sum, then take the difference to the next multiple of ten. That single algorithm covers EAN-8, UPC-A, EAN-13 and GTIN-14 — which is why the validator here accepts all four.</span></div>',
+    related: ['sku-generator', 'product-code-generator', 'lot-number-generator'],
+    faqs: [
+      { q: 'Can I use these barcode numbers on products I sell?', a: 'Not for retail. Real GTINs must come from a GS1 company prefix licensed to your business — retailers verify this at onboarding, and an invented number may already belong to another product. These are for testing, internal use and check-digit calculation.' },
+      { q: 'How is a barcode check digit calculated?', a: 'Weight each data digit by 3 and 1 alternately starting from the rightmost, sum the results, then subtract from the next multiple of ten. The same algorithm applies to EAN-8, UPC-A, EAN-13 and GTIN-14.' },
+      { q: 'What is the difference between UPC-A and EAN-13?', a: 'A UPC-A is a 12-digit number used mainly in North America; an EAN-13 is the 13-digit global standard. Prefixing a UPC-A with a zero gives the equivalent EAN-13 — they identify the same product.' },
+      { q: 'What are the 20–29 prefixes for?', a: 'GS1 reserves prefixes beginning 02 and 20–29 for in-store use: variable-weight items, deli labels and internal tracking. They are never issued to companies, so they cannot collide with a real product.' },
+      { q: 'What is a GTIN-14?', a: 'A 14-digit number identifying a packaging level — a case or pallet of a retail item rather than the item itself. It starts with a packaging indicator digit and is scanned in the warehouse, not at the till.' },
+      { q: 'How do I get real barcode numbers?', a: 'License a company prefix from your national GS1 organisation. The prefix length determines how many products you can number, and small ranges are available inexpensively for businesses with only a few products.' }
+    ],
+    seo: {
+      title: 'Barcode numbers: GTIN structure, check digits and why you cannot invent one',
+      lead: 'This <strong>barcode number generator</strong> produces structurally valid EAN-13, UPC-A, EAN-8 and GTIN-14 numbers with correct GS1 check digits, and validates or repairs numbers you already have. Below: how the check digit is calculated, what the prefixes mean, and how to get numbers you may legally sell under.',
+      blocks: [
+        {
+          h: 'Why you cannot just make up a barcode',
+          html: '<p>A barcode number is a <strong>GTIN</strong> — Global Trade Item Number — and the word global is doing real work. It is a worldwide unique identifier for a product, issued from a company prefix that GS1 licenses to one business and nobody else.</p>' +
+            '<p>Make one up and it is not merely unauthorised; it almost certainly belongs to someone. A structurally perfect EAN-13 beginning with a prefix licensed to a food manufacturer in Belgium will scan at a till as their product, at their price. Retailers reject unlicensed numbers, marketplaces reject them, and the mismatch surfaces as a chargeback rather than an error message.</p>' +
+            '<p>What this tool produces is <em>structurally valid</em> — the right length, the right format, a correct check digit. That is exactly what you need for testing scanners, seeding databases, building label templates and writing validation code. It is not what you need to sell a product.</p>',
+          callout: { type: 'warn', text: '<strong>Do not put a generated number on a product you sell.</strong> To sell through retail or most marketplaces you need GTINs from a GS1 company prefix registered to your business. Generated numbers are for development, testing and documentation only.' }
+        },
+        {
+          h: 'The formats',
+          table: {
+            head: ['Format', 'Digits', 'Used for'],
+            rows: [
+              ['<strong>EAN-13</strong>', '13', 'The global retail standard. Used everywhere outside North America, and increasingly within it.'],
+              ['<strong>UPC-A</strong>', '12', 'North American retail. An EAN-13 with a leading zero is the same number.'],
+              ['<strong>EAN-8</strong>', '8', 'Small packaging where a full EAN-13 will not fit legibly. Prefixes are scarce and expensive.'],
+              ['<strong>GTIN-14</strong>', '14', 'Cases, cartons and pallets. An indicator digit plus the item\'s GTIN.'],
+              ['<strong>ITF-14</strong>', '14', 'The barcode symbology usually used to print a GTIN-14 on corrugated packaging.']
+            ]
+          },
+          after: '<p>All of them are GTINs, and modern systems store them right-aligned in a 14-digit field with leading zeros. That is why a UPC-A and its EAN-13 equivalent are the same product: <code>012345678905</code> and <code>0012345678905</code> normalise identically.</p>'
+        },
+        {
+          h: 'How the check digit works',
+          html: '<p>The final digit of every GTIN is a modulo-10 checksum that catches most single-digit typos and transpositions. The algorithm is the same for every length:</p>',
+          steps: [
+            { t: 'Take the number without its check digit', d: 'Work from the rightmost digit leftwards.' },
+            { t: 'Multiply alternately by 3 and 1', d: 'Starting from the right, the first digit is multiplied by 3, the next by 1, and so on.' },
+            { t: 'Sum the results', d: 'Add every product together.' },
+            { t: 'Subtract from the next multiple of ten', d: 'If the total is 57, the next multiple of ten is 60, so the check digit is 3. If the total is already a multiple of ten, the check digit is 0.' }
+          ],
+          after: '<p>The generator calculates it for you, and the validator tells you not just that a number is wrong but what the correct check digit would be — which is usually enough to identify a mistyped digit elsewhere in the number.</p>'
+        },
+        {
+          h: 'UPC-A and EAN-13',
+          html: '<p>They are the same standard at different lengths. EAN-13 was created to extend UPC-A internationally, and the extension was done by prepending a digit rather than redesigning anything.</p>' +
+            '<p>So <code>0</code> + a UPC-A gives the EAN-13 for the same product, and any EAN-13 starting with <code>0</code> can be printed as a UPC-A. Scanners in North America have read both since 2005, and databases should store the 13- or 14-digit form to avoid a product appearing twice.</p>' +
+            '<p>The leading digits are a <strong>GS1 prefix</strong> identifying the member organisation that issued the company prefix — <code>50</code> for the UK, <code>30–37</code> for France, <code>400–440</code> for Germany. It indicates where the number was <em>issued</em>, not where the product was made, which is a persistent misconception.</p>'
+        },
+        {
+          h: 'Restricted and internal prefixes',
+          cards: [
+            { t: '02, 20–29', d: 'Reserved for in-store use. Variable-weight items — a deli counter label priced by weight — and internal shelf codes. Never leave the retailer, never registered globally.' },
+            { t: '04', d: 'Also restricted to internal distribution within a company.' },
+            { t: '977, 978, 979', d: 'Serials and books — ISSN and ISBN encoded as EAN-13. <code>978</code> is the Bookland prefix.' },
+            { t: '980–999', d: 'Refund receipts, coupons and other special applications.' },
+            { t: '200–299 generally', d: 'The practical choice for internal-only identifiers, because no GS1 member will ever be issued one.' }
+          ],
+          callout: { type: 'tip', text: 'If you need barcodes purely inside your own warehouse — bin locations, internal kits, weighted items — use the 20–29 range deliberately. It is reserved for exactly that, so an internal code can never collide with a real product entering your system.' }
+        },
+        {
+          h: 'Getting real numbers',
+          html: '<p>Two legitimate routes, and one that causes trouble.</p>',
+          list: [
+            '<strong>Join GS1 in your country.</strong> You get a company prefix and a block of GTINs, plus registration in the global registry that retailers and marketplaces check. There is a joining fee and an annual fee scaled to your turnover and the size of the block.',
+            '<strong>Buy a single GTIN from GS1</strong> where the local organisation offers them. Sensible for a business with one or two products.',
+            '<strong>Resold "cheap barcodes"</strong> from third-party sites are numbers issued to a company that has since subdivided them. They usually scan, but they are registered to someone else — Amazon, in particular, matches GTINs against the GS1 registry and suspends listings where the brand does not match.'
+          ],
+          after: '<p>If you sell only through your own channels and never at retail, you may not need a GTIN at all — an internal <a href="sku-generator.html">SKU</a> is enough. The requirement comes from the retailer, not from the product.</p>'
+        },
+        {
+          h: 'Related product identification tools',
+          list: [
+            '<a href="sku-generator.html">SKU Generator</a> — internal stock codes you control entirely.',
+            '<a href="product-code-generator.html">Product Code Generator</a> — model-level codes with category and version segments.',
+            '<a href="lot-number-generator.html">Lot Number Generator</a> — batch and traceability codes.',
+            '<a href="asset-tag-number-generator.html">Asset Tag Number Generator</a> — identifiers for equipment rather than stock.',
+            '<a href="batch-number-generator.html">Batch Number Generator</a> — production run identifiers.'
+          ]
+        }
+      ],
+      keywords: [
+        'barcode number generator', 'ean-13 generator', 'upc-a generator', 'gtin generator',
+        'barcode check digit calculator', 'ean 13 check digit', 'gtin-14', 'ean-8 generator',
+        'valid barcode numbers for testing', 'upc vs ean', 'gs1 prefix', 'how to get a barcode'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

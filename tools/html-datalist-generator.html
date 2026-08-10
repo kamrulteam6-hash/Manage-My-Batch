@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HTML Data List Generator — datalist Autocomplete Markup | Manage My Batch</title>
+<meta name="description" content="Free HTML datalist generator. Create native autocomplete markup correctly wired to its input, with presets, value/label pairs, and notes on browser behaviour and accessibility.">
+<link rel="canonical" href="https://managemybatch.com/tools/html-datalist-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="HTML Data List Generator — datalist Autocomplete Markup">
+<meta property="og:description" content="Free HTML datalist generator. Create native autocomplete markup correctly wired to its input, with presets, value/label pairs, and notes on browser behaviour and accessibility.">
+<meta property="og:url" content="https://managemybatch.com/tools/html-datalist-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="HTML Data List Generator — datalist Autocomplete Markup">
+<meta name="twitter:description" content="Free HTML datalist generator. Create native autocomplete markup correctly wired to its input, with presets, value/label pairs, and notes on browser behaviour and accessibility.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Datalist Settings</div>
+
+    <div class="field">
+      <label for="preset">Preset suggestions</label>
+      <select id="preset">
+        <option value="custom" selected>My own list</option>
+        <option value="countries">Countries</option>
+        <option value="languages">Programming languages</option>
+        <option value="frameworks">Frameworks</option>
+        <option value="emails">Email domains</option>
+        <option value="colors">CSS colours</option>
+        <option value="timezones">Time zones</option>
+        <option value="skills">Skills / tags</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="items">Suggestions — one per line</label>
+      <textarea id="items" style="min-height:180px">JavaScript
+TypeScript
+Python
+Rust
+Go
+Ruby
+Java
+C#
+Swift
+Kotlin</textarea>
+      <div class="hint">Optionally use <code>value | description</code> to add a hint shown beside the suggestion in Chrome and Edge.</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="row">
+      <div class="field"><label for="inputId">Input id</label><input type="text" id="inputId" value="language"></div>
+      <div class="field"><label for="listId">Datalist id</label><input type="text" id="listId" value="language-options"></div>
+    </div>
+
+    <div class="row">
+      <div class="field"><label for="name">name attribute</label><input type="text" id="name" value="language"></div>
+      <div class="field">
+        <label for="type">Input type</label>
+        <select id="type">
+          <option value="text" selected>text</option>
+          <option value="search">search</option>
+          <option value="email">email</option>
+          <option value="url">url</option>
+          <option value="tel">tel</option>
+          <option value="number">number</option>
+          <option value="date">date</option>
+          <option value="range">range</option>
+          <option value="color">color</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="labelText">Label text</label>
+      <input type="text" id="labelText" value="Preferred language">
+    </div>
+
+    <div class="field">
+      <label for="placeholder">Placeholder</label>
+      <input type="text" id="placeholder" value="Start typing…">
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Options</legend>
+      <div class="check-list">
+        <label class="check on"><input type="checkbox" id="optLabel" checked><span><span class="t">Include a &lt;label&gt;</span></span></label>
+        <label class="check"><input type="checkbox" id="optRequired"><span><span class="t">required</span></span></label>
+        <label class="check"><input type="checkbox" id="optLabelAttr"><span><span class="t">Use the label attribute on options</span><span class="d">Chrome and Edge show it as a secondary hint; other browsers ignore it.</span></span></label>
+        <label class="check"><input type="checkbox" id="optSort"><span><span class="t">Sort alphabetically</span></span></label>
+        <label class="check"><input type="checkbox" id="optDedupe" checked><span><span class="t">Remove duplicates</span></span></label>
+        <label class="check"><input type="checkbox" id="optAutocompleteOff" checked><span><span class="t">Set autocomplete="off"</span><span class="d">Stops the browser's own saved-value list competing with your suggestions.</span></span></label>
+        <label class="check"><input type="checkbox" id="optValidate"><span><span class="t">Add JS restricting input to the list</span><span class="d">datalist is only a suggestion — free text is always allowed without this.</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="field">
+      <label for="format">Output format</label>
+      <select id="format">
+        <option value="html" selected>HTML</option>
+        <option value="jsx">JSX / React</option>
+        <option value="vue">Vue template</option>
+        <option value="json">JSON array</option>
+      </select>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated Markup<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="file">Code</button>
+      <button type="button" data-tab="preview">Live preview</button>
+      <button type="button" data-tab="notes">Browser behaviour</button>
+    </div>
+
+    <div data-panel="file">
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">datalist.html</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+      <div id="warnBox"></div>
+    </div>
+
+    <div data-panel="preview" hidden>
+      <p style="color:var(--muted);font-size:13.5px;margin-bottom:12px">A working datalist — click the field and start typing.</p>
+      <div id="preview"></div>
+    </div>
+
+    <div data-panel="notes" hidden><div id="notes"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoCopy:copy','icoDl:download']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var PRESETS = {
+    countries: 'Argentina\nAustralia\nBrazil\nCanada\nChina\nEgypt\nFrance\nGermany\nIndia\nIndonesia\nItaly\nJapan\nKenya\nMexico\nNetherlands\nNigeria\nPoland\nPortugal\nSouth Africa\nSpain\nSweden\nUnited Kingdom\nUnited States\nVietnam',
+    languages: 'JavaScript\nTypeScript\nPython\nRust\nGo\nRuby\nJava\nC#\nC++\nSwift\nKotlin\nPHP\nScala\nElixir\nHaskell\nLua',
+    frameworks: 'React\nVue\nAngular\nSvelte\nSolid\nNext.js\nNuxt\nRemix\nAstro\nDjango\nRails\nLaravel\nSpring\nFastAPI\nExpress',
+    emails: 'gmail.com\noutlook.com\nhotmail.com\nyahoo.com\nicloud.com\nproton.me\nfastmail.com',
+    colors: 'aliceblue\naquamarine\nchartreuse\ncoral\ncornflowerblue\ncrimson\ndarkslategray\ngoldenrod\nindigo\nlavender\nmediumseagreen\nmidnightblue\norchid\nrebeccapurple\nsalmon\nseagreen\nslateblue\nteal\ntomato\nturquoise',
+    timezones: 'UTC\nAmerica/New_York\nAmerica/Chicago\nAmerica/Denver\nAmerica/Los_Angeles\nAmerica/Sao_Paulo\nEurope/London\nEurope/Paris\nEurope/Berlin\nAfrica/Lagos\nAfrica/Nairobi\nAsia/Dubai\nAsia/Kolkata\nAsia/Shanghai\nAsia/Tokyo\nAustralia/Sydney',
+    skills: 'Accessibility | WCAG, ARIA\nCI/CD | Pipelines and automation\nDocker | Containers\nGraphQL | Schema design\nKubernetes | Orchestration\nPostgreSQL | Relational databases\nRedis | Caching\nTerraform | Infrastructure as code\nTesting | Unit and E2E\nWebAssembly | Low-level web'
+  };
+
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'datalist.html', mime: 'text/html' });
+
+  var items = [];
+
+  function parse() {
+    var arr = GT.lines($('#items').value).map(function (l) {
+      var i = l.indexOf('|');
+      if (i > -1) return { value: l.slice(0, i).trim(), label: l.slice(i + 1).trim() };
+      return { value: l.trim(), label: '' };
+    }).filter(function (o) { return o.value; });
+    if ($('#optDedupe').checked) {
+      var seen = {}, o2 = [];
+      arr.forEach(function (o) { if (!seen[o.value]) { seen[o.value] = 1; o2.push(o); } });
+      arr = o2;
+    }
+    if ($('#optSort').checked) arr.sort(function (a, b) { return a.value.localeCompare(b.value); });
+    return arr;
+  }
+
+  function build() {
+    items = parse();
+    var inputId = $('#inputId').value || 'field';
+    var listId = $('#listId').value || inputId + '-options';
+    var name = $('#name').value || inputId;
+    var type = $('#type').value;
+    var fmt = $('#format').value;
+    var useLabelAttr = $('#optLabelAttr').checked;
+
+    function optionTag(o, jsx) {
+      var attrs = ' value="' + GT.escAttr(o.value) + '"';
+      if (useLabelAttr && o.label) attrs += ' label="' + GT.escAttr(o.label) + '"';
+      return '<option' + attrs + (jsx ? ' />' : '></option>');
+    }
+
+    var text = '';
+    if (fmt === 'html') {
+      var L = [];
+      if ($('#optLabel').checked) {
+        L.push('<label for="' + GT.escAttr(inputId) + '">' + GT.esc($('#labelText').value || 'Choose') + '</label>');
+      }
+      L.push('<input');
+      L.push('  type="' + type + '"');
+      L.push('  id="' + GT.escAttr(inputId) + '"');
+      L.push('  name="' + GT.escAttr(name) + '"');
+      L.push('  list="' + GT.escAttr(listId) + '"');
+      if ($('#placeholder').value) L.push('  placeholder="' + GT.escAttr($('#placeholder').value) + '"');
+      if ($('#optAutocompleteOff').checked) L.push('  autocomplete="off"');
+      if ($('#optRequired').checked) L.push('  required');
+      L.push('>');
+      L.push('');
+      L.push('<datalist id="' + GT.escAttr(listId) + '">');
+      items.forEach(function (o) { L.push('  ' + optionTag(o)); });
+      L.push('</datalist>');
+
+      if ($('#optValidate').checked) {
+        L.push('');
+        L.push('<script>');
+        L.push('  // A datalist only suggests — free text is still accepted.');
+        L.push('  // This enforces that the final value is one of the options.');
+        L.push("  const input = document.getElementById('" + inputId + "');");
+        L.push("  const allowed = [...document.querySelectorAll('#" + listId + " option')]");
+        L.push('    .map((o) => o.value);');
+        L.push('');
+        L.push("  input.addEventListener('change', () => {");
+        L.push('    const ok = allowed.includes(input.value);');
+        L.push("    input.setCustomValidity(ok ? '' : 'Choose a value from the list');");
+        L.push('  });');
+        L.push('<' + '/script>');
+      }
+      text = L.join('\n');
+    } else if (fmt === 'jsx') {
+      var J = [];
+      J.push('const options = ' + JSON.stringify(items.map(function (o) { return o.value; }), null, 2) + ';');
+      J.push('');
+      J.push('<>');
+      if ($('#optLabel').checked) J.push('  <label htmlFor="' + inputId + '">' + GT.esc($('#labelText').value) + '</label>');
+      J.push('  <input');
+      J.push('    type="' + type + '"');
+      J.push('    id="' + inputId + '"');
+      J.push('    name="' + name + '"');
+      J.push('    list="' + listId + '"');
+      if ($('#placeholder').value) J.push('    placeholder="' + GT.escAttr($('#placeholder').value) + '"');
+      J.push('    value={value}');
+      J.push('    onChange={(e) => setValue(e.target.value)}');
+      if ($('#optRequired').checked) J.push('    required');
+      J.push('  />');
+      J.push('  <datalist id="' + listId + '">');
+      J.push('    {options.map((o) => (');
+      J.push('      <option key={o} value={o} />');
+      J.push('    ))}');
+      J.push('  </datalist>');
+      J.push('</>');
+      text = J.join('\n');
+    } else if (fmt === 'vue') {
+      var V = [];
+      V.push('<template>');
+      if ($('#optLabel').checked) V.push('  <label :for="\'' + inputId + '\'">' + GT.esc($('#labelText').value) + '</label>');
+      V.push('  <input');
+      V.push('    type="' + type + '"');
+      V.push('    id="' + inputId + '"');
+      V.push('    list="' + listId + '"');
+      V.push('    v-model="value"');
+      if ($('#placeholder').value) V.push('    placeholder="' + GT.escAttr($('#placeholder').value) + '"');
+      V.push('  >');
+      V.push('  <datalist id="' + listId + '">');
+      V.push('    <option v-for="o in options" :key="o" :value="o" />');
+      V.push('  </datalist>');
+      V.push('</template>');
+      V.push('');
+      V.push('<script setup>');
+      V.push("const value = ref('');");
+      V.push('const options = ' + JSON.stringify(items.map(function (o) { return o.value; }), null, 2) + ';');
+      V.push('<' + '/script>');
+      text = V.join('\n');
+    } else {
+      text = JSON.stringify(useLabelAttr ? items : items.map(function (o) { return o.value; }), null, 2);
+    }
+
+    out.set(text, fmt === 'json' ? 'options.json' : fmt === 'jsx' ? 'Field.jsx' : 'datalist.html');
+    $('#pill').textContent = items.length + ' suggestions';
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+
+    renderPreview(inputId, listId, type);
+    renderWarn(inputId, listId);
+    renderNotes();
+  }
+
+  function renderPreview(inputId, listId, type) {
+    var pid = 'prev-' + inputId, plid = 'prev-' + listId;
+    $('#preview').innerHTML =
+      ($('#optLabel').checked ? '<label for="' + pid + '" style="display:block;font-size:13.5px;font-weight:600;margin-bottom:7px">' +
+        GT.esc($('#labelText').value || 'Choose') + '</label>' : '') +
+      '<input type="' + (type === 'range' || type === 'color' ? type : 'text') + '" id="' + pid + '" list="' + plid + '"' +
+      ' placeholder="' + GT.escAttr($('#placeholder').value) + '"' +
+      ' style="width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:10px;font:inherit;font-size:14.5px">' +
+      '<datalist id="' + plid + '">' +
+      items.map(function (o) {
+        return '<option value="' + GT.escAttr(o.value) + '"' +
+          ($('#optLabelAttr').checked && o.label ? ' label="' + GT.escAttr(o.label) + '"' : '') + '></option>';
+      }).join('') + '</datalist>';
+  }
+
+  function renderWarn(inputId, listId) {
+    var w = [];
+    if (!items.length) w.push(['err', 'No suggestions — add at least one line.']);
+    if (inputId === listId) w.push(['err', 'The input id and the datalist id must be different. The input\'s <code>list</code> attribute points at the datalist\'s <code>id</code>.']);
+    if (!$('#optLabel').checked) w.push(['warn', 'No <code>&lt;label&gt;</code>. A placeholder disappears on focus and is not an accessible name.']);
+    if (!$('#optValidate').checked) w.push(['warn', 'A datalist <strong>suggests</strong> values; it never restricts them. Users can type anything, so validate on the server regardless of what the field allows.']);
+    if ($('#optLabelAttr').checked) w.push(['warn', 'The <code>label</code> attribute on options is only displayed by Chrome and Edge. Safari and Firefox ignore it, so never put essential information there.']);
+    if (items.length > 500) w.push(['warn', items.length + ' suggestions is a lot of DOM. For very large lists, fetch matches from the server as the user types instead.']);
+    if ($('#type').value === 'date' || $('#type').value === 'color' || $('#type').value === 'range') {
+      w.push(['warn', 'Datalist support on <code>' + $('#type').value + '</code> inputs is inconsistent across browsers — it renders as tick marks or preset swatches where supported, and is silently ignored elsewhere.']);
+    }
+    if (!w.length) w.push(['ok', 'Input and datalist are correctly wired via list and id.']);
+    $('#warnBox').innerHTML = w.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : x[0] === 'warn' ? 'note-warn' : 'note-err') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+  }
+
+  function renderNotes() {
+    $('#notes').innerHTML = [
+      ['It suggests, it does not restrict', 'This is the single most misunderstood thing about datalist. The user can ignore every suggestion and type whatever they like. If the value must come from a fixed set, use a <a href="html-select-option-generator.html">select</a> — or keep the datalist and validate, which is what the optional script does.'],
+      ['Wiring is by id, not nesting', 'The input carries <code>list="some-id"</code> and the datalist carries <code>id="some-id"</code>. The datalist can sit anywhere in the document; it is never rendered itself.'],
+      ['Styling is not possible', 'The suggestion dropdown is drawn by the browser, outside your CSS. If you need custom styling, highlighting of matched substrings, or grouped results, you need a real combobox component with the ARIA combobox pattern.'],
+      ['Matching behaviour varies', 'Chrome matches anywhere in the string, Firefox historically matched from the start. Do not build interactions that depend on a particular matching rule.'],
+      ['The label attribute is Chromium-only', 'Chrome and Edge show <code>label</code> as a secondary hint beside the value. Firefox and Safari ignore it entirely, so it must never carry information the user needs.'],
+      ['Great for hybrid fields', 'Datalist shines where there are common answers but free text is legitimate: job titles, tags, email domains, city names. The user gets speed without being boxed in.'],
+      ['Combine with autocomplete="off"', 'Otherwise the browser\'s own saved-form-values dropdown can appear alongside or instead of your suggestions, which is confusing for the user and hard to debug.']
+    ].map(function (x) {
+      return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+        '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+    }).join('');
+  }
+
+  $('#preset').addEventListener('change', function () {
+    if (PRESETS[this.value]) {
+      $('#items').value = PRESETS[this.value];
+      if (this.value === 'skills') $('#optLabelAttr').checked = true;
+      build();
+    }
+  });
+  $('#inputId').addEventListener('input', function () {
+    $('#listId').value = (this.value || 'field') + '-options';
+    $('#name').value = this.value;
+    build();
+  });
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'html-datalist-generator',
+    lede: 'Generate native autocomplete markup — a datalist correctly wired to its input, with presets, optional value restriction and a working live preview.',
+    steps: [
+      { icon: 'gear', title: 'Add your suggestions', text: 'One per line, or pick a preset. Use value | description for a Chrome hint.' },
+      { icon: 'list', title: 'Wire up the input', text: 'The ids are kept in sync automatically so list and id always match.' },
+      { icon: 'copy', title: 'Copy the markup', text: 'HTML, JSX, Vue or a JSON array — plus optional validation if the value must come from the list.' }
+    ],
+    guideTitle: 'The autocomplete you get for free',
+    guide:
+      '<p style="color:var(--muted)">A <code>&lt;datalist&gt;</code> gives an ordinary text input a native suggestion dropdown, with no JavaScript, no dependency and no accessibility work. It is the right answer far more often than the combobox library people reach for instead — and the wrong answer in a few specific cases worth knowing.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Use it when</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>There are common answers but free text is legitimate — job titles, tags, city names.</li><li>You want to speed up typing without constraining the user.</li><li>The list is moderate in size and does not need grouping.</li><li>You would rather ship no JavaScript for this field.</li></ul></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Do not use it when</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>The value <strong>must</strong> come from a fixed set — use a <a href="html-select-option-generator.html">select</a>.</li><li>You need to style the dropdown, highlight matches, or show rich content.</li><li>Suggestions come from a server as the user types and need debouncing and loading states.</li><li>You need multi-select or removable tokens.</li></ul></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>A datalist never validates anything.</strong> It is a convenience layer over a plain text input, so the submitted value can be anything the user types. Validate on the server as you would for any free-text field — the optional client-side check generated here improves the experience but is not a security control.</span></div>' +
+      '<div class="note note-info" style="margin-top:12px">' + GTI.info + '<span>Because the dropdown is rendered by the browser, it inherits native keyboard handling, touch behaviour and screen-reader support at no cost. A hand-rolled combobox has to reimplement all of that correctly, and most do not.</span></div>',
+    related: ['html-select-option-generator', 'html-table-generator', 'json-array-generator'],
+    faqs: [
+      { q: 'What is an HTML datalist?', a: 'An element containing a list of suggested values for an input. The input references it with <code>list="datalist-id"</code>, and the browser shows a native autocomplete dropdown as the user types.' },
+      { q: 'Does datalist restrict what can be entered?', a: 'No. It only suggests. The user can type any value, so a datalist is not a substitute for a select when the value must come from a fixed set — and server-side validation is still required.' },
+      { q: 'Can I style the datalist dropdown?', a: 'No. It is rendered by the browser outside your CSS. If custom styling, match highlighting or grouped results matter, you need a real combobox component implementing the ARIA combobox pattern.' },
+      { q: 'What is the difference between datalist and select?', a: 'A select restricts the user to your options and always submits one of them. A datalist suggests values while still allowing free text. Choose based on whether unexpected values are acceptable.' },
+      { q: 'Why is the option label attribute not showing?', a: 'Only Chromium browsers display it, as a secondary hint beside the value. Firefox and Safari ignore it, so never put essential information in a label attribute.' },
+      { q: 'Does datalist work with date or color inputs?', a: 'Support is inconsistent. Where implemented it appears as tick marks on a range input or preset swatches on a colour input, and elsewhere it is silently ignored. It is reliable on text, search, email, url and tel.' }
+    ],
+    seo: {
+      title: 'HTML datalist: native autocomplete, its limits and when to use it',
+      lead: 'This <strong>datalist generator</strong> produces correctly wired <code>&lt;datalist&gt;</code> markup with a working preview, presets and optional value restriction. Below: what you get for free, what you cannot style, and how it differs from a select.',
+      blocks: [
+        {
+          h: 'The autocomplete you get for free',
+          html: '<p><code>&lt;datalist&gt;</code> attaches a list of suggestions to a text input. The browser renders a dropdown, filters as the user types, and handles keyboard navigation — with no JavaScript and no library.</p>' +
+            '<p>The wiring is one attribute:</p>' +
+            '<p><code>&lt;input list="cities" name="city"&gt;</code><br><code>&lt;datalist id="cities"&gt;&lt;option value="Lisbon"&gt;&lt;/datalist&gt;</code></p>' +
+            '<p>The input\'s <code>list</code> attribute must match the datalist\'s <code>id</code>. That is the entire contract, and a mismatch is the reason a datalist silently does nothing — there is no error, just an ordinary text field.</p>',
+          callout: { type: 'tip', text: 'The datalist element can live anywhere in the document; it renders nothing itself. Putting it immediately after its input keeps the relationship obvious to whoever edits the template next.' }
+        },
+        {
+          h: 'It suggests, it does not restrict',
+          html: '<p>A datalist offers values. It does not enforce them. The user can type anything, and the form submits whatever they typed.</p>' +
+            '<p>That is usually the point — a datalist suits fields where the list is helpful but not exhaustive: a job title, a city, a tag, a browser version. If you need to <em>constrain</em> the answer, you need something else:</p>',
+          list: [
+            '<strong>Use a <a href="html-select-option-generator.html">select</a></strong> when only listed values are acceptable. The control cannot express anything else.',
+            '<strong>Add a <code>pattern</code> attribute</strong> to reject anything outside a set — the generator can emit one built from your options.',
+            '<strong>Validate on the server regardless.</strong> Client-side restriction of any kind is a convenience, never a guarantee.'
+          ],
+          callout: { type: 'warn', text: '<strong>Never treat a datalist value as validated input.</strong> The dropdown is a suggestion UI; the field is a free-text input. Anything that reaches your database from it must be checked server-side exactly as if the list did not exist.' }
+        },
+        {
+          h: 'Datalist or select?',
+          table: {
+            head: ['', 'datalist', 'select'],
+            rows: [
+              ['Free text allowed', 'Yes — the list is a suggestion.', 'No — only listed options.'],
+              ['Type to filter', 'Yes, built in.', 'First-letter jump only.'],
+              ['Empty state', 'An ordinary text box.', 'Shows the first option or a placeholder.'],
+              ['Long lists', 'Handles hundreds well — typing narrows them.', 'Painful beyond about fifty.'],
+              ['Styling the dropdown', 'Not possible.', 'Very limited, but more than none.'],
+              ['Mobile', 'Renders as a keyboard suggestion strip on some platforms.', 'Native picker wheel — familiar and reliable.'],
+              ['Best for', 'Open sets: cities, tags, titles, versions.', 'Closed sets: countries, statuses, categories.']
+            ]
+          }
+        },
+        {
+          h: 'You cannot style the dropdown',
+          html: '<p>The suggestion list is rendered by the browser as a native popup, outside your document\'s styling. There is no reliable CSS hook — no way to change the font, the highlight colour, the row height, or how matches are emphasised. Vendor-specific pseudo-elements exist in one or two engines and are neither stable nor portable.</p>' +
+            '<p>Behaviour differs too. Some browsers match anywhere in the string, others only at the start. Some show the full list on focus, others only after a keystroke. None of it is configurable.</p>' +
+            '<p>So the decision is straightforward: accept the browser\'s appearance, or build a custom combobox with a listbox role, <code>aria-expanded</code>, <code>aria-activedescendant</code> and full keyboard handling. The custom route is a genuine amount of accessible-widget work — worth it for a core interaction, rarely worth it for one field on a settings page.</p>'
+        },
+        {
+          h: 'The label attribute',
+          html: '<p>An <code>&lt;option&gt;</code> in a datalist can carry both a value and a label:</p>' +
+            '<p><code>&lt;option value="GB" label="United Kingdom"&gt;</code></p>' +
+            '<p>The intent is a code inserted into the field with a friendly description beside it. In practice, support is inconsistent: some browsers show both, some show only the value, and what gets inserted is always the <code>value</code>. That last part is the trap — the user picks "United Kingdom" and the field contains <code>GB</code>, which looks like a bug to them.</p>' +
+            '<p>The reliable pattern is to put the human-readable text in the value and use text content rather than the label attribute for any extra hint. If you truly need a code stored, use a select, or pair a visible text input with a hidden field your JavaScript populates.</p>'
+        },
+        {
+          h: 'Which input types support it',
+          cards: [
+            { t: 'Works well', d: '<code>text</code>, <code>search</code>, <code>email</code>, <code>url</code>, <code>tel</code>. The classic use, with a dropdown of suggestions.' },
+            { t: 'Works differently', d: '<code>range</code> renders tick marks rather than a list. <code>color</code> shows a swatch palette. Both are useful and neither is a dropdown.' },
+            { t: 'Inconsistent', d: '<code>date</code>, <code>time</code> and <code>month</code> — support varies by browser and the native picker usually wins anyway.' },
+            { t: 'No effect', d: '<code>checkbox</code>, <code>radio</code>, <code>file</code>, <code>hidden</code>, <code>password</code>. The attribute is ignored.' }
+          ],
+          after: '<p>The <code>range</code> case is the underused one: a handful of datalist options turns a bare slider into one with labelled stops, with no JavaScript at all.</p>'
+        },
+        {
+          h: 'Related form tools',
+          list: [
+            '<a href="html-select-option-generator.html">HTML Select Option Generator</a> — for closed sets of values.',
+            '<a href="html-table-generator.html">HTML Table Generator</a> — accessible tabular markup.',
+            '<a href="json-array-generator.html">JSON Array Generator</a> — the same list as data.',
+            '<a href="regex-character-class-generator.html">Regex Character Class Generator</a> — build the <code>pattern</code> attribute that restricts input.'
+          ]
+        }
+      ],
+      keywords: [
+        'html datalist generator', 'datalist example', 'html autocomplete input',
+        'datalist vs select', 'input list attribute', 'datalist styling',
+        'native autocomplete html', 'datalist restrict values', 'datalist option label',
+        'datalist range ticks', 'html5 suggestions input', 'combobox html'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

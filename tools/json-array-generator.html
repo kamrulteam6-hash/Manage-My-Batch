@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JSON Array Generator — Numbers, Strings, Ranges &amp; Objects | Manage My Batch</title>
+<meta name="description" content="Free JSON array generator. Build arrays of numbers, sequences, ranges, dates, strings or objects — with shuffling, unique values, custom separators and multiple output formats.">
+<link rel="canonical" href="https://managemybatch.com/tools/json-array-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="JSON Array Generator — Numbers, Strings, Ranges &amp; Objects">
+<meta property="og:description" content="Free JSON array generator. Build arrays of numbers, sequences, ranges, dates, strings or objects — with shuffling, unique values, custom separators and multiple output formats.">
+<meta property="og:url" content="https://managemybatch.com/tools/json-array-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="JSON Array Generator — Numbers, Strings, Ranges &amp; Objects">
+<meta name="twitter:description" content="Free JSON array generator. Build arrays of numbers, sequences, ranges, dates, strings or objects — with shuffling, unique values, custom separators and multiple output formats.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Generator Settings</div>
+
+    <div class="field">
+      <label for="kind">Array contents</label>
+      <select id="kind">
+        <option value="seq" selected>Number sequence</option>
+        <option value="randint">Random integers</option>
+        <option value="randfloat">Random decimals</option>
+        <option value="strings">Random strings</option>
+        <option value="words">Words / labels</option>
+        <option value="dates">Dates</option>
+        <option value="bools">Booleans</option>
+        <option value="ids">Identifiers (UUID / NanoID)</option>
+        <option value="objects">Objects</option>
+        <option value="fromlist">From my own list</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="count">Item count</label>
+      <input type="number" id="count" value="20" min="1" max="100000">
+    </div>
+
+    <!-- numeric -->
+    <div id="numOpts">
+      <div class="row">
+        <div class="field"><label for="min">Minimum / start</label><input type="number" id="min" value="1"></div>
+        <div class="field"><label for="max">Maximum</label><input type="number" id="max" value="100"></div>
+      </div>
+      <div class="row">
+        <div class="field"><label for="step">Step</label><input type="number" id="step" value="1"></div>
+        <div class="field"><label for="decimals">Decimal places</label><input type="number" id="decimals" value="2" min="0" max="10"></div>
+      </div>
+    </div>
+
+    <!-- strings -->
+    <div id="strOpts" hidden>
+      <div class="row">
+        <div class="field"><label for="strLen">Length</label><input type="number" id="strLen" value="8" min="1" max="128"></div>
+        <div class="field">
+          <label for="charset">Character set</label>
+          <select id="charset">
+            <option value="alnum">Letters + digits</option>
+            <option value="alpha">Letters only</option>
+            <option value="lower">Lowercase only</option>
+            <option value="digits">Digits only</option>
+            <option value="hex">Hexadecimal</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- dates -->
+    <div id="dateOpts" hidden>
+      <div class="row">
+        <div class="field"><label for="fromDate">From</label><input type="date" id="fromDate"></div>
+        <div class="field"><label for="toDate">To</label><input type="date" id="toDate"></div>
+      </div>
+      <div class="field">
+        <label for="dateFmt">Format</label>
+        <select id="dateFmt">
+          <option value="iso">ISO date (2026-08-09)</option>
+          <option value="isodt">ISO date + time</option>
+          <option value="unix">Unix timestamp (seconds)</option>
+          <option value="unixms">Unix timestamp (ms)</option>
+        </select>
+      </div>
+      <label class="check"><input type="checkbox" id="dateSort" checked><span><span class="t">Sort chronologically</span></span></label>
+    </div>
+
+    <!-- ids -->
+    <div id="idOpts" hidden>
+      <div class="field">
+        <label for="idKind">Identifier type</label>
+        <select id="idKind">
+          <option value="uuid4">UUID v4</option>
+          <option value="nanoid">NanoID (21 chars)</option>
+          <option value="hex">Hex (16 chars)</option>
+          <option value="slug">Slug</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- objects -->
+    <div id="objOpts" hidden>
+      <div class="field">
+        <label for="objKeys">Object keys</label>
+        <textarea id="objKeys" style="min-height:90px">id: id
+name: fullName
+score: int
+active: bool</textarea>
+        <div class="hint">One <code>key: type</code> per line. Types: id, int, float, bool, fullName, email, word, sentence, date, uuid, city, price, status.</div>
+      </div>
+    </div>
+
+    <!-- own list -->
+    <div id="listOpts" hidden>
+      <div class="field">
+        <label for="ownList">Your values</label>
+        <textarea id="ownList" style="min-height:110px" placeholder="One value per line">red
+green
+blue
+yellow</textarea>
+      </div>
+      <div class="field">
+        <label for="listMode">How to use them</label>
+        <select id="listMode">
+          <option value="asis">Use as-is</option>
+          <option value="sample">Random sample (repeats allowed)</option>
+          <option value="shuffle">Shuffle the list</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <fieldset class="field">
+      <legend class="label">Modifiers</legend>
+      <div class="check-list">
+        <label class="check"><input type="checkbox" id="optUnique"><span><span class="t">Unique values only</span><span class="d">Drops duplicates — may return fewer items than requested.</span></span></label>
+        <label class="check"><input type="checkbox" id="optShuffle"><span><span class="t">Shuffle the result</span></span></label>
+        <label class="check"><input type="checkbox" id="optSort"><span><span class="t">Sort ascending</span></span></label>
+        <label class="check"><input type="checkbox" id="optQuote"><span><span class="t">Force values to strings</span><span class="d">Wraps numbers and booleans in quotes.</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="row">
+      <div class="field">
+        <label for="format">Output format</label>
+        <select id="format">
+          <option value="json" selected>JSON array</option>
+          <option value="jsonmin">JSON minified</option>
+          <option value="js">JavaScript const</option>
+          <option value="ts">TypeScript typed const</option>
+          <option value="py">Python list</option>
+          <option value="php">PHP array</option>
+          <option value="csv">Comma separated</option>
+          <option value="lines">One per line</option>
+          <option value="sql">SQL IN (…) clause</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="varName">Variable name</label>
+        <input type="text" id="varName" value="items">
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="seed">Seed</label>
+      <div class="row" style="grid-template-columns:minmax(0,1fr) auto;gap:8px">
+        <input type="text" id="seed" value="gentools">
+        <button type="button" class="btn btn-soft" id="newSeed"><span id="icoReset"></span></button>
+      </div>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated Array<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="file">Output</button>
+      <button type="button" data-tab="stats">Stats</button>
+    </div>
+
+    <div data-panel="file">
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">array.json</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+      <div id="warnBox"></div>
+    </div>
+
+    <div data-panel="stats" hidden><div id="stats"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/fake.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoCopy:copy','icoDl:download','icoReset:reset']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var CHARSETS = {
+    alnum: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
+    alpha: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
+    lower: 'abcdefghijklmnopqrstuvwxyz',
+    digits: '0123456789',
+    hex: '0123456789abcdef'
+  };
+
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'array.json', mime: 'application/json' });
+
+  var items = [];
+
+  function showOpts() {
+    var k = $('#kind').value;
+    $('#numOpts').hidden = ['seq', 'randint', 'randfloat'].indexOf(k) === -1;
+    $('#strOpts').hidden = k !== 'strings';
+    $('#dateOpts').hidden = k !== 'dates';
+    $('#idOpts').hidden = k !== 'ids';
+    $('#objOpts').hidden = k !== 'objects';
+    $('#listOpts').hidden = k !== 'fromlist';
+  }
+
+  function build() {
+    var g = GTFake.makeGen($('#seed').value || 'seed');
+    var n = Math.max(1, Math.min(100000, parseInt($('#count').value, 10) || 1));
+    var k = $('#kind').value;
+    var min = parseFloat($('#min').value) || 0;
+    var max = parseFloat($('#max').value) || 0;
+    var step = parseFloat($('#step').value) || 1;
+    var dec = Math.max(0, Math.min(10, parseInt($('#decimals').value, 10) || 0));
+
+    items = [];
+
+    if (k === 'seq') {
+      for (var i = 0; i < n; i++) items.push(+(min + i * step).toFixed(dec));
+    } else if (k === 'randint') {
+      var lo = Math.min(min, max), hi = Math.max(min, max);
+      for (var i2 = 0; i2 < n; i2++) items.push(g.num(Math.ceil(lo), Math.floor(hi)));
+    } else if (k === 'randfloat') {
+      var lo2 = Math.min(min, max), hi2 = Math.max(min, max);
+      for (var i3 = 0; i3 < n; i3++) items.push(+(g.rnd() * (hi2 - lo2) + lo2).toFixed(dec));
+    } else if (k === 'strings') {
+      var set = CHARSETS[$('#charset').value] || CHARSETS.alnum;
+      var L = Math.max(1, Math.min(128, parseInt($('#strLen').value, 10) || 8));
+      for (var i4 = 0; i4 < n; i4++) {
+        var s = ''; for (var c = 0; c < L; c++) s += set[g.num(0, set.length - 1)];
+        items.push(s);
+      }
+    } else if (k === 'words') {
+      for (var i5 = 0; i5 < n; i5++) items.push(g.value('word', i5));
+    } else if (k === 'bools') {
+      for (var i6 = 0; i6 < n; i6++) items.push(g.rnd() > 0.5);
+    } else if (k === 'dates') {
+      var a = $('#fromDate').value ? new Date($('#fromDate').value).getTime() : Date.now() - 365 * 86400000;
+      var b = $('#toDate').value ? new Date($('#toDate').value).getTime() : Date.now();
+      if (b < a) { var t = a; a = b; b = t; }
+      var ds = [];
+      for (var i7 = 0; i7 < n; i7++) ds.push(a + Math.floor(g.rnd() * (b - a)));
+      if ($('#dateSort').checked) ds.sort(function (x, y) { return x - y; });
+      var f = $('#dateFmt').value;
+      items = ds.map(function (ms) {
+        if (f === 'unix') return Math.floor(ms / 1000);
+        if (f === 'unixms') return ms;
+        if (f === 'isodt') return new Date(ms).toISOString().replace(/\.\d{3}Z$/, 'Z');
+        return new Date(ms).toISOString().slice(0, 10);
+      });
+    } else if (k === 'ids') {
+      var kind = $('#idKind').value;
+      for (var i8 = 0; i8 < n; i8++) {
+        items.push(kind === 'uuid4' ? g.value('uuid', i8)
+          : kind === 'nanoid' ? g.value('nanoid', i8)
+          : kind === 'slug' ? g.value('slug', i8)
+          : g.hex(16));
+      }
+    } else if (k === 'objects') {
+      var spec = GT.lines($('#objKeys').value).map(function (l) {
+        var p = l.split(':').map(function (x) { return x.trim(); });
+        return { name: p[0], type: p[1] || 'word' };
+      }).filter(function (f) { return f.name; });
+      items = GTFake.rows(spec, n, $('#seed').value);
+    } else if (k === 'fromlist') {
+      var own = GT.lines($('#ownList').value);
+      var mode = $('#listMode').value;
+      if (!own.length) own = ['value'];
+      if (mode === 'asis') items = own.slice();
+      else if (mode === 'shuffle') {
+        items = own.slice();
+        for (var j = items.length - 1; j > 0; j--) { var r = g.num(0, j); var tmp = items[j]; items[j] = items[r]; items[r] = tmp; }
+      } else {
+        for (var i9 = 0; i9 < n; i9++) items.push(own[g.num(0, own.length - 1)]);
+      }
+    }
+
+    if ($('#optUnique').checked) {
+      var seen = {}, o = [];
+      items.forEach(function (x) {
+        var key = typeof x === 'object' ? JSON.stringify(x) : String(x) + '|' + typeof x;
+        if (!seen[key]) { seen[key] = 1; o.push(x); }
+      });
+      items = o;
+    }
+    if ($('#optSort').checked) {
+      items = items.slice().sort(function (a2, b2) {
+        if (typeof a2 === 'number' && typeof b2 === 'number') return a2 - b2;
+        return String(a2) < String(b2) ? -1 : String(a2) > String(b2) ? 1 : 0;
+      });
+    }
+    if ($('#optShuffle').checked) {
+      for (var j2 = items.length - 1; j2 > 0; j2--) { var r2 = g.num(0, j2); var t2 = items[j2]; items[j2] = items[r2]; items[r2] = t2; }
+    }
+    if ($('#optQuote').checked) items = items.map(function (x) { return typeof x === 'object' ? x : String(x); });
+
+    render();
+  }
+
+  function render() {
+    var fmt = $('#format').value, name = $('#varName').value || 'items';
+    var text, file = 'array.json';
+
+    function jsLit(v) {
+      if (typeof v === 'object' && v !== null) return JSON.stringify(v);
+      return typeof v === 'string' ? "'" + v.replace(/'/g, "\\'") + "'" : String(v);
+    }
+
+    if (fmt === 'json') text = JSON.stringify(items, null, 2);
+    else if (fmt === 'jsonmin') text = JSON.stringify(items);
+    else if (fmt === 'js') { text = 'const ' + name + ' = ' + JSON.stringify(items, null, 2) + ';'; file = 'array.js'; }
+    else if (fmt === 'ts') {
+      var t = items.length && typeof items[0] === 'object' ? 'Record<string, unknown>'
+        : items.every(function (x) { return typeof x === 'number'; }) ? 'number'
+        : items.every(function (x) { return typeof x === 'boolean'; }) ? 'boolean' : 'string';
+      text = 'export const ' + name + ': ' + t + '[] = ' + JSON.stringify(items, null, 2) + ';';
+      file = 'array.ts';
+    }
+    else if (fmt === 'py') {
+      text = name + ' = [\n' + items.map(function (v) {
+        return '    ' + (typeof v === 'boolean' ? (v ? 'True' : 'False') : typeof v === 'object' ? JSON.stringify(v) : jsLit(v));
+      }).join(',\n') + '\n]';
+      file = 'array.py';
+    }
+    else if (fmt === 'php') {
+      text = '$' + name + ' = [\n' + items.map(function (v) {
+        return '    ' + (typeof v === 'boolean' ? (v ? 'true' : 'false') : typeof v === 'object' ? json2php(v) : jsLit(v));
+      }).join(',\n') + '\n];';
+      file = 'array.php';
+    }
+    else if (fmt === 'csv') text = items.map(function (v) { return typeof v === 'object' ? JSON.stringify(v) : v; }).join(', ');
+    else if (fmt === 'lines') text = items.map(function (v) { return typeof v === 'object' ? JSON.stringify(v) : v; }).join('\n');
+    else if (fmt === 'sql') {
+      text = 'IN (' + items.map(function (v) {
+        return typeof v === 'number' ? v : "'" + String(v).replace(/'/g, "''") + "'";
+      }).join(', ') + ')';
+      file = 'in-clause.sql';
+    }
+
+    function json2php(o) {
+      return '[' + Object.keys(o).map(function (k2) {
+        var v = o[k2];
+        return "'" + k2 + "' => " + (typeof v === 'boolean' ? (v ? 'true' : 'false') : typeof v === 'number' ? v : v === null ? 'null' : "'" + String(v).replace(/'/g, "\\'") + "'");
+      }).join(', ') + ']';
+    }
+
+    out.set(text, file);
+    $('#pill').textContent = items.length.toLocaleString() + ' items';
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+
+    renderStats();
+    renderWarn();
+  }
+
+  function renderStats() {
+    var nums = items.filter(function (x) { return typeof x === 'number'; });
+    var rows = [
+      ['Items', items.length.toLocaleString()],
+      ['Unique values', GT.uniq(items.map(function (x) { return typeof x === 'object' ? JSON.stringify(x) : String(x); })).length.toLocaleString()],
+      ['Type', items.length ? (typeof items[0] === 'object' ? 'object' : typeof items[0]) : '—'],
+      ['Output size', GT.bytes(GT.byteLen(out.get()))]
+    ];
+    if (nums.length) {
+      var sum = nums.reduce(function (a, b) { return a + b; }, 0);
+      var sorted = nums.slice().sort(function (a, b) { return a - b; });
+      rows.push(['Min', String(sorted[0])]);
+      rows.push(['Max', String(sorted[sorted.length - 1])]);
+      rows.push(['Mean', (sum / nums.length).toFixed(3)]);
+      rows.push(['Median', String(sorted[Math.floor(sorted.length / 2)])]);
+      rows.push(['Sum', String(+sum.toFixed(6))]);
+    }
+    $('#stats').innerHTML = rows.map(function (r) {
+      return '<div class="kv"><span class="k">' + r[0] + '</span><span class="v">' + r[1] + '</span></div>';
+    }).join('');
+  }
+
+  function renderWarn() {
+    var w = [], want = parseInt($('#count').value, 10) || 0;
+    if ($('#optUnique').checked && items.length < want) {
+      w.push(['warn', 'Only ' + items.length + ' unique values were possible from your settings — ' + want +
+        ' were requested. Widen the range or increase the string length.']);
+    }
+    if ($('#kind').value === 'randint' && parseFloat($('#min').value) === parseFloat($('#max').value)) {
+      w.push(['warn', 'Minimum and maximum are equal, so every item is the same value.']);
+    }
+    if (items.length > 20000) w.push(['warn', 'Large arrays can be slow to paste into an editor. Consider downloading the file instead.']);
+    if (!w.length) w.push(['ok', 'Deterministic for seed “' + $('#seed').value + '” — regenerating gives identical output.']);
+    $('#warnBox').innerHTML = w.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : 'note-warn') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+  }
+
+  $('#kind').addEventListener('change', function () { showOpts(); build(); });
+  $('#newSeed').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 10); build(); });
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+
+  showOpts(); build();
+
+  GT.page({
+    slug: 'json-array-generator',
+    lede: 'Build JSON arrays of anything — sequences, random numbers, dates, identifiers, objects or your own list — and export as JSON, JS, TypeScript, Python, PHP or a SQL IN clause.',
+    steps: [
+      { icon: 'gear', title: 'Choose the contents', text: 'Ten generators covering sequences, randoms, dates, IDs, objects and your own values.' },
+      { icon: 'list', title: 'Apply modifiers', text: 'Unique, sorted, shuffled or stringified — combined in one pass.' },
+      { icon: 'copy', title: 'Export in your language', text: 'The same array as a JS const, a Python list, a PHP array or a SQL IN clause.' }
+    ],
+    guideTitle: 'The array you actually need, without writing a loop',
+    guide:
+      '<p style="color:var(--muted)">Most arrays that end up in a codebase are throwaway: a range for a dropdown, a hundred random numbers to test a chart, a list of dates to seed a calendar, a set of IDs for an <code>IN</code> clause. Writing the loop takes two minutes and the result is usually pasted in as a literal anyway.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Common uses</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>Year, month or page-number ranges for select elements.</li><li>Random data series to check that a chart handles spikes and negative values.</li><li>Date arrays for calendar and time-series components.</li><li>ID lists to paste into a <code>WHERE id IN (…)</code> query.</li><li>Object arrays as component fixtures.</li><li>Shuffled or sampled versions of a list you already have.</li></ul></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Two options worth knowing</h4><p style="color:var(--muted);font-size:13.8px"><strong>Unique</strong> removes duplicates after generation, so it can return fewer items than requested. If you ask for 100 unique integers between 1 and 10, you get 10 — the warning tells you when this has happened rather than letting you discover it later.</p>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px"><strong>Seed</strong> makes everything reproducible. The same seed and settings always produce the same array, which is what you want in a committed fixture and what you do not want when you are eyeballing random variation — click the refresh button to change it.</p></div></div>' +
+      '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>The SQL <code>IN</code> output escapes single quotes and leaves numbers unquoted. It is meant for ad-hoc queries and migrations — in application code, bind the values as parameters instead of interpolating a list into the statement.</span></div>',
+    related: ['json-test-data-generator', 'csv-test-data-generator', 'html-select-option-generator'],
+    faqs: [
+      { q: 'Can I generate an array of objects?', a: 'Yes. Choose “Objects” and describe the shape as <code>key: type</code> lines. Available types include id, int, float, bool, fullName, email, word, sentence, date, uuid, city, price and status.' },
+      { q: 'How do I make a numeric range?', a: 'Choose “Number sequence” and set the start, step and item count. For 0–99 use start 1 changed to 0, step 1 and count 100.' },
+      { q: 'Why did I get fewer items than I asked for?', a: 'The unique option removes duplicates after generation. If the possible value space is smaller than the requested count — for example 100 unique integers between 1 and 10 — you get the maximum possible and a warning explaining why.' },
+      { q: 'What is the seed for?', a: 'It makes the output deterministic. The same seed produces the same array every time, which keeps committed fixtures stable. Click the refresh button next to it for a different set.' },
+      { q: 'Can I shuffle a list I already have?', a: 'Yes — choose “From my own list”, paste your values, and pick shuffle. Random sampling with repeats is also available for building weighted-looking test data.' },
+      { q: 'Which output formats are supported?', a: 'JSON (pretty or minified), JavaScript const, typed TypeScript const, Python list, PHP array, comma-separated, one-per-line, and a ready-to-paste SQL <code>IN (…)</code> clause.' }
+    ],
+    seo: {
+      title: 'Generating JSON arrays: ranges, objects, shuffles and export formats',
+      lead: 'This <strong>JSON array generator</strong> builds arrays of numbers, dates, strings, identifiers or objects — then exports them as JSON, JavaScript, TypeScript, Python, PHP or a SQL <code>IN</code> clause. Below: how each mode works, why seeding matters, and when unique values quietly reduce your count.',
+      blocks: [
+        {
+          h: 'What it generates',
+          html: '<p>Most of the time you need an array for something small and specific: a dropdown\'s options, a test fixture, a range to iterate, a list of IDs to paste into a query. Writing a loop for that is thirty seconds you did not need to spend, and the result is not in your clipboard.</p>',
+          table: {
+            head: ['Mode', 'Produces', 'Typical use'],
+            rows: [
+              ['Sequence', '<code>[1, 2, 3, …]</code> with a start, step and count.', 'Pagination fixtures, iteration ranges, ID ranges.'],
+              ['Random numbers', 'Integers or decimals within a range.', 'Chart data, load-test payloads, price fixtures.'],
+              ['Dates', 'ISO timestamps or dates across a span.', 'Time-series fixtures, calendar tests.'],
+              ['Strings', 'Prefixed, padded or patterned values.', 'Codes, labels, generated slugs.'],
+              ['Identifiers', 'UUIDs, ULIDs, NanoIDs, hex tokens.', 'Primary keys for seed data.'],
+              ['Objects', 'Repeated objects with per-field rules.', 'API mock responses, fixture files.'],
+              ['Your own list', 'Shuffled, sampled or deduplicated.', 'Randomising an existing set.']
+            ]
+          }
+        },
+        {
+          h: 'Arrays of objects',
+          html: '<p>Object mode is where the tool replaces a real script. Define the fields once — name, type, and a rule such as a range, a pattern or a pick-list — and every element follows the same shape:</p>' +
+            '<p><code>[{ "id": 1, "name": "Ada Lovelace", "active": true }, …]</code></p>' +
+            '<p>Two details make the output usable as a fixture rather than as noise. Field order is preserved, so the JSON diffs cleanly against a checked-in snapshot. And a sequential <code>id</code> alongside random content gives you a stable key to assert against while everything else varies.</p>',
+          callout: { type: 'tip', text: 'For deeply nested fixtures with realistic names, addresses and emails, the <a href="json-test-data-generator.html">JSON test data generator</a> is the better tool — it takes a schema, supports nesting and optional nulls, and emits a matching TypeScript interface. This one is for flat arrays you need right now.' }
+        },
+        {
+          h: 'Numeric ranges',
+          steps: [
+            { t: 'Choose the sequence mode', d: 'Set a start value, a step and how many items you want.' },
+            { t: 'Or set start and end', d: 'The count is derived from the step, so <code>0</code> to <code>100</code> in tens gives eleven items — the endpoints are inclusive.' },
+            { t: 'Use a negative step to count down', d: 'Handy for reverse-chronological year lists and countdowns.' },
+            { t: 'Add padding for string ranges', d: '<code>"001"</code> through <code>"050"</code> when the values are codes rather than numbers.' },
+            { t: 'Export in your language', d: 'A Python list, a PHP array and a JS array are all the same data with different brackets — pick the one you are pasting into.' }
+          ]
+        },
+        {
+          h: 'Why you got fewer items than you asked for',
+          html: '<p>Almost always because <strong>unique values are on and the pool is too small</strong>. Asking for 500 unique integers between 1 and 100 can only ever yield 100. Rather than looping forever, the generator stops when the space is exhausted and tells you.</p>' +
+            '<p>The fixes are the obvious ones: widen the range, reduce the count, or turn uniqueness off if duplicates are acceptable. The same applies to patterned strings — a three-character alphanumeric pattern has about 46,000 possibilities, which sounds like plenty until you ask for 100,000 unique ones.</p>' +
+            '<p>Deduplicating a supplied list has the same effect for the same reason: the output is the size of the distinct set, not the input.</p>'
+        },
+        {
+          h: 'Seeding for reproducible output',
+          html: '<p>The seed makes randomness repeatable. Same seed, same list, every time — on your machine, in CI, and on a colleague\'s laptop.</p>',
+          cards: [
+            { t: 'Fixed seed', d: 'Use one when the array is a test fixture. A failing assertion can then be reproduced exactly instead of "sometimes".' },
+            { t: 'New seed each run', d: 'Use one when you want varied data — a demo dataset, load-test input, or screenshots that should not all look identical.' },
+            { t: 'Seed as documentation', d: 'Note the seed in the test file. It is the difference between a bug you can reproduce and one you can only describe.' }
+          ]
+        },
+        {
+          h: 'Export formats',
+          html: '<p>The same array, formatted for wherever it is going:</p>',
+          list: [
+            '<strong>JSON</strong> — for fixture files and API mocks. Pretty-printed or minified.',
+            '<strong>JavaScript / TypeScript</strong> — a <code>const</code> declaration, with an inferred type annotation on the TS output.',
+            '<strong>Python</strong> — a list literal, with <code>True</code>/<code>False</code>/<code>None</code> rather than JSON\'s lowercase booleans.',
+            '<strong>PHP</strong> — modern <code>[…]</code> array syntax.',
+            '<strong>SQL <code>IN</code> clause</strong> — parenthesised and quoted correctly for pasting straight into a query.',
+            '<strong>CSV column</strong> — one value per line, for spreadsheets.'
+          ],
+          callout: { type: 'warn', text: 'A generated <code>IN</code> clause is for ad-hoc queries you are running yourself, not for application code. Interpolating values into SQL in an application is how injection happens — use parameterised queries there, and see the <a href="sql-insert-data-generator.html">SQL insert generator</a> for properly escaped seed scripts.' }
+        },
+        {
+          h: 'Related data tools',
+          list: [
+            '<a href="json-test-data-generator.html">JSON Test Data Generator</a> — schema-driven fixtures with nesting and TypeScript types.',
+            '<a href="csv-test-data-generator.html">CSV Test Data Generator</a> — the same data as RFC 4180 CSV.',
+            '<a href="sql-insert-data-generator.html">SQL Insert Data Generator</a> — dialect-correct seed scripts.',
+            '<a href="html-select-option-generator.html">HTML Select Option Generator</a> — turn a list into dropdown markup.',
+            '<a href="uuid-v7-generator.html">UUID v7 Generator</a> — time-ordered identifiers for array elements.'
+          ]
+        }
+      ],
+      keywords: [
+        'json array generator', 'generate array of objects', 'json array example',
+        'number range array', 'random array generator', 'array of uuids',
+        'shuffle a list online', 'json fixture generator', 'sql in clause generator',
+        'typescript array literal', 'python list generator', 'seeded random array'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

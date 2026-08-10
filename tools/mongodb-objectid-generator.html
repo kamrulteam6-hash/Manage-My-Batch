@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MongoDB ObjectId Generator &amp; Decoder — Free | Manage My Batch</title>
+<meta name="description" content="Free MongoDB ObjectId generator and decoder. Create valid 12-byte BSON ObjectIds for any timestamp, decode existing ones, and build query snippets for the shell and drivers.">
+<link rel="canonical" href="https://managemybatch.com/tools/mongodb-objectid-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="MongoDB ObjectId Generator &amp; Decoder — Free">
+<meta property="og:description" content="Free MongoDB ObjectId generator and decoder. Create valid 12-byte BSON ObjectIds for any timestamp, decode existing ones, and build query snippets for the shell and drivers.">
+<meta property="og:url" content="https://managemybatch.com/tools/mongodb-objectid-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MongoDB ObjectId Generator &amp; Decoder — Free">
+<meta name="twitter:description" content="Free MongoDB ObjectId generator and decoder. Create valid 12-byte BSON ObjectIds for any timestamp, decode existing ones, and build query snippets for the shell and drivers.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Generator Settings</div>
+
+    <div class="field">
+      <label for="count">How many?</label>
+      <div class="row" style="grid-template-columns:minmax(0,1fr) auto">
+        <input type="number" id="count" value="10" min="1" max="5000">
+        <button type="button" class="btn btn-ghost" id="regen"><span id="icoReset"></span> Regenerate</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="tsMode">Timestamp</label>
+      <select id="tsMode">
+        <option value="now">Current time</option>
+        <option value="custom">Specific date/time</option>
+        <option value="spread">Spread across a range</option>
+      </select>
+      <input type="datetime-local" id="customTs" style="margin-top:8px" hidden>
+      <div class="row" id="rangeWrap" style="margin-top:8px" hidden>
+        <input type="date" id="fromDate"><input type="date" id="toDate">
+      </div>
+      <div class="hint">ObjectIds embed a one-second-resolution creation time, so this lets you build historical fixtures that sort correctly.</div>
+    </div>
+
+    <div class="field">
+      <label for="procId">Process identifier (5 bytes)</label>
+      <div class="row" style="grid-template-columns:minmax(0,1fr) auto">
+        <input type="text" id="procId" placeholder="Auto — random per batch" maxlength="10">
+        <button type="button" class="btn btn-soft" id="newProc">New</button>
+      </div>
+      <div class="hint">Real drivers keep this stable for the lifetime of a process. Fixing it makes a batch look like it came from one machine.</div>
+    </div>
+
+    <div class="field">
+      <label for="counter">Counter start (3 bytes)</label>
+      <input type="number" id="counter" value="1" min="0" max="16777215">
+      <div class="hint">Increments per ID, wrapping at 16,777,215. Together with the timestamp this is what prevents collisions inside one process.</div>
+    </div>
+
+    <div class="field">
+      <label for="output">Output as</label>
+      <select id="output">
+        <option value="lines">Plain hex list</option>
+        <option value="shell">Mongo shell ObjectId("…")</option>
+        <option value="json">JSON array</option>
+        <option value="ejson">Extended JSON ($oid)</option>
+        <option value="csv">CSV with timestamps</option>
+        <option value="insert">insertMany() document stub</option>
+      </select>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Options</legend>
+      <div class="check-list">
+        <label class="check"><input type="checkbox" id="optUpper"><span><span class="t">Uppercase hex</span><span class="d">MongoDB emits lowercase; both parse fine.</span></span></label>
+        <label class="check"><input type="checkbox" id="optSort" checked><span><span class="t">Sort ascending</span><span class="d">Shows that ObjectIds order by creation time.</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label for="decode">Decode an ObjectId</label>
+      <input type="text" id="decode" placeholder="507f1f77bcf86cd799439011">
+      <div id="decodeOut" style="margin-top:12px"></div>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated ObjectIds<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="file">Output</button>
+      <button type="button" data-tab="anatomy">Anatomy</button>
+      <button type="button" data-tab="queries">Query recipes</button>
+    </div>
+
+    <div data-panel="file">
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">objectids.txt</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy all</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+        <button class="btn btn-soft" id="copyOne">Copy first</button>
+      </div>
+      <div class="note note-warn"><span id="icoWarn"></span><span>These are structurally valid ObjectIds for testing and fixtures. In production, always let the driver generate <code>_id</code> — it manages the per-process identifier and counter for you.</span></div>
+    </div>
+
+    <div data-panel="anatomy" hidden><div id="anatomy"></div></div>
+    <div data-panel="queries" hidden><div id="queries"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoCopy:copy','icoDl:download','icoReset:reset','icoWarn:warn']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var ids = [];
+
+  function randHex(n) {
+    var b = new Uint8Array(n); crypto.getRandomValues(b);
+    return Array.prototype.map.call(b, function (x) { return x.toString(16).padStart(2, '0'); }).join('');
+  }
+
+  function newProcess() { $('#procId').value = randHex(5); }
+
+  function objectId(seconds, counter, proc) {
+    var ts = Math.floor(seconds).toString(16).padStart(8, '0').slice(-8);
+    var c = (counter & 0xffffff).toString(16).padStart(6, '0');
+    return ts + proc + c;
+  }
+
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'objectids.txt', mime: 'text/plain' });
+
+  function seconds(n) {
+    var mode = $('#tsMode').value;
+    if (mode === 'custom' && $('#customTs').value) {
+      var t = Math.floor(new Date($('#customTs').value).getTime() / 1000);
+      return Array.from({ length: n }, function () { return t; });
+    }
+    if (mode === 'spread') {
+      var a = $('#fromDate').value ? new Date($('#fromDate').value).getTime() : Date.now() - 30 * 86400000;
+      var b = $('#toDate').value ? new Date($('#toDate').value).getTime() : Date.now();
+      if (b < a) { var t2 = a; a = b; b = t2; }
+      var arr = Array.from({ length: n }, function () { return Math.floor((a + Math.random() * (b - a)) / 1000); });
+      arr.sort(function (x, y) { return x - y; });
+      return arr;
+    }
+    var now = Math.floor(Date.now() / 1000);
+    return Array.from({ length: n }, function () { return now; });
+  }
+
+  function build() {
+    var n = Math.max(1, Math.min(5000, parseInt($('#count').value, 10) || 1));
+    var proc = ($('#procId').value || '').replace(/[^0-9a-f]/gi, '').toLowerCase();
+    if (proc.length !== 10) { proc = randHex(5); $('#procId').value = proc; }
+    var start = parseInt($('#counter').value, 10) || 0;
+    var secs = seconds(n);
+
+    ids = secs.map(function (s, i) { return objectId(s, start + i, proc); });
+    if ($('#optSort').checked) ids = ids.slice().sort();
+    var shown = ids.map(function (x) { return $('#optUpper').checked ? x.toUpperCase() : x; });
+
+    function tsOf(x) { return parseInt(x.slice(0, 8), 16) * 1000; }
+
+    var mode = $('#output').value, text, file = 'objectids.txt';
+    if (mode === 'shell') text = shown.map(function (x) { return 'ObjectId("' + x + '")'; }).join('\n');
+    else if (mode === 'json') { text = JSON.stringify(shown, null, 2); file = 'objectids.json'; }
+    else if (mode === 'ejson') {
+      text = JSON.stringify(shown.map(function (x) { return { $oid: x }; }), null, 2); file = 'objectids.json';
+    }
+    else if (mode === 'csv') {
+      text = 'index,object_id,created_at\n' + ids.map(function (x, i) {
+        return (i + 1) + ',' + shown[i] + ',' + new Date(tsOf(x)).toISOString();
+      }).join('\n'); file = 'objectids.csv';
+    }
+    else if (mode === 'insert') {
+      text = 'db.collection.insertMany([\n' + shown.map(function (x, i) {
+        return '  { _id: ObjectId("' + x + '"), name: "Item ' + (i + 1) + '" }';
+      }).join(',\n') + '\n]);'; file = 'insert.js';
+    }
+    else text = shown.join('\n');
+
+    out.set(text, file);
+    $('#pill').textContent = n.toLocaleString() + ' generated';
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+    renderAnatomy();
+    renderQueries();
+  }
+
+  function renderAnatomy() {
+    var x = ids[0] || objectId(Date.now() / 1000, 1, randHex(5));
+    var ts = parseInt(x.slice(0, 8), 16);
+    $('#anatomy').innerHTML =
+      '<div class="output-box" style="margin-bottom:16px"><pre class="code">' +
+      x.slice(0, 8) + '  ' + x.slice(8, 18) + '  ' + x.slice(18) + '\n' +
+      '└─ time ─┘  └─ process ─┘  └count┘</pre></div>' +
+      [['Bytes 0–3', x.slice(0, 8), '32-bit Unix timestamp in SECONDS (not milliseconds)'],
+       ['Bytes 4–8', x.slice(8, 18), 'Random value, stable per process — replaced the old machine ID + PID in the modern spec'],
+       ['Bytes 9–11', x.slice(18), '24-bit counter, initialised randomly and incremented per document'],
+       ['Total', '12 bytes', 'Rendered as 24 hexadecimal characters'],
+       ['Encoded time', new Date(ts * 1000).toISOString(), 'One-second resolution — documents created in the same second share a prefix'],
+       ['Overflows', new Date(0xffffffff * 1000).toISOString().slice(0, 10), 'The 32-bit timestamp runs out in 2106']
+      ].map(function (r) {
+        return '<div class="kv"><span class="k">' + r[0] + '<br><span style="font-size:12.5px">' + r[2] + '</span></span>' +
+          '<span class="v" style="max-width:50%;word-break:break-all;text-align:right">' + GT.esc(r[1]) + '</span></div>';
+      }).join('') +
+      '<div class="note note-info" style="margin-top:14px">' + I.info +
+      '<span>Because the timestamp leads, ObjectIds sort roughly by insertion order — which is why <code>sort({_id: -1})</code> is the idiomatic way to get the newest documents without a separate index.</span></div>';
+  }
+
+  function renderQueries() {
+    var from = new Date(Date.now() - 7 * 86400000).toISOString().slice(0, 10);
+    $('#queries').innerHTML = [
+      ['Find documents created after a date',
+        '// The _id prefix IS the timestamp, so no extra field or index is needed.\n' +
+        'const since = Math.floor(new Date("' + from + '").getTime() / 1000).toString(16);\n' +
+        'db.collection.find({\n  _id: { $gt: ObjectId(since + "0000000000000000") }\n});'],
+      ['Extract the creation date in an aggregation',
+        'db.collection.aggregate([\n  { $addFields: { createdAt: { $toDate: "$_id" } } },\n  { $sort: { createdAt: -1 } }\n]);'],
+      ['Newest documents without an extra index',
+        'db.collection.find().sort({ _id: -1 }).limit(20);'],
+      ['Node.js driver',
+        "import { ObjectId } from 'mongodb';\n\nconst id = new ObjectId();\nconst ts = id.getTimestamp();   // JS Date\nconst same = new ObjectId('507f1f77bcf86cd799439011');"],
+      ['Mongoose',
+        "const doc = await Model.findById('507f1f77bcf86cd799439011');\nconst valid = mongoose.Types.ObjectId.isValid(str);"],
+      ['Python (PyMongo)',
+        "from bson import ObjectId\n\noid = ObjectId()\nprint(oid.generation_time)"],
+      ['Validate a string before querying',
+        '// Passing a malformed id throws — always guard user input.\n' +
+        'const isValid = /^[0-9a-fA-F]{24}$/.test(input);']
+    ].map(function (b) {
+      return '<div style="margin-bottom:18px"><h4 style="font-size:14.5px;margin-bottom:8px">' + b[0] + '</h4>' +
+        '<pre class="code">' + GT.esc(b[1]) + '</pre></div>';
+    }).join('');
+  }
+
+  $('#decode').addEventListener('input', function () {
+    var v = this.value.trim().replace(/^ObjectId\(["']?|["']?\)$/g, '');
+    var el = $('#decodeOut');
+    if (!v) { el.innerHTML = ''; return; }
+    if (!/^[0-9a-f]{24}$/i.test(v)) {
+      el.innerHTML = '<div class="note note-err">' + I.warn + '<span>Not a valid ObjectId — expected exactly 24 hexadecimal characters (got ' + v.length + ').</span></div>';
+      return;
+    }
+    var h = v.toLowerCase(), ts = parseInt(h.slice(0, 8), 16);
+    el.innerHTML = [
+      ['Created at', new Date(ts * 1000).toISOString()],
+      ['Unix seconds', String(ts)],
+      ['Age', Math.round((Date.now() / 1000 - ts) / 86400) + ' days ago'],
+      ['Process bytes', h.slice(8, 18)],
+      ['Counter', String(parseInt(h.slice(18), 16))]
+    ].map(function (r) {
+      return '<div class="kv"><span class="k">' + r[0] + '</span><span class="v">' + r[1] + '</span></div>';
+    }).join('');
+  });
+
+  $('#tsMode').addEventListener('change', function () {
+    $('#customTs').hidden = this.value !== 'custom';
+    $('#rangeWrap').hidden = this.value !== 'spread';
+    build();
+  });
+  $('#newProc').addEventListener('click', function () { newProcess(); build(); });
+  $('#copyOne').addEventListener('click', function () { GT.copy(ids[0] || '', 'ObjectId'); });
+  $('#regen').addEventListener('click', build);
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); });
+  ['#count','#counter','#output','#optUpper','#optSort','#customTs','#fromDate','#toDate','#procId']
+    .forEach(function (s) { $(s).addEventListener('change', build); $(s).addEventListener('input', build); });
+
+  newProcess(); build();
+
+  GT.page({
+    slug: 'mongodb-objectid-generator',
+    lede: 'Create structurally valid MongoDB ObjectIds for any point in time, and decode the timestamp hidden inside any ObjectId you already have.',
+    steps: [
+      { icon: 'gear', title: 'Set the timestamp', text: 'Now, a specific moment, or spread across a range for realistic historical data.' },
+      { icon: 'db', title: 'Generate a batch', text: 'The process bytes stay fixed and the counter increments, exactly as a real driver behaves.' },
+      { icon: 'copy', title: 'Export or decode', text: 'Copy as shell syntax, Extended JSON or CSV — or paste an ObjectId to read its creation date.' }
+    ],
+    guideTitle: 'What is actually inside an ObjectId',
+    guide:
+      '<p style="color:var(--muted)">An ObjectId is 12 bytes, not a random string. It is built to be unique across machines without any coordination: a 4-byte second-resolution timestamp, 5 random bytes that stay constant for the lifetime of a process, and a 3-byte counter that increments with every document. Two processes would have to pick the same 5 random bytes <em>and</em> collide on the counter within the same second to produce a duplicate.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Practical consequences</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><code>sort({_id: -1})</code> gives you newest-first for free — no <code>createdAt</code> index required.</li><li>You can range-query by date against <code>_id</code> alone by constructing a boundary ObjectId.</li><li>Resolution is one second, so ordering within a single second reflects the counter, not real time.</li><li>The client generates <code>_id</code>, not the server, so inserts need no round trip to get an ID.</li></ul></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Things to be careful about</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>ObjectIds are <strong>not secrets</strong>. They expose creation time and are partially sequential, so they are guessable — never use one as an access token.</li><li>Passing a malformed 24-character string to the driver throws; validate user input first.</li><li>The old spec encoded machine ID and process ID, which leaked infrastructure detail. Modern drivers use random bytes instead.</li><li>The 32-bit timestamp overflows in 2106.</li></ul></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span>Generate ObjectIds here for fixtures, seed data and tests. In application code always call <code>new ObjectId()</code> from the driver — it owns the per-process random value and the counter state that make uniqueness guarantees hold.</span></div>',
+    related: ['uuid-v7-generator', 'ulid-generator', 'json-test-data-generator'],
+    faqs: [
+      { q: 'What is a MongoDB ObjectId?', a: 'The default value for the <code>_id</code> field: a 12-byte BSON type shown as 24 hexadecimal characters, composed of a 4-byte timestamp, 5 random process bytes and a 3-byte incrementing counter.' },
+      { q: 'Can I get the creation date from an ObjectId?', a: 'Yes — the first 4 bytes are a Unix timestamp in seconds. Paste any ObjectId into the decoder above, or call <code>id.getTimestamp()</code> in the Node driver and <code>oid.generation_time</code> in PyMongo.' },
+      { q: 'Are ObjectIds sequential?', a: 'Roughly. The leading timestamp means they increase over time, which gives good index locality, but they are not strictly monotonic — the counter starts at a random point and ordering within one second is by counter, not by real time.' },
+      { q: 'Is it safe to expose ObjectIds in URLs?', a: 'They are not secret. Anyone can read the creation time and the sequential counter makes neighbouring IDs partly guessable. Fine as opaque record references behind proper authorisation; unsuitable as an access token or invite code.' },
+      { q: 'ObjectId or UUID for MongoDB?', a: 'ObjectId is the native default: 12 bytes rather than 16, natively indexed, and it carries a free timestamp. Use a UUID only when IDs must be shared across systems that already speak UUID, or when you specifically need a format MongoDB does not own.' },
+      { q: 'Can two ObjectIds collide?', a: 'Practically no. A collision requires two processes to generate the same 5 random bytes and hit the same counter value in the same second. Within one process the counter alone guarantees uniqueness for over 16 million documents per second.' }
+    ],
+    seo: {
+      title: 'MongoDB ObjectId: structure, timestamps and whether to use it',
+      lead: 'This <strong>ObjectId generator</strong> creates structurally valid MongoDB ObjectIds for any moment in time and decodes the timestamp inside one you already have. Below: what the twelve bytes contain, why ObjectIds leak information in URLs, and when a UUID is the better key.',
+      blocks: [
+        {
+          h: 'What is inside an ObjectId',
+          html: '<p>A <strong>MongoDB ObjectId</strong> is a 12-byte value, displayed as 24 hexadecimal characters. It is not random — it has a defined structure, and that structure is the whole reason it exists.</p>',
+          table: {
+            head: ['Bytes', 'Contents', 'Purpose'],
+            rows: [
+              ['0–3', 'Unix timestamp in seconds, big-endian.', 'Makes IDs roughly ordered by creation time and encodes the creation date.'],
+              ['4–8', 'A random value, generated once per process.', 'Distinguishes documents created in the same second on different machines.'],
+              ['9–11', 'A counter, initialised randomly and incremented per document.', 'Distinguishes documents created in the same second by the same process.']
+            ]
+          },
+          after: '<p>The design predates UUID v7 by more than a decade and solves the same problem: an identifier that can be generated client-side without coordination, yet still sorts approximately by time so that B-tree inserts stay near the end of the index.</p>'
+        },
+        {
+          h: 'Reading the creation date',
+          html: '<p>Yes — the first four bytes are the creation timestamp, so every ObjectId carries its own date. In the shell, <code>ObjectId("…").getTimestamp()</code>; in a driver, the equivalent accessor; and in this tool, paste the ID into the decoder.</p>' +
+            '<p>The resolution is one second, which matters more than it sounds. Two documents created in the same second have timestamps that are indistinguishable, so an ObjectId sort is not a reliable ordering within a second — the counter breaks ties consistently only within one process.</p>' +
+            '<p>Also note the timestamp reflects when the ObjectId was <em>generated</em>, which is usually in the driver on the application server, not when the document reached the database. Under retry or queueing the two can differ noticeably.</p>',
+          callout: { type: 'tip', text: 'Because the timestamp is the leading component, you can query a date range without a separate <code>createdAt</code> field: build ObjectIds from the range boundaries and compare against <code>_id</code>. It uses the primary key index and costs nothing extra. Keep a real date field anyway if the value is business-meaningful.' }
+        },
+        {
+          h: 'Are ObjectIds sequential?',
+          html: '<p>Roughly, not strictly. They increase over time because the timestamp leads, which is what keeps index inserts efficient. Within a single second they are not ordered globally — the process-random component means two servers produce values that interleave unpredictably.</p>' +
+            '<p>The practical consequences: sorting by <code>_id</code> is a good proxy for creation order at second granularity and a bad one below it. And an ObjectId is not a sequence number — you cannot infer that one document is "the next" after another, and gaps mean nothing.</p>'
+        },
+        {
+          h: 'Exposing ObjectIds in URLs',
+          html: '<p>They are not secret. Two properties leak:</p>',
+          list: [
+            '<strong>The creation date is readable by anyone.</strong> A public order ID discloses exactly when the order was placed.',
+            '<strong>The counter is partly enumerable.</strong> Given two IDs from the same process, the values in between are guessable, so a naive endpoint can be walked.',
+            '<strong>Volume is inferable.</strong> Sample two IDs a day apart and the counter delta estimates how many documents you created — the classic competitor-intelligence leak.'
+          ],
+          after: '<p>None of that is fatal on its own, but it means an ObjectId is an <em>identifier</em>, never an <em>access control</em>. Authorise every request on the server; never rely on an ID being hard to guess.</p>',
+          callout: { type: 'warn', text: '<strong>If a URL identifier must not be guessable or must not reveal timing, do not use an ObjectId.</strong> Use a random public ID — a <a href="nanoid-generator.html">NanoID</a> or a UUID v4 — as a separate indexed field, and keep the ObjectId as the internal primary key.' }
+        },
+        {
+          h: 'ObjectId or UUID?',
+          cards: [
+            { t: 'Stick with ObjectId', d: 'It is the default <code>_id</code>, it is 12 bytes rather than 16, it is time-ordered, and every MongoDB tool understands it. For a MongoDB-only system, there is rarely a reason to change.' },
+            { t: 'Use UUID v7', d: 'When identifiers cross system boundaries — a shared key space with a relational database, an event bus, or a service that is not MongoDB. Also time-ordered, and universally understood.' },
+            { t: 'Use UUID v4', d: 'When unguessability matters more than index locality. Fully random, no timestamp, worse insert performance on large collections.' },
+            { t: 'Avoid mixing', d: 'A collection with ObjectId keys and one with UUID keys in the same application is a permanent source of subtle bugs in joins, caches and serialisation.' }
+          ],
+          after: '<p>See the <a href="uuid-v7-generator.html">UUID v7 generator</a> and the <a href="ulid-generator.html">ULID generator</a> for the time-ordered alternatives.</p>'
+        },
+        {
+          h: 'Collisions',
+          html: '<p>Practically impossible, and the reason is structural rather than probabilistic. For two ObjectIds to collide they must share the same second, the same five random process bytes, and the same counter value.</p>' +
+            '<p>Within one process the counter guarantees uniqueness until it wraps after roughly 16.7 million documents in a single second. Across processes, collision requires a birthday collision in a 40-bit random space <em>within the same second</em> — with a thousand concurrent processes the probability is around one in two million per second, and the counters would still have to align.</p>' +
+            '<p>The realistic risk is not collision but a broken generator: a container image that seeds every process identically, or a custom implementation using a non-random source. That is worth checking; the maths is not.</p>'
+        },
+        {
+          h: 'Related identifier tools',
+          list: [
+            '<a href="uuid-v7-generator.html">UUID v7 Generator</a> — the standardised time-ordered UUID.',
+            '<a href="ulid-generator.html">ULID Generator</a> — sortable, URL-safe, 26 characters.',
+            '<a href="nanoid-generator.html">NanoID Generator</a> — short random IDs for public URLs.',
+            '<a href="json-test-data-generator.html">JSON Test Data Generator</a> — documents with ObjectId keys.',
+            '<a href="sql-insert-data-generator.html">SQL Insert Data Generator</a> — the relational counterpart.'
+          ]
+        }
+      ],
+      keywords: [
+        'mongodb objectid generator', 'objectid decoder', 'objectid timestamp',
+        'what is an objectid', 'mongodb _id format', 'objectid to date',
+        'objectid vs uuid', 'mongodb primary key', 'generate objectid online',
+        'objectid structure', 'objectid collision', 'mongodb test data'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

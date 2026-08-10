@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dummy API Key Generator — Fake Placeholder Keys for Tests &amp; Docs | Manage My Batch</title>
+<meta name="description" content="Generate realistic but non-functional placeholder API keys for tests, documentation and screenshots. Correct shape and length for 20+ providers, with EXAMPLE markers.">
+<link rel="canonical" href="https://managemybatch.com/tools/dummy-api-key-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Dummy API Key Generator — Fake Placeholder Keys for Tests &amp; Docs">
+<meta property="og:description" content="Generate realistic but non-functional placeholder API keys for tests, documentation and screenshots. Correct shape and length for 20+ providers, with EXAMPLE markers.">
+<meta property="og:url" content="https://managemybatch.com/tools/dummy-api-key-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Dummy API Key Generator — Fake Placeholder Keys for Tests &amp; Docs">
+<meta name="twitter:description" content="Generate realistic but non-functional placeholder API keys for tests, documentation and screenshots. Correct shape and length for 20+ providers, with EXAMPLE markers.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Generator Settings</div>
+
+    <div class="note note-warn" style="margin-top:0;margin-bottom:18px"><span id="icoWarn"></span>
+      <span>These keys are <strong>structurally shaped placeholders</strong>. They authenticate nothing and will be rejected by every provider. They exist so your tests, docs and screenshots do not need a real credential.</span></div>
+
+    <div class="field">
+      <label for="provider">Key format</label>
+      <select id="provider"></select>
+      <div class="hint" id="provHint"></div>
+    </div>
+
+    <div class="field">
+      <label for="count">How many?</label>
+      <div class="row" style="grid-template-columns:minmax(0,1fr) auto">
+        <input type="number" id="count" value="5" min="1" max="500">
+        <button type="button" class="btn btn-ghost" id="regen"><span id="icoReset"></span> Regenerate</button>
+      </div>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Safety options</legend>
+      <div class="check-list">
+        <label class="check on"><input type="checkbox" id="optMarker" checked><span><span class="t">Embed an EXAMPLE marker</span><span class="d">Puts a visible <code>EXAMPLE</code> token inside the key so nobody mistakes it for a live credential.</span></span></label>
+        <label class="check on"><input type="checkbox" id="optComment" checked><span><span class="t">Add a “not a real key” comment</span><span class="d">Included when exporting to .env or code.</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="field">
+      <label for="output">Output as</label>
+      <select id="output">
+        <option value="lines">Plain list</option>
+        <option value="env">.env file</option>
+        <option value="json">JSON</option>
+        <option value="yaml">YAML</option>
+        <option value="header">Authorization headers</option>
+        <option value="curl">curl example</option>
+        <option value="test">Test fixture (JS)</option>
+      </select>
+      <input type="text" id="envName" placeholder="API_KEY" style="margin-top:8px" hidden>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <div class="label">Custom format</div>
+      <div class="hint" style="margin:0 0 10px">Build your own shape. Use <code>{a}</code> alphanumeric, <code>{A}</code> uppercase, <code>{h}</code> hex, <code>{d}</code> digits, <code>{u}</code> UUID. Repeat counts: <code>{a:24}</code>.</div>
+      <input type="text" id="customPattern" placeholder="myapp_live_{a:32}">
+      <div class="hint" id="customPreview"></div>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Placeholder Keys<span class="spacer"></span>
+      <span class="result-pill" id="pill">not real credentials</span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="file">Output</button>
+      <button type="button" data-tab="formats">Format reference</button>
+      <button type="button" data-tab="safety">Handling real keys</button>
+    </div>
+
+    <div data-panel="file">
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">keys.txt</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy all</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+        <button class="btn btn-soft" id="copyOne">Copy first</button>
+      </div>
+    </div>
+
+    <div data-panel="formats" hidden><div id="formats"></div></div>
+    <div data-panel="safety" hidden><div id="safety"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoCopy:copy','icoDl:download','icoReset:reset','icoWarn:warn']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var AL = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var UP = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  var HX = '0123456789abcdef';
+  var DG = '0123456789';
+
+  function pickFrom(set, n) {
+    var b = new Uint8Array(n); crypto.getRandomValues(b);
+    var s = ''; for (var i = 0; i < n; i++) s += set[b[i] % set.length];
+    return s;
+  }
+  function uuid() {
+    var b = new Uint8Array(16); crypto.getRandomValues(b);
+    b[6] = 0x40 | (b[6] & 0xf); b[8] = 0x80 | (b[8] & 0x3f);
+    var h = Array.prototype.map.call(b, function (x) { return x.toString(16).padStart(2, '0'); }).join('');
+    return h.slice(0, 8) + '-' + h.slice(8, 12) + '-' + h.slice(12, 16) + '-' + h.slice(16, 20) + '-' + h.slice(20);
+  }
+
+  /* Shapes only — prefix + length. No provider checksum is produced, so none of
+     these can validate against a real service. */
+  var PROVIDERS = [
+    { id: 'generic',   name: 'Generic API key',        pat: '{a:32}',                  note: '32 alphanumeric characters — the most common shape.' },
+    { id: 'generic64', name: 'Generic secret (64 hex)',pat: '{h:64}',                  note: '256 bits rendered as hex, typical for signing secrets.' },
+    { id: 'bearer',    name: 'Bearer token',           pat: '{a:40}',                  note: 'Opaque token for an Authorization header.' },
+    { id: 'openai',    name: 'OpenAI-style',           pat: 'sk-{a:48}',               note: 'sk- prefix, long alphanumeric body.' },
+    { id: 'openaiproj',name: 'OpenAI project-style',   pat: 'sk-proj-{a:64}',          note: 'Newer project-scoped shape.' },
+    { id: 'anthropic', name: 'Anthropic-style',        pat: 'sk-ant-api03-{a:64}',     note: 'Versioned prefix followed by a long body.' },
+    { id: 'stripe_sk', name: 'Stripe secret-style',    pat: 'sk_test_{a:24}',          note: 'Stripe publishes its own test keys — prefer those for real integration tests.' },
+    { id: 'stripe_pk', name: 'Stripe publishable-style',pat: 'pk_test_{a:24}',         note: 'Publishable keys are not secret even in production.' },
+    { id: 'ghp',       name: 'GitHub PAT-style',       pat: 'ghp_{a:36}',              note: 'Classic personal access token shape.' },
+    { id: 'gho',       name: 'GitHub OAuth-style',     pat: 'gho_{a:36}',              note: 'OAuth access token shape.' },
+    { id: 'github_fg', name: 'GitHub fine-grained',    pat: 'github_pat_{a:22}_{a:59}',note: 'Two-segment fine-grained token shape.' },
+    { id: 'aws_akid',  name: 'AWS access key ID-style',pat: 'AKIA{A:16}',              note: 'Access key IDs are identifiers, not secrets.' },
+    { id: 'aws_sk',    name: 'AWS secret-style',       pat: '{a:40}',                  note: '40-character secret access key shape.' },
+    { id: 'google',    name: 'Google API key-style',   pat: 'AIza{a:35}',              note: 'AIza prefix used by Google Cloud APIs.' },
+    { id: 'slack',     name: 'Slack bot token-style',  pat: 'xoxb-{d:13}-{d:13}-{a:24}',note: 'Multi-segment token with numeric team and bot IDs.' },
+    { id: 'sendgrid',  name: 'SendGrid-style',         pat: 'SG.{a:22}.{a:43}',        note: 'Three dot-separated segments.' },
+    { id: 'twilio',    name: 'Twilio SID-style',       pat: 'AC{h:32}',                note: 'Account SID: AC followed by 32 hex characters.' },
+    { id: 'mailchimp', name: 'Mailchimp-style',        pat: '{h:32}-us{d:2}',          note: 'Hex key with a data-centre suffix.' },
+    { id: 'jwt',       name: 'JWT-shaped token',       pat: 'JWT',                     note: 'Three Base64URL segments — decodes to visibly fake claims.' },
+    { id: 'uuid',      name: 'UUID key',               pat: '{u}',                     note: 'Some services simply use a UUID v4.' },
+    { id: 'basic',     name: 'Basic auth pair',        pat: 'BASIC',                   note: 'username:password encoded as Base64.' },
+    { id: 'custom',    name: 'Custom pattern…',        pat: '',                        note: 'Define your own shape in the field below.' }
+  ];
+
+  $('#provider').innerHTML = PROVIDERS.map(function (p) {
+    return '<option value="' + p.id + '">' + p.name + '</option>';
+  }).join('');
+
+  function prov() {
+    var id = $('#provider').value;
+    for (var i = 0; i < PROVIDERS.length; i++) if (PROVIDERS[i].id === id) return PROVIDERS[i];
+    return PROVIDERS[0];
+  }
+
+  function expand(pat) {
+    return String(pat).replace(/\{([aAhdu])(?::(\d+))?\}/g, function (_, kind, n) {
+      n = parseInt(n || '16', 10);
+      if (kind === 'a') return pickFrom(AL, n);
+      if (kind === 'A') return pickFrom(UP, n);
+      if (kind === 'h') return pickFrom(HX, n);
+      if (kind === 'd') return pickFrom(DG, n);
+      if (kind === 'u') return uuid();
+      return '';
+    });
+  }
+
+  function b64url(s) { return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }
+
+  function makeKey() {
+    var p = prov();
+    var pat = p.id === 'custom' ? ($('#customPattern').value || '{a:32}') : p.pat;
+
+    if (pat === 'JWT') {
+      var head = b64url(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
+      var body = b64url(JSON.stringify({
+        sub: 'EXAMPLE-NOT-A-REAL-TOKEN', name: 'Test User',
+        iat: Math.floor(Date.now() / 1000), exp: Math.floor(Date.now() / 1000) + 3600
+      }));
+      return head + '.' + body + '.' + pickFrom(AL, 43);
+    }
+    if (pat === 'BASIC') {
+      var u = 'test_user_' + pickFrom(DG, 4), pw = pickFrom(AL, 16);
+      return 'Basic ' + btoa(u + ':' + pw) + '   # ' + u + ':' + pw;
+    }
+
+    var key = expand(pat);
+    if ($('#optMarker').checked && p.id !== 'uuid') {
+      /* Splice a visible EXAMPLE marker into the random body, preserving length. */
+      var m = key.match(/^(.*?[_.\-])?([A-Za-z0-9]{16,})(.*)$/);
+      if (m) {
+        var body2 = m[2];
+        key = (m[1] || '') + body2.slice(0, 4) + 'EXAMPLE' + body2.slice(11) + (m[3] || '');
+      }
+    }
+    return key;
+  }
+
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'keys.txt', mime: 'text/plain' });
+
+  var keys = [];
+
+  function build() {
+    var n = Math.max(1, Math.min(500, parseInt($('#count').value, 10) || 1));
+    keys = []; for (var i = 0; i < n; i++) keys.push(makeKey());
+
+    var p = prov();
+    var note = $('#optComment').checked;
+    var name = ($('#envName').value || 'API_KEY').toUpperCase().replace(/[^A-Z0-9_]/g, '_');
+    var mode = $('#output').value, text, file = 'keys.txt';
+
+    var banner = '# Placeholder credentials generated by managemybatch.com — NOT REAL KEYS.\n' +
+                 '# They authenticate nothing and are safe to commit to a test fixture.\n\n';
+
+    if (mode === 'env') {
+      text = (note ? banner : '') + keys.map(function (k, i) {
+        return name + (keys.length > 1 ? '_' + (i + 1) : '') + '=' + k.split('   #')[0];
+      }).join('\n');
+      file = '.env.example';
+    } else if (mode === 'json') {
+      text = JSON.stringify(note
+        ? { _comment: 'Placeholder keys — not real credentials', keys: keys }
+        : keys, null, 2);
+      file = 'keys.json';
+    } else if (mode === 'yaml') {
+      text = (note ? '# Placeholder keys — not real credentials\n' : '') +
+        'keys:\n' + keys.map(function (k) { return '  - "' + k.split('   #')[0] + '"'; }).join('\n');
+      file = 'keys.yaml';
+    } else if (mode === 'header') {
+      text = keys.map(function (k) {
+        return /^Basic /.test(k) ? 'Authorization: ' + k.split('   #')[0] : 'Authorization: Bearer ' + k;
+      }).join('\n');
+    } else if (mode === 'curl') {
+      text = (note ? '# Placeholder key — this request will return 401\n' : '') +
+        'curl https://api.example.com/v1/me \\\n' +
+        '  -H "Authorization: Bearer ' + keys[0] + '" \\\n' +
+        '  -H "Content-Type: application/json"';
+      file = 'request.sh';
+    } else if (mode === 'test') {
+      text = (note ? '// Placeholder credentials — safe to commit.\n' : '') +
+        'export const TEST_KEYS = [\n' + keys.map(function (k) { return "  '" + k.split('   #')[0] + "',"; }).join('\n') +
+        '\n];\n\nexport const TEST_KEY = TEST_KEYS[0];';
+      file = 'fixtures.js';
+    } else {
+      text = keys.join('\n');
+    }
+
+    out.set(text, file);
+    $('#provHint').textContent = p.note;
+    $('#pill').textContent = n + ' placeholder' + (n > 1 ? 's' : '');
+    $('#pill').style.background = 'var(--amber-bg)'; $('#pill').style.color = 'var(--amber)';
+    $('#customPreview').textContent = $('#customPattern').value ? 'Preview: ' + expand($('#customPattern').value) : '';
+  }
+
+  $('#formats').innerHTML =
+    '<p style="color:var(--muted);font-size:13.8px;margin-bottom:14px">Prefixes exist so that secret scanners can spot a leaked key in a commit. That is why modern providers moved away from bare random strings — a token starting <code>ghp_</code> is unambiguously a GitHub credential, and GitHub, GitLab and most CI systems scan for exactly these patterns.</p>' +
+    PROVIDERS.filter(function (p) { return p.id !== 'custom'; }).map(function (p) {
+      return '<div class="kv"><span class="k"><strong>' + p.name + '</strong><br><span style="font-size:12.5px">' + p.note + '</span></span>' +
+        '<span class="v" style="max-width:45%;word-break:break-all;text-align:right">' + GT.esc(p.pat || '—') + '</span></div>';
+    }).join('') +
+    '<div class="note note-info" style="margin-top:14px">' + I.info +
+    '<span>Only the shape is reproduced here. Real keys from most providers embed a checksum, so a random string of the right length still fails validation before it ever reaches an auth server.</span></div>';
+
+  $('#safety').innerHTML = [
+    ['Never commit real keys', 'Use <code>.env</code> locally and a real secrets manager in production. Commit a <code>.env.example</code> containing placeholders like the ones on this page so new developers know which variables exist without ever seeing a live value.'],
+    ['Assume any leaked key is compromised', 'Rotating is cheap; assuming "nobody saw it" is not. Public repositories are scanned continuously by bots, and keys are typically exercised within minutes of being pushed.'],
+    ['Scope keys as narrowly as you can', 'Read-only where possible, one key per service, per environment. A leaked key that can only read one bucket is an incident; a leaked root key is an outage.'],
+    ['Enable secret scanning', 'GitHub push protection, GitLab secret detection, <code>gitleaks</code> or <code>trufflehog</code> in CI. Push protection is the only one that blocks the leak instead of reporting it afterwards.'],
+    ['Rotate on a schedule', 'Even without an incident. Rotation being routine is what makes an emergency rotation uneventful.'],
+    ['Redact keys in logs and screenshots', 'Log the last four characters at most. This tool exists so screenshots and docs never need a real value in the first place.'],
+    ['If a real key does leak', 'Revoke first, investigate second. Then check provider audit logs for use during the exposure window, and rotate anything that key could reach.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('');
+
+  $('#provider').addEventListener('change', function () {
+    $('#customPattern').closest('.field').style.opacity = this.value === 'custom' ? '1' : '.55';
+    build();
+  });
+  $('#output').addEventListener('change', function () { $('#envName').hidden = this.value !== 'env'; build(); });
+  $('#copyOne').addEventListener('click', function () { GT.copy((keys[0] || '').split('   #')[0], 'Key'); });
+  $('#regen').addEventListener('click', build);
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+
+  $('#customPattern').closest('.field').style.opacity = '.55';
+  build();
+
+  GT.page({
+    slug: 'dummy-api-key-generator',
+    lede: 'Realistic placeholder API keys for tests, documentation and screenshots — correctly shaped for 20+ providers, and guaranteed to authenticate nothing.',
+    steps: [
+      { icon: 'gear', title: 'Pick a key shape', text: 'Match the provider your code expects, or define a custom pattern for your own service.' },
+      { icon: 'key', title: 'Keep the EXAMPLE marker', text: 'It makes the string visibly fake in a screenshot or a code review.' },
+      { icon: 'copy', title: 'Export where it belongs', text: '.env.example, a JSON fixture, an Authorization header or a curl snippet.' }
+    ],
+    guideTitle: 'Why fake keys with the right shape matter',
+    guide:
+      '<p style="color:var(--muted)">A placeholder that reads <code>YOUR_API_KEY_HERE</code> is honest but useless: it does not exercise your length validation, it breaks regex-based config checks, and it looks wrong in a screenshot. A key with the correct prefix and length behaves like the real thing everywhere except at the auth server — which is exactly what a test fixture needs.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Good uses</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>Committed <code>.env.example</code> files that show the expected shape.</li><li>Unit tests for key parsing, masking and validation.</li><li>Documentation, tutorials and screenshots.</li><li>Mock servers and contract tests.</li><li>Verifying that your secret scanner actually fires.</li></ul></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">What this cannot do</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>Authenticate against any real API. Providers verify a checksum and a database record; a correctly shaped random string fails both.</li><li>Bypass rate limits, trials or paywalls.</li><li>Replace a provider\'s own sandbox. Stripe, for example, publishes real test-mode keys that exercise the full API safely — use those for integration tests.</li></ul></div></div>' +
+      '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span><strong>Prefixes are a security feature.</strong> When GitHub moved to <code>ghp_</code>, <code>gho_</code> and friends, it became possible to detect a leaked token from the string alone — no context, no guessing. That is why push protection can block a commit before it ever reaches a remote. If you design your own key format, give it a distinctive prefix for the same reason.</span></div>' +
+      '<div class="note note-warn" style="margin-top:12px">' + GTI.warn + '<span>Keep the EXAMPLE marker enabled unless you specifically need an exact-length string. A reviewer skimming a diff should be able to tell at a glance that no real credential was committed.</span></div>',
+    related: ['random-hex-string-generator', 'random-byte-generator', 'json-test-data-generator'],
+    faqs: [
+      { q: 'Do these API keys actually work?', a: 'No. They reproduce the visible shape — prefix, character set and length — but carry none of the checksum or account binding a real key needs. Every provider will reject them.' },
+      { q: 'What are they for?', a: 'Test fixtures, <code>.env.example</code> files, documentation, screenshots and mock servers: anywhere you need something that looks and validates like a key without exposing a real credential.' },
+      { q: 'Is it safe to commit these to a repository?', a: 'Yes — that is the point. They are random strings with no account behind them. Keeping the EXAMPLE marker on makes that obvious to reviewers and reduces the chance of a false-positive scanner alert.' },
+      { q: 'Can I generate a key for my own service?', a: 'Choose “Custom pattern” and describe the shape: <code>{a:n}</code> alphanumeric, <code>{A:n}</code> uppercase, <code>{h:n}</code> hex, <code>{d:n}</code> digits, <code>{u}</code> UUID. For example <code>myapp_live_{a:32}</code>.' },
+      { q: 'Why do real API keys start with prefixes like sk_ or ghp_?', a: 'So automated scanners can recognise a leaked credential from the string alone. It lets GitHub block a push containing a token, and lets providers revoke leaked keys proactively. It is worth copying the convention in your own systems.' },
+      { q: 'Should I use these instead of a provider sandbox?', a: 'No. If the provider offers test-mode credentials — as Stripe, Twilio and others do — use those for integration tests; they exercise the real API safely. Use these placeholders for docs, fixtures and anything that never makes a network call.' }
+    ],
+    seo: {
+      title: 'Dummy API keys: fake credentials with the right shape for docs and tests',
+      lead: 'This <strong>dummy API key generator</strong> produces realistic placeholder credentials in the exact format of 20+ providers — Stripe, GitHub, OpenAI, AWS, Slack and more — that authenticate nothing. Below: why shape matters, why real keys should never appear in documentation, and what those prefixes mean.',
+      blocks: [
+        {
+          h: 'Why a fake key needs the right shape',
+          html: '<p><code>YOUR_API_KEY_HERE</code> is honest and useless. Anything that validates the key — a form, a schema, a client library, a regex in your own code — rejects it, so the path you meant to test never runs.</p>' +
+            '<p>A placeholder with the correct <em>shape</em> exercises the real code path: right prefix, right length, right character set, right checksum where one exists. Your validation accepts it, your UI renders it at the right width, your screenshot looks like the product — and the request still fails at the provider, which is exactly what you want.</p>',
+          list: [
+            '<strong>Tests</strong> that assert on key format, masking or storage without touching a live account.',
+            '<strong>Documentation and tutorials</strong> where the example should look like the real thing.',
+            '<strong>Screenshots and demos</strong> that show a plausible key without exposing one.',
+            '<strong>UI development</strong> — truncation, monospace widths, copy buttons, reveal toggles.',
+            '<strong>Secret-scanner testing</strong> — confirm your pre-commit hook and CI actually catch a leaked key.'
+          ]
+        },
+        {
+          h: 'What the prefixes mean',
+          html: '<p>Modern providers put a structured prefix on every key. It is not decoration — it exists so that a leaked key can be recognised instantly.</p>',
+          table: {
+            head: ['Prefix', 'Provider', 'Meaning'],
+            rows: [
+              ['<code>sk_live_</code> / <code>sk_test_</code>', 'Stripe', 'Secret key, live or test mode. The mode is visible at a glance.'],
+              ['<code>pk_</code>', 'Stripe and others', 'Publishable key — safe in client-side code.'],
+              ['<code>ghp_</code> / <code>gho_</code> / <code>ghs_</code>', 'GitHub', 'Personal access, OAuth and server token types.'],
+              ['<code>sk-</code>', 'OpenAI', 'Secret key.'],
+              ['<code>AKIA</code>', 'AWS', 'Access key ID for a long-lived IAM user.'],
+              ['<code>xoxb-</code> / <code>xoxp-</code>', 'Slack', 'Bot token and user token.'],
+              ['<code>SG.</code>', 'SendGrid', 'API key.'],
+              ['<code>AIza</code>', 'Google', 'API key.']
+            ]
+          },
+          after: '<p>The prefix is what makes automated scanning possible. GitHub\'s secret scanning, and the equivalent in most CI systems, matches these patterns and notifies the provider — which is why a real key pushed to a public repository is often revoked within minutes.</p>'
+        },
+        {
+          h: 'Do they work?',
+          html: '<p>No. Every key is random data in a provider\'s format. There is no account behind it, no signature that would verify, and no possibility of one being valid — the key space is large enough that colliding with a real key is not a meaningful risk.</p>' +
+            '<p>What they do is pass <em>local</em> validation: format checks, length checks, prefix matching, and the client-side regex your SDK applies before making a request. The request itself returns a 401 from the provider, which is normally the behaviour you want to test anyway.</p>',
+          callout: { type: 'warn', text: '<strong>Never edit a real key to make a "fake" one.</strong> Changing a few characters of a production key is how partially valid secrets end up in public repositories, and some formats include checksums that make the original recoverable. Generate a fresh placeholder instead.' }
+        },
+        {
+          h: 'Committing them to a repository',
+          cards: [
+            { t: 'Generally safe', d: 'They authenticate nothing. Test fixtures, documentation examples and README snippets are all fine.' },
+            { t: 'But scanners will flag them', d: 'That is the scanner working correctly — it matches on shape, and the shape is right. Expect alerts.' },
+            { t: 'So mark them', d: 'A comment saying the value is a generated placeholder, or a recognisable marker inside the key, saves the next person a security review.' },
+            { t: 'Never in a .env file', d: 'Not because it is dangerous, but because the habit is. <code>.env</code> belongs in <code>.gitignore</code>; put examples in <code>.env.example</code> instead.' }
+          ]
+        },
+        {
+          h: 'Placeholders or a provider sandbox?',
+          html: '<p>They answer different questions and most projects want both.</p>',
+          steps: [
+            { t: 'Use placeholder keys', d: 'For unit tests, format validation, documentation, screenshots and UI work. No network, no rate limits, no account required, and no shared state to reset.' },
+            { t: 'Use a provider sandbox', d: 'For integration tests that must exercise real request and response behaviour — Stripe test mode, a PayPal sandbox, a GitHub test app.' },
+            { t: 'Never use production credentials in tests', d: 'Even read-only ones. Rate limits, audit noise and the eventual accident are all avoidable.' },
+            { t: 'Keep sandbox keys out of the repository', d: 'They are real credentials for a real account. Environment variables or a secret manager, same as production.' }
+          ],
+          callout: { type: 'tip', text: 'Generate placeholders for your own service too. Pick a memorable prefix, a fixed length and a defined alphabet, and publish the pattern — it makes your keys scannable by GitHub and by your customers\' tooling, which turns a leak into an automatic revocation rather than an incident.' }
+        },
+        {
+          h: 'Related tools',
+          list: [
+            '<a href="random-hex-string-generator.html">Random Hex String Generator</a> — real entropy when you need an actual secret.',
+            '<a href="random-byte-generator.html">Random Byte Generator</a> — key material in any encoding.',
+            '<a href="json-test-data-generator.html">JSON Test Data Generator</a> — fixtures containing credential fields.',
+            '<a href="curl-command-generator.html">curl Command Generator</a> — example requests with a placeholder token.',
+            '<a href="security-txt-generator.html">security.txt Generator</a> — a contact route for reported leaks.'
+          ]
+        }
+      ],
+      keywords: [
+        'dummy api key generator', 'fake api key', 'example api key', 'test api key',
+        'placeholder credentials', 'stripe test key format', 'github token format',
+        'fake aws access key', 'sample openai api key', 'mock secret for tests',
+        'secret scanner test', 'api key format examples'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

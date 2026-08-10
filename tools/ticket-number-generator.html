@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ticket Number Generator — Support &amp; Event Tickets, Free | Manage My Batch</title>
+<meta name="description" content="Free ticket number generator for helpdesks and events. Build support ticket IDs or unique admission ticket numbers with check digits and non-guessable random blocks.">
+<link rel="canonical" href="https://managemybatch.com/tools/ticket-number-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Ticket Number Generator — Support &amp; Event Tickets, Free">
+<meta property="og:description" content="Free ticket number generator for helpdesks and events. Build support ticket IDs or unique admission ticket numbers with check digits and non-guessable random blocks.">
+<meta property="og:url" content="https://managemybatch.com/tools/ticket-number-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ticket Number Generator — Support &amp; Event Tickets, Free">
+<meta name="twitter:description" content="Free ticket number generator for helpdesks and events. Build support ticket IDs or unique admission ticket numbers with check digits and non-guessable random blocks.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Generator Settings</div>
+
+    <div class="field">
+      <label>Ticket type</label>
+      <div class="seg" id="preset">
+        <button type="button" class="on" data-p="support">Support ticket</button>
+        <button type="button" data-p="event">Event admission</button>
+        <button type="button" data-p="queue">Queue number</button>
+      </div>
+      <div class="hint" id="presetHint"></div>
+    </div>
+
+    <div class="row">
+      <div class="field"><label for="prefix">Prefix</label><input type="text" id="prefix" value="TKT"></div>
+      <div class="field">
+        <label for="sep">Separator</label>
+        <select id="sep">
+          <option value="-" selected>Hyphen (-)</option>
+          <option value="">None</option>
+          <option value="_">Underscore (_)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="queue">Queue / category code</label>
+      <input type="text" id="queue" placeholder="e.g. BILL, TECH, VIP">
+      <div class="hint">Lets an agent see the routing from the reference alone.</div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="dateFormat">Date segment</label>
+        <select id="dateFormat"></select>
+      </div>
+      <div class="field">
+        <label for="pad">Number length</label>
+        <select id="pad">
+          <option value="4">4 digits</option>
+          <option value="5">5 digits</option>
+          <option value="6" selected>6 digits</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field"><label for="start">Starting number</label><input type="number" id="start" value="100001" min="0"></div>
+      <div class="field">
+        <label for="checkDigit">Check digit</label>
+        <select id="checkDigit"></select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="randLen">Random segment length: <strong id="randLabel">none</strong></label>
+      <input type="range" id="randLen" min="0" max="10" value="0" style="width:100%;accent-color:var(--blue)">
+      <div class="hint" id="randHint">Essential for admission tickets — without it, anyone can forge a valid-looking ticket by counting.</div>
+    </div>
+
+    <div class="field">
+      <label for="preview">Preview format</label>
+      <div class="seq-preview" id="preview">TKT-100001</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="row">
+      <div class="field"><label for="count">How many</label><input type="number" id="count" value="6" min="1" max="5000"></div>
+      <div class="field"><label for="date">Date</label><input type="date" id="date"></div>
+    </div>
+
+    <details class="faq" style="box-shadow:none;margin-bottom:16px">
+      <summary style="padding:12px 14px;font-size:13.8px">Advanced format</summary>
+      <div class="body" style="padding:0 14px 14px">
+        <label for="pattern" style="margin-top:6px">Custom pattern</label>
+        <input type="text" id="pattern" placeholder="e.g. {PREFIX}{SEP}{YY}{SEP}{SEQ:6}{SEP}{RAND:5}">
+        <div class="token-help" id="tokenHelp"></div>
+        <label for="suffix" style="margin-top:12px">Suffix</label>
+        <input type="text" id="suffix" placeholder="optional">
+      </div>
+    </details>
+
+    <div class="out-actions">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate Ticket Numbers</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated Results<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="results">Results</button>
+      <button type="button" data-tab="export">Export</button>
+      <button type="button" data-tab="checks">Validation</button>
+      <button type="button" data-tab="guide">Guidance</button>
+    </div>
+
+    <div data-panel="results">
+      <div id="primary"></div>
+      <div id="more"></div>
+      <button type="button" class="btn btn-soft btn-block" id="regen" style="margin-top:18px">
+        <span id="icoReset"></span> Regenerate</button>
+      <div id="secNote"></div>
+    </div>
+
+    <div data-panel="export" hidden>
+      <div class="field">
+        <label for="exportAs">Export format</label>
+        <select id="exportAs">
+          <option value="lines">Plain list</option>
+          <option value="csvIndexed">CSV with index</option>
+          <option value="json">JSON array</option>
+          <option value="sql">SQL INSERT</option>
+        </select>
+      </div>
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">ticket-numbers.txt</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy all</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+    </div>
+
+    <div data-panel="checks" hidden><div id="checks"></div></div>
+    <div data-panel="guide" hidden><div id="guide"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/seqid.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoCopy:copy','icoDl:download','icoReset:reset']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  $('#dateFormat').innerHTML = GTSeq.DATE_FORMATS.map(function (f) {
+    return '<option value="' + f.id + '"' + (f.id === 'none' ? ' selected' : '') + '>' + f.label + '</option>';
+  }).join('');
+  $('#checkDigit').innerHTML = GTSeq.CHECK_DIGITS.map(function (c) {
+    return '<option value="' + c.id + '">' + c.label + '</option>';
+  }).join('');
+  $('#tokenHelp').innerHTML = GTSeq.tokenHelpHtml();
+  $('#date').value = GT.today();
+
+  var HINTS = {
+    support: 'A readable running reference agents and customers can quote in email subject lines.',
+    event: 'Admission tickets must not be forgeable — a long random block is mandatory, and a check digit speeds up gate scanning.',
+    queue: 'Short, human-callable numbers for a service desk or waiting room. Resets daily.'
+  };
+  var PRESETS = {
+    support: { prefix: 'TKT', date: 'none', pad: 6, start: 100001, rand: 0, check: 'none' },
+    event: { prefix: 'EVT', date: 'YYYY', pad: 5, start: 1, rand: 8, check: 'luhn' },
+    queue: { prefix: 'Q', date: 'none', pad: 3, start: 1, rand: 0, check: 'none' }
+  };
+
+  var ids = [];
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'ticket-numbers.txt', mime: 'text/plain' });
+
+  function opts() {
+    var sep = $('#sep').value;
+    var queue = $('#queue').value.trim().toUpperCase();
+    var pattern = $('#pattern').value.trim();
+    var randLen = parseInt($('#randLen').value, 10) || 0;
+    if (!pattern && queue) {
+      var df = GTSeq.DATE_FORMATS.filter(function (f) { return f.id === $('#dateFormat').value; })[0];
+      var parts = ['{PREFIX}', queue];
+      if (df && df.pattern) parts.push(df.pattern);
+      if (randLen) parts.push('{RAND:' + randLen + '}');
+      parts.push('{SEQ}');
+      if ($('#suffix').value.trim()) parts.push('{SUFFIX}');
+      pattern = parts.join(sep === '' ? '' : '{SEP}');
+    }
+    return {
+      prefix: $('#prefix').value.trim(),
+      suffix: $('#suffix').value.trim(),
+      dateFormat: $('#dateFormat').value,
+      sep: sep,
+      start: $('#start').value,
+      pad: parseInt($('#pad').value, 10),
+      count: parseInt($('#count').value, 10),
+      randLen: randLen,
+      checkDigit: $('#checkDigit').value,
+      date: $('#date').value ? new Date($('#date').value + 'T12:00:00') : new Date(),
+      pattern: pattern
+    };
+  }
+
+  function build() {
+    var o = opts();
+    ids = GTSeq.generate(o).ids;
+
+    $('#randLabel').textContent = o.randLen || 'none';
+    $('#preview').textContent = ids[0] || '—';
+    GTSeq.renderResults({ ids: ids, primary: '#primary', more: '#more', noun: 'Ticket Number' });
+    $('#pill').textContent = ids.length.toLocaleString() + ' generated';
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+
+    var mode = $('#exportAs').value;
+    var ext = mode === 'json' ? 'json' : mode === 'sql' ? 'sql' : /csv/.test(mode) ? 'csv' : 'txt';
+    out.set(GTSeq.exportAs(ids, mode, { column: 'ticket_number', table: 'tickets' }), 'ticket-numbers.' + ext);
+
+    var isEvent = $$('#preset button').filter(function (b) { return b.classList.contains('on'); })[0].getAttribute('data-p') === 'event';
+    $('#secNote').innerHTML = (isEvent && o.randLen < 6)
+      ? '<div class="note note-err" style="margin-top:14px">' + I.warn +
+        '<span><strong>Not safe for admission tickets.</strong> With a short or absent random block, anyone holding one ticket can generate other valid numbers. Use at least 8 random characters, and validate every ticket against your database at the gate.</span></div>'
+      : o.randLen >= 6
+        ? '<div class="note note-ok" style="margin-top:14px">' + I.check +
+          '<span>A ' + o.randLen + '-character random block makes these numbers impractical to guess. Still validate each one against your database at scan time — an unguessable number is not the same as a verified one.</span></div>'
+        : '<div class="note note-info" style="margin-top:14px">' + I.info +
+          '<span>Sequential references are ideal for support desks: short, quotable in an email subject, and easy to search.</span></div>';
+
+    var extra = [];
+    if (o.checkDigit !== 'none') extra.push({ s: 'ok', m: 'Check digit appended — a scanner or agent can detect a mistyped ticket number before it hits your database.' });
+    if (isEvent && o.checkDigit === 'none') extra.push({ s: 'warn', m: 'No check digit. For gate scanning, a check digit catches most manual-entry errors instantly rather than after a failed lookup.' });
+    GTSeq.renderChecks('#checks', GTSeq.validate(ids, { humanEntry: true, sequential: o.randLen === 0, suggestCheck: true }).concat(extra));
+  }
+
+  $('#preset').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#preset button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    var k = b.getAttribute('data-p'), p = PRESETS[k];
+    $('#prefix').value = p.prefix; $('#dateFormat').value = p.date; $('#pad').value = p.pad;
+    $('#start').value = p.start; $('#randLen').value = p.rand; $('#checkDigit').value = p.check;
+    $('#pattern').value = '';
+    $('#presetHint').textContent = HINTS[k];
+    build();
+  });
+  $('#presetHint').textContent = HINTS.support;
+
+  $('#guide').innerHTML = [
+    ['Support tickets: optimise for quoting', 'A support reference gets typed into email subjects, read on phone calls and pasted into chat. Short and sequential beats clever. <code>TKT-100042</code> works; a 24-character UUID does not.'],
+    ['Event tickets: optimise against forgery', 'Admission tickets are worth money, so a predictable number is a printable forgery. Use a long random block, and treat the number as a lookup key that must be validated and marked used at the gate — never as proof of validity by itself.'],
+    ['Check digits pay for themselves at a gate', 'When staff type ticket numbers manually under time pressure, a Luhn digit rejects the overwhelming majority of typos instantly rather than after a failed database lookup and a queue forming behind.'],
+    ['Queue numbers should be short and reset', 'A waiting-room number is called out loud and displayed on a screen. Three digits, reset daily, no prefix beyond a letter. Anything longer is harder to hear correctly.'],
+    ['Category codes help routing but age badly', 'A queue code in the reference is useful for triage, but tickets get reassigned. Keep the code as a hint, and store the authoritative queue in a field you can change.'],
+    ['One ticket, one number, forever', 'Merging duplicate tickets should keep both references resolvable, with the merged one redirecting. Customers keep quoting the old number for months.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('');
+
+  GTSeq.bindCopy('#primary', function () { return ids; });
+  GTSeq.bindCopy('#more', function () { return ids; });
+  GTSeq.bindTokenHelp('#tokenHelp', '#pattern', build);
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Ticket numbers generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+  $('#regen').addEventListener('click', build);
+  $('#exportAs').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'ticket-number-generator',
+    lede: 'Generate support ticket references or forgery-resistant event admission numbers — with queue codes, check digits and random blocks sized for the job.',
+    steps: [
+      { icon: 'gear', title: 'Choose the ticket type', text: 'Support, event admission or a queue number — each needs a different shape.' },
+      { icon: 'ticket', title: 'Set the security level', text: 'Random block length and check digit, sized to the risk.' },
+      { icon: 'copy', title: 'Export', text: 'Copy a batch into your helpdesk or ticketing database.' }
+    ],
+    guideTitle: 'Two different problems wearing the same name',
+    guide:
+      '<p style="color:var(--muted)">A support ticket number and an event ticket number share a word and almost nothing else. One is a conversation reference optimised for humans repeating it; the other is a bearer token worth real money. Designing them the same way is how event organisers end up with duplicate admissions at the gate.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Support tickets</h4><p style="color:var(--muted);font-size:13.8px">Short, sequential, memorable. It lands in an email subject line and gets quoted over the phone. Predictability is not a risk because the ticket itself is protected by authentication, not by the number.</p>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">Good: <code>TKT-100042</code>, <code>SUP-2026-0042</code>.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Event admission</h4><p style="color:var(--muted);font-size:13.8px">The number often <em>is</em> the credential, so it must be unguessable and single-use. A long random block plus a database check at scan time is the minimum. A check digit on top catches manual entry errors at the gate.</p>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">Good: <code>EVT-2026-00042-K7QM9X3P</code>.</p></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>An unguessable ticket number is not a validated ticket.</strong> Randomness stops people inventing numbers; it does nothing about someone photographing a real ticket and sharing it. Every admission system needs a server-side check that marks the ticket used on first scan.</span></div>',
+    related: ['reference-number-generator', 'order-number-generator', 'receipt-number-generator'],
+    faqs: [
+      { q: 'What format should a support ticket number use?', a: 'Short and sequential, with a recognisable prefix — <code>TKT-100042</code> is ideal. It gets quoted in email subjects and read over the phone, so length and clarity matter more than unpredictability.' },
+      { q: 'How do I stop event tickets being forged?', a: 'Include a long random block so numbers cannot be guessed, and validate every ticket against your database at scan time, marking it used. The number alone should never be treated as proof of a valid ticket.' },
+      { q: 'What is a check digit and do I need one?', a: 'An extra digit computed from the rest of the number that detects most typing errors. It is very useful anywhere staff type ticket numbers manually — at a gate, it turns a failed lookup into an instant rejection.' },
+      { q: 'Should the queue or category be in the ticket number?', a: 'It helps triage, but tickets get reassigned and the code then lies. Use it as a hint and keep the authoritative queue in a field you can update.' },
+      { q: 'How long should a queue number be?', a: 'Three digits, reset daily, with at most a single-letter prefix. It is called out loud and shown on a display, so brevity directly reduces errors.' },
+      { q: 'Can I use sequential numbers for paid event tickets?', a: 'Only if entry is validated against your database and each ticket is marked used on first scan. Without that, sequential numbers let anyone with one ticket produce plausible others.' }
+    ],
+    seo: {
+      title: 'Ticket numbers: support references and forgery-resistant admission codes',
+      lead: 'This <strong>ticket number generator</strong> handles both jobs — readable support references with queue codes, and event admission numbers with random blocks and check digits. Below: why the two need opposite designs, and how to stop a paid ticket being duplicated.',
+      blocks: [
+        {
+          h: 'Two different problems wearing the same name',
+          html: '<p>"Ticket number" means two unrelated things, and the right design for one is the wrong design for the other.</p>',
+          cards: [
+            { t: 'Support ticket', d: 'An internal case reference. Wants to be short, readable, sequential and easy to quote in an email subject. Guessability is irrelevant — nobody gains from finding someone else\'s case number.' },
+            { t: 'Event admission ticket', d: 'A bearer instrument worth money. Wants to be unguessable, verifiable at the gate, and impossible to derive from another ticket. Sequential numbering is a direct invitation to fraud.' }
+          ],
+          after: '<p>Choose the mode first. Almost every problem with ticket numbering comes from applying support-desk conventions to paid admission, which produces tickets that a spreadsheet can forge.</p>'
+        },
+        {
+          h: 'Support ticket references',
+          html: '<p>The requirements are unglamorous and entirely about human handling. A support reference is typed into an email subject, read aloud, pasted into a chat, and searched for months later.</p>',
+          steps: [
+            { t: 'Use a short prefix', d: '<code>SUP</code>, <code>INC</code>, <code>REQ</code>. It distinguishes a ticket from an order or an invoice in a mailbox full of numbers.' },
+            { t: 'Add the queue or category', d: '<code>SUP-BIL-04821</code> tells an agent it is billing before they open anything. Useful — with the caveat below.' },
+            { t: 'Keep the counter sequential', d: 'Gapless, zero-padded, and long enough not to roll over. Sequential is fine here.' },
+            { t: 'Fix the width', d: 'Five digits from the start. References that grow a digit sort wrongly in every export.' },
+            { t: 'Skip the check digit unless volume is high', d: 'At scale it saves misrouted emails; for a small desk it is a character nobody needs.' }
+          ],
+          callout: { type: 'tip', text: 'Encoding the queue helps until a ticket is reassigned — and tickets are reassigned constantly. If your desk moves cases between queues regularly, leave the queue out of the number and keep it as a field. A reference that says <code>BIL</code> on a ticket now handled by technical support is actively misleading.' }
+        },
+        {
+          h: 'Event admission numbers',
+          html: '<p>An admission ticket is worth its face value to anyone holding it. Sequential numbering means that a person who buys ticket <code>001042</code> can print <code>001043</code> through <code>001100</code> and walk in with fifty friends.</p>' +
+            '<p>The fix is a random block sized so that guessing is impractical:</p>',
+          table: {
+            head: ['Configuration', 'Guess success rate', 'Verdict'],
+            rows: [
+              ['Sequential only', 'Certain', 'Never use for paid admission.'],
+              ['Sequence + 4 random chars', '~1 in 1 million per attempt', 'Adequate for a small free event.'],
+              ['Sequence + 6 random chars', '~1 in 10<sup>9</sup>', 'Reasonable for most paid events.'],
+              ['Sequence + 8 random chars', '~1 in 10<sup>12</sup>', 'Appropriate for high-value or high-volume events.']
+            ]
+          },
+          after: '<p>Note the qualifier "per attempt". The number that matters is guessability relative to your ticket count and how many attempts a gate scanner will tolerate — which is why validation at the door must reject and log repeated failures rather than silently retrying.</p>'
+        },
+        {
+          h: 'Stopping duplication at the gate',
+          html: '<p>Unguessable numbers stop <em>invention</em>. They do nothing about <em>copying</em> — a photographed ticket is a perfectly valid ticket. Only single-use validation solves that.</p>',
+          list: [
+            '<strong>Mark each ticket used on first scan.</strong> The second presentation of the same number is rejected. This is the control that matters most and the one most often missing.',
+            '<strong>Validate centrally, in real time.</strong> Offline scanners that sync later allow the same ticket through several doors.',
+            '<strong>Name-bind high-value tickets</strong> and check identification at entry.',
+            '<strong>Use a signed QR code</strong> rather than a bare number, so the gate can verify authenticity without a lookup and a tampered code fails immediately.',
+            '<strong>Log every rejection with a gate and timestamp.</strong> A cluster of duplicates points at where the leak happened.'
+          ],
+          callout: { type: 'warn', text: '<strong>A ticket number is not a security system by itself.</strong> Any number printed on a ticket can be photographed and shared. Unguessability prevents forgery; only single-use validation prevents duplication. Design for both.' }
+        },
+        {
+          h: 'Check digits',
+          html: '<p>Worth adding wherever a human types a ticket number — a box office looking up a booking, an agent handling a phone query, a door staff member keying a damaged barcode.</p>' +
+            '<p>A <a href="reference-number-generator.html">Luhn digit</a> catches the single-digit and transposition errors that make up most manual entry mistakes, so a mistyped number is rejected instantly rather than returning "no such ticket" and sending everyone hunting.</p>' +
+            '<p>Where the ticket is only ever scanned, skip it. And be clear about what it does not do: a check digit makes a number self-validating, not secure — anyone can compute a valid one, which is exactly why the random block is doing the real work.</p>'
+        },
+        {
+          h: 'Queue numbers',
+          html: '<p>The third case: the number called out in a waiting room or shown on a display. Different requirements again — it needs to be short, spoken easily, and meaningless after the day ends.</p>' +
+            '<p>Three digits is right, optionally with a single-letter service prefix (<code>A047</code> for collections, <code>B012</code> for enquiries). Reset daily. Nobody should be reading a six-character reference off a screen from across a room, and a queue number that persists overnight has no purpose.</p>' +
+            '<p>Keep it entirely separate from the case reference. The queue number is ephemeral; the case reference outlives the visit.</p>'
+        },
+        {
+          h: 'Related reference tools',
+          list: [
+            '<a href="reference-number-generator.html">Reference Number Generator</a> — Luhn and mod-97 check digits.',
+            '<a href="order-number-generator.html">Order Number Generator</a> — the booking behind the ticket.',
+            '<a href="receipt-number-generator.html">Receipt Number Generator</a> — box office transaction records.',
+            '<a href="coupon-code-generator.html">Coupon Code Generator</a> — the same guessability maths for discounts.',
+            '<a href="employee-id-generator.html">Employee ID Generator</a> — staff and agent identifiers.'
+          ]
+        }
+      ],
+      keywords: [
+        'ticket number generator', 'support ticket reference format', 'event ticket numbering',
+        'unique ticket codes', 'prevent ticket forgery', 'ticket check digit',
+        'helpdesk ticket id format', 'queue number system', 'sequential ticket numbers risk',
+        'admission ticket codes', 'ticket validation single use', 'incident reference number'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

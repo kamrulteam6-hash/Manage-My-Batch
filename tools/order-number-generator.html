@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Order Number Generator — Free Ecommerce Order ID Builder | Manage My Batch</title>
+<meta name="description" content="Free order number generator for ecommerce. Create readable order numbers that are not guessable, with random segments, date codes and Shopify/WooCommerce-style formats.">
+<link rel="canonical" href="https://managemybatch.com/tools/order-number-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Order Number Generator — Free Ecommerce Order ID Builder">
+<meta property="og:description" content="Free order number generator for ecommerce. Create readable order numbers that are not guessable, with random segments, date codes and Shopify/WooCommerce-style formats.">
+<meta property="og:url" content="https://managemybatch.com/tools/order-number-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Order Number Generator — Free Ecommerce Order ID Builder">
+<meta name="twitter:description" content="Free order number generator for ecommerce. Create readable order numbers that are not guessable, with random segments, date codes and Shopify/WooCommerce-style formats.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Generator Settings</div>
+
+    <div class="field">
+      <label>Platform preset</label>
+      <div class="seg" id="preset">
+        <button type="button" class="on" data-p="standard">Standard</button>
+        <button type="button" data-p="shopify">Shopify style</button>
+        <button type="button" data-p="secure">Non-guessable</button>
+        <button type="button" data-p="dated">Dated</button>
+      </div>
+      <div class="hint" id="presetHint"></div>
+    </div>
+
+    <div class="row">
+      <div class="field"><label for="prefix">Prefix</label><input type="text" id="prefix" value="ORD" placeholder="ORD"></div>
+      <div class="field">
+        <label for="sep">Separator</label>
+        <select id="sep">
+          <option value="-" selected>Hyphen (-)</option>
+          <option value="">None</option>
+          <option value="_">Underscore (_)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="dateFormat">Date segment</label>
+      <select id="dateFormat"></select>
+    </div>
+
+    <div class="row">
+      <div class="field"><label for="start">Starting number</label><input type="number" id="start" value="1001" min="0"></div>
+      <div class="field">
+        <label for="pad">Number length</label>
+        <select id="pad">
+          <option value="4">4 digits</option>
+          <option value="5" selected>5 digits</option>
+          <option value="6">6 digits</option>
+          <option value="7">7 digits</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="randLen">Random segment length: <strong id="randLabel">0</strong></label>
+      <input type="range" id="randLen" min="0" max="8" value="0" style="width:100%;accent-color:var(--blue)">
+      <div class="hint">Adding random characters stops customers guessing other people's order numbers — the single most common ecommerce enumeration flaw.</div>
+    </div>
+
+    <div class="field">
+      <label for="preview">Preview format</label>
+      <div class="seq-preview" id="preview">ORD-01001</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="row">
+      <div class="field"><label for="count">How many</label><input type="number" id="count" value="5" min="1" max="5000"></div>
+      <div class="field"><label for="date">Order date</label><input type="date" id="date"></div>
+    </div>
+
+    <details class="faq" style="box-shadow:none;margin-bottom:16px">
+      <summary style="padding:12px 14px;font-size:13.8px">Advanced format</summary>
+      <div class="body" style="padding:0 14px 14px">
+        <label for="pattern" style="margin-top:6px">Custom pattern</label>
+        <input type="text" id="pattern" placeholder="e.g. {PREFIX}{SEP}{YY}{MM}{SEP}{SEQ:5}{SEP}{RAND:4}">
+        <div class="token-help" id="tokenHelp"></div>
+        <label for="suffix" style="margin-top:12px">Suffix</label>
+        <input type="text" id="suffix" placeholder="e.g. store or channel code">
+      </div>
+    </details>
+
+    <div class="out-actions">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate Order Numbers</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated Results<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="results">Results</button>
+      <button type="button" data-tab="export">Export</button>
+      <button type="button" data-tab="checks">Validation</button>
+      <button type="button" data-tab="guide">Ecommerce notes</button>
+    </div>
+
+    <div data-panel="results">
+      <div id="primary"></div>
+      <div id="more"></div>
+      <button type="button" class="btn btn-soft btn-block" id="regen" style="margin-top:18px">
+        <span id="icoReset"></span> Regenerate</button>
+      <div id="secNote"></div>
+    </div>
+
+    <div data-panel="export" hidden>
+      <div class="field">
+        <label for="exportAs">Export format</label>
+        <select id="exportAs">
+          <option value="lines">Plain list</option>
+          <option value="csvIndexed">CSV with index</option>
+          <option value="json">JSON array</option>
+          <option value="sql">SQL INSERT</option>
+          <option value="quoted">Quoted &amp; comma-separated</option>
+        </select>
+      </div>
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">order-numbers.txt</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy all</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+    </div>
+
+    <div data-panel="checks" hidden><div id="checks"></div></div>
+    <div data-panel="guide" hidden><div id="guide"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/seqid.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoCopy:copy','icoDl:download','icoReset:reset']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  $('#dateFormat').innerHTML = GTSeq.DATE_FORMATS.map(function (f) {
+    return '<option value="' + f.id + '"' + (f.id === 'none' ? ' selected' : '') + '>' + f.label + '</option>';
+  }).join('');
+  $('#tokenHelp').innerHTML = GTSeq.tokenHelpHtml();
+  $('#date').value = GT.today();
+
+  var HINTS = {
+    standard: 'A readable running number. Easy for support to quote, but customers can guess neighbouring orders.',
+    shopify: 'Shopify-style #1001 onwards — no prefix, no date, starts high so the first order does not look like the first order.',
+    secure: 'Sequence plus a random block. Support can still read it aloud, but the next order number is not predictable.',
+    dated: 'Includes the order date, which makes support triage and warehouse batching easier.'
+  };
+
+  var PRESETS = {
+    standard: { prefix: 'ORD', date: 'none', pad: 5, start: 1001, rand: 0, sep: '-' },
+    shopify: { prefix: '#', date: 'none', pad: 4, start: 1001, rand: 0, sep: '' },
+    secure: { prefix: 'ORD', date: 'none', pad: 5, start: 1001, rand: 5, sep: '-' },
+    dated: { prefix: 'ORD', date: 'YYMMDD', pad: 4, start: 1, rand: 0, sep: '-' }
+  };
+
+  var ids = [];
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'order-numbers.txt', mime: 'text/plain' });
+
+  function opts() {
+    return {
+      prefix: $('#prefix').value,
+      suffix: $('#suffix').value.trim(),
+      dateFormat: $('#dateFormat').value,
+      sep: $('#sep').value,
+      start: $('#start').value,
+      pad: parseInt($('#pad').value, 10),
+      count: parseInt($('#count').value, 10),
+      randLen: parseInt($('#randLen').value, 10) || 0,
+      date: $('#date').value ? new Date($('#date').value + 'T12:00:00') : new Date(),
+      pattern: $('#pattern').value
+    };
+  }
+
+  function build() {
+    var o = opts();
+    ids = GTSeq.generate(o).ids;
+
+    $('#randLabel').textContent = o.randLen || 'none';
+    $('#preview').textContent = ids[0] || '—';
+    GTSeq.renderResults({ ids: ids, primary: '#primary', more: '#more', noun: 'Order Number' });
+    $('#pill').textContent = ids.length.toLocaleString() + ' generated';
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+
+    var mode = $('#exportAs').value;
+    var ext = mode === 'json' ? 'json' : mode === 'sql' ? 'sql' : /csv/.test(mode) ? 'csv' : 'txt';
+    out.set(GTSeq.exportAs(ids, mode, { column: 'order_number', table: 'orders' }), 'order-numbers.' + ext);
+
+    /* security guidance depends on whether a random block is present */
+    var guessable = o.randLen === 0;
+    $('#secNote').innerHTML = guessable
+      ? '<div class="note note-warn" style="margin-top:14px">' + I.warn +
+        '<span><strong>These order numbers are predictable.</strong> Anyone who has ordered from you knows roughly what the next numbers are. That is only safe if your order-status pages require login or an emailed token — never if an order can be looked up by number alone.</span></div>'
+      : '<div class="note note-ok" style="margin-top:14px">' + I.check +
+        '<span>A ' + o.randLen + '-character random block makes the next order number unpredictable, while the sequence keeps numbers readable and roughly ordered.</span></div>';
+
+    var extra = [];
+    if (o.randLen === 0) extra.push({ s: 'warn', m: 'No random segment — order numbers are sequential and therefore enumerable. See the note on the Results tab.' });
+    if (o.randLen > 0 && o.randLen < 4) extra.push({ s: 'warn', m: 'A random block under 4 characters is small enough to brute force. Use at least 4, ideally 5–6.' });
+    if (parseInt(o.start, 10) < 1000 && o.dateFormat === 'none') extra.push({ s: 'warn', m: 'Starting below 1000 signals a brand-new store to every customer. Most shops start at 1001 or higher.' });
+    if ((ids[0] || '').length > 22) extra.push({ s: 'warn', m: 'Long order numbers are awkward on packing slips and in support chats. Under about 18 characters is comfortable.' });
+    GTSeq.renderChecks('#checks', GTSeq.validate(ids, { humanEntry: true, sequential: o.randLen === 0 }).concat(extra));
+  }
+
+  $('#preset').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#preset button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    var p = PRESETS[b.getAttribute('data-p')];
+    $('#prefix').value = p.prefix; $('#dateFormat').value = p.date; $('#pad').value = p.pad;
+    $('#start').value = p.start; $('#randLen').value = p.rand; $('#sep').value = p.sep;
+    $('#pattern').value = '';
+    $('#presetHint').textContent = HINTS[b.getAttribute('data-p')];
+    build();
+  });
+  $('#presetHint').textContent = HINTS.standard;
+
+  $('#guide').innerHTML = [
+    ['Sequential order numbers leak your volume', 'If order 1050 arrives on Monday and 1120 on Friday, a competitor knows you took roughly 70 orders that week. Adding a random block or starting from an arbitrary high number both obscure this.'],
+    ['Enumeration is the real risk', 'The classic ecommerce vulnerability is an order-status page that accepts an order number and returns the customer name, address and items. With sequential numbers, someone can walk the entire order book. Either require authentication, or make the number unguessable — ideally both.'],
+    ['Keep it readable for support', 'Order numbers get read aloud on phone calls and typed from packing slips. Avoid characters that sound alike or look alike, and keep the total length short. This tool\'s random block already excludes I, O, 0 and 1.'],
+    ['Do not use the database ID', 'Exposing the primary key ties your public identifier to internal storage, leaks row counts, and makes it painful to migrate or shard later. Generate a separate order number.'],
+    ['One number, all channels', 'If you sell on your own site plus marketplaces, keep one order-number series and use a short channel segment rather than separate schemes. Support should never have to ask which system an order came from.'],
+    ['Plan for returns and splits', 'A single order that ships in two parcels or generates a return needs derived references — <code>ORD-01234-R1</code>, <code>ORD-01234-S2</code>. Decide the convention now, not when the first split shipment happens.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('');
+
+  GTSeq.bindCopy('#primary', function () { return ids; });
+  GTSeq.bindCopy('#more', function () { return ids; });
+  GTSeq.bindTokenHelp('#tokenHelp', '#pattern', build);
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Order numbers generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+  $('#regen').addEventListener('click', build);
+  $('#exportAs').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'order-number-generator',
+    lede: 'Create order numbers that customers can read out to support but cannot use to guess anyone else’s order — with platform presets and bulk export.',
+    steps: [
+      { icon: 'gear', title: 'Pick a preset', text: 'Standard, Shopify-style, non-guessable or dated.' },
+      { icon: 'bag', title: 'Add a random block', text: 'A few random characters stop order-number enumeration outright.' },
+      { icon: 'copy', title: 'Export', text: 'Copy as a list, CSV, JSON or SQL for your store backend.' }
+    ],
+    guideTitle: 'Readable, sortable, and not guessable — pick all three',
+    guide:
+      '<p style="color:var(--muted)">Order numbers face in two directions at once. Customers and support agents need something short they can read aloud and match against a packing slip. Your systems need something unique and roughly chronological. And anyone on the internet needs to <em>not</em> be able to work out what other order numbers exist.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">The enumeration problem</h4><p style="color:var(--muted);font-size:13.8px">Pure sequential numbers — <code>ORD-1001</code>, <code>ORD-1002</code> — mean every customer holds a valid guess at their neighbours\' orders. Where an order-status or invoice page accepts a bare order number, that becomes a data breach: names, addresses and purchase history, one increment at a time.</p>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">Authentication is the real fix. An unguessable number is defence in depth, and it costs nothing: <code>ORD-01234-K7QM9</code> is still readable, still sorts, and cannot be walked.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Practical constraints</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>Keep it under about 18 characters — it goes on packing slips and into chat.</li><li>Avoid look-alike characters; the random block here already excludes I, O, 0 and 1.</li><li>Never expose the raw database ID as the order number.</li><li>Decide your convention for split shipments and returns up front.</li><li>Pad the sequence so text sorting still works in spreadsheets and exports.</li></ul></div></div>' +
+      '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>Shopify\'s default (<code>#1001</code>) starts high deliberately: a first order numbered <code>#1</code> tells the customer they are your first customer. Starting at 1001 costs nothing and looks established.</span></div>',
+    related: ['invoice-number-generator', 'receipt-number-generator', 'reference-number-generator'],
+    faqs: [
+      { q: 'What makes a good order number?', a: 'Short enough to read aloud, padded so it sorts correctly, unique forever, and unpredictable enough that a customer cannot guess someone else\'s. A sequence plus a short random block achieves all four.' },
+      { q: 'Why should order numbers not be purely sequential?', a: 'Because they can be enumerated. If any page accepts an order number and returns order details, sequential numbering lets someone walk through every order you have taken. It also reveals your order volume to competitors.' },
+      { q: 'Why do stores start at 1001 instead of 1?', a: 'Purely presentational — order #1 tells the customer they are your first ever sale. Starting at 1001 or higher looks established and costs nothing.' },
+      { q: 'Should I use my database ID as the order number?', a: 'No. It leaks row counts, couples your public identifier to internal storage, and makes future migrations or sharding painful. Generate a separate order number.' },
+      { q: 'How do I handle split shipments and returns?', a: 'Derive them from the order number with a suffix convention such as <code>ORD-01234-S2</code> for the second shipment and <code>-R1</code> for the first return. Agree the convention before you need it.' },
+      { q: 'Should the order date be in the number?', a: 'It helps support triage and warehouse batching, and it lets you restart the sequence. The trade-off is length — if you already have a random block, a date segment may push the number past comfortable reading length.' }
+    ],
+    seo: {
+      title: 'Order numbers: readable, sortable and not guessable at the same time',
+      lead: 'This <strong>order number generator</strong> creates references customers can read out to support but cannot use to guess anyone else\'s order — with platform presets and bulk export. Below: why purely sequential numbers leak, why stores start at 1001, and how to handle split shipments and returns.',
+      blocks: [
+        {
+          h: 'What a good order number does',
+          html: '<p>An order number is read aloud on the phone, typed into a tracking box, quoted in an email and printed on a packing slip. It has to satisfy four demands at once, and most schemes get two of them.</p>',
+          list: [
+            '<strong>Readable.</strong> Short enough to dictate, with no ambiguous characters. Twelve random characters is a support cost.',
+            '<strong>Unique.</strong> Forever, across channels, including after a system migration.',
+            '<strong>Sortable or dateable.</strong> Staff should be able to tell roughly when an order was placed from the number alone.',
+            '<strong>Not guessable.</strong> Order 1043 must not imply that order 1042 exists and can be looked up.'
+          ],
+          after: '<p>The scheme that satisfies all four is a prefix, a date component, and a random block: <code>ORD-260810-7K4M</code>. Readable, obviously an order, dated, and with no relationship to any neighbouring order.</p>'
+        },
+        {
+          h: 'Why sequential numbers leak',
+          html: '<p>A purely sequential order number publishes information you did not intend to share.</p>',
+          cards: [
+            { t: 'Volume disclosure', d: 'Anyone who places two orders a month apart learns exactly how many orders you took in between. Competitors do this deliberately; it is the oldest trick in ecommerce intelligence.' },
+            { t: 'Enumeration', d: 'If order lookup is not properly authorised, sequential numbers mean the entire order history can be walked. This is the classic insecure-direct-object-reference vulnerability and it appears in real breaches constantly.' },
+            { t: 'Age signalling', d: 'A customer receiving order number 34 knows they are among your first customers. Sometimes charming, usually not.' },
+            { t: 'Merge collisions', d: 'Two systems both counting from 1 will collide the moment you consolidate them.' }
+          ],
+          callout: { type: 'warn', text: '<strong>An unguessable order number is not access control.</strong> It reduces the value of enumeration, but every order lookup must still verify that the requester owns the order — by session, or by matching the email or postcode. Treat the number as a convenience, never as a secret.' }
+        },
+        {
+          h: 'Why stores start at 1001',
+          html: '<p>Partly presentation and partly practicality. Order <code>#1</code> announces that you have never sold anything, which affects how a first customer feels about paying you. Starting at 1001 or 10001 makes a new store look established, which is why nearly every platform defaults to it.</p>' +
+            '<p>The practical reasons are better. A fixed starting point gives every number the same digit count, so references align in spreadsheets and printouts and never need zero-padding. It also leaves room below for imported historical orders when you migrate from a previous system.</p>' +
+            '<p>The same reasoning applies to a random component: fix the length, and every order number is the same shape forever.</p>'
+        },
+        {
+          h: 'Designing your format',
+          steps: [
+            { t: 'Add a short prefix', d: '<code>ORD</code>, <code>WEB</code>, or a channel code. It tells support instantly what kind of reference they are looking at, and it distinguishes an order number from an invoice or a receipt.' },
+            { t: 'Include a date component', d: '<code>YYMMDD</code> or <code>YYMM</code>. Sorting works, ageing is visible, and archive queries become trivial.' },
+            { t: 'Add a random block', d: 'Four to six characters from an unambiguous alphabet. This is what breaks enumeration.' },
+            { t: 'Drop ambiguous characters', d: 'No <code>0</code>/<code>O</code>, no <code>1</code>/<code>I</code>/<code>l</code>. Every one of them becomes a phone call.' },
+            { t: 'Use a separator', d: 'Hyphens group the parts and make dictation dramatically easier. Store the canonical form with them and accept input without.' },
+            { t: 'Fix the total length', d: 'Never let it grow. Padded, fixed-width references sort correctly as text, which matters in every spreadsheet anyone will export.' }
+          ]
+        },
+        {
+          h: 'Should the date be in the number?',
+          html: '<p>Usually yes, in a coarse form. <code>YYMM</code> or <code>YYMMDD</code> is genuinely useful to warehouse and support staff, and it makes numbers self-sorting.</p>' +
+            '<p>Two caveats. It reveals order timing to anyone holding a reference, which matters for confidential or regulated purchases. And a full timestamp adds length without adding value — nobody needs to know an order was placed at 14:32 from the reference.</p>' +
+            '<p>Where timing is sensitive, drop the date entirely and rely on a longer random block. You lose sortability from the number itself, which is a small price given your database already has the timestamp.</p>',
+          callout: { type: 'tip', text: 'Never use your database primary key as the customer-facing order number. Keep the internal ID internal and generate a separate reference. It lets you change database, merge systems, or re-import history without any customer-visible number changing.' }
+        },
+        {
+          h: 'Split shipments, returns and amendments',
+          html: '<p>The rule that keeps everything traceable: the <strong>order number never changes</strong>. Everything downstream extends it with a suffix.</p>',
+          table: {
+            head: ['Event', 'Convention', 'Example'],
+            rows: [
+              ['Original order', 'The base number.', '<code>ORD-260810-7K4M</code>'],
+              ['First shipment', 'Suffix by shipment.', '<code>ORD-260810-7K4M-S1</code>'],
+              ['Second shipment', 'Increment the suffix.', '<code>ORD-260810-7K4M-S2</code>'],
+              ['Return', 'A distinct return prefix carrying the order reference.', '<code>RMA-260810-7K4M</code>'],
+              ['Replacement', 'A new order, cross-referenced to the original.', 'New number, original stored as a field.'],
+              ['Amendment', 'Same number, versioned document.', 'The order is the same order.']
+            ]
+          },
+          after: '<p>The alternative — issuing a fresh number per shipment — means a customer with three parcels has three references and no way to relate them, and every support conversation starts with reconciliation.</p>'
+        },
+        {
+          h: 'Related reference tools',
+          list: [
+            '<a href="invoice-number-generator.html">Invoice Number Generator</a> — sequential, audit-compliant billing references.',
+            '<a href="receipt-number-generator.html">Receipt Number Generator</a> — point-of-sale transaction numbers.',
+            '<a href="reference-number-generator.html">Reference Number Generator</a> — general-purpose references with check digits.',
+            '<a href="shipping-reference-generator.html">Shipping Reference Generator</a> — consignment and parcel references.',
+            '<a href="purchase-order-number-generator.html">Purchase Order Number Generator</a> — the buying side.'
+          ]
+        }
+      ],
+      keywords: [
+        'order number generator', 'order number format', 'ecommerce order id',
+        'sequential order numbers problem', 'guessable order numbers', 'shopify order number',
+        'order reference format', 'split shipment numbering', 'rma number format',
+        'order number best practices', 'customer facing order id', 'bulk order numbers csv'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

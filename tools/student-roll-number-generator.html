@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Student Roll Number Generator — Class Register Numbering | Manage My Batch</title>
+<meta name="description" content="Free student roll number generator. Assign roll numbers to a class list with year, grade and section segments, alphabetical ordering and CSV export for your register.">
+<link rel="canonical" href="https://managemybatch.com/tools/student-roll-number-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Student Roll Number Generator — Class Register Numbering">
+<meta property="og:description" content="Free student roll number generator. Assign roll numbers to a class list with year, grade and section segments, alphabetical ordering and CSV export for your register.">
+<meta property="og:url" content="https://managemybatch.com/tools/student-roll-number-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Student Roll Number Generator — Class Register Numbering">
+<meta name="twitter:description" content="Free student roll number generator. Assign roll numbers to a class list with year, grade and section segments, alphabetical ordering and CSV export for your register.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Generator Settings</div>
+
+    <div class="field">
+      <label>Mode</label>
+      <div class="seg" id="mode">
+        <button type="button" class="on" data-m="roster">Assign to a class list</button>
+        <button type="button" data-m="blank">Generate blank numbers</button>
+      </div>
+    </div>
+
+    <div class="field" id="rosterField">
+      <label for="names">Student names — one per line</label>
+      <textarea id="names" style="min-height:180px">Priya Sharma
+Ben Okafor
+Amara Diallo
+Chen Wei
+Diego Torres
+Elena Rossi
+Farah Haddad
+Grace Murphy</textarea>
+      <div id="rosterStats"></div>
+    </div>
+
+    <div class="field">
+      <label for="order">Ordering</label>
+      <select id="order">
+        <option value="alpha" selected>Alphabetical by first name</option>
+        <option value="alphaLast">Alphabetical by last name</option>
+        <option value="entered">As entered</option>
+        <option value="random">Random</option>
+      </select>
+      <div class="hint">Alphabetical is the school convention — it makes a roll number predictable from a register.</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="row">
+      <div class="field"><label for="prefix">Prefix</label><input type="text" id="prefix" placeholder="e.g. STU"></div>
+      <div class="field">
+        <label for="sep">Separator</label>
+        <select id="sep">
+          <option value="-" selected>Hyphen (-)</option>
+          <option value="">None</option>
+          <option value="/">Slash (/)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field"><label for="grade">Grade / year</label><input type="text" id="grade" value="9" placeholder="e.g. 9"></div>
+      <div class="field"><label for="section">Section / class</label><input type="text" id="section" value="B" placeholder="e.g. B"></div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="dateFormat">Academic year</label>
+        <select id="dateFormat"></select>
+      </div>
+      <div class="field">
+        <label for="pad">Roll number length</label>
+        <select id="pad">
+          <option value="2" selected>2 digits — 01</option>
+          <option value="3">3 digits — 001</option>
+          <option value="4">4 digits — 0001</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field"><label for="start">Start at</label><input type="number" id="start" value="1" min="0"></div>
+      <div class="field" id="countField" hidden><label for="count">How many</label><input type="number" id="count" value="30" min="1" max="2000"></div>
+    </div>
+
+    <div class="field">
+      <label for="preview">Preview</label>
+      <div class="seq-preview" id="preview">9-B-01</div>
+    </div>
+
+    <div class="out-actions">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate Roll Numbers</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Class Register<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="results">Register</button>
+      <button type="button" data-tab="export">Export</button>
+      <button type="button" data-tab="guide">School guidance</button>
+    </div>
+
+    <div data-panel="results">
+      <div id="register"></div>
+      <div class="out-actions" style="margin-top:18px">
+        <button type="button" class="btn btn-primary" id="printBtn"><span id="icoFile"></span> Print register</button>
+        <button type="button" class="btn btn-ghost" id="copyBtn"><span id="icoCopy"></span> Copy</button>
+      </div>
+      <div id="checks"></div>
+    </div>
+
+    <div data-panel="export" hidden>
+      <div class="field">
+        <label for="exportAs">Export format</label>
+        <select id="exportAs">
+          <option value="csv">CSV — roll number, name</option>
+          <option value="lines">Roll numbers only</option>
+          <option value="json">JSON</option>
+          <option value="sql">SQL INSERT</option>
+        </select>
+      </div>
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">roll-numbers.csv</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyAllBtn"><span id="icoCopy2"></span> Copy all</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+    </div>
+
+    <div data-panel="guide" hidden><div id="guide"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/seqid.js"></script>
+<script src="../assets/js/roster.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoCopy:copy','icoCopy2:copy','icoDl:download','icoFile:file']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  $('#dateFormat').innerHTML = GTSeq.DATE_FORMATS.map(function (f) {
+    return '<option value="' + f.id + '"' + (f.id === 'none' ? ' selected' : '') + '>' + f.label + '</option>';
+  }).join('');
+
+  var mode = 'roster', rows = [];
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyAllBtn', downloadBtn: '#dlBtn', filename: 'roll-numbers.csv', mime: 'text/csv' });
+
+  function lastName(n) {
+    var parts = n.trim().split(/\s+/);
+    return parts.length > 1 ? parts[parts.length - 1] : parts[0];
+  }
+
+  function orderedNames() {
+    var parsed = GTRoster.parseNames($('#names').value);
+    GTRoster.rosterStats('#rosterStats', parsed);
+    var list = parsed.names.slice();
+    var o = $('#order').value;
+    if (o === 'alpha') list.sort(function (a, b) { return a.localeCompare(b); });
+    else if (o === 'alphaLast') list.sort(function (a, b) { return lastName(a).localeCompare(lastName(b)) || a.localeCompare(b); });
+    else if (o === 'random') list = GTRoster.shuffle(list, GTRoster.rng('roll-' + list.length));
+    return list;
+  }
+
+  function build() {
+    var sep = $('#sep').value;
+    var grade = $('#grade').value.trim().toUpperCase();
+    var section = $('#section').value.trim().toUpperCase();
+    var df = GTSeq.DATE_FORMATS.filter(function (f) { return f.id === $('#dateFormat').value; })[0];
+
+    var parts = [];
+    if ($('#prefix').value.trim()) parts.push('{PREFIX}');
+    if (df && df.pattern) parts.push(df.pattern);
+    if (grade) parts.push(grade);
+    if (section) parts.push(section);
+    parts.push('{SEQ}');
+
+    var names = mode === 'roster' ? orderedNames() : [];
+    var count = mode === 'roster' ? names.length : Math.max(1, Math.min(2000, parseInt($('#count').value, 10) || 1));
+
+    var ids = GTSeq.generate({
+      prefix: $('#prefix').value.trim().toUpperCase(),
+      sep: sep,
+      start: $('#start').value,
+      pad: parseInt($('#pad').value, 10),
+      count: Math.max(1, count),
+      date: new Date(),
+      pattern: parts.join(sep === '' ? '' : '{SEP}')
+    }).ids;
+
+    rows = ids.map(function (id, i) { return { roll: id, name: names[i] || '' }; });
+
+    $('#preview').textContent = ids[0] || '—';
+    $('#pill').textContent = rows.length + (mode === 'roster' ? ' students' : ' numbers');
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+
+    renderRegister();
+    renderExport();
+    renderChecks(names);
+  }
+
+  function renderRegister() {
+    if (!rows.length) { $('#register').innerHTML = '<div class="empty">Add student names.</div>'; return; }
+    $('#register').innerHTML =
+      '<table style="border-collapse:collapse;width:100%;font-size:13.8px">' +
+      '<tr><th style="text-align:left;padding:9px;border-bottom:1px solid var(--line);width:38%">Roll number</th>' +
+      '<th style="text-align:left;padding:9px;border-bottom:1px solid var(--line)">Student</th></tr>' +
+      rows.map(function (r) {
+        return '<tr><td style="padding:9px;border-bottom:1px solid var(--line-2);font-family:var(--mono);font-size:13px">' +
+          GT.esc(r.roll) + '</td><td style="padding:9px;border-bottom:1px solid var(--line-2)">' +
+          (r.name ? GT.esc(r.name) : '<span style="color:var(--muted-2)">—</span>') + '</td></tr>';
+      }).join('') + '</table>';
+  }
+
+  function renderExport() {
+    var m = $('#exportAs').value, text, file = 'roll-numbers.csv';
+    if (m === 'csv') {
+      text = 'roll_number,student_name\n' + rows.map(function (r) {
+        return r.roll + ',"' + r.name.replace(/"/g, '""') + '"';
+      }).join('\n');
+    } else if (m === 'json') {
+      text = JSON.stringify(rows, null, 2); file = 'roll-numbers.json';
+    } else if (m === 'sql') {
+      text = 'INSERT INTO students (roll_number, name) VALUES\n' + rows.map(function (r) {
+        return "  ('" + r.roll + "', '" + r.name.replace(/'/g, "''") + "')";
+      }).join(',\n') + ';';
+      file = 'roll-numbers.sql';
+    } else {
+      text = rows.map(function (r) { return r.roll; }).join('\n'); file = 'roll-numbers.txt';
+    }
+    out.set(text, file);
+  }
+
+  function renderChecks(names) {
+    var c = GTSeq.validate(rows.map(function (r) { return r.roll; }), { humanEntry: true });
+    if (mode === 'roster' && names.length) {
+      if ($('#order').value === 'entered') {
+        c.push({ s: 'warn', m: 'Numbers follow your paste order. Most schools sort alphabetically so a roll number can be predicted from the register — and so a late-enrolling student can be slotted in sensibly.' });
+      }
+      if ($('#order').value === 'random') {
+        c.push({ s: 'warn', m: 'Random ordering breaks the link between name and roll number, which makes calling a register slower. Use it only if you deliberately want an unpredictable order.' });
+      }
+    }
+    if (parseInt($('#pad').value, 10) === 2 && rows.length > 99) {
+      c.push({ s: 'err', m: 'Two digits cannot number ' + rows.length + ' students — the sequence rolls past 99. Increase the roll number length.' });
+    }
+    if (!$('#grade').value.trim() && !$('#section').value.trim()) {
+      c.push({ s: 'warn', m: 'No grade or section segment. Roll numbers restart each class, so without one, student 01 in 9A and 01 in 9B share a number.' });
+    }
+    c.push({ s: 'warn', m: 'A roll number identifies a student <em>within a class for one year</em>. It is not a permanent student ID — it changes when they move up. Keep a separate admission number as the stable key.' });
+    GTSeq.renderChecks('#checks', c);
+  }
+
+  $('#copyBtn').addEventListener('click', function () {
+    GT.copy(rows.map(function (r) { return r.roll + '\t' + r.name; }).join('\n'), 'Register');
+  });
+  $('#printBtn').addEventListener('click', function () {
+    var grade = $('#grade').value, section = $('#section').value;
+    GTRoster.printHtml('Class Register',
+      '<h1>Class Register</h1><p class="sub">' +
+      (grade ? 'Grade ' + GT.esc(grade) : '') + (section ? ' · Section ' + GT.esc(section) : '') +
+      ' · ' + rows.length + ' students · ' + new Date().toLocaleDateString() + '</p>' +
+      '<table><tr><th style="width:120px">Roll no.</th><th>Student</th><th style="width:90px">Present</th></tr>' +
+      rows.map(function (r) {
+        return '<tr><td>' + GT.esc(r.roll) + '</td><td>' + GT.esc(r.name) + '</td><td></td></tr>';
+      }).join('') + '</table>');
+  });
+
+  $('#guide').innerHTML = [
+    ['A roll number is not a student ID', 'Roll numbers are positional — they identify a student within one class for one academic year, and they change when the student moves up or switches section. A student ID or admission number is permanent and is what should key attendance history, reports and records across years.'],
+    ['Alphabetical ordering is the convention for a reason', 'When roll numbers follow alphabetical order, anyone can find a student in a register instantly, and calling the roll matches the printed list. It also makes it obvious where a new arrival slots in.'],
+    ['Plan for mid-year enrolments', 'A student joining in term two gets the next number after the last one, which breaks alphabetical order. That is normal and preferable to renumbering the whole class — renumbering invalidates every mark sheet and seating plan already produced.'],
+    ['Include grade and section', 'Roll numbers restart in every class, so 01 exists many times over in a school. Without a grade and section segment, a roll number alone is ambiguous across the year group.'],
+    ['Pad for the largest class you have', 'Two digits fails at 100 students. If any class in the school could exceed 99, use three digits everywhere so the format stays consistent between classes.'],
+    ['Do not reuse a departed student\'s number mid-year', 'It makes attendance records and mark sheets ambiguous for the rest of the year. Leave the gap and reassign at the start of the next academic year.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('');
+
+  $('#mode').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#mode button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    mode = b.getAttribute('data-m');
+    $('#rosterField').hidden = mode !== 'roster';
+    $('#countField').hidden = mode === 'roster';
+    build();
+  });
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Roll numbers generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+  $('#exportAs').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'student-roll-number-generator',
+    lede: 'Assign roll numbers to a class list with grade, section and academic-year segments — alphabetically ordered, printable as a register, exportable as CSV.',
+    steps: [
+      { icon: 'gear', title: 'Paste your class list', text: 'Sorted alphabetically by default, as school convention expects.' },
+      { icon: 'clipboard', title: 'Add grade and section', text: 'Roll numbers restart per class, so these segments keep them unambiguous.' },
+      { icon: 'file', title: 'Print the register', text: 'A ready-to-use attendance sheet with a Present column.' }
+    ],
+    guideTitle: 'Roll number versus admission number',
+    guide:
+      '<p style="color:var(--muted)">Schools use both, and conflating them causes years of quiet damage to record-keeping. A roll number is <strong>positional</strong>: it says where a student sits in this class, this year. When they move to the next grade, or switch section, it changes. An admission number is <strong>permanent</strong>: issued once on enrolment and never reused, it is what links a student to their records across their entire time at the school.</p>' +
+      '<p style="color:var(--muted);margin-top:12px">Attendance history, report cards and transcripts should all key on the admission number. Use the roll number for day-to-day classroom work — calling a register, ordering mark sheets, labelling books — where its positional nature is exactly what you want.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Common formats</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><code>01</code> — simple, within a known class.</li><li><code>9-B-01</code> — grade, section, roll. Unambiguous school-wide.</li><li><code>2026-9B-01</code> — adds the academic year for archived records.</li><li><code>STU-9B-001</code> — prefixed, for systems that need a distinguishable pattern.</li></ul></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Mid-year arrivals</h4><p style="color:var(--muted);font-size:13.8px">A student joining in term two takes the next available number, which puts them out of alphabetical order. That is the correct outcome. Renumbering the class to restore alphabetical order invalidates every mark sheet, seating plan and labelled exercise book already in use.</p>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">Equally, when a student leaves, leave their number unfilled until the next academic year — reusing it mid-year makes the attendance record ambiguous.</p></div></div>' +
+      '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>Student names entered here stay in your browser. Nothing is uploaded, logged or stored, so a real class register is safe to paste.</span></div>',
+    related: ['classroom-seating-chart-generator', 'classroom-group-generator', 'employee-id-generator'],
+    faqs: [
+      { q: 'What is a roll number?', a: 'A number identifying a student within a class for one academic year, usually assigned alphabetically. It is used for registers, mark sheets and seating, and it changes when the student moves up a grade.' },
+      { q: 'What is the difference between a roll number and a student ID?', a: 'A roll number is positional and changes each year. A student ID or admission number is permanent, issued once at enrolment, and is what should key long-term records like transcripts and attendance history.' },
+      { q: 'Should roll numbers be alphabetical?', a: 'It is the standard convention, because it makes a student findable in a register instantly and makes the roll call match the printed list. This tool sorts alphabetically by default.' },
+      { q: 'What do I do when a student joins mid-year?', a: 'Give them the next available number, even though it breaks alphabetical order. Renumbering the whole class invalidates every mark sheet, seating plan and labelled book already produced.' },
+      { q: 'Can I reuse the roll number of a student who left?', a: 'Not during the same academic year — it makes attendance and mark records ambiguous. Leave the gap and reassign numbers cleanly at the start of the next year.' },
+      { q: 'How many digits should a roll number have?', a: 'Two is fine for classes under 100, but if any class in the school might exceed 99, use three everywhere so the format stays consistent across classes.' }
+    ],
+    seo: {
+      title: 'Student roll numbers: assignment, mid-year joiners and what not to reuse',
+      lead: 'This <strong>roll number generator</strong> assigns numbers to a class list with grade, section and academic-year segments, alphabetically ordered and printable as a register. Below: how a roll number differs from an admission number, what to do when a student joins in March, and why reuse causes problems.',
+      blocks: [
+        {
+          h: 'Roll number versus admission number',
+          html: '<p>Schools use both and they answer different questions.</p>',
+          cards: [
+            { t: 'Roll number', d: 'A student\'s position within a class for one academic year. Short, usually one or two digits, and it changes every year as classes are reformed.' },
+            { t: 'Admission number', d: 'A permanent identifier issued once when the student joins the school. It never changes and is never reused — the key that ties together every year of records.' },
+            { t: 'Student ID', d: 'Often the same thing as the admission number, sometimes a separate system identifier. Whatever it is called, there should be exactly one permanent identifier per student.' }
+          ],
+          after: '<p>Keep them distinct. The roll number is a convenience for the classroom — calling the register, arranging seating, ordering marks in a book. Anything that must survive the year (reports, transcripts, fee records, discipline notes) belongs against the admission number.</p>'
+        },
+        {
+          h: 'What goes in the number',
+          table: {
+            head: ['Format', 'Example', 'Suits'],
+            rows: [
+              ['Sequence only', '<code>14</code>', 'Small schools with one class per grade.'],
+              ['Grade + section + sequence', '<code>8B-14</code>', 'The common default. Unambiguous across a whole school.'],
+              ['Year + grade + section + sequence', '<code>26-8B-14</code>', 'Where records are filed by academic year.'],
+              ['Admission number', '<code>2019-0421</code>', 'Permanent. Separate from the roll number entirely.']
+            ]
+          },
+          after: '<p>Include the section wherever more than one class shares a grade. "Roll number 14" is ambiguous across four sections of Year 8, and the ambiguity surfaces exactly when two teachers compare notes about a student.</p>'
+        },
+        {
+          h: 'Should roll numbers be alphabetical?',
+          html: '<p>By convention, yes, and the convention is worth keeping. Alphabetical assignment by surname makes a register readable, lets anyone find a student without a lookup, and — importantly — is visibly neutral. Nobody can read anything into their position.</p>',
+          list: [
+            '<strong>Alphabetical by surname</strong> is the standard, and matches how most registers and mark sheets are printed.',
+            '<strong>Alphabetical by first name</strong> suits younger classes where children know each other by first name.',
+            '<strong>By admission date</strong> preserves numbers across the year but produces an order nobody can navigate.',
+            '<strong>Never by attainment.</strong> Ordering a register by marks makes rank public every time it is read aloud, which is unjustifiable.'
+          ],
+          callout: { type: 'tip', text: 'Sort on the exact name form you will use all year, including prefixes such as "de", "van" and "Mc". Changing the sort basis in October renumbers the whole class and invalidates every mark sheet already printed.' }
+        },
+        {
+          h: 'Assigning a class',
+          steps: [
+            { t: 'Paste the class list', d: 'One name per line, straight from your management system export.' },
+            { t: 'Choose the sort', d: 'Surname, first name, or keep the order as pasted.' },
+            { t: 'Set grade, section and year', d: 'These become the reference prefix.' },
+            { t: 'Choose padding', d: 'Two digits for classes under 100. Padded numbers sort correctly in every spreadsheet.' },
+            { t: 'Leave gaps if you expect joiners', d: 'Assigning 1, 2, 3 with no room means a March arrival either renumbers the class or lands at the end.' },
+            { t: 'Print the register or export CSV', d: 'The printable register is ready for the wall or the mark book; the CSV imports into your MIS.' }
+          ]
+        },
+        {
+          h: 'Mid-year joiners',
+          html: '<p>The awkward case, and there are only two defensible answers.</p>' +
+            '<p><strong>Append at the end.</strong> A student joining in March takes the next number after the last. The alphabetical order is broken for one entry, which every teacher will notice, but nobody else is renumbered — and nothing already printed becomes wrong.</p>' +
+            '<p><strong>Renumber the whole class.</strong> Alphabetical order is restored, and every mark sheet, seating chart, exam list and book label printed so far now refers to different students. This is almost always the wrong trade.</p>' +
+            '<p>Append. The cost of a slightly untidy register is trivial against the cost of stale numbers on documents already in circulation — and the risk of a mark being recorded against the wrong child because a number moved.</p>',
+          callout: { type: 'warn', text: '<strong>Never renumber a class mid-year.</strong> Marks, seating charts, exam entries and book labels all carry the old numbers, and there is no reliable way to find every copy. A student receiving another student\'s marks is the realistic failure mode, and it is discovered at reporting time.' }
+        },
+        {
+          h: 'Reusing a departed student\'s number',
+          html: '<p>Within the same academic year, no. If a student leaves in November, leave their number vacant until the year ends.</p>' +
+            '<p>The reasoning is the same as for mid-year joiners: mark books, exam lists and internal records from September onwards carry that number against that child. Reassigning it in December means the mark book contains two students under one number, distinguished only by a date somebody would have to remember to check.</p>' +
+            '<p>Across years there is no issue at all — roll numbers are reassigned wholesale every September when classes are reformed, and that is exactly what they are for. It is the permanent <strong>admission number</strong> that must never be reused, because it is the key that ties a transcript to a person years after they have left.</p>'
+        },
+        {
+          h: 'How many digits?',
+          html: '<p>Two for a roll number. A class of more than 99 students is not a class, and two digits keep the number short enough to write on a book cover and call out across a room.</p>' +
+            '<p>Admission numbers want more: a year segment plus a four-digit sequence (<code>2019-0421</code>) gives a permanent, sortable identifier that will not collide for the lifetime of the school. Fix the width from the start — an admission number that grows a digit sorts incorrectly in every export and breaks any fixed-width interface to an examination board.</p>'
+        },
+        {
+          h: 'Related classroom tools',
+          list: [
+            '<a href="classroom-seating-chart-generator.html">Classroom Seating Chart Generator</a> — seat the same class list.',
+            '<a href="classroom-group-generator.html">Classroom Group Generator</a> — split the class for group work.',
+            '<a href="random-student-pair-generator.html">Random Student Pair Generator</a> — pair students fairly.',
+            '<a href="employee-id-generator.html">Employee ID Generator</a> — the staff equivalent.',
+            '<a href="presentation-order-generator.html">Presentation Order Generator</a> — fair ordering for the same class.'
+          ]
+        }
+      ],
+      keywords: [
+        'student roll number generator', 'roll number format', 'class register numbering',
+        'admission number vs roll number', 'assign roll numbers alphabetically',
+        'school student id format', 'class list numbering', 'mid year student joining',
+        'printable class register', 'student number system', 'roll call list generator',
+        'academic year student ids'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

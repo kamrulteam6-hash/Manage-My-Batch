@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Receipt Number Generator — Free Gapless Receipt Numbering | Manage My Batch</title>
+<meta name="description" content="Free receipt number generator for POS, retail and cash handling. Build gapless, auditable receipt numbers with till, store and date segments. Bulk generate and export.">
+<link rel="canonical" href="https://managemybatch.com/tools/receipt-number-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Receipt Number Generator — Free Gapless Receipt Numbering">
+<meta property="og:description" content="Free receipt number generator for POS, retail and cash handling. Build gapless, auditable receipt numbers with till, store and date segments. Bulk generate and export.">
+<meta property="og:url" content="https://managemybatch.com/tools/receipt-number-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Receipt Number Generator — Free Gapless Receipt Numbering">
+<meta name="twitter:description" content="Free receipt number generator for POS, retail and cash handling. Build gapless, auditable receipt numbers with till, store and date segments. Bulk generate and export.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Generator Settings</div>
+
+    <div class="field">
+      <label for="prefix">Prefix</label>
+      <input type="text" id="prefix" value="RCP" placeholder="RCP">
+    </div>
+
+    <div class="row">
+      <div class="field"><label for="store">Store / location code</label><input type="text" id="store" placeholder="e.g. LON01"></div>
+      <div class="field"><label for="till">Till / register number</label><input type="text" id="till" placeholder="e.g. 03"></div>
+    </div>
+    <div class="hint" style="margin:-8px 0 16px">Each till normally keeps its own unbroken sequence, so the combination of till and number is what stays unique.</div>
+
+    <div class="row">
+      <div class="field">
+        <label for="dateFormat">Date segment</label>
+        <select id="dateFormat"></select>
+      </div>
+      <div class="field">
+        <label for="sep">Separator</label>
+        <select id="sep">
+          <option value="-" selected>Hyphen (-)</option>
+          <option value="/">Slash (/)</option>
+          <option value="">None</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field"><label for="start">Starting number</label><input type="number" id="start" value="1" min="0"></div>
+      <div class="field">
+        <label for="pad">Number length</label>
+        <select id="pad">
+          <option value="4">4 digits</option>
+          <option value="5">5 digits</option>
+          <option value="6" selected>6 digits</option>
+          <option value="7">7 digits</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="preview">Preview format</label>
+      <div class="seq-preview" id="preview">RCP-20260809-000001</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="row">
+      <div class="field"><label for="count">How many</label><input type="number" id="count" value="6" min="1" max="5000"></div>
+      <div class="field"><label for="date">Receipt date</label><input type="date" id="date"></div>
+    </div>
+
+    <details class="faq" style="box-shadow:none;margin-bottom:16px">
+      <summary style="padding:12px 14px;font-size:13.8px">Advanced format</summary>
+      <div class="body" style="padding:0 14px 14px">
+        <label for="pattern" style="margin-top:6px">Custom pattern</label>
+        <input type="text" id="pattern" placeholder="e.g. {PREFIX}{SEP}{YYYY}{MM}{DD}{SEP}{SEQ:6}">
+        <div class="token-help" id="tokenHelp"></div>
+        <label for="suffix" style="margin-top:12px">Suffix</label>
+        <input type="text" id="suffix" placeholder="optional">
+      </div>
+    </details>
+
+    <div class="out-actions">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate Receipt Numbers</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated Results<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="results">Results</button>
+      <button type="button" data-tab="export">Export</button>
+      <button type="button" data-tab="checks">Validation</button>
+      <button type="button" data-tab="guide">Compliance</button>
+    </div>
+
+    <div data-panel="results">
+      <div id="primary"></div>
+      <div id="more"></div>
+      <button type="button" class="btn btn-soft btn-block" id="regen" style="margin-top:18px">
+        <span id="icoReset"></span> Regenerate</button>
+      <div class="note note-warn" style="margin-top:14px"><span id="icoWarn"></span>
+        <span><strong>Receipt sequences must be gapless.</strong> A missing number is treated as a deleted sale. Void receipts by issuing a refund record that references the original — never by removing the number.</span></div>
+    </div>
+
+    <div data-panel="export" hidden>
+      <div class="field">
+        <label for="exportAs">Export format</label>
+        <select id="exportAs">
+          <option value="lines">Plain list</option>
+          <option value="csvIndexed">CSV with index</option>
+          <option value="json">JSON array</option>
+          <option value="sql">SQL INSERT</option>
+        </select>
+      </div>
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">receipt-numbers.txt</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy all</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+    </div>
+
+    <div data-panel="checks" hidden><div id="checks"></div></div>
+    <div data-panel="guide" hidden><div id="guide"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/seqid.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoCopy:copy','icoDl:download','icoReset:reset','icoWarn:warn']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  $('#dateFormat').innerHTML = GTSeq.DATE_FORMATS.map(function (f) {
+    return '<option value="' + f.id + '"' + (f.id === 'YYYYMMDD' ? ' selected' : '') + '>' + f.label + '</option>';
+  }).join('');
+  $('#tokenHelp').innerHTML = GTSeq.tokenHelpHtml();
+  $('#date').value = GT.today();
+
+  var ids = [];
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'receipt-numbers.txt', mime: 'text/plain' });
+
+  function opts() {
+    var sep = $('#sep').value;
+    var store = $('#store').value.trim().toUpperCase();
+    var till = $('#till').value.trim().toUpperCase();
+    var pattern = $('#pattern').value.trim();
+    if (!pattern && (store || till)) {
+      var df = GTSeq.DATE_FORMATS.filter(function (f) { return f.id === $('#dateFormat').value; })[0];
+      var parts = ['{PREFIX}'];
+      if (store) parts.push(store);
+      if (till) parts.push('T' + till);
+      if (df && df.pattern) parts.push(df.pattern);
+      parts.push('{SEQ}');
+      if ($('#suffix').value.trim()) parts.push('{SUFFIX}');
+      pattern = parts.join(sep === '' ? '' : '{SEP}');
+    }
+    return {
+      prefix: $('#prefix').value.trim(),
+      suffix: $('#suffix').value.trim(),
+      dateFormat: $('#dateFormat').value,
+      sep: sep,
+      start: $('#start').value,
+      pad: parseInt($('#pad').value, 10),
+      count: parseInt($('#count').value, 10),
+      date: $('#date').value ? new Date($('#date').value + 'T12:00:00') : new Date(),
+      pattern: pattern
+    };
+  }
+
+  function build() {
+    var o = opts();
+    ids = GTSeq.generate(o).ids;
+
+    $('#preview').textContent = ids[0] || '—';
+    GTSeq.renderResults({ ids: ids, primary: '#primary', more: '#more', noun: 'Receipt Number' });
+    $('#pill').textContent = ids.length.toLocaleString() + ' generated';
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+
+    var mode = $('#exportAs').value;
+    var ext = mode === 'json' ? 'json' : mode === 'sql' ? 'sql' : /csv/.test(mode) ? 'csv' : 'txt';
+    out.set(GTSeq.exportAs(ids, mode, { column: 'receipt_number', table: 'receipts' }), 'receipt-numbers.' + ext);
+
+    var extra = [];
+    if (!$('#till').value.trim() && !$('#store').value.trim()) {
+      extra.push({ s: 'warn', m: 'No till or store segment. With more than one register, two tills running the same sequence will eventually issue the same receipt number.' });
+    }
+    if ($('#dateFormat').value === 'none') {
+      extra.push({ s: 'warn', m: 'No date segment. Daily date codes make end-of-day cash reconciliation dramatically easier, since the day\'s receipts form one contiguous block.' });
+    }
+    if (parseInt($('#pad').value, 10) < 5) {
+      extra.push({ s: 'warn', m: 'A busy till can exceed 9,999 transactions in a period. Six digits is the safe default for retail.' });
+    }
+    GTSeq.renderChecks('#checks', GTSeq.validate(ids, { sequential: true, humanEntry: true }).concat(extra));
+  }
+
+  $('#guide').innerHTML = [
+    ['Gapless is the whole point', 'Receipt numbering exists so that cash sales cannot be quietly removed. Tax authorities in many countries specifically check for gaps, and increasingly require certified POS software that makes deletion impossible.'],
+    ['Void by adding, never by removing', 'A mis-rung sale is corrected with a void or refund record that references the original receipt number. Both records stay. Deleting the original is what turns a mistake into an audit finding.'],
+    ['One sequence per till, or one per store', 'Either is defensible, but be consistent. If each till has its own sequence, the till identifier must be part of the number — otherwise two registers issue the same number on the same day.'],
+    ['Daily date codes simplify cash-up', 'When the date is in the number, the day\'s receipts form one contiguous block. Reconciling the till at close becomes a range check rather than a filtered query.'],
+    ['Fiscal receipt rules vary widely', 'Several countries mandate certified fiscal printers, digital signatures on each receipt, or real-time reporting to the tax authority. Where those rules apply, the POS system issues the number — you cannot substitute your own scheme.'],
+    ['Keep the number on the customer copy', 'It is how a customer references a return, and how you find the transaction. A receipt without a visible number makes every dispute a manual search.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('') +
+  '<div class="note note-warn">' + I.warn + '<span>General guidance only, not tax advice. Fiscal receipt requirements differ significantly between countries — check what applies to your business before changing a live numbering scheme.</span></div>';
+
+  GTSeq.bindCopy('#primary', function () { return ids; });
+  GTSeq.bindCopy('#more', function () { return ids; });
+  GTSeq.bindTokenHelp('#tokenHelp', '#pattern', build);
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Receipt numbers generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+  $('#regen').addEventListener('click', build);
+  $('#exportAs').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'receipt-number-generator',
+    lede: 'Generate gapless receipt numbers for POS and cash handling — with store, till and date segments that make end-of-day reconciliation a range check.',
+    steps: [
+      { icon: 'gear', title: 'Add store and till codes', text: 'Each register needs its own identifiable series.' },
+      { icon: 'receipt', title: 'Generate the day’s block', text: 'A contiguous run for the trading day.' },
+      { icon: 'copy', title: 'Export', text: 'Copy into your POS or reconciliation sheet.' }
+    ],
+    guideTitle: 'Why receipt numbering is an audit control',
+    guide:
+      '<p style="color:var(--muted)">Cash sales are the easiest transactions to make disappear, which is why receipt numbering attracts more regulatory attention than almost any other identifier. The requirement is nearly always the same: an unbroken sequence, where every number is accounted for and no record can be deleted without a trace.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Structures that work</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><code>RCP-000001</code> — single till, single site.</li><li><code>RCP-T03-000001</code> — per-till sequence, multi-register shop.</li><li><code>RCP-LON01-T03-20260809-0042</code> — full chain traceability across sites.</li><li><code>RCP-20260809-000001</code> — daily block, easiest cash-up.</li></ul></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Where it goes wrong</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>Two tills sharing one sequence with no till identifier — duplicate numbers on the same day.</li><li>Deleting a mis-rung sale instead of voiding it, leaving a gap nobody can explain months later.</li><li>Resetting the sequence when the POS is replaced, so numbers repeat across the year.</li><li>Padding too short, so the number rolls over during a busy period.</li></ul></div></div>' +
+      '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>If you operate where certified fiscal printers or real-time tax reporting apply, the receipt number is issued by the certified device and cannot be replaced by your own scheme. Use this tool for internal references, order slips and non-fiscal documents in that case.</span></div>',
+    related: ['invoice-number-generator', 'order-number-generator', 'ticket-number-generator'],
+    faqs: [
+      { q: 'Do receipt numbers have to be sequential?', a: 'In most jurisdictions yes — the sequence must be unbroken so that a cash sale cannot be removed without leaving an unexplained gap. Some countries additionally require certified POS software that enforces this.' },
+      { q: 'What happens if I void a receipt?', a: 'Keep the number and record a void or refund that references it. Deleting the receipt leaves a gap, and an unexplained gap is exactly what an auditor looks for.' },
+      { q: 'Should each till have its own sequence?', a: 'Either one sequence per till or one per store works, as long as you are consistent. If each till has its own, the till identifier must appear in the number so two registers cannot issue the same one.' },
+      { q: 'Should the date be in the receipt number?', a: 'It helps a lot. With a daily date code, the day\'s receipts form one contiguous block, so end-of-day cash reconciliation becomes a simple range check.' },
+      { q: 'How long should a receipt number be?', a: 'Six digits of sequence is the safe default for retail — a busy till can pass 9,999 transactions in a period. Add store and till codes only if you have more than one of either.' },
+      { q: 'Is a receipt number the same as an invoice number?', a: 'No. A receipt evidences payment; an invoice requests it. They are usually separate series, and in many countries only invoices carry the full legal formatting requirements.' }
+    ],
+    seo: {
+      title: 'Receipt numbering: gapless sequences, voids and end-of-day reconciliation',
+      lead: 'This <strong>receipt number generator</strong> produces gapless POS references with store, till and date segments so reconciliation becomes a range check. Below: why auditors care about gaps, what to do with a voided sale, and whether each till needs its own sequence.',
+      blocks: [
+        {
+          h: 'Receipt numbering is an audit control',
+          html: '<p>A receipt number looks like a formality. It is actually the mechanism that proves your recorded takings match the sales that happened.</p>' +
+            '<p>The logic is simple. If receipts run <code>1001</code> to <code>1250</code> with no gaps, then 250 transactions occurred and 250 are in the ledger. A missing number is either a deleted sale or a receipt that was never recorded — and both are what cash-handling controls exist to catch. This is why tax authorities in many jurisdictions require gapless sequential numbering for point-of-sale receipts, and why fiscal printers enforce it in hardware.</p>' +
+            '<p>The design consequence: a receipt number must be <strong>sequential and gapless</strong> within its sequence. Random components, which are correct for order numbers, are wrong here.</p>',
+          callout: { type: 'warn', text: '<strong>Never delete a receipt to correct a mistake.</strong> A gap in the sequence is precisely what an auditor looks for, and an unexplained one is treated as suppressed revenue. Void or refund the transaction so the number stays in the sequence with a recorded reason.' }
+        },
+        {
+          h: 'Voids, refunds and mistakes',
+          steps: [
+            { t: 'Void keeps the number', d: 'A voided sale retains its receipt number and is recorded as voided with a reason and an operator. The sequence stays intact.' },
+            { t: 'A refund gets its own number', d: 'It is a separate transaction in the same sequence, referencing the original receipt.' },
+            { t: 'A misprint still consumes a number', d: 'Reprinting on a jammed printer, or a test print, uses a number. Record it as spoiled rather than reusing it.' },
+            { t: 'Never reuse or renumber', d: 'Once issued, a number is spent. Reissuing it means two documents claim the same identity.' },
+            { t: 'Log who and why', d: 'A void with no operator and no reason is indistinguishable from a suppressed sale.' }
+          ]
+        },
+        {
+          h: 'One sequence per till, or one per store?',
+          cards: [
+            { t: 'Per till', d: 'The usual choice. Each terminal counts independently, so an offline till keeps working and reconciliation is per-drawer — which is how cash is counted anyway.' },
+            { t: 'Per store', d: 'Simpler to explain and gives a single chronological run, but requires every till to reach a shared counter. One network problem stops trading.' },
+            { t: 'Per store per day', d: 'Resets daily with the date in the reference. Short numbers, obvious grouping, and gapless within each day.' },
+            { t: 'Central sequence across stores', d: 'Almost never worth it. The coordination cost is high and the benefit — one global run — is something reporting can reconstruct anyway.' }
+          ],
+          after: '<p>Whichever you choose, the till or store identifier belongs <em>in the reference</em>: <code>S02-T03-260810-0147</code>. Two tills both issuing receipt 147 are unambiguous only if the reference says which till.</p>'
+        },
+        {
+          h: 'Structuring the reference',
+          table: {
+            head: ['Segment', 'Example', 'Purpose'],
+            rows: [
+              ['Store', '<code>S02</code>', 'Which location. Essential for multi-site reconciliation.'],
+              ['Till / terminal', '<code>T03</code>', 'Which drawer the cash should be in.'],
+              ['Date', '<code>260810</code>', 'Groups the day\'s trading and makes the sequence resettable.'],
+              ['Sequence', '<code>0147</code>', 'The gapless counter. Zero-padded so it sorts as text.'],
+              ['Operator (optional)', '<code>OP12</code>', 'Useful in high-shrinkage environments; adds length.']
+            ]
+          },
+          callout: { type: 'tip', text: 'Zero-pad the sequence to a fixed width from day one. Unpadded numbers sort as <code>1, 10, 100, 2</code> in every spreadsheet export, and the day someone reconciles by sorting a CSV is the day it matters.' }
+        },
+        {
+          h: 'Including the date',
+          html: '<p>Yes, for point-of-sale. A dated receipt number lets the sequence reset daily, which keeps numbers short, makes the day\'s range obvious, and means reconciliation is a range check rather than a query.</p>' +
+            '<p>Use <code>YYMMDD</code> and put it before the sequence, so references sort chronologically as plain text. Avoid <code>DDMMYY</code>, which sorts by day of month, and avoid separators inside the date segment — they add length without helping.</p>' +
+            '<p>The one situation where a date is wrong is a continuous sequence spanning years for statutory reasons. Some fiscal regimes require an unbroken annual run per till; check the local requirement before choosing a daily reset.</p>'
+        },
+        {
+          h: 'Receipt number or invoice number?',
+          html: '<p>Related, not identical, and conflating them causes real accounting problems.</p>',
+          list: [
+            '<strong>A receipt</strong> evidences payment received. It is issued at the moment of the transaction, usually at a till, and its number belongs to the POS sequence.',
+            '<strong>An invoice</strong> is a demand for payment. It carries tax details, payment terms and a legally significant number from the accounting sequence.',
+            '<strong>A simplified tax invoice</strong> — what most retail receipts actually are below a value threshold — can serve both roles, which is where the confusion starts.'
+          ],
+          after: '<p>Keep the sequences separate. A business that issues both needs to answer "how many invoices did we raise" and "how many transactions did we take" independently, and one shared counter makes both questions unanswerable. See the <a href="invoice-number-generator.html">invoice number generator</a> for the accounting side.</p>'
+        },
+        {
+          h: 'How long should it be?',
+          html: '<p>Long enough to be unique within its sequence for the retention period, and no longer. A four-digit daily sequence covers 9,999 transactions per till per day, which is beyond any realistic single-till volume.</p>' +
+            '<p>With store, till and date segments, a complete reference lands around 16–20 characters — readable on a printed receipt, dictatable on the phone, and immediately meaningful to anyone trained on the format. Beyond that, staff start abbreviating it in notes, and abbreviated references are the ones that fail to match.</p>'
+        },
+        {
+          h: 'Related transaction tools',
+          list: [
+            '<a href="invoice-number-generator.html">Invoice Number Generator</a> — audit-compliant billing sequences.',
+            '<a href="order-number-generator.html">Order Number Generator</a> — customer-facing order references.',
+            '<a href="ticket-number-generator.html">Ticket Number Generator</a> — queue and admission numbers.',
+            '<a href="reference-number-generator.html">Reference Number Generator</a> — payment references with check digits.',
+            '<a href="employee-id-generator.html">Employee ID Generator</a> — operator identifiers for the till.'
+          ]
+        }
+      ],
+      keywords: [
+        'receipt number generator', 'pos receipt numbering', 'sequential receipt numbers',
+        'gapless numbering', 'till reconciliation', 'receipt number format',
+        'void receipt accounting', 'receipt vs invoice number', 'daily receipt sequence',
+        'cash handling controls', 'fiscal receipt numbering', 'multi store receipt numbers'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

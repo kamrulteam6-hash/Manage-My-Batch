@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tournament Bracket Generator — Seeded Knockout Brackets, Free | Manage My Batch</title>
+<meta name="description" content="Free tournament bracket generator. Build seeded single-elimination brackets with correct bye placement, printable tree diagrams and a match list. Any number of entrants.">
+<link rel="canonical" href="https://managemybatch.com/tools/tournament-bracket-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Tournament Bracket Generator — Seeded Knockout Brackets, Free">
+<meta property="og:description" content="Free tournament bracket generator. Build seeded single-elimination brackets with correct bye placement, printable tree diagrams and a match list. Any number of entrants.">
+<meta property="og:url" content="https://managemybatch.com/tools/tournament-bracket-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Tournament Bracket Generator — Seeded Knockout Brackets, Free">
+<meta name="twitter:description" content="Free tournament bracket generator. Build seeded single-elimination brackets with correct bye placement, printable tree diagrams and a match list. Any number of entrants.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Tournament Setup</div>
+
+    <div class="field">
+      <label for="entrants">Entrants — one per line</label>
+      <textarea id="entrants" style="min-height:200px">Riverside FC
+Ashford United
+Kingsway Rovers
+Northgate Athletic
+Belmont Town
+Carlton City
+Denton Wanderers
+Eastvale Rangers
+Fairfield United
+Greenhill FC
+Hartwell Town</textarea>
+      <div class="hint">List in seed order if you are seeding — strongest first.</div>
+      <div id="stats"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label for="seeding">Seeding</label>
+      <select id="seeding">
+        <option value="listed" selected>Use the order above as seeds</option>
+        <option value="random">Random draw</option>
+        <option value="none">Random, but no seeding advantage</option>
+      </select>
+      <div class="hint" id="seedHint"></div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="thirdPlace">Third-place play-off</label>
+        <select id="thirdPlace">
+          <option value="no" selected>No</option>
+          <option value="yes">Yes</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="boxW">Bracket width</label>
+        <select id="boxW">
+          <option value="120">Compact</option>
+          <option value="150" selected>Standard</option>
+          <option value="190">Wide names</option>
+        </select>
+      </div>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Options</legend>
+      <div class="check-list">
+        <label class="check on"><input type="checkbox" id="optSeedNums" checked>
+          <span><span class="t">Show seed numbers</span></span></label>
+        <label class="check on"><input type="checkbox" id="optMatchList" checked>
+          <span><span class="t">Include a round-one match list</span><span class="d">Easier to read out than a bracket diagram.</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="field">
+      <label for="title">Tournament name</label>
+      <input type="text" id="title" value="Summer Cup">
+    </div>
+
+    <div class="field">
+      <label for="seed">Draw seed</label>
+      <div class="row" style="grid-template-columns:minmax(0,1fr) auto;gap:8px">
+        <input type="text" id="seed" value="cup-1">
+        <button type="button" class="btn btn-soft" id="newSeed"><span id="icoReset"></span></button>
+      </div>
+    </div>
+
+    <div class="out-actions">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate Bracket</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Bracket<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="bracket">Bracket</button>
+      <button type="button" data-tab="matches">Match list</button>
+      <button type="button" data-tab="guide">How seeding works</button>
+    </div>
+
+    <div data-panel="bracket">
+      <div id="bracket" style="overflow-x:auto"></div>
+      <div class="out-actions" style="margin-top:16px">
+        <button type="button" class="btn btn-primary" id="printBtn"><span id="icoFile"></span> Print / PDF</button>
+        <button type="button" class="btn btn-soft" id="regen"><span id="icoReset2"></span> Redraw</button>
+      </div>
+      <div id="checks"></div>
+    </div>
+
+    <div data-panel="matches" hidden>
+      <div id="matches"></div>
+      <div class="out-actions" style="margin-top:14px">
+        <button class="btn btn-ghost" id="copyBtn"><span id="icoCopy"></span> Copy match list</button>
+      </div>
+    </div>
+
+    <div data-panel="guide" hidden><div id="guide"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/schedule.js"></script>
+<script src="../assets/js/roster.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$, S = GTSched;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoCopy:copy','icoReset:reset','icoReset2:reset','icoFile:file']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var HINTS = {
+    listed: 'Seeds come from your list order. Top seeds receive the byes and are kept apart until late rounds.',
+    random: 'The order is shuffled, then treated as seeds. Byes still go to whoever lands at the top.',
+    none: 'A pure open draw. Byes are distributed by bracket position with no ranking implied.'
+  };
+
+  var bracket = null, entrants = [];
+
+  function build() {
+    var parsed = GTRoster.parseNames($('#entrants').value);
+    entrants = parsed.names;
+    GTRoster.rosterStats('#stats', parsed);
+    $('#seedHint').textContent = HINTS[$('#seeding').value];
+
+    if (entrants.length < 2) {
+      $('#bracket').innerHTML = '<div class="empty">Add at least two entrants.</div>';
+      $('#pill').textContent = '—'; $('#matches').innerHTML = '';
+      return;
+    }
+
+    var order = entrants.slice();
+    if ($('#seeding').value !== 'listed') {
+      order = S.rng($('#seed').value).shuffle(order);
+    }
+
+    bracket = S.buildBracket(order);
+
+    $('#bracket').innerHTML = S.bracketSvg(bracket.rounds, {
+      boxW: parseInt($('#boxW').value, 10),
+      showSeeds: $('#optSeedNums').checked
+    });
+
+    renderMatches();
+    renderChecks();
+
+    $('#pill').textContent = entrants.length + ' entrants · ' + bracket.rounds.length + ' rounds';
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+  }
+
+  function matchLines() {
+    var out = [], n = 1;
+    bracket.rounds[0].forEach(function (m) {
+      if (m.bye) {
+        out.push({ bye: true, text: (m.a || m.b) + ' — bye to round 2' });
+      } else {
+        out.push({ text: 'Match ' + (n++) + ':  ' + m.a + '  v  ' + m.b,
+          seeds: m.seedA && m.seedB ? '(' + m.seedA + ' v ' + m.seedB + ')' : '' });
+      }
+    });
+    return out;
+  }
+
+  function renderMatches() {
+    var lines = matchLines();
+    $('#matches').innerHTML =
+      '<p class="more-label">Round one</p><div class="more-list">' +
+      lines.map(function (l) {
+        return '<div class="more-row"' + (l.bye ? ' style="background:var(--bg-soft)"' : '') + '>' +
+          '<span class="mval" style="font-family:var(--sans);font-size:14.5px;' +
+          (l.bye ? 'color:var(--muted);font-style:italic' : 'font-weight:500') + '">' +
+          GT.esc(l.text) + '</span>' +
+          (l.seeds ? '<span class="chip">' + l.seeds + '</span>' : '') + '</div>';
+      }).join('') + '</div>' +
+      '<div class="note note-info" style="margin-top:12px">' + I.info +
+      '<span>Byes are shown explicitly. Those entrants play their first match in round two.</span></div>';
+  }
+
+  function renderChecks() {
+    var c = [];
+    var n = entrants.length;
+    c.push(['ok', 'Bracket size ' + bracket.size + ' for ' + n + ' entrants — ' +
+      (bracket.byes ? bracket.byes + ' bye' + (bracket.byes === 1 ? '' : 's') : 'no byes needed') + '.']);
+
+    if (bracket.byes && $('#seeding').value === 'listed') {
+      var byeTeams = bracket.rounds[0].filter(function (m) { return m.bye; })
+        .map(function (m) { return m.a || m.b; });
+      c.push(['ok', 'Byes go to the top seeds: ' + byeTeams.slice(0, 6).map(GT.esc).join(', ') +
+        (byeTeams.length > 6 ? '…' : '') + '. That is the standard convention — it rewards ranking and keeps the strongest entrants apart early.']);
+    }
+    if (bracket.byes && $('#seeding').value === 'none') {
+      c.push(['warn', 'With an unseeded draw, byes still go to whoever landed in the top bracket positions. If that feels arbitrary to your entrants, consider drawing lots for the byes separately.']);
+    }
+    if ((n & (n - 1)) !== 0) {
+      c.push(['warn', n + ' is not a power of two, so ' + bracket.byes +
+        ' entrant' + (bracket.byes === 1 ? '' : 's') + ' skip round one. The clean sizes are 4, 8, 16, 32 and 64.']);
+    }
+    if (n > 64) c.push(['warn', 'Very large brackets print small. Consider group stages feeding a 16 or 32 knockout.']);
+    if ($('#thirdPlace').value === 'yes') {
+      c.push(['ok', 'A third-place play-off is listed after the final — the two losing semi-finalists.']);
+    }
+    $('#checks').innerHTML = c.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : 'note-warn') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+  }
+
+  $('#copyBtn').addEventListener('click', function () {
+    GT.copy(matchLines().map(function (l) { return l.text; }).join('\n'), 'Match list');
+  });
+
+  $('#printBtn').addEventListener('click', function () {
+    var svg = S.bracketSvg(bracket.rounds, { boxW: parseInt($('#boxW').value, 10) });
+    var list = $('#optMatchList').checked
+      ? '<h3 style="font-size:14px;margin:22px 0 8px">Round one</h3><ol style="font-size:13px;line-height:1.9">' +
+        matchLines().map(function (l) { return '<li>' + GT.esc(l.text) + '</li>'; }).join('') + '</ol>'
+      : '';
+    var third = $('#thirdPlace').value === 'yes'
+      ? '<p style="font-size:13px;margin-top:14px"><strong>Third-place play-off:</strong> losing semi-finalists.</p>' : '';
+    GTRoster.printHtml($('#title').value,
+      '<h1>' + GT.esc($('#title').value) + '</h1>' +
+      '<p class="sub">' + entrants.length + ' entrants · ' + bracket.rounds.length + ' rounds' +
+      (bracket.byes ? ' · ' + bracket.byes + ' bye' + (bracket.byes === 1 ? '' : 's') : '') + '</p>' +
+      '<div style="overflow:visible">' + svg + '</div>' + list + third);
+  });
+
+  $('#newSeed').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); });
+  $('#regen').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); GT.toast('Redrawn'); });
+
+  $('#guide').innerHTML = [
+    ['Seeding keeps the best apart until the end', 'A proper seeded bracket puts seed 1 and seed 2 in opposite halves, so they can only meet in the final. Seeds 3 and 4 go into the opposite quarters from each other. This tool builds the standard recursive seed order — 1v8, 4v5, 2v7, 3v6 in an eight-bracket — rather than pairing entrants down the list.'],
+    ['Byes belong to the top seeds', 'When the entry count is not a power of two, some entrants skip round one. The convention is that byes go to the highest seeds: it rewards ranking, and it means the bracket stays balanced. Handing byes out randomly is a common mistake that can hand a weak entrant a free run to the quarter-finals.'],
+    ['Why bracket sizes are powers of two', 'Every round halves the field, so a bracket only resolves cleanly at 2, 4, 8, 16, 32 or 64. With 11 entrants the bracket is 16 and five entrants get byes. There is no way around it — the only choice is who benefits.'],
+    ['Single elimination is brutal and short', 'One bad day and you are out, and half the field is eliminated after a single match. It is the right format when time is tight. If you want everyone to get several games, use a round robin or a group stage feeding a smaller knockout.'],
+    ['A third-place play-off is optional', 'Many tournaments run one so the losing semi-finalists get a final match. Others skip it, since neither team especially wants to play it. Decide before the draw, not after the semis.'],
+    ['Print it and put it on the wall', 'A visible bracket is how everyone tracks the tournament. The printed version is a vector drawing, so it stays sharp at any size.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('');
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Bracket generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'tournament-bracket-generator',
+    lede: 'Seeded single-elimination brackets with byes placed the way tournaments actually place them — top seeds first, strongest entrants kept apart until the final.',
+    steps: [
+      { icon: 'gear', title: 'List your entrants', text: 'Strongest first if you are seeding, or let the tool draw at random.' },
+      { icon: 'trophy', title: 'Check the byes', text: 'Any count that is not a power of two produces byes — the tool shows exactly who gets one.' },
+      { icon: 'file', title: 'Print the bracket', text: 'A vector tree diagram plus a readable round-one match list.' }
+    ],
+    guideTitle: 'The bit most bracket generators get wrong',
+    guide:
+      '<p style="color:var(--muted)">Pairing entrants straight down the list — first against second, third against fourth — is not seeding. It puts your two strongest entrants in a first-round match and guarantees one of them is out immediately, which is the opposite of what seeding is for.</p>' +
+      '<p style="color:var(--muted);margin-top:12px">Proper seeding is recursive. In an eight-entrant bracket the round-one matches are 1v8, 4v5, 2v7 and 3v6. Seeds 1 and 2 sit in opposite halves so they can only meet in the final; seeds 3 and 4 are placed in the opposite quarters from each other. Every pairing in a round sums to one more than the bracket size, which is the property that makes the whole structure balanced.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">How byes should work</h4><p style="color:var(--muted);font-size:13.8px">With 11 entrants the bracket is 16, so five entrants skip round one. Those byes go to seeds 1 to 5 — the highest ranked. That is the standard convention across sport and esports, and it is what this tool does.</p>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">Distributing byes randomly can hand an unranked entrant a free pass to the quarter-finals while a top seed plays an extra match. It is a real competitive advantage, not a formality.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Choosing a format</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><strong>Single elimination</strong> — fastest. Half the field is out after one match.</li><li><strong>Round robin</strong> — everyone plays everyone. Fairest, but grows quadratically.</li><li><strong>Groups then knockout</strong> — the usual compromise for larger events.</li></ul>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">If your priority is that everyone gets several games, a <a href="round-robin-schedule-generator.html">round robin</a> is the better starting point.</p></div></div>',
+    related: ['round-robin-schedule-generator', 'league-schedule-generator', 'team-generator'],
+    faqs: [
+      { q: 'How are byes decided?', a: 'They go to the top seeds. When the entry count is not a power of two, the highest-ranked entrants skip round one — this is the standard tournament convention and it keeps the bracket balanced.' },
+      { q: 'What is proper tournament seeding?', a: 'A recursive arrangement where seed 1 and seed 2 are in opposite halves, seeds 3 and 4 in opposite quarters, and so on. In an eight-bracket the first-round matches are 1v8, 4v5, 2v7, 3v6 — not 1v2, 3v4.' },
+      { q: 'Can I run a tournament with 11 or 13 entrants?', a: 'Yes. The bracket rounds up to the next power of two and the extra slots become byes for the top seeds. The tool shows exactly how many byes there are and who receives them.' },
+      { q: 'Should I include a third-place play-off?', a: 'It is optional. It gives the losing semi-finalists one more match, which some tournaments want and others skip. Decide before the draw so nobody feels it was added or dropped to suit a result.' },
+      { q: 'What if I want everyone to play several games?', a: 'Single elimination knocks out half the field immediately. Use a round robin, or a group stage feeding a smaller knockout bracket, if game count matters more than speed.' },
+      { q: 'Can I print the bracket?', a: 'Yes — the print view produces the bracket as a vector diagram, so it stays sharp at any size, along with a round-one match list that is easier to read aloud.' }
+    ],
+    seo: {
+      title: 'Tournament brackets: seeding, byes and the bit most generators get wrong',
+      lead: 'This <strong>tournament bracket generator</strong> builds seeded single-elimination draws with byes placed the way real tournaments place them — top seeds first, strongest entrants kept apart until the final. Below: how proper seeding works, what to do with 11 or 13 entrants, and when a bracket is the wrong format.',
+      blocks: [
+        {
+          h: 'What seeding is actually for',
+          html: '<p><strong>Seeding</strong> arranges a draw so that the strongest entrants cannot meet until as late as possible. It is not a reward for the top seed; it is a guarantee for the spectators and for the integrity of the result.</p>' +
+            '<p>The standard pattern places 1 and 2 in opposite halves, 3 and 4 in opposite quarters from each other and from 1 and 2, and so on. In a 16-draw, seed 1 faces seed 16, and the bracket is built so 1 versus 2 can only happen in the final.</p>' +
+            '<p>Get it wrong and the tournament peaks early: the two best entrants meet in round two, one goes home, and the final is between the fourth and seventh best. That is the failure that seeding exists to prevent, and it is what a random draw produces roughly half the time.</p>',
+          table: {
+            head: ['Draw size', 'First-round pairings (by seed)'],
+            rows: [
+              ['4', '1 v 4, 2 v 3'],
+              ['8', '1 v 8, 4 v 5, 3 v 6, 2 v 7'],
+              ['16', '1 v 16, 8 v 9, 5 v 12, 4 v 13, 3 v 14, 6 v 11, 7 v 10, 2 v 15'],
+              ['32', 'Same recursive pattern — each half mirrors the other.']
+            ]
+          },
+          after: '<p>The rule underneath: in every match, the two seed numbers sum to one more than the draw size. That is what makes the structure recursive and provably correct at any size.</p>'
+        },
+        {
+          h: 'The bit most bracket generators get wrong',
+          html: '<p><strong>Bye placement.</strong> When the entrant count is not a power of two, some competitors skip the first round. Where those byes go decides whether the seeding means anything.</p>' +
+            '<p>The correct rule is that byes go to the <strong>top seeds, in order</strong>. With 11 entrants in a 16-draw, there are 5 byes, and they go to seeds 1 through 5. Seeds 6 through 11 play the first round.</p>' +
+            '<p>Generators that distribute byes randomly, or place them at the bottom of the bracket, hand a free round to a weak entrant while the top seed plays an extra match. Every subsequent round is then distorted, and the seeding you carefully worked out has been discarded.</p>',
+          callout: { type: 'warn', text: '<strong>Never randomise byes.</strong> A bye is a competitive advantage — one fewer match, more rest, less injury risk. Awarding them by seed is how the advantage is justified. Awarding them randomly means the draw, not the field, decides who benefits.' }
+        },
+        {
+          h: 'Running 11 or 13 entrants',
+          steps: [
+            { t: 'Round up to the next power of two', d: '11 entrants go into a 16-draw; 13 into a 16-draw; 20 into a 32-draw.' },
+            { t: 'Count the byes', d: 'Draw size minus entrants. 16 − 11 = 5 byes.' },
+            { t: 'Assign byes to the top seeds', d: 'Seeds 1 to 5 receive them, in order.' },
+            { t: 'Place the remaining entrants by the seeding pattern', d: 'The standard positions, with the bye slots left empty.' },
+            { t: 'Check the round-two structure', d: 'Every seed with a bye should enter in round two against the winner of their designated first-round match.' }
+          ],
+          after: '<p>An 11-entrant tournament therefore has 3 first-round matches, then a normal 8-entrant bracket. Total matches is always entrants minus one — 10 matches for 11 entrants — regardless of how the byes fall.</p>'
+        },
+        {
+          h: 'Third-place play-offs',
+          cards: [
+            { t: 'Include one when placings matter', d: 'Qualification, prize money, ranking points or a trophy for third. Then the match has stakes and deserves to be played.' },
+            { t: 'Skip it for casual events', d: 'Two teams who have just lost a semi-final rarely want another match. Attendance and effort both drop noticeably.' },
+            { t: 'Consider it for scheduling', d: 'At a one-day event it gives the finalists a rest gap and the venue a filler slot before the final.' },
+            { t: 'Decide before the draw', d: 'Announcing a third-place match after the semi-finals looks like an afterthought, because it is.' }
+          ]
+        },
+        {
+          h: 'When a bracket is the wrong format',
+          html: '<p>Single elimination has one significant flaw: half the field plays once and goes home. For a competitive cup, that is the point. For a club night, a school event or anything where people have travelled, it is a poor use of the day.</p>',
+          list: [
+            '<strong>Pools then knockout.</strong> Groups of four playing a <a href="round-robin-schedule-generator.html">round robin</a>, top two advancing. Everyone gets three matches minimum and the knockout still produces a clean winner. This is what most real tournaments do.',
+            '<strong>Double elimination.</strong> Two losses to be out, so an early upset does not end anyone\'s day. Roughly twice the matches and a bracket that takes explaining.',
+            '<strong>Swiss system.</strong> Fixed number of rounds, paired against opponents on a similar score. Everyone plays every round, and no bracket is needed.',
+            '<strong>Full round robin.</strong> Best for small fields where time allows — up to about eight entrants.'
+          ],
+          callout: { type: 'tip', text: 'For a one-day event with 12 to 24 entrants, pools followed by a knockout is almost always the right answer. It guarantees everyone a set of games, fills the venue evenly all day, and still ends with a final that means something.' }
+        },
+        {
+          h: 'Printing and running the draw',
+          html: '<p>Print the bracket before the event and put it on a wall. A visible bracket that people can see filling in does more for the atmosphere of a small tournament than any amount of announcing, and it removes the constant "who am I playing next" question.</p>' +
+            '<p>Two practical details. Leave space for scores as well as names — a bracket with results on it is a record, not just a plan. And number the matches, so a schedule can refer to "match 7 on court 2" rather than describing the fixture.</p>' +
+            '<p>The generator\'s print layout scales the bracket to the paper size and keeps the lines legible, which matters at 32 entrants where a naive print produces text nobody can read from a metre away.</p>'
+        },
+        {
+          h: 'Related tournament tools',
+          list: [
+            '<a href="round-robin-schedule-generator.html">Round Robin Generator</a> — pool stages where everyone plays everyone.',
+            '<a href="league-schedule-generator.html">League Schedule Generator</a> — full seasons rather than one-day events.',
+            '<a href="match-fixture-generator.html">Match Fixture Generator</a> — assign courts, times and match numbers.',
+            '<a href="team-generator.html">Team Generator</a> — build the teams that enter the draw.',
+            '<a href="presentation-order-generator.html">Presentation Order Generator</a> — fair ordering for non-sporting events.'
+          ]
+        }
+      ],
+      keywords: [
+        'tournament bracket generator', 'single elimination bracket', 'tournament seeding',
+        'bracket byes explained', 'printable tournament bracket', '16 team bracket',
+        'how to seed a tournament', 'odd number tournament bracket', 'knockout draw generator',
+        'third place playoff', 'double elimination vs single', 'pool play then knockout'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

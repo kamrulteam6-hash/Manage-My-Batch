@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Work Shift Rotation Generator — Rotas with Coverage &amp; Rest Checks | Manage My Batch</title>
+<meta name="description" content="Free work shift rotation generator. Build rotating shift patterns with coverage checks, rest-gap warnings, weekend fairness and a printable rota grid.">
+<link rel="canonical" href="https://managemybatch.com/tools/work-shift-rotation-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Work Shift Rotation Generator — Rotas with Coverage &amp; Rest Checks">
+<meta property="og:description" content="Free work shift rotation generator. Build rotating shift patterns with coverage checks, rest-gap warnings, weekend fairness and a printable rota grid.">
+<meta property="og:url" content="https://managemybatch.com/tools/work-shift-rotation-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Work Shift Rotation Generator — Rotas with Coverage &amp; Rest Checks">
+<meta name="twitter:description" content="Free work shift rotation generator. Build rotating shift patterns with coverage checks, rest-gap warnings, weekend fairness and a printable rota grid.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Rota Setup</div>
+
+    <div class="field">
+      <label for="staff">Staff — one per line</label>
+      <textarea id="staff" style="min-height:120px">Alex
+Sam
+Jo
+Kit
+Robin
+Mo</textarea>
+      <div id="staffStats"></div>
+    </div>
+
+    <div class="field">
+      <label for="shifts">Shifts — one per line</label>
+      <textarea id="shifts" style="min-height:100px">Early 06:00–14:00
+Late 14:00–22:00
+Night 22:00–06:00
+Off</textarea>
+      <div class="hint">Include an <code>Off</code> line so people get rest days in the rotation.</div>
+      <div id="shiftStats"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="row">
+      <div class="field"><label for="days">Days to schedule</label><input type="number" id="days" value="14" min="1" max="90"></div>
+      <div class="field"><label for="start">Starting</label><input type="date" id="start"></div>
+    </div>
+
+    <div class="field">
+      <label for="cycle">Rotate shift every</label>
+      <select id="cycle">
+        <option value="1">Day</option>
+        <option value="2">2 days</option>
+        <option value="3">3 days</option>
+        <option value="4">4 days</option>
+        <option value="7" selected>Week</option>
+      </select>
+      <div class="hint">Slower rotation is easier on sleep patterns, especially where nights are involved.</div>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Options</legend>
+      <div class="check-list">
+        <label class="check on"><input type="checkbox" id="optForward" checked>
+          <span><span class="t">Forward rotation</span><span class="d">Early → Late → Night. Easier to adapt to than rotating backwards.</span></span></label>
+        <label class="check"><input type="checkbox" id="optWeekend">
+          <span><span class="t">Highlight weekends</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="field">
+      <label for="title">Rota title</label>
+      <input type="text" id="title" value="Shift Rota">
+    </div>
+
+    <div class="field">
+      <label for="seed">Seed</label>
+      <div class="row" style="grid-template-columns:minmax(0,1fr) auto;gap:8px">
+        <input type="text" id="seed" value="shift-1">
+        <button type="button" class="btn btn-soft" id="newSeed"><span id="icoReset"></span></button>
+      </div>
+    </div>
+
+    <div class="out-actions">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate Rota</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Rota<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="grid">Rota grid</button>
+      <button type="button" data-tab="coverage">Coverage</button>
+      <button type="button" data-tab="fair">Fairness</button>
+      <button type="button" data-tab="guide">Notes</button>
+    </div>
+
+    <div data-panel="grid">
+      <div id="grid" style="overflow-x:auto"></div>
+      <div class="out-actions" style="margin-top:16px">
+        <button type="button" class="btn btn-primary" id="printBtn"><span id="icoFile"></span> Print rota</button>
+        <button type="button" class="btn btn-ghost" id="csvBtn"><span id="icoDl"></span> CSV</button>
+        <button type="button" class="btn btn-soft" id="regen"><span id="icoReset2"></span> Reshuffle</button>
+      </div>
+      <div id="checks"></div>
+    </div>
+
+    <div data-panel="coverage" hidden><div id="coverage" style="overflow-x:auto"></div></div>
+    <div data-panel="fair" hidden><div id="fair"></div></div>
+    <div data-panel="guide" hidden><div id="guide"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/schedule.js"></script>
+<script src="../assets/js/roster.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$, S = GTSched;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoDl:download','icoReset:reset','icoReset2:reset','icoFile:file']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  $('#start').value = GT.today();
+  var staff = [], shifts = [], grid = [], dates = [];
+
+  function isOff(s) { return /^off\b/i.test(s) || /rest/i.test(s); }
+  function isNight(s) { return /night/i.test(s); }
+
+  function build() {
+    var sp = GTRoster.parseNames($('#staff').value);
+    var sh = GTRoster.parseNames($('#shifts').value);
+    staff = sp.names; shifts = sh.names;
+    GTRoster.rosterStats('#staffStats', sp);
+    GTRoster.rosterStats('#shiftStats', sh);
+
+    if (!staff.length || !shifts.length) {
+      $('#grid').innerHTML = '<div class="empty">Add staff and at least one shift.</div>';
+      $('#pill').textContent = '—'; $('#coverage').innerHTML = ''; $('#fair').innerHTML = '';
+      return;
+    }
+
+    var days = Math.max(1, Math.min(90, parseInt($('#days').value, 10) || 1));
+    var cycle = parseInt($('#cycle').value, 10) || 1;
+    var rand = S.rng($('#seed').value);
+    var order = rand.shuffle(staff);
+
+    dates = S.dateSeries($('#start').value, days, 1);
+    grid = [];
+    for (var d = 0; d < days; d++) {
+      var block = Math.floor(d / cycle);
+      var row = order.map(function (person, i) {
+        var step = $('#optForward').checked ? (i + block) : (i - block);
+        var idx = ((step % shifts.length) + shifts.length) % shifts.length;
+        return { person: person, shift: shifts[idx] };
+      });
+      grid.push(row);
+    }
+    window.__order = order;
+
+    renderGrid(order);
+    renderCoverage();
+    renderFair(order);
+    renderChecks(order, cycle);
+
+    $('#pill').textContent = staff.length + ' staff · ' + days + ' days';
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+  }
+
+  function shiftColour(s) {
+    if (isOff(s)) return 'background:var(--bg-soft);color:var(--muted-2)';
+    if (isNight(s)) return 'background:#ede9fe;color:#5b21b6';
+    if (/early|morn/i.test(s)) return 'background:#dcfce7;color:#166534';
+    if (/late|even/i.test(s)) return 'background:#fef3c7;color:#92400e';
+    return 'background:#dbeafe;color:#1e40af';
+  }
+  function shortShift(s) {
+    var m = s.match(/^([A-Za-z]+)/);
+    return m ? m[1].slice(0, 5) : s.slice(0, 5);
+  }
+
+  function renderGrid(order) {
+    $('#grid').innerHTML =
+      '<table style="border-collapse:collapse;font-size:12px">' +
+      '<tr><th style="text-align:left;padding:7px;border-bottom:1.5px solid var(--line);white-space:nowrap">Date</th>' +
+      order.map(function (p) {
+        return '<th style="padding:7px;border-bottom:1.5px solid var(--line);white-space:nowrap">' + GT.esc(p) + '</th>';
+      }).join('') + '</tr>' +
+      grid.map(function (row, i) {
+        var d = dates[i];
+        var wknd = $('#optWeekend').checked && (d.getDay() === 0 || d.getDay() === 6);
+        return '<tr' + (wknd ? ' style="background:#fff7ed"' : '') + '>' +
+          '<td style="padding:7px;border-bottom:1px solid var(--line-2);white-space:nowrap;color:var(--muted)">' +
+          S.fmtDate(d) + '</td>' +
+          row.map(function (c) {
+            return '<td style="padding:5px 7px;border-bottom:1px solid var(--line-2);text-align:center">' +
+              '<span style="' + shiftColour(c.shift) + ';border-radius:5px;padding:3px 7px;display:inline-block;' +
+              'font-weight:600;font-size:11.5px">' + GT.esc(shortShift(c.shift)) + '</span></td>';
+          }).join('') + '</tr>';
+      }).join('') + '</table>';
+  }
+
+  function renderCoverage() {
+    var working = shifts.filter(function (s) { return !isOff(s); });
+    $('#coverage').innerHTML =
+      '<p style="color:var(--muted);font-size:13.5px;margin-bottom:12px">How many people are on each shift each day. Any zero is a gap in cover.</p>' +
+      '<table style="border-collapse:collapse;font-size:12.5px">' +
+      '<tr><th style="text-align:left;padding:7px;border-bottom:1.5px solid var(--line)">Date</th>' +
+      working.map(function (s) {
+        return '<th style="padding:7px;border-bottom:1.5px solid var(--line);white-space:nowrap">' +
+          GT.esc(shortShift(s)) + '</th>';
+      }).join('') + '<th style="padding:7px;border-bottom:1.5px solid var(--line)">Off</th></tr>' +
+      grid.map(function (row, i) {
+        var counts = {};
+        row.forEach(function (c) { counts[c.shift] = (counts[c.shift] || 0) + 1; });
+        var offCount = shifts.filter(isOff).reduce(function (a, s) { return a + (counts[s] || 0); }, 0);
+        return '<tr><td style="padding:7px;border-bottom:1px solid var(--line-2);color:var(--muted);white-space:nowrap">' +
+          S.fmtDate(dates[i]) + '</td>' +
+          working.map(function (s) {
+            var n = counts[s] || 0;
+            return '<td style="padding:7px;text-align:center;border-bottom:1px solid var(--line-2);' +
+              (n === 0 ? 'background:var(--red-bg);color:var(--red);font-weight:700' : '') + '">' + n + '</td>';
+          }).join('') +
+          '<td style="padding:7px;text-align:center;border-bottom:1px solid var(--line-2);color:var(--muted)">' +
+          offCount + '</td></tr>';
+      }).join('') + '</table>';
+  }
+
+  function renderFair(order) {
+    var stats = {};
+    order.forEach(function (p) { stats[p] = { total: 0, nights: 0, weekends: 0, off: 0 }; });
+    grid.forEach(function (row, i) {
+      var d = dates[i];
+      var wknd = d.getDay() === 0 || d.getDay() === 6;
+      row.forEach(function (c) {
+        if (isOff(c.shift)) { stats[c.person].off++; return; }
+        stats[c.person].total++;
+        if (isNight(c.shift)) stats[c.person].nights++;
+        if (wknd) stats[c.person].weekends++;
+      });
+    });
+    $('#fair').innerHTML =
+      '<p style="color:var(--muted);font-size:13.5px;margin-bottom:12px">Shifts worked, nights and weekends per person. Nights and weekends are the two things staff compare.</p>' +
+      order.map(function (p) {
+        var s = stats[p];
+        return '<div class="kv"><span class="k">' + GT.esc(p) + '</span><span class="v">' +
+          s.total + ' shifts · ' + s.nights + ' nights · ' + s.weekends + ' weekend · ' + s.off + ' off</span></div>';
+      }).join('');
+  }
+
+  function renderChecks(order, cycle) {
+    var c = [];
+    var working = shifts.filter(function (s) { return !isOff(s); });
+    var offShifts = shifts.filter(isOff);
+
+    /* Any working shift with nobody on it, on any day */
+    var gaps = 0;
+    grid.forEach(function (row) {
+      var counts = {};
+      row.forEach(function (x) { counts[x.shift] = (counts[x.shift] || 0) + 1; });
+      working.forEach(function (s) { if (!counts[s]) gaps++; });
+    });
+    if (gaps) {
+      c.push(['err', gaps + ' shift slot' + (gaps === 1 ? '' : 's') +
+        ' across the period have nobody rostered. You need at least as many staff as working shifts — see the Coverage tab.']);
+    } else {
+      c.push(['ok', 'Every working shift is covered on every day.']);
+    }
+
+    if (!offShifts.length) {
+      c.push(['err', 'No rest days in the rotation — add an <code>Off</code> line to the shift list, or everyone works every day.']);
+    }
+
+    /* Night followed immediately by an early is the classic unsafe transition. */
+    var quickTurn = [];
+    order.forEach(function (p) {
+      for (var i = 0; i < grid.length - 1; i++) {
+        var today = grid[i].filter(function (x) { return x.person === p; })[0];
+        var tomorrow = grid[i + 1].filter(function (x) { return x.person === p; })[0];
+        if (today && tomorrow && isNight(today.shift) && /early|morn/i.test(tomorrow.shift)) {
+          quickTurn.push(p);
+          break;
+        }
+      }
+    });
+    if (quickTurn.length) {
+      c.push(['warn', 'Night shift immediately followed by an early for: ' + GT.uniq(quickTurn).map(GT.esc).join(', ') +
+        '. That leaves almost no rest between shifts — slow the rotation or insert an off day after nights.']);
+    }
+
+    if (staff.length < working.length) {
+      c.push(['err', 'Only ' + staff.length + ' staff for ' + working.length +
+        ' working shifts. Some shifts cannot be filled at all.']);
+    }
+    if (cycle === 1 && shifts.some(isNight)) {
+      c.push(['warn', 'Rotating every day with nights included is very hard on sleep. Three to seven days on the same shift is far easier to adapt to.']);
+    }
+    if (!$('#optForward').checked) {
+      c.push(['warn', 'Backward rotation (Night → Late → Early) shortens the gap between shifts each time you move. Forward rotation is generally considered easier to adjust to.']);
+    }
+    $('#checks').innerHTML = c.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : x[0] === 'warn' ? 'note-warn' : 'note-err') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('') +
+      '<div class="note note-warn" style="margin-top:8px">' + I.warn +
+      '<span>This is a scheduling aid, not a compliance tool. Working-time limits, minimum rest periods and night-work rules vary by country and sector — check the rota against the rules that apply to you.</span></div>';
+  }
+
+  $('#csvBtn').addEventListener('click', function () {
+    var order = window.__order || staff;
+    var rows = ['date,' + order.map(function (p) { return '"' + p.replace(/"/g, '""') + '"'; }).join(',')];
+    grid.forEach(function (row, i) {
+      rows.push(dates[i].toISOString().slice(0, 10) + ',' +
+        row.map(function (c) { return '"' + c.shift.replace(/"/g, '""') + '"'; }).join(','));
+    });
+    GT.download(rows.join('\n'), 'shift-rota.csv', 'text/csv');
+  });
+
+  $('#printBtn').addEventListener('click', function () {
+    var order = window.__order || staff;
+    GTRoster.printHtml($('#title').value,
+      '<h1>' + GT.esc($('#title').value) + '</h1>' +
+      '<p class="sub">' + staff.length + ' staff · ' + grid.length + ' days from ' + S.fmtDate(dates[0]) + '</p>' +
+      '<table style="font-size:11px"><tr><th>Date</th>' +
+      order.map(function (p) { return '<th>' + GT.esc(p) + '</th>'; }).join('') + '</tr>' +
+      grid.map(function (row, i) {
+        return '<tr><td>' + S.fmtDate(dates[i]) + '</td>' +
+          row.map(function (c) { return '<td>' + GT.esc(shortShift(c.shift)) + '</td>'; }).join('') + '</tr>';
+      }).join('') + '</table>');
+  });
+
+  $('#newSeed').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); });
+  $('#regen').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); GT.toast('Reshuffled'); });
+
+  $('#guide').innerHTML = [
+    ['Rotate forwards, not backwards', 'Early → Late → Night moves each shift later, which lengthens the gap between finishing one and starting the next. Backward rotation shortens it every time. Forward rotation is widely regarded as easier to adapt to, and the tool warns you if you switch it off.'],
+    ['Never put an early straight after a night', 'Finishing at 06:00 and starting again at 06:00 the next morning leaves essentially no rest. It is the single most common unsafe pattern in a hand-built rota, and the tool checks every person for it explicitly.'],
+    ['Include an Off shift', 'If your shift list is only working shifts, the rotation gives everybody work every single day. Adding one or more <code>Off</code> lines builds rest days into the cycle automatically.'],
+    ['You need at least as many staff as shifts', 'Three working shifts cannot be covered by two people. The coverage tab shows the headcount on each shift each day and highlights any zero in red — those are the gaps that turn into last-minute phone calls.'],
+    ['Slower rotation is kinder', 'Changing shift every day gives the body no chance to adjust. Three to seven days on the same shift is much easier, particularly where nights are involved.'],
+    ['Nights and weekends are what people compare', 'Nobody counts total hours, but everyone knows how many weekends they worked. The fairness tab breaks both out per person, which is the conversation you want to have with the numbers in front of you.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('');
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Rota generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'work-shift-rotation-generator',
+    lede: 'Rotating shift patterns with the checks that matter — full coverage every day, no night-to-early turnarounds, and a fairness split on nights and weekends.',
+    steps: [
+      { icon: 'gear', title: 'List staff and shifts', text: 'Include an Off line so rest days are built into the rotation.' },
+      { icon: 'clock', title: 'Choose the rotation speed', text: 'Weekly is easiest on sleep; daily is hardest.' },
+      { icon: 'file', title: 'Check coverage, then print', text: 'Red cells are shifts with nobody on them.' }
+    ],
+    guideTitle: 'Two rules that make a rota safe',
+    guide:
+      '<p style="color:var(--muted)">Most hand-built rotas fail in one of two ways, and both are easy to miss when you are looking at a grid of names.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">1. Rotate forwards</h4><p style="color:var(--muted);font-size:13.8px">Early → Late → Night moves each shift later in the day, which lengthens the gap between finishing one and starting the next. Rotating the other way shortens it every single time, compressing rest.</p>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">Forward rotation is the standard recommendation in shift-work guidance, and it costs nothing to follow.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">2. Never night → early</h4><p style="color:var(--muted);font-size:13.8px">Finishing a night at 06:00 and starting an early at 06:00 the next day leaves no meaningful rest at all. It slips into hand-built rotas constantly because on a grid it looks like two ordinary shifts.</p>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">This tool checks every person for that transition and names anyone affected.</p></div></div>' +
+      '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span><strong>Coverage is a hard constraint.</strong> With three working shifts and two staff, at least one shift is empty every day. The coverage tab shows the headcount per shift per day and marks any zero in red — those are the gaps that become last-minute phone calls.</span></div>' +
+      '<div class="note note-warn" style="margin-top:12px">' + GTI.warn + '<span>This is a scheduling aid, not a compliance tool. Working-time limits, minimum daily rest and night-work rules differ by country and sector — check any rota against the rules that actually apply to your workplace.</span></div>',
+    related: ['chore-rotation-generator', 'cleaning-schedule-generator', 'league-schedule-generator'],
+    faqs: [
+      { q: 'Should shifts rotate forwards or backwards?', a: 'Forwards — Early, then Late, then Night. Each move pushes the shift later, which lengthens the gap between finishing one and starting the next. Backward rotation compresses rest each time.' },
+      { q: 'Why does it warn about night followed by early?', a: 'Finishing at 06:00 and starting again at 06:00 leaves essentially no rest. It is the most common unsafe pattern in hand-built rotas because on a grid it looks like two normal shifts.' },
+      { q: 'How do I give staff days off?', a: 'Add one or more <code>Off</code> lines to the shift list. They become part of the rotation, so rest days move around the team just like working shifts.' },
+      { q: 'How many staff do I need?', a: 'At least as many as you have working shifts, or some will be uncovered. The coverage tab shows headcount per shift per day and highlights gaps in red.' },
+      { q: 'How fast should shifts rotate?', a: 'Three to seven days on the same shift is much easier to adapt to than changing daily, especially where nights are involved.' },
+      { q: 'Does this ensure legal compliance?', a: 'No. It is a scheduling aid with practical safety checks. Working-time limits, minimum rest periods and night-work rules vary by country and sector, so check the output against the rules that apply to you.' }
+    ],
+    seo: {
+      title: 'Shift rotations: forward rotation, turnaround rules and coverage checks',
+      lead: 'This <strong>shift rotation generator</strong> builds rotating patterns with the checks that matter — full coverage every day, no night-to-early turnarounds, and a fairness split on nights and weekends. Below: why rotation direction affects sleep, and how many staff a pattern actually needs.',
+      blocks: [
+        {
+          h: 'Two rules that make a rota safe',
+          html: '<p>Most rota problems are not about fairness. They are about fatigue, and two rules prevent the majority of it.</p>',
+          cards: [
+            { t: 'Rotate forwards', d: 'Early → late → night, never the reverse. A forward rotation asks the body clock to go to bed later each time, which it does far more readily than the opposite.' },
+            { t: 'Protect the turnaround', d: 'A night shift ending at 07:00 followed by an early starting at 06:00 the next day gives under 24 hours to sleep, commute and live. It is the single most common unsafe pattern in badly built rotas.' }
+          ],
+          after: '<p>The generator enforces both: patterns rotate forward by default, and any shift sequence with an inadequate gap is flagged before you publish the rota rather than after someone complains.</p>'
+        },
+        {
+          h: 'Why forward rotation',
+          html: '<p>The human circadian rhythm runs slightly longer than 24 hours, which is why staying up later is easy and getting up earlier is hard. A forward rotation works with that; a backward rotation fights it every cycle.</p>' +
+            '<p>The practical effect shows up in sleep duration and error rates. Backward-rotating patterns — night, then late, then early — repeatedly compress the rest period, and the research on shift work has been consistent enough that forward rotation is standard guidance from occupational health bodies.</p>' +
+            '<p>The exception people cite is a fast backward rotation with long breaks between blocks. It exists, it is used, and it depends on the break being genuinely long. If you are designing from scratch, rotate forwards.</p>',
+          callout: { type: 'warn', text: '<strong>The night-to-early turnaround is the pattern to eliminate first.</strong> Finishing at 07:00 and starting at 06:00 leaves 23 hours that must contain a commute home, sleep across daylight, and a commute back. Most guidance treats a minimum of 11 consecutive hours off between shifts as a floor, and after a night block a full day is the realistic minimum.' }
+        },
+        {
+          h: 'How many staff a pattern needs',
+          html: '<p>The arithmetic is unforgiving. To cover three 8-hour shifts, seven days a week, you need enough people that everyone still gets days off.</p>',
+          table: {
+            head: ['Coverage', 'Shifts per week', 'Minimum staff (approx.)'],
+            rows: [
+              ['One person, weekdays only, one shift', '5', '1 plus cover'],
+              ['One person on duty, 24/7, single post', '21', '4–5'],
+              ['Two people on duty, 24/7', '42', '8–10'],
+              ['Three shifts, two per shift, 24/7', '42', '9–11']
+            ]
+          },
+          after: '<p>The rule of thumb for a 24/7 single post is between four and five people — four to cover the hours, and the fraction above that to absorb leave, sickness and training. A rota built with exactly four works perfectly until the first person is ill.</p>',
+          callout: { type: 'tip', text: 'Build the rota for the staff you have, then check what happens when one person is absent. If a single absence breaks coverage, the pattern is too tight — and it will break, repeatedly, in the first month.' }
+        },
+        {
+          h: 'Building a pattern',
+          steps: [
+            { t: 'List your staff', d: 'One per line. The rotation treats everyone equally unless you set otherwise.' },
+            { t: 'Define the shifts', d: 'Early, late, night — or whatever your operation uses, with start and end times.' },
+            { t: 'Set the cycle length', d: 'How many days before the pattern repeats. Longer cycles distribute unpopular shifts more evenly.' },
+            { t: 'Set rest days', d: 'How many, and whether they follow a night block. A rest day immediately after nights is worth protecting.' },
+            { t: 'Read the checks', d: 'Coverage gaps, short turnarounds, and the fairness split on nights and weekends.' },
+            { t: 'Print or export', d: 'A wall chart for the staff room, or CSV for your workforce system.' }
+          ]
+        },
+        {
+          h: 'Rotation speed',
+          html: '<p>How quickly people move between shift types is genuinely contested, and the honest answer is that it depends on your operation.</p>',
+          list: [
+            '<strong>Fast rotation (2–3 days per shift type).</strong> The body never fully adapts to nights, which some evidence suggests is better for long-term health because the disruption is brief. Popular in European industrial rotas.',
+            '<strong>Slow rotation (a week or more).</strong> Staff adapt to each pattern and often prefer the predictability. The cost is a full re-adaptation at every change.',
+            '<strong>Permanent shifts.</strong> No rotation at all. Suits people whose lives fit a fixed pattern, and concentrates the burden of nights on whoever accepts them — which raises a fairness question rather than answering it.'
+          ],
+          after: '<p>What matters more than the speed is consistency and notice. A predictable pattern published well in advance lets people arrange childcare and sleep; an unpredictable one does not, regardless of how it rotates.</p>'
+        },
+        {
+          h: 'This is not legal compliance',
+          html: '<p>The generator checks coverage, turnarounds and distribution. It does not check the law, and the law is where the binding constraints live.</p>' +
+            '<p>Working time rules vary by jurisdiction and by sector, and commonly cover maximum weekly hours, minimum daily and weekly rest, restrictions on night work, health assessments for night workers, and specific rules for young workers and for safety-critical roles such as driving, aviation and healthcare. Collective agreements often add more.</p>' +
+            '<p>Treat the output as a draft to review against your obligations, not as evidence of compliance. Anyone building rotas regularly should have the relevant regulations and any applicable agreement to hand — the checks here are a safety net for the obvious errors, not a substitute for that.</p>'
+        },
+        {
+          h: 'Related rota tools',
+          list: [
+            '<a href="chore-rotation-generator.html">Chore Rotation Generator</a> — the same rotation logic for households.',
+            '<a href="cleaning-schedule-generator.html">Cleaning Schedule Generator</a> — frequency-based task planning.',
+            '<a href="league-schedule-generator.html">League Schedule Generator</a> — rotation fairness in a sporting context.',
+            '<a href="employee-id-generator.html">Employee ID Generator</a> — stable identifiers for the staff on the rota.',
+            '<a href="round-robin-schedule-generator.html">Round Robin Generator</a> — the underlying rotation method.'
+          ]
+        }
+      ],
+      keywords: [
+        'work shift rotation generator', 'shift pattern maker', 'rota generator',
+        'forward rotating shifts', '24/7 shift coverage', 'night shift turnaround',
+        'shift rotation fairness', '4 on 4 off rota', 'how many staff for 24/7',
+        'shift schedule template', 'rotating roster planner', 'night shift safety rules'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

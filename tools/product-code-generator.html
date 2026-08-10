@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Product Code Generator — Model &amp; Article Number Builder | Manage My Batch</title>
+<meta name="description" content="Free product code generator. Build internal product, model and article numbers with category, range and version segments — plus bulk generation from a product list.">
+<link rel="canonical" href="https://managemybatch.com/tools/product-code-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Product Code Generator — Model &amp; Article Number Builder">
+<meta property="og:description" content="Free product code generator. Build internal product, model and article numbers with category, range and version segments — plus bulk generation from a product list.">
+<meta property="og:url" content="https://managemybatch.com/tools/product-code-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Product Code Generator — Model &amp; Article Number Builder">
+<meta name="twitter:description" content="Free product code generator. Build internal product, model and article numbers with category, range and version segments — plus bulk generation from a product list.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Generator Settings</div>
+
+    <div class="field">
+      <label>Mode</label>
+      <div class="seg" id="mode">
+        <button type="button" class="on" data-m="sequence">Numbered series</button>
+        <button type="button" data-m="fromNames">From product names</button>
+      </div>
+      <div class="hint" id="modeHint">Generate a block of codes in a numbered series.</div>
+    </div>
+
+    <div class="row">
+      <div class="field"><label for="prefix">Brand / range prefix</label><input type="text" id="prefix" value="ACM"></div>
+      <div class="field">
+        <label for="category">Category code</label>
+        <input type="text" id="category" value="TL" placeholder="e.g. TL, AUD">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="sep">Separator</label>
+        <select id="sep">
+          <option value="-" selected>Hyphen (-)</option>
+          <option value="">None</option>
+          <option value=".">Dot (.)</option>
+          <option value="/">Slash (/)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="pad">Number length</label>
+        <select id="pad">
+          <option value="3" selected>3 digits</option>
+          <option value="4">4 digits</option>
+          <option value="5">5 digits</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field"><label for="start">Starting number</label><input type="number" id="start" value="100" min="0"></div>
+      <div class="field"><label for="step">Increment by</label><input type="number" id="step" value="10" min="1"></div>
+    </div>
+    <div class="hint" style="margin:-8px 0 16px">Stepping by 10 leaves room to insert related models later without renumbering.</div>
+
+    <div class="field">
+      <label for="version">Version / revision suffix</label>
+      <select id="version">
+        <option value="">None</option>
+        <option value="A">Letter — A, B, C</option>
+        <option value="MK">MK1, MK2</option>
+        <option value="V1">V1, V2</option>
+      </select>
+    </div>
+
+    <div class="field" id="namesField" hidden>
+      <label for="names">Product names — one per line</label>
+      <textarea id="names" style="min-height:130px">Cordless Drill 18V
+Impact Driver Compact
+Circular Saw 190mm
+Orbital Sander
+Angle Grinder 115mm</textarea>
+      <div class="hint">Codes are derived from initials, then made unique with the sequence.</div>
+    </div>
+
+    <div class="field">
+      <label for="count" id="countLabel">How many codes</label>
+      <input type="number" id="count" value="8" min="1" max="5000">
+    </div>
+
+    <div class="field">
+      <label for="preview">Preview</label>
+      <div class="seq-preview" id="preview">ACM-TL-100</div>
+    </div>
+
+    <div class="out-actions">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate Product Codes</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated Codes<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="results">Results</button>
+      <button type="button" data-tab="export">Export</button>
+      <button type="button" data-tab="checks">Validation</button>
+      <button type="button" data-tab="guide">Coding schemes</button>
+    </div>
+
+    <div data-panel="results">
+      <div id="primary"></div>
+      <div id="more"></div>
+      <div id="mapTable" style="margin-top:16px;overflow-x:auto"></div>
+      <button type="button" class="btn btn-soft btn-block" id="regen" style="margin-top:18px">
+        <span id="icoReset"></span> Regenerate</button>
+    </div>
+
+    <div data-panel="export" hidden>
+      <div class="field">
+        <label for="exportAs">Export format</label>
+        <select id="exportAs">
+          <option value="table">CSV with product names</option>
+          <option value="lines">Plain list</option>
+          <option value="json">JSON array</option>
+          <option value="sql">SQL INSERT</option>
+        </select>
+      </div>
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">product-codes.csv</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy all</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+    </div>
+
+    <div data-panel="checks" hidden><div id="checks"></div></div>
+    <div data-panel="guide" hidden><div id="guide"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/seqid.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoCopy:copy','icoDl:download','icoReset:reset']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var mode = 'sequence', rows = [];
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'product-codes.csv', mime: 'text/csv' });
+
+  function initials(name) {
+    var words = String(name).replace(/[^A-Za-z0-9 ]/g, ' ').split(/\s+/).filter(Boolean);
+    if (!words.length) return 'XX';
+    if (words.length === 1) return words[0].slice(0, 3).toUpperCase();
+    return words.slice(0, 3).map(function (w) { return w[0]; }).join('').toUpperCase();
+  }
+
+  function versionSuffix(i) {
+    var v = $('#version').value;
+    if (!v) return '';
+    if (v === 'A') return String.fromCharCode(65 + (i % 26));
+    if (v === 'MK') return 'MK1';
+    if (v === 'V1') return 'V1';
+    return '';
+  }
+
+  function build() {
+    var sep = $('#sep').value;
+    var prefix = $('#prefix').value.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
+    var cat = $('#category').value.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
+    var pad = parseInt($('#pad').value, 10);
+    var start = parseInt($('#start').value, 10) || 0;
+    var step = parseInt($('#step').value, 10) || 1;
+
+    rows = [];
+
+    if (mode === 'fromNames') {
+      var names = GT.lines($('#names').value);
+      names.forEach(function (nm, i) {
+        var parts = [prefix, cat, initials(nm), String(start + i * step).padStart(pad, '0')].filter(Boolean);
+        var v = versionSuffix(i); if (v) parts.push(v);
+        rows.push({ code: parts.join(sep), name: nm });
+      });
+    } else {
+      var n = Math.max(1, Math.min(5000, parseInt($('#count').value, 10) || 1));
+      for (var i = 0; i < n; i++) {
+        var parts2 = [prefix, cat, String(start + i * step).padStart(pad, '0')].filter(Boolean);
+        var v2 = versionSuffix(i); if (v2) parts2.push(v2);
+        rows.push({ code: parts2.join(sep), name: '' });
+      }
+    }
+
+    var codes = rows.map(function (r) { return r.code; });
+    $('#preview').textContent = codes[0] || '—';
+    GTSeq.renderResults({ ids: codes, primary: '#primary', more: '#more', noun: 'Product Code', maxMore: 12 });
+    $('#pill').textContent = codes.length.toLocaleString() + ' code' + (codes.length === 1 ? '' : 's');
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+
+    renderMap();
+    renderExport(codes);
+
+    var c = GTSeq.validate(codes, { humanEntry: true });
+    if (step === 1) c.push({ s: 'warn', m: 'Incrementing by 1 leaves no room to insert a related model between two existing codes later. Stepping by 10 is the usual convention in product catalogues.' });
+    if (!cat) c.push({ s: 'warn', m: 'No category code. A category segment is what lets someone read a code and know roughly what the product is.' });
+    if ((codes[0] || '').length > 18) c.push({ s: 'warn', m: 'Long codes are awkward on product labels, packaging and spec sheets. Under about 15 characters is comfortable.' });
+    if (mode === 'fromNames') {
+      var inits = rows.map(function (r) { return initials(r.name); });
+      var dup = inits.filter(function (x, i) { return inits.indexOf(x) !== i; });
+      if (dup.length) c.push({ s: 'warn', m: 'Some products produce the same initials (' + GT.uniq(dup).join(', ') + '). The sequence keeps codes unique, but the letters no longer identify the product on their own.' });
+    }
+    GTSeq.renderChecks('#checks', c);
+  }
+
+  function renderMap() {
+    if (mode !== 'fromNames' || !rows.length) { $('#mapTable').innerHTML = ''; return; }
+    $('#mapTable').innerHTML = '<p class="more-label">Code → product</p>' +
+      '<table style="border-collapse:collapse;width:100%;font-size:13px">' +
+      rows.map(function (r) {
+        return '<tr><td style="padding:8px;border-bottom:1px solid var(--line-2);font-family:var(--mono);white-space:nowrap">' +
+          GT.esc(r.code) + '</td><td style="padding:8px;border-bottom:1px solid var(--line-2);color:var(--muted)">' +
+          GT.esc(r.name) + '</td></tr>';
+      }).join('') + '</table>';
+  }
+
+  function renderExport(codes) {
+    var m = $('#exportAs').value, text, file = 'product-codes.csv';
+    if (m === 'table') {
+      text = 'product_code,product_name\n' + rows.map(function (r) {
+        return r.code + ',"' + r.name.replace(/"/g, '""') + '"';
+      }).join('\n');
+    } else if (m === 'json') {
+      text = JSON.stringify(rows.map(function (r) { return { code: r.code, name: r.name }; }), null, 2);
+      file = 'product-codes.json';
+    } else if (m === 'sql') {
+      text = 'INSERT INTO products (product_code, name) VALUES\n' + rows.map(function (r) {
+        return "  ('" + r.code + "', '" + r.name.replace(/'/g, "''") + "')";
+      }).join(',\n') + ';';
+      file = 'product-codes.sql';
+    } else { text = codes.join('\n'); file = 'product-codes.txt'; }
+    out.set(text, file);
+  }
+
+  $('#guide').innerHTML = [
+    ['Product code, SKU and barcode are three different things', 'A product code identifies a <em>model</em> — the Cordless Drill 18V, regardless of colour or bundle. A <a href="sku-generator.html">SKU</a> identifies a stocked variant of it. A <a href="barcode-number-generator.html">barcode number</a> identifies it globally for retail scanning. Most catalogues need all three, and conflating them causes trouble later.'],
+    ['Leave gaps in the sequence', 'Numbering 100, 110, 120 rather than 100, 101, 102 means you can slot a related model in at 105 without renumbering a catalogue, reprinting spec sheets or breaking every existing reference.'],
+    ['Category codes make codes self-describing', 'Two or three letters for the product family lets anyone reading a code place it immediately. Unlike a department in an employee ID, a product family rarely changes, so this stays accurate.'],
+    ['Version suffixes track revisions, not variants', 'Use a version suffix when the same product is revised — a MK2 with a different motor. Do not use it for colours or sizes; those are variants and belong in the SKU.'],
+    ['Do not encode the year', 'It dates the product on every spec sheet and price list, and makes a perfectly current item look obsolete once the year rolls over.'],
+    ['Keep it printable', 'Product codes go on packaging, labels, spec sheets and quotes. Under 15 characters keeps them readable and stops them wrapping awkwardly in tables.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('');
+
+  $('#mode').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#mode button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    mode = b.getAttribute('data-m');
+    $('#namesField').hidden = mode !== 'fromNames';
+    $('#count').closest('.field').hidden = mode === 'fromNames';
+    $('#modeHint').textContent = mode === 'fromNames'
+      ? 'Derive a code for each product name, using initials plus a sequence.'
+      : 'Generate a block of codes in a numbered series.';
+    build();
+  });
+
+  GTSeq.bindCopy('#primary', function () { return rows.map(function (r) { return r.code; }); });
+  GTSeq.bindCopy('#more', function () { return rows.map(function (r) { return r.code; }); });
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Product codes generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+  $('#regen').addEventListener('click', build);
+  $('#exportAs').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'product-code-generator',
+    lede: 'Build internal product and model codes with category, range and version segments — either as a numbered series or derived automatically from a list of product names.',
+    steps: [
+      { icon: 'gear', title: 'Set brand and category', text: 'Short codes that make a product code self-describing.' },
+      { icon: 'tag', title: 'Leave gaps', text: 'Stepping by 10 lets you insert related models later without renumbering.' },
+      { icon: 'copy', title: 'Export the catalogue', text: 'CSV mapping each code to its product name.' }
+    ],
+    guideTitle: 'Product code, SKU or barcode — which do you actually need?',
+    guide:
+      '<p style="color:var(--muted)">These three identifiers get used interchangeably and should not be. Getting the distinction right early saves a painful catalogue migration later.</p>' +
+      '<div class="grid g3" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Product code</h4><p style="color:var(--muted);font-size:13.8px">Identifies a <strong>model</strong>. The Cordless Drill 18V has one product code regardless of which bundle or colour you sell. It appears on spec sheets, quotes and manuals.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">SKU</h4><p style="color:var(--muted);font-size:13.8px">Identifies a <strong>stocked variant</strong>. The drill in a case, the drill bare-tool, and the drill with two batteries are three SKUs of one product code. Used for picking and stock counts.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Barcode / GTIN</h4><p style="color:var(--muted);font-size:13.8px">Identifies the item <strong>globally</strong>. Issued from a GS1 prefix you license, scanned at retail tills. You cannot invent these for real retail sale.</p></div></div>' +
+      '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span><strong>Leave gaps in your numbering.</strong> A catalogue numbered 100, 110, 120 can absorb a new mid-range model at 105 forever. One numbered 100, 101, 102 forces you to either append it at the end — breaking the logical order — or renumber, which invalidates every printed reference.</span></div>' +
+      '<div class="note note-warn" style="margin-top:12px">' + GTI.warn + '<span>Resist putting the launch year in a product code. It makes a current, well-selling product look obsolete on every price list the moment the year changes.</span></div>',
+    related: ['sku-generator', 'barcode-number-generator', 'asset-tag-number-generator'],
+    faqs: [
+      { q: 'What is the difference between a product code and a SKU?', a: 'A product code identifies a model; a SKU identifies a stocked variant of that model. One drill product code might have three SKUs — bare tool, with case, with two batteries.' },
+      { q: 'Why should I increment by 10 instead of 1?', a: 'It leaves room to insert related models later. Adding a mid-range product between 100 and 110 is trivial; between 100 and 101 it is impossible without renumbering or appending it out of order.' },
+      { q: 'Should product codes include the year?', a: 'No. It dates the product on every spec sheet and price list, and makes a perfectly current item appear obsolete once the year turns over.' },
+      { q: 'How do I code product revisions?', a: 'Use a version suffix such as MK2 or V2 when the same product is genuinely revised. Do not use it for colours or sizes — those are variants and belong in the SKU.' },
+      { q: 'Can I generate codes from my product names?', a: 'Yes. Switch to “From product names”, paste your list, and each code is built from the product initials plus a sequence that keeps them unique.' },
+      { q: 'How long should a product code be?', a: 'Under about 15 characters. Product codes appear on packaging, labels, quotes and spec sheets, where longer codes wrap awkwardly and get mistyped.' }
+    ],
+    seo: {
+      title: 'Product codes: designing a model numbering system that lasts',
+      lead: 'This <strong>product code generator</strong> builds internal model and article codes with category, range and version segments — as a numbered series or derived from your product names. Below: how a product code differs from a SKU, why you should increment by ten, and what never to encode.',
+      blocks: [
+        {
+          h: 'Product code, SKU or barcode?',
+          html: '<p>These three identify different things, and using one where another belongs is the root of most catalogue mess.</p>',
+          cards: [
+            { t: 'Product code', d: 'Identifies a <em>model</em> — the thing your catalogue and your marketing talk about. One product code, many variants.' },
+            { t: 'SKU', d: 'Identifies a <em>stocked variant</em> — this model, in blue, in medium. What the warehouse picks and counts.' },
+            { t: 'Barcode / GTIN', d: 'A globally unique number licensed from GS1, scanned at retail. Cannot be invented.' }
+          ],
+          after: '<p>A drill might be product code <code>PWR-DR-1400</code>, with SKUs for the bare tool, the one-battery kit and the two-battery kit, each carrying its own GTIN. Collapse the levels and you lose the ability to say "this is the same drill" — which is exactly the question your website, your catalogue and your support team ask most often.</p>'
+        },
+        {
+          h: 'Structuring a code',
+          table: {
+            head: ['Structure', 'Example', 'Suits'],
+            rows: [
+              ['Category–Sequence', '<code>DR-1400</code>', 'Simple catalogues with clear product families.'],
+              ['Brand–Category–Sequence', '<code>PWR-DR-1400</code>', 'Multi-brand ranges under one company.'],
+              ['Category–Range–Sequence', '<code>DR-PRO-1400</code>', 'Where a good/better/best tier matters commercially.'],
+              ['Category–Sequence–Version', '<code>DR-1400-R2</code>', 'Products that get revised without becoming new products.'],
+              ['Type–Capacity', '<code>BAT-5000</code>', 'Ranges where a specification is the differentiator.']
+            ]
+          },
+          after: '<p>Three or four characters per segment is the practical sweet spot: long enough to be readable as an abbreviation, short enough that the whole code fits on a label and in a conversation.</p>'
+        },
+        {
+          h: 'Increment by ten, not by one',
+          html: '<p>The most useful convention in product numbering, and the least obvious. Number your first products <code>1000</code>, <code>1010</code>, <code>1020</code> rather than <code>1000</code>, <code>1001</code>, <code>1002</code>.</p>' +
+            '<p>The gaps are the point. When a product arrives that belongs <em>between</em> two existing ones — a mid-range model between the entry and the professional, a variant that logically sits beside its sibling — there is room. The catalogue stays in a sensible order without renumbering anything.</p>' +
+            '<p>Renumbering is what you are buying insurance against. Once a code is printed on packaging, quoted in a purchase order and stored in a customer\'s system, it is permanent. A numbering scheme with no room to insert forces new products to the end of the list, and within two years the sequence tells you nothing about the range.</p>',
+          callout: { type: 'tip', text: 'Increment by 10 within a family and start each family at a round hundred or thousand. <code>1000–1090</code> for drills, <code>1100–1190</code> for drivers. You get insertion room and a readable block structure from the same decision.' }
+        },
+        {
+          h: 'What not to encode',
+          list: [
+            '<strong>Price.</strong> It changes; the code cannot. And the old price stays visible in every historical record and on every piece of printed packaging.',
+            '<strong>The year.</strong> Only if you genuinely retire the product annually. Otherwise a perfectly current product looks obsolete from 1 January.',
+            '<strong>Supplier.</strong> You may dual-source or switch, and the code would then be a lie.',
+            '<strong>Stock location.</strong> Items move between bins and warehouses constantly.',
+            '<strong>Colour and size.</strong> Those are variant attributes and belong in the <a href="sku-generator.html">SKU</a>, not the product code.',
+            '<strong>Internal project names.</strong> They leak, and they date badly.'
+          ],
+          after: '<p>The test is simple: if the attribute can change while the product stays the same product, it does not belong in the code.</p>'
+        },
+        {
+          h: 'Coding revisions',
+          html: '<p>A revision is a change that does not make the product a different product — a new firmware baseline, a component substitution, a moulding change. Customers still order "the 1400".</p>',
+          steps: [
+            { t: 'Add a suffix, do not change the base', d: '<code>DR-1400</code> becomes <code>DR-1400-R2</code>. The relationship stays visible and the old code still resolves.' },
+            { t: 'Keep the base code orderable', d: 'Where fit and function are unchanged, orders for <code>DR-1400</code> should ship the current revision.' },
+            { t: 'Issue a new base code for breaking changes', d: 'If a spare part no longer fits or a certification differs, it is a new product. A suffix hides that and generates returns.' },
+            { t: 'Record the revision in the record, not only the code', d: 'A date and a change note in your PIM is what anyone investigating a fault will actually need.' }
+          ],
+          callout: { type: 'warn', text: '<strong>Never reuse a retired product code.</strong> Somewhere there is a customer\'s reorder template, a distributor\'s catalogue and a service manual with the old code in it. Reusing it means a customer confidently orders the wrong item and both sides believe they are right.' }
+        },
+        {
+          h: 'Generating codes from product names',
+          html: '<p>Derivation mode builds a code from each name automatically: it strips filler words, abbreviates the significant ones, uppercases, and appends a sequence to guarantee uniqueness. "Professional Cordless Drill 1400W" becomes something like <code>PRO-CRD-DRL-1400</code>.</p>' +
+            '<p>It is a starting point rather than an answer. Automatic abbreviation collides — "Cordless" and "Corded" both want <code>CRD</code> — and the tool flags collisions for you to resolve rather than silently disambiguating with a number. Review the output before adopting it, particularly for the products you sell most, because those codes will be typed thousands of times.</p>',
+          after: '<p>For a small catalogue, choosing the abbreviations by hand and generating only the numeric part is usually the better trade.</p>'
+        },
+        {
+          h: 'Related identification tools',
+          list: [
+            '<a href="sku-generator.html">SKU Generator</a> — variant-level stock codes and the full size × colour matrix.',
+            '<a href="barcode-number-generator.html">Barcode Number Generator</a> — GTIN numbers with valid check digits.',
+            '<a href="asset-tag-number-generator.html">Asset Tag Number Generator</a> — codes for equipment you own rather than sell.',
+            '<a href="lot-number-generator.html">Lot Number Generator</a> — traceability for production runs.',
+            '<a href="purchase-order-number-generator.html">Purchase Order Number Generator</a> — the procurement side of the same catalogue.'
+          ]
+        }
+      ],
+      keywords: [
+        'product code generator', 'model number generator', 'product numbering system',
+        'article number generator', 'product code vs sku', 'product code format',
+        'catalogue numbering', 'product code best practices', 'increment by 10 numbering',
+        'product revision coding', 'internal product codes', 'generate codes from product names'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

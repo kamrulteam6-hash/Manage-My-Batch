@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Math Worksheet Generator — Printable Practice with Answer Keys | Manage My Batch</title>
+<meta name="description" content="Free math worksheet generator. Create addition, subtraction, multiplication and division practice with digit control, regrouping options, vertical layout and answer keys.">
+<link rel="canonical" href="https://managemybatch.com/tools/math-worksheet-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Math Worksheet Generator — Printable Practice with Answer Keys">
+<meta property="og:description" content="Free math worksheet generator. Create addition, subtraction, multiplication and division practice with digit control, regrouping options, vertical layout and answer keys.">
+<meta property="og:url" content="https://managemybatch.com/tools/math-worksheet-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Math Worksheet Generator — Printable Practice with Answer Keys">
+<meta name="twitter:description" content="Free math worksheet generator. Create addition, subtraction, multiplication and division practice with digit control, regrouping options, vertical layout and answer keys.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Worksheet Settings</div>
+
+    <div class="field">
+      <label>Operations</label>
+      <div class="check-list two" id="ops">
+        <label class="check on"><input type="checkbox" data-op="add" checked><span><span class="t">Addition +</span></span></label>
+        <label class="check"><input type="checkbox" data-op="sub"><span><span class="t">Subtraction −</span></span></label>
+        <label class="check"><input type="checkbox" data-op="mul"><span><span class="t">Multiplication ×</span></span></label>
+        <label class="check"><input type="checkbox" data-op="div"><span><span class="t">Division ÷</span></span></label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="level">Quick level</label>
+      <select id="level">
+        <option value="">Custom…</option>
+        <option value="1">Year 1 — numbers to 10</option>
+        <option value="2" selected>Year 2 — numbers to 20</option>
+        <option value="3">Year 3 — 2-digit</option>
+        <option value="4">Year 4 — 3-digit</option>
+        <option value="5">Year 5 — 4-digit</option>
+        <option value="tables">Times tables 1–12</option>
+      </select>
+    </div>
+
+    <div class="row">
+      <div class="field"><label for="minA">First number: min</label><input type="number" id="minA" value="1"></div>
+      <div class="field"><label for="maxA">max</label><input type="number" id="maxA" value="20"></div>
+    </div>
+    <div class="row">
+      <div class="field"><label for="minB">Second number: min</label><input type="number" id="minB" value="1"></div>
+      <div class="field"><label for="maxB">max</label><input type="number" id="maxB" value="20"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <fieldset class="field">
+      <legend class="label">Constraints</legend>
+      <div class="check-list">
+        <label class="check on"><input type="checkbox" id="optNoNeg" checked>
+          <span><span class="t">No negative answers</span><span class="d">Subtraction always gives a result of zero or more.</span></span></label>
+        <label class="check on"><input type="checkbox" id="optWholeDiv" checked>
+          <span><span class="t">Division with no remainder</span><span class="d">Builds the question from the answer so it always divides exactly.</span></span></label>
+        <label class="check"><input type="checkbox" id="optNoRegroup">
+          <span><span class="t">Avoid regrouping</span><span class="d">No carrying or borrowing — for children learning column methods.</span></span></label>
+        <label class="check"><input type="checkbox" id="optMissing">
+          <span><span class="t">Missing number problems</span><span class="d">e.g. 7 + ☐ = 12 instead of 7 + 5 = ☐</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="divider"></div>
+
+    <div class="row">
+      <div class="field">
+        <label for="layout">Layout</label>
+        <select id="layout">
+          <option value="horizontal" selected>Horizontal — 7 + 5 = ___</option>
+          <option value="vertical">Vertical (column method)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="count">Questions</label>
+        <input type="number" id="count" value="24" min="1" max="120">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="title">Worksheet title</label>
+        <input type="text" id="title" value="Maths Practice">
+      </div>
+      <div class="field">
+        <label for="columns">Print columns</label>
+        <select id="columns">
+          <option value="2">2</option>
+          <option value="3" selected>3</option>
+          <option value="4">4</option>
+        </select>
+      </div>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Options</legend>
+      <div class="check-list">
+        <label class="check on"><input type="checkbox" id="optKey" checked><span><span class="t">Include answer key page</span></span></label>
+        <label class="check"><input type="checkbox" id="optNoDupes"><span><span class="t">No duplicate questions</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="field">
+      <label for="seed">Seed</label>
+      <div class="row" style="grid-template-columns:minmax(0,1fr) auto;gap:8px">
+        <input type="text" id="seed" value="sheet-1">
+        <button type="button" class="btn btn-soft" id="newSeed"><span id="icoReset"></span></button>
+      </div>
+    </div>
+
+    <div class="out-actions">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate Worksheet</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Worksheet<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="preview">Preview</button>
+      <button type="button" data-tab="key">Answer key</button>
+      <button type="button" data-tab="guide">Teaching notes</button>
+    </div>
+
+    <div data-panel="preview">
+      <div id="preview"></div>
+      <div class="out-actions" style="margin-top:16px">
+        <button type="button" class="btn btn-primary" id="printBtn"><span id="icoFile"></span> Print / PDF</button>
+        <button type="button" class="btn btn-soft" id="regen"><span id="icoReset2"></span> New questions</button>
+      </div>
+      <div id="checks"></div>
+    </div>
+
+    <div data-panel="key" hidden><div id="key"></div></div>
+    <div data-panel="guide" hidden><div id="guide"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/worksheet.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$, W = GTWorksheet;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoReset:reset','icoReset2:reset','icoFile:file']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var LEVELS = {
+    '1': { a: [1, 10], b: [1, 10] },
+    '2': { a: [1, 20], b: [1, 20] },
+    '3': { a: [10, 99], b: [10, 99] },
+    '4': { a: [100, 999], b: [10, 99] },
+    '5': { a: [1000, 9999], b: [100, 999] },
+    'tables': { a: [1, 12], b: [1, 12] }
+  };
+
+  var items = [];
+
+  function ops() {
+    return $$('#ops input:checked').map(function (i) { return i.getAttribute('data-op'); });
+  }
+
+  function noRegroupPair(rand, min, max, op) {
+    /* Build digit-by-digit so no column ever carries or borrows. */
+    var digits = String(max).length;
+    for (var attempt = 0; attempt < 60; attempt++) {
+      var a = 0, b = 0, mult = 1, ok = true;
+      for (var d = 0; d < digits; d++) {
+        var da, db;
+        if (op === 'add') {
+          da = rand.int(0, 9); db = rand.int(0, 9 - da);
+        } else {
+          da = rand.int(0, 9); db = rand.int(0, da);
+        }
+        a += da * mult; b += db * mult; mult *= 10;
+      }
+      if (a >= min && a <= max && b >= min && b <= max && a > 0 && b > 0) return [a, b];
+    }
+    return null;
+  }
+
+  function makeQuestion(rand) {
+    var op = rand.pick(ops());
+    var minA = parseInt($('#minA').value, 10), maxA = parseInt($('#maxA').value, 10);
+    var minB = parseInt($('#minB').value, 10), maxB = parseInt($('#maxB').value, 10);
+    if (minA > maxA) { var t = minA; minA = maxA; maxA = t; }
+    if (minB > maxB) { var t2 = minB; minB = maxB; maxB = t2; }
+
+    var a, b, ans, sym;
+
+    if (op === 'add') {
+      sym = '+';
+      if ($('#optNoRegroup').checked) {
+        var p = noRegroupPair(rand, Math.min(minA, minB), Math.max(maxA, maxB), 'add');
+        if (p) { a = p[0]; b = p[1]; } else { a = rand.int(minA, maxA); b = rand.int(minB, maxB); }
+      } else { a = rand.int(minA, maxA); b = rand.int(minB, maxB); }
+      ans = a + b;
+    } else if (op === 'sub') {
+      sym = '−';
+      if ($('#optNoRegroup').checked) {
+        var p2 = noRegroupPair(rand, Math.min(minA, minB), Math.max(maxA, maxB), 'sub');
+        if (p2) { a = p2[0]; b = p2[1]; } else { a = rand.int(minA, maxA); b = rand.int(minB, maxB); }
+      } else { a = rand.int(minA, maxA); b = rand.int(minB, maxB); }
+      if ($('#optNoNeg').checked && b > a) { var s = a; a = b; b = s; }
+      ans = a - b;
+    } else if (op === 'mul') {
+      sym = '×';
+      a = rand.int(minA, maxA); b = rand.int(minB, maxB); ans = a * b;
+    } else {
+      sym = '÷';
+      if ($('#optWholeDiv').checked) {
+        /* Construct from the quotient so the division is always exact. */
+        b = Math.max(1, rand.int(Math.max(1, minB), Math.max(1, maxB)));
+        var q = rand.int(Math.max(1, Math.ceil(minA / b)) || 1, Math.max(2, Math.floor(maxA / b)) || 2);
+        a = b * q; ans = q;
+      } else {
+        a = rand.int(minA, maxA); b = Math.max(1, rand.int(Math.max(1, minB), Math.max(1, maxB)));
+        ans = Math.round((a / b) * 100) / 100;
+      }
+    }
+    return { a: a, b: b, ans: ans, sym: sym, op: op };
+  }
+
+  function renderItem(q) {
+    var blank = '<span style="display:inline-block;min-width:52px;border-bottom:1.5px solid #94a3b8">&nbsp;</span>';
+    var box = '<span style="display:inline-block;width:26px;height:22px;border:1.5px solid #94a3b8;border-radius:3px;vertical-align:-5px"></span>';
+
+    if ($('#optMissing').checked) {
+      /* Hide one of the operands instead of the result. */
+      var hideFirst = (q.a + q.b) % 2 === 0;
+      var shownA = hideFirst ? box : q.a;
+      var shownB = hideFirst ? q.b : box;
+      return {
+        html: '<span style="font-size:1.05em">' + shownA + ' ' + q.sym + ' ' + shownB + ' = ' + q.ans + '</span>',
+        answer: String(hideFirst ? q.a : q.b)
+      };
+    }
+
+    if ($('#layout').value === 'vertical') {
+      var w = String(Math.max(q.a, q.b)).length;
+      return {
+        html: '<div style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:1.12em;line-height:1.45;' +
+          'display:inline-block;text-align:right;min-width:' + (w + 2) + 'ch">' +
+          '<div>' + q.a + '</div>' +
+          '<div style="border-bottom:1.6px solid #0f172a;padding-bottom:2px">' + q.sym + ' ' + q.b + '</div>' +
+          '<div style="height:24px"></div></div>',
+        answer: String(q.ans)
+      };
+    }
+
+    return {
+      html: '<span style="font-size:1.05em">' + q.a + ' ' + q.sym + ' ' + q.b + ' = ' + blank + '</span>',
+      answer: String(q.ans)
+    };
+  }
+
+  function build() {
+    var selected = ops();
+    if (!selected.length) {
+      $('#preview').innerHTML = '<div class="empty">Select at least one operation.</div>';
+      $('#pill').textContent = 'no operations';
+      $('#key').innerHTML = '';
+      return;
+    }
+
+    var rand = W.rng($('#seed').value);
+    var n = Math.max(1, Math.min(120, parseInt($('#count').value, 10) || 1));
+    items = [];
+    var seen = {}, attempts = 0;
+
+    while (items.length < n && attempts < n * 40) {
+      attempts++;
+      var q = makeQuestion(rand);
+      if ($('#optNoDupes').checked) {
+        var k = q.a + q.sym + q.b;
+        if (seen[k]) continue;
+        seen[k] = 1;
+      }
+      var it = renderItem(q);
+      it.q = q;
+      items.push(it);
+    }
+
+    W.preview('#preview', {
+      title: $('#title').value,
+      instructions: instructions(),
+      items: items,
+      previewColumns: parseInt($('#columns').value, 10) || 3
+    });
+    W.answerKeyPreview('#key', items);
+    renderChecks(n, attempts);
+
+    $('#pill').textContent = items.length + ' questions';
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+  }
+
+  function instructions() {
+    if ($('#optMissing').checked) return 'Write the missing number in each box.';
+    if ($('#layout').value === 'vertical') return 'Work out each calculation using the column method.';
+    return 'Work out the answer to each calculation.';
+  }
+
+  function renderChecks(wanted, attempts) {
+    var c = [];
+    if (items.length < wanted) {
+      c.push(['warn', 'Only ' + items.length + ' of ' + wanted +
+        ' questions could be made without duplicates. Widen the number ranges or allow duplicates.']);
+    }
+    if ($('#optNoRegroup').checked && ops().some(function (o) { return o === 'mul' || o === 'div'; })) {
+      c.push(['warn', 'The no-regrouping constraint only applies to addition and subtraction. Multiplication and division questions ignore it.']);
+    }
+    if (ops().indexOf('div') > -1 && !$('#optWholeDiv').checked) {
+      c.push(['warn', 'Division may produce decimal answers, rounded to two places on the key. Turn on exact division for whole-number answers.']);
+    }
+    if (ops().indexOf('sub') > -1 && !$('#optNoNeg').checked) {
+      c.push(['warn', 'Negative answers are allowed. Fine for older students working with integers; confusing for early primary.']);
+    }
+    var big = items.filter(function (i) { return i.q && Math.abs(i.q.ans) > 100000; });
+    if (big.length) c.push(['warn', 'Some answers exceed 100,000, which may be beyond the intended level.']);
+    if (!c.length) c.push(['ok', items.length + ' questions generated. Change the seed for a fresh sheet with the same settings.']);
+    $('#checks').innerHTML = c.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : 'note-warn') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+  }
+
+  $('#level').addEventListener('change', function () {
+    var L = LEVELS[this.value];
+    if (!L) return;
+    $('#minA').value = L.a[0]; $('#maxA').value = L.a[1];
+    $('#minB').value = L.b[0]; $('#maxB').value = L.b[1];
+    if (this.value === 'tables') {
+      $$('#ops input').forEach(function (i) {
+        i.checked = i.getAttribute('data-op') === 'mul';
+        i.closest('.check').classList.toggle('on', i.checked);
+      });
+    }
+    build();
+  });
+
+  $('#printBtn').addEventListener('click', function () {
+    W.print({
+      title: $('#title').value,
+      instructions: instructions(),
+      items: items,
+      columns: parseInt($('#columns').value, 10) || 3,
+      answerKey: $('#optKey').checked,
+      answerColumns: 5
+    });
+  });
+  $('#newSeed').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); });
+  $('#regen').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); GT.toast('New questions'); });
+
+  $('#guide').innerHTML = [
+    ['No-regrouping questions are built, not filtered', 'Generating random pairs and discarding the ones that carry wastes most attempts and skews the distribution. This tool constructs each number digit by digit so that no column can ever exceed 9 — which means the questions are genuinely representative of the range, not just the easy corner of it.'],
+    ['Exact division works backwards', 'Picking a dividend and divisor at random almost always leaves a remainder. Instead the tool picks the divisor and the quotient, then multiplies to get the dividend — so every question divides exactly, by construction.'],
+    ['Missing-number problems test different thinking', '7 + ☐ = 12 requires the inverse operation, so it is genuinely harder than 7 + 5 = ☐ and reveals whether a child understands the relationship rather than just the procedure. Worth mixing in regularly.'],
+    ['Vertical layout is for teaching the algorithm', 'Column format is the right choice when the point of the lesson is the written method. Horizontal is better for mental arithmetic fluency, because it does not prompt a particular strategy.'],
+    ['Same settings, endless sheets', 'Change the seed and you get a completely different worksheet at the identical difficulty. That makes it practical to give daily practice without reusing the same questions or hand-building each sheet.'],
+    ['Print two versions for a test', 'Two seeds produce two sheets that are equally hard but have different questions — useful for retests, or for adjacent desks.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('');
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Worksheet generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'math-worksheet-generator',
+    lede: 'Generate arithmetic practice at exactly the level you need — with no-regrouping questions that are constructed rather than filtered, and exact division by design.',
+    steps: [
+      { icon: 'gear', title: 'Pick operations and level', text: 'Quick levels set sensible ranges, or set your own minimum and maximum.' },
+      { icon: 'calculator', title: 'Add constraints', text: 'No negatives, no regrouping, exact division, or missing-number problems.' },
+      { icon: 'file', title: 'Print with the key', text: 'Answer key on its own page. Change the seed for another sheet at the same difficulty.' }
+    ],
+    guideTitle: 'Constraints that are built in, not filtered out',
+    guide:
+      '<p style="color:var(--muted)">Most worksheet generators produce random questions and then throw away the ones that break your rules. That works badly: asking for two-digit addition without carrying rejects the overwhelming majority of random pairs, and the handful that survive cluster around small digits. The resulting sheet is not representative of the range you asked for.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">How no-regrouping is generated</h4><p style="color:var(--muted);font-size:13.8px">Each column is built independently: pick the first digit, then pick a second digit that cannot push the column past 9 (or, for subtraction, cannot go below 0). Assemble the numbers from those digits. Every question satisfies the constraint by construction, and the full range of the digits is used.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">How exact division is generated</h4><p style="color:var(--muted);font-size:13.8px">Random dividend ÷ random divisor almost never divides evenly. Instead the divisor and the quotient are chosen first, then multiplied together to produce the dividend. The division is exact by definition, with no rejection loop and no bias.</p></div></div>' +
+      '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span><strong>Missing-number problems are worth using more than they usually are.</strong> <code>7 + ☐ = 12</code> forces the inverse operation, so it distinguishes a child who understands the relationship between addition and subtraction from one who has simply learned a procedure. Same numbers, considerably more diagnostic.</span></div>',
+    related: ['fraction-worksheet-generator', 'number-line-worksheet-generator', 'clock-reading-worksheet-generator'],
+    faqs: [
+      { q: 'Can I make worksheets without carrying or borrowing?', a: 'Yes — turn on "Avoid regrouping". Questions are built digit by digit so no column can carry or borrow, which means the whole number range is used rather than just the easiest pairs.' },
+      { q: 'How do I get division questions with no remainder?', a: 'Leave "Division with no remainder" on. The tool picks the divisor and quotient first and multiplies them to get the dividend, so every question divides exactly.' },
+      { q: 'What are missing number problems?', a: 'Questions like <code>7 + ☐ = 12</code> where an operand is hidden instead of the answer. They require the inverse operation and are much better at revealing whether a child understands the relationship rather than just the procedure.' },
+      { q: 'Can I make several different sheets at the same difficulty?', a: 'Yes. Change the seed and you get entirely different questions with identical settings — useful for daily practice, retests or adjacent desks.' },
+      { q: 'Should I use horizontal or vertical layout?', a: 'Vertical when you are teaching the written column method. Horizontal for mental arithmetic fluency, since it does not prompt any particular strategy.' },
+      { q: 'Does it include an answer key?', a: 'Yes, generated automatically and printed on a separate page so you can hand out just the worksheet.' }
+    ],
+    seo: {
+      title: 'Maths worksheets: constraints built in rather than filtered out',
+      lead: 'This <strong>maths worksheet generator</strong> produces arithmetic practice at exactly the level you need — no-regrouping questions that are <em>constructed</em> rather than filtered, and exact division by design. Below: why that distinction matters, what missing-number problems teach, and how to build parallel sheets at one difficulty.',
+      blocks: [
+        {
+          h: 'Constructed, not filtered',
+          html: '<p>Most generators produce random questions and throw away the ones that break a rule. Ask for twenty subtraction questions without borrowing and they generate at random, discard the failures, and hand you what survives.</p>' +
+            '<p>The result is a biased sheet. Filtering for "no borrowing" keeps only the pairs where every digit of the second number is smaller — so the second number is systematically small, and the questions cluster in a narrow band. A child who practises on it meets the same shape of problem twenty times.</p>' +
+            '<p>Constructing the questions instead means choosing digits that satisfy the constraint from the start. Every valid combination is equally available, the numbers span the full range, and the practice covers the skill rather than a corner of it.</p>',
+          callout: { type: 'tip', text: 'The difference is visible on the page. A filtered no-borrowing sheet has second numbers that are nearly all small; a constructed one uses the whole range. If a generated worksheet looks repetitive, filtering is usually why.' }
+        },
+        {
+          h: 'Regrouping, carrying and borrowing',
+          html: '<p>These are the same idea in different operations, and the ability to switch them off is what makes a worksheet match a lesson.</p>',
+          table: {
+            head: ['Setting', 'Addition', 'Subtraction', 'Teaching stage'],
+            rows: [
+              ['No regrouping', 'Column digits sum to 9 or less.', 'Every top digit is at least the digit below.', 'Introducing column method — the algorithm alone.'],
+              ['Regrouping required', 'At least one column carries.', 'At least one column borrows.', 'Practising the exchange itself.'],
+              ['Mixed', 'Both appear.', 'Both appear.', 'Consolidation, once both are secure.']
+            ]
+          },
+          after: '<p>Teaching the column method and regrouping simultaneously is what causes most of the confusion around it. A sheet with no regrouping lets a child learn the layout first; a sheet where every question regroups gives concentrated practice on the step that is actually hard.</p>'
+        },
+        {
+          h: 'Division without remainders',
+          html: '<p>Exact division is generated backwards: pick the divisor and the quotient, multiply to get the dividend. Every question divides exactly by construction, and the numbers stay in the range you asked for.</p>' +
+            '<p>Generating dividends at random and testing for divisibility produces a very different sheet — heavily weighted towards small divisors, because a random number is far more likely to divide by 2 or 3 than by 7. Backwards construction gives every divisor equal representation.</p>' +
+            '<p>When remainders are the point, they can be turned on deliberately, and the answer key expresses them consistently as either <code>r</code> notation or a fraction.</p>'
+        },
+        {
+          h: 'Missing number problems',
+          html: '<p>A missing-number question puts the blank somewhere other than the answer: <code>7 + ☐ = 15</code>, or <code>☐ − 6 = 9</code>.</p>' +
+            '<p>They are worth far more than their share of a worksheet because they test whether a child understands the <em>relationship</em> rather than the procedure. A child who can compute <code>7 + 8</code> fluently may have no idea how to find the missing addend, because the two are different pieces of knowledge — and the second is what algebra is built on.</p>',
+          cards: [
+            { t: 'Missing addend', d: '<code>7 + ☐ = 15</code>. Requires understanding addition and subtraction as inverses.' },
+            { t: 'Missing subtrahend', d: '<code>☐ − 6 = 9</code>. Reliably harder, and reliably revealing.' },
+            { t: 'Missing factor', d: '<code>6 × ☐ = 42</code>. Division framed as the inverse of multiplication.' },
+            { t: 'Missing first number', d: '<code>☐ ÷ 4 = 7</code>. Often the hardest of the four.' }
+          ],
+          after: '<p>A few of these among ordinary questions surfaces gaps that a page of straightforward computation never will.</p>'
+        },
+        {
+          h: 'Parallel sheets at the same difficulty',
+          steps: [
+            { t: 'Set the parameters', d: 'Operation, digit range, regrouping, number of questions.' },
+            { t: 'Generate several times', d: 'Each press produces a different set of questions with identical constraints.' },
+            { t: 'Use them as versions', d: 'Different questions, same difficulty — for adjacent desks, for a retest, or for homework that cannot simply be copied.' },
+            { t: 'Or fix a seed', d: 'To reproduce the same sheet exactly, keep the seed. Useful when you need to reprint a lost worksheet.' },
+            { t: 'Print the answer key separately', d: 'A single sheet with every answer, laid out to match the question numbering.' }
+          ],
+          callout: { type: 'warn', text: 'Check a generated sheet before photocopying thirty of them. Constraints interact in ways that occasionally produce a sheet that is technically valid and pedagogically odd — all the same divisor, or a run of near-identical questions. Ten seconds of reading saves a lesson.' }
+        },
+        {
+          h: 'Horizontal or vertical layout',
+          html: '<p>They practise different things and the choice is not cosmetic.</p>' +
+            '<p><strong>Vertical (column) layout</strong> is for practising the written algorithm. The digits are aligned for the child, so the work is the procedure itself.</p>' +
+            '<p><strong>Horizontal layout</strong> asks the child to decide how to solve it — mentally, by a known fact, by partitioning, or by writing it out in columns themselves. That decision is a substantial part of number fluency and it disappears entirely when the columns are pre-drawn.</p>' +
+            '<p>The useful sequence is vertical while the algorithm is being learned, then horizontal to build fluency and strategy choice. A worksheet of nothing but pre-formatted columns produces children who can execute the method and cannot decide when to use it.</p>'
+        },
+        {
+          h: 'Related worksheet tools',
+          list: [
+            '<a href="fraction-worksheet-generator.html">Fraction Worksheet Generator</a> — nine fraction skills with denominator progression.',
+            '<a href="number-line-worksheet-generator.html">Number Line Worksheet Generator</a> — the diagram behind most primary maths.',
+            '<a href="clock-reading-worksheet-generator.html">Clock Reading Worksheet Generator</a> — analogue time practice.',
+            '<a href="coordinate-grid-worksheet-generator.html">Coordinate Grid Worksheet Generator</a> — plotting and reading ordered pairs.',
+            '<a href="math-worksheet-generator.html">Math Worksheet Generator</a> — mixed arithmetic practice.'
+          ]
+        }
+      ],
+      keywords: [
+        'math worksheet generator', 'printable arithmetic worksheets', 'addition without carrying',
+        'subtraction without borrowing', 'division no remainder worksheet', 'missing number problems',
+        'free maths worksheets', 'column addition practice', 'times tables worksheet',
+        'worksheet with answer key', 'differentiated maths worksheets', 'mental arithmetic practice'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

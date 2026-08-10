@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>cURL Command Generator — Bash, CMD &amp; PowerShell | Manage My Batch</title>
+<meta name="description" content="Free cURL command generator. Build correct curl requests with headers, auth, JSON and form bodies — with escaping for bash, Windows CMD and PowerShell, plus common flags explained.">
+<link rel="canonical" href="https://managemybatch.com/tools/curl-command-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="cURL Command Generator — Bash, CMD &amp; PowerShell">
+<meta property="og:description" content="Free cURL command generator. Build correct curl requests with headers, auth, JSON and form bodies — with escaping for bash, Windows CMD and PowerShell, plus common flags explained.">
+<meta property="og:url" content="https://managemybatch.com/tools/curl-command-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="cURL Command Generator — Bash, CMD &amp; PowerShell">
+<meta name="twitter:description" content="Free cURL command generator. Build correct curl requests with headers, auth, JSON and form bodies — with escaping for bash, Windows CMD and PowerShell, plus common flags explained.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Request Builder</div>
+    <div id="reqForm"></div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label for="shell">Target shell</label>
+      <select id="shell">
+        <option value="bash" selected>bash / zsh (macOS, Linux)</option>
+        <option value="cmd">Windows CMD</option>
+        <option value="powershell">PowerShell</option>
+        <option value="oneline">Single line (any shell)</option>
+      </select>
+      <div class="hint" id="shellHint"></div>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Common flags</legend>
+      <div class="check-list">
+        <label class="check"><input type="checkbox" id="fSilent"><span><span class="t">-sS — silent, but show errors</span><span class="d">Hides the progress meter without hiding failures. The right pair for scripts.</span></span></label>
+        <label class="check"><input type="checkbox" id="fInclude"><span><span class="t">-i — include response headers</span></span></label>
+        <label class="check"><input type="checkbox" id="fVerbose"><span><span class="t">-v — verbose, show the handshake</span><span class="d">The first thing to reach for when a request fails mysteriously.</span></span></label>
+        <label class="check"><input type="checkbox" id="fLocation"><span><span class="t">-L — follow redirects</span></span></label>
+        <label class="check"><input type="checkbox" id="fFail"><span><span class="t">-f — fail on HTTP errors</span><span class="d">Returns a non-zero exit code on 4xx/5xx instead of printing the error body.</span></span></label>
+        <label class="check"><input type="checkbox" id="fCompressed"><span><span class="t">--compressed — request gzip</span></span></label>
+        <label class="check"><input type="checkbox" id="fTiming"><span><span class="t">-w — print timing breakdown</span><span class="d">DNS, connect, TLS and total time. Excellent for latency triage.</span></span></label>
+        <label class="check"><input type="checkbox" id="fOutput"><span><span class="t">-o — write body to a file</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="field" id="outFileWrap" hidden>
+      <label for="outFile">Output file</label>
+      <input type="text" id="outFile" value="response.json">
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="timeout">Timeout (seconds)</label>
+        <input type="number" id="timeout" placeholder="none" min="1">
+      </div>
+      <div class="field">
+        <label for="retry">Retries</label>
+        <input type="number" id="retry" placeholder="none" min="0" max="10">
+      </div>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Security</legend>
+      <div class="check-list">
+        <label class="check"><input type="checkbox" id="fEnvToken" checked><span><span class="t">Read the token from an environment variable</span><span class="d">Keeps the secret out of your shell history and out of any snippet you paste.</span></span></label>
+      </div>
+    </fieldset>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>curl Command<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="file">Command</button>
+      <button type="button" data-tab="raw">Raw HTTP</button>
+      <button type="button" data-tab="flags">Flag reference</button>
+    </div>
+
+    <div data-panel="file">
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">request.sh</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+      <div id="warnBox"></div>
+    </div>
+
+    <div data-panel="raw" hidden><div id="raw"></div></div>
+    <div data-panel="flags" hidden><div id="flags"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/httpreq.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoCopy:copy','icoDl:download']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var req = GTReq.mount($('#reqForm'), build);
+
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'request.sh', mime: 'text/plain' });
+
+  var SHELL_HINTS = {
+    bash: 'Uses single quotes and backslash line continuations. Single quotes inside values are escaped as \'\\\'\'.',
+    cmd: 'CMD has no single-quote string literal, so values use double quotes and inner quotes are doubled. Lines continue with ^.',
+    powershell: 'PowerShell needs curl.exe explicitly — bare “curl” is an alias for Invoke-WebRequest. Lines continue with a backtick.',
+    oneline: 'Everything on one line — best for pasting into a chat message or a CI step.'
+  };
+
+  function shell() { return $('#shell').value; }
+
+  function qBash(s) { return "'" + String(s).replace(/'/g, "'\\''") + "'"; }
+  function qCmd(s) { return '"' + String(s).replace(/"/g, '""') + '"'; }
+  function qPs(s) { return "'" + String(s).replace(/'/g, "''") + "'"; }
+  function quote(s) {
+    var sh = shell();
+    if (sh === 'cmd') return qCmd(s);
+    if (sh === 'powershell') return qPs(s);
+    return qBash(s);
+  }
+
+  function cont() {
+    var sh = shell();
+    if (sh === 'oneline') return ' ';
+    if (sh === 'cmd') return ' ^\n  ';
+    if (sh === 'powershell') return ' `\n  ';
+    return ' \\\n  ';
+  }
+
+  function tokenRef() {
+    var sh = shell();
+    if (!$('#fEnvToken').checked) return null;
+    return sh === 'cmd' ? '%API_TOKEN%' : sh === 'powershell' ? '$env:API_TOKEN' : '$API_TOKEN';
+  }
+
+  function build() {
+    var m = req.model;
+    var sh = shell();
+    var bin = sh === 'powershell' ? 'curl.exe' : 'curl';
+    var parts = [];
+
+    /* flags */
+    var flags = [];
+    if ($('#fSilent').checked) flags.push('-sS');
+    if ($('#fInclude').checked) flags.push('-i');
+    if ($('#fVerbose').checked) flags.push('-v');
+    if ($('#fLocation').checked) flags.push('-L');
+    if ($('#fFail').checked) flags.push('-f');
+    if ($('#fCompressed').checked) flags.push('--compressed');
+    if (flags.length) parts.push(flags.join(' '));
+
+    if (m.method !== 'GET') parts.push('-X ' + m.method);
+
+    /* headers */
+    var tok = tokenRef();
+    req.allHeaders().forEach(function (h) {
+      var val = h.v;
+      if (tok && /^authorization$/i.test(h.k) && /^Bearer /.test(val)) {
+        /* Interpolation requires a double-quoted string in bash and PowerShell. */
+        var inner = h.k + ': Bearer ' + tok;
+        parts.push('-H ' + (sh === 'cmd' ? qCmd(inner) : '"' + inner + '"'));
+        return;
+      }
+      if (tok && m.auth === 'apikey' && h.k === (m.apiKeyName || 'X-API-Key')) {
+        parts.push('-H ' + (sh === 'cmd' ? qCmd(h.k + ': ' + tok) : '"' + h.k + ': ' + tok + '"'));
+        return;
+      }
+      parts.push('-H ' + quote(h.k + ': ' + val));
+    });
+
+    if (m.auth === 'basic') {
+      parts.push('-u ' + quote((m.user || 'user') + ':' + (m.pass || 'pass')));
+    }
+
+    /* body */
+    if (!req.noBody()) {
+      if (m.bodyType === 'json' || m.bodyType === 'text') {
+        var body = m.body;
+        if (m.bodyType === 'json') {
+          try { body = JSON.stringify(JSON.parse(m.body)); } catch (e) { /* leave as typed */ }
+        }
+        parts.push('-d ' + quote(body));
+      } else if (m.bodyType === 'form') {
+        parts.push('-d ' + quote(req.formEncoded()));
+      } else if (m.bodyType === 'multipart') {
+        m.form.filter(function (f) { return f.k.trim(); }).forEach(function (f) {
+          parts.push('-F ' + quote(f.k.trim() + '=' + f.v));
+        });
+      }
+    }
+
+    if ($('#timeout').value) parts.push('--max-time ' + $('#timeout').value);
+    if ($('#retry').value) parts.push('--retry ' + $('#retry').value);
+    if ($('#fOutput').checked) parts.push('-o ' + quote($('#outFile').value || 'response.json'));
+    if ($('#fTiming').checked) {
+      parts.push('-w ' + quote('\\n\\ndns: %{time_namelookup}s  connect: %{time_connect}s  tls: %{time_appconnect}s  ttfb: %{time_starttransfer}s  total: %{time_total}s  status: %{http_code}\\n'));
+    }
+
+    parts.push(quote(req.fullUrl()));
+
+    var cmd = bin + ' ' + parts.join(cont());
+
+    var pre = '';
+    if (tok && (m.auth === 'bearer' || m.auth === 'apikey')) {
+      pre = sh === 'cmd' ? 'set API_TOKEN=your_token_here\n\n'
+        : sh === 'powershell' ? '$env:API_TOKEN = "your_token_here"\n\n'
+        : 'export API_TOKEN="your_token_here"   # or read it from your secrets manager\n\n';
+    }
+
+    var text = pre + cmd;
+    out.set(text, sh === 'powershell' ? 'request.ps1' : sh === 'cmd' ? 'request.bat' : 'request.sh');
+
+    $('#shellHint').textContent = SHELL_HINTS[sh];
+    $('#pill').textContent = m.method + ' · ' + (req.allHeaders().length) + ' headers';
+    $('#pill').style.background = 'var(--blue-50)'; $('#pill').style.color = 'var(--blue)';
+
+    renderRaw();
+    renderWarn();
+    renderFlags();
+  }
+
+  function renderRaw() {
+    var m = req.model;
+    var u;
+    try { u = new URL(req.fullUrl()); } catch (e) { u = null; }
+    var lines = [];
+    lines.push(m.method + ' ' + (u ? u.pathname + u.search : '/') + ' HTTP/1.1');
+    lines.push('Host: ' + (u ? u.host : 'api.example.com'));
+    req.allHeaders().forEach(function (h) { lines.push(h.k + ': ' + h.v); });
+    var body = '';
+    if (!req.noBody()) {
+      body = m.bodyType === 'form' ? req.formEncoded()
+        : m.bodyType === 'multipart' ? '<multipart form-data body>'
+        : m.body;
+      lines.push('Content-Length: ' + GT.byteLen(body));
+    }
+    $('#raw').innerHTML =
+      '<p style="color:var(--muted);font-size:13.8px;margin-bottom:12px">The actual bytes curl will put on the wire. Useful when comparing against a server access log or a proxy trace.</p>' +
+      '<pre class="code">' + GT.esc(lines.join('\n') + (body ? '\n\n' + body : '')) + '</pre>';
+  }
+
+  function renderWarn() {
+    var w = [], m = req.model;
+    var jv = req.jsonValid();
+    if (!jv.ok) w.push(['err', 'The JSON body is invalid: ' + GT.esc(jv.msg) + '. curl will send it verbatim and the server will reject it.']);
+    if (!/^https:/i.test(m.url.trim()) && /^http:/i.test(m.url.trim())) {
+      w.push(['warn', 'This request uses plain HTTP. Any token in the Authorization header travels in clear text.']);
+    }
+    if (!$('#fEnvToken').checked && (m.auth === 'bearer' || m.auth === 'apikey')) {
+      w.push(['warn', 'The token is inlined in the command. It will land in your shell history and in any snippet you paste. Turn on the environment-variable option.']);
+    }
+    if (req.noBody() && (m.method === 'POST' || m.method === 'PUT' || m.method === 'PATCH')) {
+      w.push(['warn', 'A ' + m.method + ' with no body — set a body type if that is not intentional.']);
+    }
+    if (m.method === 'GET' && m.bodyType !== 'none') {
+      w.push(['warn', 'GET requests should not carry a body. curl will silently switch to POST if you add <code>-d</code> without <code>-X GET</code>.']);
+    }
+    if ($('#fSilent').checked && !$('#fFail').checked) {
+      w.push(['warn', 'With <code>-sS</code> but not <code>-f</code>, an HTTP 500 still exits 0. Add <code>-f</code> if a script should treat error responses as failures.']);
+    }
+    if (!w.length) w.push(['ok', 'Command is correctly quoted for ' + $('#shell').selectedOptions[0].textContent + '.']);
+    $('#warnBox').innerHTML = w.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : x[0] === 'warn' ? 'note-warn' : 'note-err') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+  }
+
+  function renderFlags() {
+    $('#flags').innerHTML = [
+      ['-X, --request', 'Sets the HTTP method. Often unnecessary — <code>-d</code> implies POST and <code>-I</code> implies HEAD.'],
+      ['-H, --header', 'Adds a request header. Repeat it once per header. To remove a default header, pass it with an empty value: <code>-H "Accept:"</code>.'],
+      ['-d, --data', 'Sends a request body and switches the method to POST. Use <code>--data-raw</code> to stop <code>@</code> being interpreted as a filename, and <code>-d @file.json</code> when you do want to read from a file.'],
+      ['-F, --form', 'Sends multipart/form-data. Use <code>-F "file=@photo.jpg"</code> to attach a real file.'],
+      ['-u, --user', 'Basic authentication. Prefer <code>-u user</code> without the password so curl prompts, keeping it out of your history.'],
+      ['-s / -sS', '<code>-s</code> hides the progress meter and error messages; <code>-S</code> puts errors back. In scripts you almost always want both together.'],
+      ['-f, --fail', 'Exits non-zero on 4xx and 5xx responses instead of printing the error body. Essential in CI, where a silent 500 otherwise looks like success.'],
+      ['-L, --location', 'Follows redirects. By default curl stops at the 301 and prints nothing useful.'],
+      ['-i / -I', '<code>-i</code> includes response headers with the body; <code>-I</code> sends a HEAD request and shows headers only.'],
+      ['-o / -O', '<code>-o name</code> writes the body to a chosen filename; <code>-O</code> uses the name from the URL.'],
+      ['--max-time / --connect-timeout', 'Total budget for the request versus time allowed to establish the connection. Always set one in automation.'],
+      ['--retry', 'Retries transient failures with exponential backoff. Pair with <code>--retry-connrefused</code> when waiting for a service to boot.'],
+      ['-w, --write-out', 'Prints selected variables after the transfer. The timing breakdown makes it obvious whether latency is DNS, TLS or the application.'],
+      ['-k, --insecure', 'Skips certificate verification. Acceptable when poking at a local self-signed service, never in anything that runs unattended.']
+    ].map(function (x) {
+      return '<div class="kv"><span class="k"><code>' + x[0] + '</code><br><span style="font-size:12.5px">' + x[1] + '</span></span></div>';
+    }).join('');
+  }
+
+  $('#fOutput').addEventListener('change', function () { $('#outFileWrap').hidden = !this.checked; build(); });
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'curl-command-generator',
+    lede: 'Build curl commands that are correctly quoted for your shell — with auth, JSON and multipart bodies, and the flags that stop a silent 500 looking like success.',
+    steps: [
+      { icon: 'gear', title: 'Describe the request', text: 'Method, URL, query parameters, headers, auth and body.' },
+      { icon: 'terminal', title: 'Choose your shell', text: 'bash, CMD and PowerShell each quote differently — the output adapts.' },
+      { icon: 'copy', title: 'Copy and run', text: 'Check the Raw HTTP tab to see exactly what goes on the wire.' }
+    ],
+    guideTitle: 'The curl details that cause real bugs',
+    guide:
+      '<p style="color:var(--muted)">curl is forgiving in ways that hide mistakes. It will happily send a malformed body, follow no redirects, and exit successfully on an HTTP 500. Most "curl works but my code does not" incidents come down to one of the four things below.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Quoting is shell-specific</h4><p style="color:var(--muted);font-size:13.8px">A command copied from a macOS blog post frequently fails on Windows because CMD has no single-quoted strings, and in PowerShell bare <code>curl</code> is an alias for <code>Invoke-WebRequest</code> with entirely different flags. Selecting the right shell above emits <code>curl.exe</code> and the correct escaping.</p>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">-d implies POST</h4><p style="color:var(--muted);font-size:13.8px">Adding a body silently changes the method. If you meant to send a GET with a body — which most servers ignore anyway — you must say <code>-X GET</code> explicitly.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Exit codes lie by default</h4><p style="color:var(--muted);font-size:13.8px">Without <code>-f</code>, curl treats a 404 or a 500 as a successful transfer and exits 0. In a CI pipeline that means a broken deploy reports green. Use <code>-fsS</code> as the default flag set for any scripted request.</p>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">Secrets end up in history</h4><p style="color:var(--muted);font-size:13.8px">A token pasted inline is written to <code>~/.bash_history</code>, captured in CI logs, and copied into every chat message that shares the command. Reading it from an environment variable costs one extra line and removes the whole class of leak.</p></div></div>' +
+      '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>The <code>-w</code> timing breakdown is the fastest way to diagnose slow requests: it separates DNS lookup, TCP connect, TLS handshake and time-to-first-byte, so you can tell whether the problem is the network, the certificate chain or the application itself.</span></div>',
+    related: ['fetch-api-request-generator', 'axios-request-generator', 'dummy-api-key-generator'],
+    faqs: [
+      { q: 'Why does my curl command fail on Windows?', a: 'CMD does not support single-quoted strings, so bash-style commands break. In PowerShell, <code>curl</code> is an alias for <code>Invoke-WebRequest</code>, which takes different arguments — you need <code>curl.exe</code>. Select your shell above and the output is escaped correctly.' },
+      { q: 'How do I send a JSON body with curl?', a: 'Use <code>-H "Content-Type: application/json"</code> with <code>-d</code> and the JSON string. Note that <code>-d</code> automatically switches the method to POST, so <code>-X POST</code> is redundant.' },
+      { q: 'How do I upload a file?', a: 'Use multipart form data: <code>curl -F "file=@/path/to/photo.jpg" -F "title=Holiday" https://…</code>. The <code>@</code> tells curl to read the file from disk.' },
+      { q: 'Why does curl exit 0 on an HTTP error?', a: 'Because the transfer itself succeeded — curl only reports network-level failures by default. Add <code>-f</code> and it will exit non-zero on 4xx and 5xx, which is what a script needs.' },
+      { q: 'What is the difference between -s, -S and -v?', a: '<code>-s</code> silences the progress meter and errors, <code>-S</code> restores error messages, and <code>-v</code> shows the full handshake including request and response headers. Use <code>-sS</code> in scripts and <code>-v</code> when debugging.' },
+      { q: 'How do I keep my API token out of my shell history?', a: 'Export it as an environment variable and reference it in the header. Enable the environment-variable option above and the generated command does this, including the export line for your shell.' }
+    ],
+    seo: {
+      title: 'curl commands: quoting, auth, JSON bodies and the flags that matter',
+      lead: 'This <strong>curl command generator</strong> builds correctly quoted requests for bash, PowerShell or cmd, with authentication, JSON and multipart bodies. Below: why the same command breaks on Windows, how to stop curl reporting success on a 500, and how to keep tokens out of your shell history.',
+      blocks: [
+        {
+          h: 'Why curl commands break when you paste them',
+          html: '<p>Almost every "this curl example does not work" is a <strong>quoting</strong> problem, not a curl problem. Shells parse the command line before curl ever sees it, and they do not agree on the rules.</p>' +
+            '<p>In bash and zsh, single quotes are literal — a JSON body wrapped in <code>\'...\'</code> passes through untouched, which is exactly what you want. Windows <code>cmd.exe</code> does not treat single quotes as quotes at all, so the JSON arrives fragmented. PowerShell treats single quotes as literal but historically mangled embedded double quotes when calling native executables.</p>' +
+            '<p>The result is that a command copied from documentation written on macOS fails on a Windows laptop with a parse error from the API rather than the shell — which is why the cause is rarely obvious.</p>',
+          callout: { type: 'tip', text: 'In PowerShell, prefer <code>curl.exe</code> over <code>curl</code>. Bare <code>curl</code> is an alias for <code>Invoke-WebRequest</code>, which takes entirely different flags — so <code>-X POST -d</code> produces a confusing parameter error rather than a request.' }
+        },
+        {
+          h: 'Quoting by shell',
+          table: {
+            head: ['Shell', 'Wrap the JSON body in', 'Escape inner double quotes as'],
+            rows: [
+              ['bash / zsh', "Single quotes <code>'{\"a\":1}'</code>", 'No escaping needed.'],
+              ['PowerShell', "Single quotes, calling <code>curl.exe</code>", 'No escaping needed inside single quotes.'],
+              ['cmd.exe', 'Double quotes <code>"{...}"</code>', '<code>\\"</code> — every inner quote must be escaped.'],
+              ['Makefile', 'Single quotes', 'Also double any <code>$</code> as <code>$$</code>.'],
+              ['YAML (CI configs)', 'A block scalar', 'Avoid inline quoting entirely — use <code>&gt;-</code> or a data file.']
+            ]
+          },
+          after: '<p>For anything longer than a line or two, sidestep quoting altogether: put the body in a file and use <code>-d @body.json</code>. It works identically on every platform and the file is diffable.</p>'
+        },
+        {
+          h: 'Sending a JSON body',
+          steps: [
+            { t: 'Set the method', d: '<code>-X POST</code>. With <code>-d</code>, curl defaults to POST anyway, but stating it makes the command self-documenting.' },
+            { t: 'Set the content type', d: '<code>-H "Content-Type: application/json"</code>. Without it curl sends <code>application/x-www-form-urlencoded</code> and the server will reject or misparse the body.' },
+            { t: 'Pass the body', d: '<code>-d \'{"name":"Ada"}\'</code> inline, or <code>-d @payload.json</code> from a file.' },
+            { t: 'Preserve newlines if they matter', d: '<code>-d</code> strips newlines from file input; use <code>--data-binary @file.json</code> when the exact bytes matter.' },
+            { t: 'Add an Accept header', d: '<code>-H "Accept: application/json"</code> so error responses come back as JSON rather than an HTML error page.' }
+          ]
+        },
+        {
+          h: 'Uploading files',
+          html: '<p>Use <code>-F</code> for multipart form uploads. Each <code>-F</code> is one part, and the <code>@</code> prefix means "read from this file":</p>' +
+            '<p><code>curl -F "file=@report.pdf" -F "title=Q3 report" https://api.example.com/upload</code></p>' +
+            '<p>Curl sets the multipart boundary and <code>Content-Type</code> itself. Do not add a <code>Content-Type</code> header manually with <code>-F</code> — overriding it removes the boundary parameter and the server cannot parse a single part.</p>' +
+            '<p>Two variants worth knowing: <code>@</code> uploads as a file part, <code>&lt;</code> reads a file\'s contents into a plain field value, and <code>;type=</code> sets the part\'s MIME type when the server is fussy.</p>'
+        },
+        {
+          h: 'The flags that change the outcome',
+          table: {
+            head: ['Flag', 'What it does', 'Why it matters'],
+            rows: [
+              ['<code>-f</code> / <code>--fail</code>', 'Exit non-zero on HTTP 4xx and 5xx.', 'Without it, curl exits 0 on a 500. Scripts and CI treat the failure as success.'],
+              ['<code>-s</code>', 'Silent — hides the progress meter.', 'Also hides errors, which is why it is usually wrong alone.'],
+              ['<code>-S</code>', 'Show errors even when silent.', '<code>-sS</code> together is the correct scripting pair.'],
+              ['<code>-L</code>', 'Follow redirects.', 'Without it a 301 returns an empty body and looks like a broken API.'],
+              ['<code>-i</code> / <code>-D -</code>', 'Include or dump response headers.', 'Essential when debugging auth, caching or CORS.'],
+              ['<code>-v</code>', 'Verbose — full request and response headers.', 'The first thing to reach for when something is inexplicable.'],
+              ['<code>--max-time</code>', 'Overall timeout in seconds.', 'Prevents a hung request stalling a pipeline indefinitely.'],
+              ['<code>--compressed</code>', 'Request and decode gzip.', 'Faster, and matches what a browser sends.']
+            ]
+          },
+          callout: { type: 'warn', text: '<strong><code>curl -s</code> alone in a CI script is a trap.</strong> It hides the progress meter <em>and</em> the error message, and curl still exits 0 on an HTTP 500. Use <code>curl -sS --fail</code> so failures are both visible and fatal.' }
+        },
+        {
+          h: 'Keeping tokens out of your shell history',
+          list: [
+            '<strong>Use a variable from the environment:</strong> <code>-H "Authorization: Bearer $API_TOKEN"</code>. The literal token never appears in the command line.',
+            '<strong>Use <code>--netrc</code> or <code>--netrc-file</code></strong> for basic auth credentials stored with restricted file permissions.',
+            '<strong>Read the header from a file:</strong> <code>-H @headers.txt</code>, kept out of version control.',
+            '<strong>Prefix the command with a space</strong> where <code>HISTCONTROL=ignorespace</code> is set — a stopgap, not a policy.',
+            '<strong>Never use <code>-u user:password</code> in a shared terminal.</strong> It lands in history and, on some systems, in the process list where any user can read it.'
+          ],
+          after: '<p>For placeholder credentials in documentation and examples, generate obviously fake ones with the <a href="dummy-api-key-generator.html">dummy API key generator</a> rather than redacting a real key by hand.</p>'
+        },
+        {
+          h: 'Related request tools',
+          list: [
+            '<a href="fetch-api-request-generator.html">Fetch API Request Generator</a> — the same request as browser or Node JavaScript.',
+            '<a href="axios-request-generator.html">Axios Request Generator</a> — instances, interceptors and error branches.',
+            '<a href="dummy-api-key-generator.html">Dummy API Key Generator</a> — realistic fake credentials for docs and tests.',
+            '<a href="json-test-data-generator.html">JSON Test Data Generator</a> — request bodies to POST.'
+          ]
+        }
+      ],
+      keywords: [
+        'curl command generator', 'curl post json', 'curl headers', 'curl file upload',
+        'curl windows quoting', 'curl powershell', 'curl bearer token', 'curl --fail',
+        'curl verbose debug', 'curl basic auth', 'curl form data', 'curl timeout'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

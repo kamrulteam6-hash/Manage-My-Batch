@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chore Rotation Generator — Fair Rotating Chore Charts | Manage My Batch</title>
+<meta name="description" content="Free chore rotation generator. Build a fair rotating chore chart where everyone takes every job in turn, with printable weekly charts and a per-person view.">
+<link rel="canonical" href="https://managemybatch.com/tools/chore-rotation-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Chore Rotation Generator — Fair Rotating Chore Charts">
+<meta property="og:description" content="Free chore rotation generator. Build a fair rotating chore chart where everyone takes every job in turn, with printable weekly charts and a per-person view.">
+<meta property="og:url" content="https://managemybatch.com/tools/chore-rotation-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Chore Rotation Generator — Fair Rotating Chore Charts">
+<meta name="twitter:description" content="Free chore rotation generator. Build a fair rotating chore chart where everyone takes every job in turn, with printable weekly charts and a per-person view.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Rota Setup</div>
+
+    <div class="field">
+      <label for="people">Who is in the rota — one per line</label>
+      <textarea id="people" style="min-height:110px">Alex
+Sam
+Jo
+Kit</textarea>
+      <div id="peopleStats"></div>
+    </div>
+
+    <div class="field">
+      <label for="tasks">Chores — one per line</label>
+      <textarea id="tasks" style="min-height:130px">Bins and recycling
+Kitchen and dishes
+Bathroom
+Hoovering</textarea>
+      <div id="taskStats"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="row">
+      <div class="field">
+        <label for="periods">How many periods</label>
+        <input type="number" id="periods" value="8" min="1" max="52">
+      </div>
+      <div class="field">
+        <label for="unit">Rotate every</label>
+        <select id="unit">
+          <option value="7" selected>Week</option>
+          <option value="1">Day</option>
+          <option value="14">Fortnight</option>
+          <option value="30">Month</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="start">Starting</label>
+      <input type="date" id="start">
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Options</legend>
+      <div class="check-list">
+        <label class="check on"><input type="checkbox" id="optShuffle" checked>
+          <span><span class="t">Shuffle who starts on what</span><span class="d">Otherwise the first person always begins with the first chore.</span></span></label>
+        <label class="check"><input type="checkbox" id="optTick">
+          <span><span class="t">Add tick boxes</span><span class="d">A column to mark each chore done.</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="field">
+      <label for="title">Chart title</label>
+      <input type="text" id="title" value="Chore Rota">
+    </div>
+
+    <div class="field">
+      <label for="seed">Seed</label>
+      <div class="row" style="grid-template-columns:minmax(0,1fr) auto;gap:8px">
+        <input type="text" id="seed" value="chores-1">
+        <button type="button" class="btn btn-soft" id="newSeed"><span id="icoReset"></span></button>
+      </div>
+    </div>
+
+    <div class="out-actions">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate Rota</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Rota<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="chart">Chart</button>
+      <button type="button" data-tab="person">By person</button>
+      <button type="button" data-tab="fair">Fairness</button>
+      <button type="button" data-tab="guide">Notes</button>
+    </div>
+
+    <div data-panel="chart">
+      <div id="chart" style="overflow-x:auto"></div>
+      <div class="out-actions" style="margin-top:16px">
+        <button type="button" class="btn btn-primary" id="printBtn"><span id="icoFile"></span> Print chart</button>
+        <button type="button" class="btn btn-ghost" id="csvBtn"><span id="icoDl"></span> CSV</button>
+        <button type="button" class="btn btn-soft" id="regen"><span id="icoReset2"></span> Reshuffle</button>
+      </div>
+      <div id="checks"></div>
+    </div>
+
+    <div data-panel="person" hidden><div id="person"></div></div>
+    <div data-panel="fair" hidden><div id="fair"></div></div>
+    <div data-panel="guide" hidden><div id="guide"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/schedule.js"></script>
+<script src="../assets/js/roster.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$, S = GTSched;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoDl:download','icoReset:reset','icoReset2:reset','icoFile:file']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  $('#start').value = GT.today();
+  var rot = null, dates = [], people = [], tasks = [];
+
+  function build() {
+    var pp = GTRoster.parseNames($('#people').value);
+    var tt = GTRoster.parseNames($('#tasks').value);
+    people = pp.names; tasks = tt.names;
+    GTRoster.rosterStats('#peopleStats', pp);
+    GTRoster.rosterStats('#taskStats', tt);
+
+    if (!people.length || !tasks.length) {
+      $('#chart').innerHTML = '<div class="empty">Add at least one person and one chore.</div>';
+      $('#pill').textContent = '—'; $('#person').innerHTML = ''; $('#fair').innerHTML = '';
+      return;
+    }
+
+    var periods = Math.max(1, Math.min(52, parseInt($('#periods').value, 10) || 1));
+    rot = S.rotation(people, tasks, periods, {
+      seed: $('#seed').value,
+      shuffle: $('#optShuffle').checked
+    });
+    dates = S.dateSeries($('#start').value, periods, parseInt($('#unit').value, 10));
+
+    renderChart();
+    renderPerson();
+    renderFair();
+    renderChecks();
+
+    $('#pill').textContent = people.length + ' people · ' + tasks.length + ' chores';
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+  }
+
+  function periodLabel(i) {
+    var u = parseInt($('#unit').value, 10);
+    var d = dates[i];
+    if (u === 1) return S.fmtDate(d);
+    if (u >= 30) return d.toLocaleDateString(undefined, { month: 'short', year: 'numeric' });
+    return 'w/c ' + d.toLocaleDateString(undefined, { day: 'numeric', month: 'short' });
+  }
+
+  function renderChart() {
+    $('#chart').innerHTML =
+      '<table style="border-collapse:collapse;width:100%;font-size:13.5px">' +
+      '<tr><th style="text-align:left;padding:9px;border-bottom:1.5px solid var(--line);white-space:nowrap">Period</th>' +
+      rot.tasks.map(function (t) {
+        return '<th style="text-align:left;padding:9px;border-bottom:1.5px solid var(--line)">' + GT.esc(t) + '</th>';
+      }).join('') + '</tr>' +
+      rot.grid.map(function (row, i) {
+        return '<tr><td style="padding:9px;border-bottom:1px solid var(--line-2);color:var(--muted);white-space:nowrap;font-size:12.5px">' +
+          periodLabel(i) + '</td>' +
+          row.map(function (cell) {
+            return '<td style="padding:9px;border-bottom:1px solid var(--line-2);font-weight:600">' +
+              GT.esc(cell.person || '—') +
+              ($('#optTick').checked ? ' <span style="color:var(--muted-2);font-weight:400">☐</span>' : '') + '</td>';
+          }).join('') + '</tr>';
+      }).join('') + '</table>';
+  }
+
+  function renderPerson() {
+    $('#person').innerHTML = rot.people.map(function (p) {
+      var mine = [];
+      rot.grid.forEach(function (row, i) {
+        row.forEach(function (cell) { if (cell.person === p) mine.push({ period: i, task: cell.task }); });
+      });
+      return '<div style="margin-bottom:16px"><p class="more-label">' + GT.esc(p) +
+        ' <span style="font-weight:500;color:var(--muted)">· ' + mine.length + ' turns</span></p>' +
+        '<div class="more-list">' + mine.map(function (m) {
+          return '<div class="more-row"><span style="width:88px;flex:none;font-size:12px;color:var(--muted)">' +
+            periodLabel(m.period) + '</span><span class="mval" style="font-family:var(--sans);font-size:14px">' +
+            GT.esc(m.task) + '</span></div>';
+        }).join('') + '</div></div>';
+    }).join('');
+  }
+
+  function renderFair() {
+    var f = S.rotationFairness(rot.grid, rot.people);
+    /* How many times each person does each task */
+    var matrix = {};
+    rot.people.forEach(function (p) { matrix[p] = {}; rot.tasks.forEach(function (t) { matrix[p][t] = 0; }); });
+    rot.grid.forEach(function (row) {
+      row.forEach(function (c) { if (c.person) matrix[c.person][c.task]++; });
+    });
+
+    $('#fair').innerHTML =
+      '<p style="color:var(--muted);font-size:13.5px;margin-bottom:12px">How many times each person does each chore across the whole rota. A fair rotation spreads the unpopular jobs evenly.</p>' +
+      '<table style="border-collapse:collapse;width:100%;font-size:13px">' +
+      '<tr><th style="text-align:left;padding:8px;border-bottom:1px solid var(--line)"></th>' +
+      rot.tasks.map(function (t) {
+        return '<th style="padding:8px;border-bottom:1px solid var(--line);font-size:12px">' +
+          GT.esc(t.length > 14 ? t.slice(0, 12) + '…' : t) + '</th>';
+      }).join('') + '<th style="padding:8px;border-bottom:1px solid var(--line)">Total</th></tr>' +
+      rot.people.map(function (p) {
+        return '<tr><th style="text-align:left;padding:8px;border-bottom:1px solid var(--line-2);white-space:nowrap">' +
+          GT.esc(p) + '</th>' +
+          rot.tasks.map(function (t) {
+            return '<td style="padding:8px;text-align:center;border-bottom:1px solid var(--line-2)">' +
+              matrix[p][t] + '</td>';
+          }).join('') +
+          '<td style="padding:8px;text-align:center;border-bottom:1px solid var(--line-2);font-weight:700;color:var(--blue)">' +
+          f.counts[p] + '</td></tr>';
+      }).join('') + '</table>';
+  }
+
+  function renderChecks() {
+    var c = [];
+    var f = S.rotationFairness(rot.grid, rot.people);
+    var periods = rot.grid.length;
+
+    if (f.max - f.min === 0) {
+      c.push(['ok', 'Perfectly even — everyone does ' + f.min + ' chore' + (f.min === 1 ? '' : 's') + ' in total.']);
+    } else {
+      c.push(['warn', 'Turn counts range from ' + f.min + ' to ' + f.max +
+        '. Set the number of periods to a multiple of ' + people.length + ' for a perfectly even split.']);
+    }
+
+    if (people.length === tasks.length) {
+      c.push(['ok', 'Same number of people as chores — everyone has exactly one job each period, and cycles through all of them.']);
+    } else if (people.length > tasks.length) {
+      c.push(['warn', people.length + ' people but only ' + tasks.length +
+        ' chores, so ' + (people.length - tasks.length) + ' ' + (people.length - tasks.length === 1 ? 'person gets' : 'people get') +
+        ' a period off each time. That is fine as long as it rotates — check the fairness table.']);
+    } else {
+      c.push(['warn', tasks.length + ' chores but only ' + people.length +
+        ' people, so some people take more than one job per period.']);
+    }
+
+    var full = periods >= tasks.length;
+    if (!full) {
+      c.push(['warn', 'With only ' + periods + ' periods, nobody completes a full cycle of all ' +
+        tasks.length + ' chores. Increase the periods to at least ' + tasks.length + '.']);
+    }
+    $('#checks').innerHTML = c.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : 'note-warn') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+  }
+
+  $('#csvBtn').addEventListener('click', function () {
+    var rows = ['period,date,' + rot.tasks.map(function (t) { return '"' + t.replace(/"/g, '""') + '"'; }).join(',')];
+    rot.grid.forEach(function (row, i) {
+      rows.push((i + 1) + ',' + dates[i].toISOString().slice(0, 10) + ',' +
+        row.map(function (c) { return '"' + (c.person || '').replace(/"/g, '""') + '"'; }).join(','));
+    });
+    GT.download(rows.join('\n'), 'chore-rota.csv', 'text/csv');
+  });
+
+  $('#printBtn').addEventListener('click', function () {
+    GTRoster.printHtml($('#title').value,
+      '<h1>' + GT.esc($('#title').value) + '</h1>' +
+      '<p class="sub">' + people.length + ' people · ' + tasks.length + ' chores · from ' +
+      S.fmtDate(dates[0]) + '</p>' +
+      '<table><tr><th>Period</th>' + rot.tasks.map(function (t) { return '<th>' + GT.esc(t) + '</th>'; }).join('') + '</tr>' +
+      rot.grid.map(function (row, i) {
+        return '<tr><td>' + periodLabel(i) + '</td>' +
+          row.map(function (c) {
+            return '<td>' + GT.esc(c.person || '—') + ($('#optTick').checked ? ' &nbsp;☐' : '') + '</td>';
+          }).join('') + '</tr>';
+      }).join('') + '</table>');
+  });
+
+  $('#newSeed').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); });
+  $('#regen').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); GT.toast('Reshuffled'); });
+
+  $('#guide').innerHTML = [
+    ['Rotation beats assignment', 'Assigning fixed chores guarantees that whoever ends up with the bathroom resents it forever. A rotation means everyone takes every job in turn, so the unpopular ones are shared and nobody can claim they always get the worst.'],
+    ['Make the period count a multiple of the group size', 'With four people and six weeks, two people get an extra turn. With eight weeks everyone gets exactly two of each. The fairness tab shows the totals so you can spot an uneven split before printing.'],
+    ['Equal people and chores is the cleanest setup', 'When the two lists are the same length, every person has exactly one job each period and cycles through all of them. Different lengths still work — some people get a period off, or take two jobs — but the fairness table is worth checking.'],
+    ['Print it and put it where the chores happen', 'A rota in a group chat is invisible by Wednesday. On the fridge it is a standing reminder, and the tick boxes turn it into a record of what actually got done.'],
+    ['Rotate slowly enough to be noticed', 'Daily rotation is chaos for anything except washing up. Weekly is the usual sweet spot — long enough to establish a habit, short enough that nobody is stuck with the bins for a month.'],
+    ['Reshuffle the starting positions', 'The shuffle only changes who begins on which chore. The rotation itself is fixed, so fairness is unaffected — it just avoids the first person always starting with the first job on the list.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('');
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Rota generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'chore-rotation-generator',
+    lede: 'A chore chart where everyone genuinely takes every job in turn — with a fairness table that proves it, and a printable chart for the fridge.',
+    steps: [
+      { icon: 'gear', title: 'List people and chores', text: 'Equal-length lists give the cleanest rotation.' },
+      { icon: 'broom', title: 'Set the rhythm', text: 'Weekly is the usual sweet spot for household chores.' },
+      { icon: 'file', title: 'Print it', text: 'Put it where the chores happen, with tick boxes if you want a record.' }
+    ],
+    guideTitle: 'Why rotations settle arguments',
+    guide:
+      '<p style="color:var(--muted)">Fixed chore assignments create a permanent grievance. Whoever gets the bathroom has it forever, and the fact that someone else always has the bins is no consolation. A rotation removes the whole argument: every job comes round to everyone, so nobody is stuck and nobody can claim they always get the worst of it.</p>' +
+      '<p style="color:var(--muted);margin-top:12px">The rotation here is a Latin-square shift — each period everyone moves one place along the chore list. Over a full cycle every person does every job exactly the same number of times, which the fairness table demonstrates rather than just asserts.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Getting the numbers right</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><strong>Same number of people and chores</strong> — cleanest. One job each, every period.</li><li><strong>More people than chores</strong> — some get a period off, rotating.</li><li><strong>More chores than people</strong> — some take two jobs.</li><li><strong>Periods should be a multiple of the group size</strong> or the totals come out uneven.</li></ul></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Make it visible</h4><p style="color:var(--muted);font-size:13.8px">A rota posted in a group chat has effectively vanished by Wednesday. Printed and stuck on the fridge, it is a standing reminder that nobody can claim not to have seen.</p>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">Tick boxes are worth adding — they turn the chart from a plan into a record, which is a surprisingly effective nudge.</p></div></div>' +
+      '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>Weekly rotation works best for most households. Daily is chaotic for anything beyond washing up, and monthly leaves someone on the bins long enough to resent it.</span></div>',
+    related: ['cleaning-schedule-generator', 'work-shift-rotation-generator', 'secret-santa-generator'],
+    faqs: [
+      { q: 'How does the rotation stay fair?', a: 'Each period everyone shifts one place along the chore list, so over a full cycle every person does every job the same number of times. The fairness tab shows the per-person, per-chore totals.' },
+      { q: 'What if I have more people than chores?', a: 'Some people get a period off, and that rest rotates too. Check the fairness table — if the period count is a multiple of the group size, it comes out perfectly even.' },
+      { q: 'How many periods should I generate?', a: 'At least as many as you have chores, so everyone completes a full cycle. A multiple of the number of people makes the totals exactly equal.' },
+      { q: 'How often should chores rotate?', a: 'Weekly suits most households. Daily is impractical for anything except washing up, and monthly leaves someone on an unpopular job long enough to build resentment.' },
+      { q: 'Can I print the chart?', a: 'Yes, with optional tick boxes. Putting it where the chores happen works far better than sharing it in a chat, where it disappears within days.' },
+      { q: 'What does reshuffle change?', a: 'Only who starts on which chore. The rotation pattern and its fairness are unchanged — it just avoids the first person always beginning with the first job listed.' }
+    ],
+    seo: {
+      title: 'Chore rotations: why a rota settles arguments a list never does',
+      lead: 'This <strong>chore rotation generator</strong> builds a chart where everyone genuinely takes every job in turn, with a fairness table that proves it and a printable chart for the fridge. Below: why rotation works where good intentions do not, and how often to rotate.',
+      blocks: [
+        {
+          h: 'Why rotations settle arguments',
+          html: '<p>Household chore disputes are almost never about the chores. They are about the belief that the split is uneven — and without a record, that belief cannot be checked by anyone.</p>' +
+            '<p>A rotation removes the argument in two ways. Every unpleasant job is taken by everyone in turn, so nobody is permanently stuck with the bathroom. And because the schedule is written down in advance, "whose turn is it" has an answer that nobody decided in the moment.</p>' +
+            '<p>That second point is the underrated one. The value is not just fairness; it is that the allocation was made by a process rather than by whoever was willing to have the conversation. The same reason a visible draw works for teams works here.</p>',
+          callout: { type: 'tip', text: 'Print it and put it on the fridge. A rota in someone\'s phone is a rota nobody else can check, and half its value is that everyone can see it without asking.' }
+        },
+        {
+          h: 'How the rotation stays fair',
+          html: '<p>The generator uses a cyclic shift: each period, every person moves to the next chore in the list. Over a full cycle, everyone has done every job exactly once.</p>',
+          table: {
+            head: ['Week', 'Alex', 'Bea', 'Chen'],
+            rows: [
+              ['1', 'Bathroom', 'Kitchen', 'Bins'],
+              ['2', 'Bins', 'Bathroom', 'Kitchen'],
+              ['3', 'Kitchen', 'Bins', 'Bathroom'],
+              ['4', 'Bathroom', 'Kitchen', 'Bins']
+            ]
+          },
+          after: '<p>The fairness table below the chart counts how many times each person has each job. Over complete cycles the counts are identical, which is what "fair" means here and what makes it demonstrable.</p>'
+        },
+        {
+          h: 'More people than chores, or the reverse',
+          cards: [
+            { t: 'More people than chores', d: 'Some people get a period off. The rotation ensures the rest periods circulate too, so nobody has a permanently light role.' },
+            { t: 'More chores than people', d: 'Everyone takes more than one per period. The rotation distributes the extras so the same person is not always doubled up.' },
+            { t: 'Chores of unequal size', d: 'The rotation makes them equal over time, not within a week. Someone has the big job this week and the small one next.' },
+            { t: 'Someone away', d: 'Skip them for that period rather than reassigning the whole cycle — the rotation catches up when they return.' }
+          ],
+          after: '<p>The one case the tool cannot fix is a chore list that is wrong. If one job genuinely takes four times as long as the others, split it into several entries so the rotation deals with realistic units.</p>'
+        },
+        {
+          h: 'How often should chores rotate?',
+          html: '<p>Weekly is the default for a reason: it matches how households already think, and a week is long enough to do a job properly without being long enough to resent it.</p>',
+          list: [
+            '<strong>Weekly</strong> — the standard. Suits cleaning, bins, cooking rotas and shared spaces.',
+            '<strong>Fortnightly</strong> — for jobs that do not need weekly attention, and for households where weekly changes feel like too much administration.',
+            '<strong>Monthly</strong> — for bigger, less frequent tasks. Long enough that people forget whose turn it is, so the printed chart matters more.',
+            '<strong>Daily</strong> — only for genuinely daily jobs such as cooking or dishes. Any longer a list and daily rotation becomes noise.'
+          ],
+          callout: { type: 'warn', text: 'Do not rotate faster than the chore recurs. Rotating a fortnightly job weekly means half the assignments are for a job that does not need doing, and a chart people ignore half the time is a chart people ignore.' }
+        },
+        {
+          h: 'Generating the chart',
+          steps: [
+            { t: 'List the people', d: 'One per line — housemates, family members, team members.' },
+            { t: 'List the chores', d: 'One per line. Split anything unusually large into separate entries.' },
+            { t: 'Set the period and how many to generate', d: 'Weekly for eight weeks is a good starting point — enough to see the cycle, short enough to reprint.' },
+            { t: 'Set a start date', d: 'So each column has a real date rather than "week 3".' },
+            { t: 'Check the fairness table', d: 'It shows the per-person counts. Uneven numbers mean the cycle has been cut mid-way — extend it to a whole number of cycles.' },
+            { t: 'Print', d: 'The chart is laid out for A4 and designed to be readable from a metre away.' }
+          ]
+        },
+        {
+          h: 'What reshuffle does',
+          html: '<p>Reshuffle changes the <em>starting</em> assignment — who has which chore in period one — and then rotates from there. The rotation itself is unchanged, so fairness across a full cycle is preserved either way.</p>' +
+            '<p>It is there for the situation where the first draw is unlucky in a way that matters: someone has the worst job in the week they are hosting, or two people who have just swapped want a different opening arrangement. Press it in front of everyone, for the same reason you generate teams in front of everyone.</p>' +
+            '<p>Generating a fresh chart with the same people and chores also reshuffles. If you want the same chart again, regenerate with the same seed.</p>'
+        },
+        {
+          h: 'Related household tools',
+          list: [
+            '<a href="cleaning-schedule-generator.html">Cleaning Schedule Generator</a> — split tasks by room and frequency.',
+            '<a href="work-shift-rotation-generator.html">Work Shift Rotation Generator</a> — the same rotation logic for workplaces.',
+            '<a href="secret-santa-generator.html">Secret Santa Generator</a> — fair random assignment with exclusions.',
+            '<a href="random-gift-exchange-generator.html">Random Gift Exchange Generator</a> — draws for groups.',
+            '<a href="github-task-list-generator.html">GitHub Task List Generator</a> — checklists for shared projects.'
+          ]
+        }
+      ],
+      keywords: [
+        'chore rotation generator', 'chore chart maker', 'housemate chore rota',
+        'family chore schedule', 'printable chore chart', 'fair chore split',
+        'weekly chore rotation', 'shared house cleaning rota', 'chore wheel alternative',
+        'roommate chores schedule', 'task rotation chart', 'who does what chart'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

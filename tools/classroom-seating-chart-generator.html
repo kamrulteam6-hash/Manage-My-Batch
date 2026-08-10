@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Classroom Seating Chart Generator — Printable Seating Plans | Manage My Batch</title>
+<meta name="description" content="Free classroom seating chart generator. Create printable seating plans with rows, pairs or groups, keep-apart rules, front-row placements and a teacher-view flip.">
+<link rel="canonical" href="https://managemybatch.com/tools/classroom-seating-chart-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Classroom Seating Chart Generator — Printable Seating Plans">
+<meta property="og:description" content="Free classroom seating chart generator. Create printable seating plans with rows, pairs or groups, keep-apart rules, front-row placements and a teacher-view flip.">
+<meta property="og:url" content="https://managemybatch.com/tools/classroom-seating-chart-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Classroom Seating Chart Generator — Printable Seating Plans">
+<meta name="twitter:description" content="Free classroom seating chart generator. Create printable seating plans with rows, pairs or groups, keep-apart rules, front-row placements and a teacher-view flip.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Classroom Setup</div>
+
+    <div class="field">
+      <label for="names">Student names — one per line</label>
+      <textarea id="names" style="min-height:170px">Amara
+Ben
+Chen
+Diego
+Elena
+Farah
+Grace
+Hugo
+Ines
+Jonas
+Layla
+Mateo
+Nadia
+Omar
+Priya
+Rosa
+Sam
+Tess
+Uma
+Viktor</textarea>
+      <div id="rosterStats"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label for="layout">Desk layout</label>
+      <select id="layout">
+        <option value="grid" selected>Rows of single desks</option>
+        <option value="pairs">Paired desks</option>
+        <option value="groups">Group tables</option>
+        <option value="ushape">U-shape</option>
+      </select>
+    </div>
+
+    <div class="row">
+      <div class="field"><label for="rows" id="rowsLabel">Rows</label><input type="number" id="rows" value="4" min="1" max="15"></div>
+      <div class="field"><label for="cols" id="colsLabel">Seats per row</label><input type="number" id="cols" value="6" min="1" max="15"></div>
+    </div>
+    <div class="hint" id="capacityHint" style="margin:-8px 0 16px"></div>
+
+    <div class="field">
+      <label for="fill">Seat assignment</label>
+      <select id="fill">
+        <option value="random" selected>Random</option>
+        <option value="alpha">Alphabetical, front to back</option>
+        <option value="entered">As entered</option>
+      </select>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label for="front">Seat at the front — one name per line</label>
+      <textarea id="front" style="min-height:60px" placeholder="Students who need to be near the board"></textarea>
+      <div class="hint">For students with visual, hearing or attention needs. They are placed in row 1 before anyone else.</div>
+    </div>
+
+    <div class="field">
+      <label for="apart">Keep apart — one pair per line</label>
+      <textarea id="apart" style="min-height:60px" placeholder="Ben & Chen"></textarea>
+      <div class="hint">Avoids seating them adjacent, or at the same table in group layouts.</div>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Display</legend>
+      <div class="check-list">
+        <label class="check"><input type="checkbox" id="optTeacherView">
+          <span><span class="t">Teacher view (mirrored)</span><span class="d">Flips left/right so the chart matches what you see facing the class.</span></span></label>
+        <label class="check on"><input type="checkbox" id="optNumbers" checked>
+          <span><span class="t">Show seat numbers</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="field">
+      <label for="seed">Seed</label>
+      <div class="row" style="grid-template-columns:minmax(0,1fr) auto;gap:8px">
+        <input type="text" id="seed" value="term-1">
+        <button type="button" class="btn btn-soft" id="newSeed"><span id="icoReset"></span></button>
+      </div>
+    </div>
+
+    <div class="out-actions">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate Seating Chart</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Seating Chart<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="results">Chart</button>
+      <button type="button" data-tab="list">Seat list</button>
+      <button type="button" data-tab="guide">Teaching notes</button>
+    </div>
+
+    <div data-panel="results">
+      <div id="chart"></div>
+      <div class="out-actions" style="margin-top:18px">
+        <button type="button" class="btn btn-primary" id="printBtn"><span id="icoFile"></span> Print / PDF</button>
+        <button type="button" class="btn btn-soft" id="regen"><span id="icoReset2"></span> Reshuffle</button>
+      </div>
+      <div id="checks"></div>
+    </div>
+
+    <div data-panel="list" hidden>
+      <div id="seatList"></div>
+      <div class="out-actions" style="margin-top:14px">
+        <button class="btn btn-ghost" id="copyBtn"><span id="icoCopy"></span> Copy seat list</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download CSV</button>
+      </div>
+    </div>
+
+    <div data-panel="guide" hidden><div id="guide"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/roster.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoCopy:copy','icoDl:download','icoReset:reset','icoReset2:reset','icoFile:file']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var grid = [], names = [], layout = 'grid';
+
+  function seatCount(rows, cols) {
+    if (layout === 'ushape') return rows * 2 + cols;
+    return rows * cols;
+  }
+
+  function adjacency(r, c, rows, cols) {
+    /* Which seats count as "next to" this one, for keep-apart purposes. */
+    var adj = [];
+    if (layout === 'pairs') {
+      var partner = c % 2 === 0 ? c + 1 : c - 1;
+      if (partner >= 0 && partner < cols) adj.push([r, partner]);
+    } else if (layout === 'groups') {
+      /* Same table = same 2x2 block. */
+      var br = Math.floor(r / 2) * 2, bc = Math.floor(c / 2) * 2;
+      for (var i = br; i < br + 2 && i < rows; i++) {
+        for (var j = bc; j < bc + 2 && j < cols; j++) {
+          if (i !== r || j !== c) adj.push([i, j]);
+        }
+      }
+    } else {
+      if (c > 0) adj.push([r, c - 1]);
+      if (c < cols - 1) adj.push([r, c + 1]);
+    }
+    return adj;
+  }
+
+  function build() {
+    var parsed = GTRoster.parseNames($('#names').value);
+    names = parsed.names;
+    GTRoster.rosterStats('#rosterStats', parsed);
+
+    layout = $('#layout').value;
+    var rows = Math.max(1, Math.min(15, parseInt($('#rows').value, 10) || 1));
+    var cols = Math.max(1, Math.min(15, parseInt($('#cols').value, 10) || 1));
+    var seats = seatCount(rows, cols);
+
+    $('#rowsLabel').textContent = layout === 'groups' ? 'Table rows' : 'Rows';
+    $('#colsLabel').textContent = layout === 'pairs' ? 'Seats per row (pairs)' : layout === 'groups' ? 'Seats across' : 'Seats per row';
+    $('#capacityHint').innerHTML = seats + ' seats for ' + names.length + ' students' +
+      (seats < names.length ? ' — <strong style="color:var(--red)">' + (names.length - seats) + ' too few</strong>'
+        : seats > names.length ? ' · ' + (seats - names.length) + ' empty' : ' · exact fit');
+
+    if (!names.length) {
+      $('#chart').innerHTML = '<div class="empty">Add student names.</div>';
+      $('#pill').textContent = '—';
+      return;
+    }
+
+    var rand = GTRoster.rng($('#seed').value);
+    var frontNames = GT.lines($('#front').value).map(function (s) { return s.trim(); }).filter(Boolean);
+    var apart = GTRoster.parsePairs($('#apart').value);
+
+    /* Order the pool: front-row students first, then the rest per the fill mode. */
+    var frontSet = {};
+    frontNames.forEach(function (f) {
+      var m = names.filter(function (n) { return n.toLowerCase() === f.toLowerCase(); })[0];
+      if (m) frontSet[m] = 1;
+    });
+    var rest = names.filter(function (n) { return !frontSet[n]; });
+    var fill = $('#fill').value;
+    if (fill === 'random') rest = GTRoster.shuffle(rest, rand);
+    else if (fill === 'alpha') rest = rest.slice().sort(function (a, b) { return a.localeCompare(b); });
+    var pool = Object.keys(frontSet).concat(rest);
+
+    /* Build the seat list in placement order. */
+    var cells = [];
+    if (layout === 'ushape') {
+      for (var c1 = 0; c1 < cols; c1++) cells.push([0, c1]);
+      for (var r1 = 1; r1 < rows; r1++) { cells.push([r1, 0]); cells.push([r1, cols - 1]); }
+    } else {
+      for (var r = 0; r < rows; r++) for (var c = 0; c < cols; c++) cells.push([r, c]);
+    }
+
+    grid = [];
+    for (var i = 0; i < rows; i++) { grid.push([]); for (var j = 0; j < cols; j++) grid[i].push(undefined); }
+
+    var placed = {}, violations = [];
+    pool.forEach(function (name) {
+      var target = null;
+      for (var k = 0; k < cells.length; k++) {
+        var cell = cells[k];
+        if (grid[cell[0]][cell[1]] !== undefined) continue;
+        var bad = adjacency(cell[0], cell[1], rows, cols).some(function (a) {
+          var other = grid[a[0]] && grid[a[0]][a[1]];
+          return other && GTRoster.conflicts(other, name, apart);
+        });
+        if (!bad) { target = cell; break; }
+      }
+      if (!target) {
+        for (var k2 = 0; k2 < cells.length; k2++) {
+          if (grid[cells[k2][0]][cells[k2][1]] === undefined) { target = cells[k2]; break; }
+        }
+        if (target) {
+          adjacency(target[0], target[1], rows, cols).forEach(function (a) {
+            var other = grid[a[0]] && grid[a[0]][a[1]];
+            if (other && GTRoster.conflicts(other, name, apart)) violations.push([other, name]);
+          });
+        }
+      }
+      if (target) { grid[target[0]][target[1]] = name; placed[name] = 1; }
+    });
+
+    var unseated = names.filter(function (n) { return !placed[n]; });
+
+    renderChart(rows, cols);
+    renderList(rows, cols);
+    renderChecks(seats, unseated, violations, frontNames);
+
+    $('#pill').textContent = names.length + ' students · ' + seats + ' seats';
+    $('#pill').style.background = unseated.length ? 'var(--red-bg)' : 'var(--green-bg)';
+    $('#pill').style.color = unseated.length ? 'var(--red)' : 'var(--green)';
+  }
+
+  function displayRow(row) {
+    return $('#optTeacherView').checked ? row.slice().reverse() : row;
+  }
+
+  function renderChart(rows, cols) {
+    var n = 0;
+    var html = '<div style="border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--bg-soft);overflow-x:auto">' +
+      '<div style="text-align:center;font-size:12.5px;font-weight:700;letter-spacing:.08em;color:var(--muted);' +
+      'border:1px dashed var(--line);border-radius:8px;padding:8px;margin-bottom:16px">FRONT · BOARD</div>';
+
+    for (var r = 0; r < rows; r++) {
+      var row = displayRow(grid[r]);
+      var isEmptyRow = row.every(function (x) { return x === undefined; });
+      if (isEmptyRow && layout === 'ushape') continue;
+      html += '<div style="display:grid;grid-template-columns:repeat(' + cols + ',minmax(0,1fr));gap:8px;margin-bottom:8px">';
+      row.forEach(function (name, ci) {
+        n++;
+        var gap = (layout === 'pairs' && ci % 2 === 1) ? 'margin-right:10px;' : '';
+        if (name === undefined) {
+          html += '<div style="' + gap + 'border:1px dashed var(--line);border-radius:8px;padding:11px 6px;text-align:center;' +
+            'font-size:12px;color:var(--muted-2);min-height:42px;display:flex;align-items:center;justify-content:center">—</div>';
+        } else {
+          html += '<div style="' + gap + 'border:1px solid var(--line);background:#fff;border-radius:8px;padding:11px 6px;' +
+            'text-align:center;font-size:13px;font-weight:600;color:var(--ink-2);min-height:42px;display:flex;' +
+            'align-items:center;justify-content:center;flex-direction:column;gap:2px">' +
+            ($('#optNumbers').checked ? '<span style="font-size:10px;font-weight:500;color:var(--muted-2)">' + n + '</span>' : '') +
+            GT.esc(name) + '</div>';
+        }
+      });
+      html += '</div>';
+    }
+    html += '</div>';
+    if ($('#optTeacherView').checked) {
+      html += '<p style="color:var(--muted);font-size:12.5px;margin-top:8px;text-align:center">' +
+        'Mirrored — this is the view from the front of the room facing the class.</p>';
+    }
+    $('#chart').innerHTML = html;
+  }
+
+  function renderList(rows, cols) {
+    var out = [], n = 0;
+    for (var r = 0; r < rows; r++) {
+      for (var c = 0; c < cols; c++) {
+        if (grid[r][c] === undefined) continue;
+        n++;
+        out.push({ seat: n, row: r + 1, col: c + 1, name: grid[r][c] });
+      }
+    }
+    window.__seats = out;
+    $('#seatList').innerHTML = out.length
+      ? '<table style="border-collapse:collapse;width:100%;font-size:13.5px">' +
+        '<tr><th style="text-align:left;padding:8px;border-bottom:1px solid var(--line)">Seat</th>' +
+        '<th style="text-align:left;padding:8px;border-bottom:1px solid var(--line)">Row / position</th>' +
+        '<th style="text-align:left;padding:8px;border-bottom:1px solid var(--line)">Student</th></tr>' +
+        out.map(function (s) {
+          return '<tr><td style="padding:8px;border-bottom:1px solid var(--line-2)">' + s.seat + '</td>' +
+            '<td style="padding:8px;border-bottom:1px solid var(--line-2);color:var(--muted)">Row ' + s.row + ', seat ' + s.col + '</td>' +
+            '<td style="padding:8px;border-bottom:1px solid var(--line-2)">' + GT.esc(s.name) + '</td></tr>';
+        }).join('') + '</table>'
+      : '<div class="empty">No seats assigned.</div>';
+  }
+
+  function renderChecks(seats, unseated, violations, frontNames) {
+    var c = [];
+    if (unseated.length) {
+      c.push(['err', 'Not enough seats — ' + unseated.length + ' student' + (unseated.length === 1 ? '' : 's') +
+        ' could not be placed: ' + unseated.slice(0, 6).map(GT.esc).join(', ') +
+        (unseated.length > 6 ? '…' : '') + '. Add rows or seats per row.']);
+    } else {
+      c.push(['ok', 'All ' + names.length + ' students seated' +
+        (seats > names.length ? ', with ' + (seats - names.length) + ' seats spare.' : '.')]);
+    }
+    if (violations.length) {
+      c.push(['err', 'Could not separate ' + GT.uniq(violations.map(function (v) {
+        return GT.esc(v[0]) + ' & ' + GT.esc(v[1]);
+      })).join(', ') + '. There is not enough space to keep them apart — add seats or reduce keep-apart rules.']);
+    } else if ($('#apart').value.trim()) {
+      c.push(['ok', 'All keep-apart pairs are seated non-adjacent.']);
+    }
+    var unmatched = frontNames.filter(function (f) {
+      return !names.some(function (n) { return n.toLowerCase() === f.toLowerCase(); });
+    });
+    if (unmatched.length) {
+      c.push(['warn', 'These front-row names are not in the class list: ' + unmatched.map(GT.esc).join(', ') + '. Check the spelling.']);
+    }
+    $('#checks').innerHTML = c.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : x[0] === 'warn' ? 'note-warn' : 'note-err') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+  }
+
+  $('#copyBtn').addEventListener('click', function () {
+    GT.copy((window.__seats || []).map(function (s) {
+      return s.seat + '\tRow ' + s.row + ', seat ' + s.col + '\t' + s.name;
+    }).join('\n'), 'Seat list');
+  });
+  $('#dlBtn').addEventListener('click', function () {
+    var csv = 'seat,row,position,student\n' + (window.__seats || []).map(function (s) {
+      return s.seat + ',' + s.row + ',' + s.col + ',"' + s.name.replace(/"/g, '""') + '"';
+    }).join('\n');
+    GT.download(csv, 'seating-chart.csv', 'text/csv');
+  });
+
+  $('#printBtn').addEventListener('click', function () {
+    var rows = Math.max(1, parseInt($('#rows').value, 10) || 1);
+    var cols = Math.max(1, parseInt($('#cols').value, 10) || 1);
+    var body = '<h1>Seating Chart</h1><p class="sub">' + names.length + ' students · ' +
+      new Date().toLocaleDateString() + ($('#optTeacherView').checked ? ' · teacher view (mirrored)' : '') + '</p>' +
+      '<div style="text-align:center;border:1px dashed #94a3b8;border-radius:8px;padding:8px;margin-bottom:16px;' +
+      'font-weight:600;letter-spacing:.08em;font-size:12px">FRONT · BOARD</div>';
+    for (var r = 0; r < rows; r++) {
+      var row = displayRow(grid[r]);
+      if (row.every(function (x) { return x === undefined; })) continue;
+      body += '<div style="display:grid;grid-template-columns:repeat(' + cols + ',1fr);gap:8px;margin-bottom:8px">' +
+        row.map(function (nm) {
+          return '<div class="seat">' + (nm === undefined ? '<span class="empty">—</span>' : GT.esc(nm)) + '</div>';
+        }).join('') + '</div>';
+    }
+    GTRoster.printHtml('Seating Chart', body);
+  });
+
+  $('#newSeed').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); });
+  $('#regen').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); });
+
+  $('#guide').innerHTML = [
+    ['Teacher view is the one that matters at the door', 'A chart drawn from the students\' perspective is mirrored relative to what you see standing at the front. Every teacher has called on the wrong side of the room from a chart at least once. Tick teacher view and the left of the page is the left of what you are looking at.'],
+    ['Front-row placements come first', 'Students with visual, hearing or attention needs are seated in row one before the randomiser touches anyone else. That ordering is deliberate — randomising first and then moving people undoes the balance you just created.'],
+    ['Keep-apart works on adjacency, not distance', 'Two students on opposite sides of the same row are not adjacent, so the rule is satisfied. In group-table layouts, everyone at the same table counts as adjacent, which is usually what you want.'],
+    ['Layout changes the lesson', 'Rows suit direct instruction and assessment. Paired desks suit think-pair-share. Group tables suit collaborative work but make whole-class attention harder. A U-shape maximises discussion and eye contact but seats fewer students in the same room.'],
+    ['Reshuffle periodically, not constantly', 'Changing seats every lesson costs settling time. Once a half-term is a common rhythm — long enough to establish routine, short enough to break up unhelpful clusters.'],
+    ['Print it for cover teachers', 'A printed chart with names is the single most useful thing you can leave for a substitute. Include it in your cover folder alongside the lesson plan.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('');
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Seating chart generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'classroom-seating-chart-generator',
+    lede: 'Create a printable seating plan in seconds — four desk layouts, keep-apart rules, front-row placements for access needs, and a mirrored teacher view.',
+    steps: [
+      { icon: 'gear', title: 'Set your room layout', text: 'Rows, paired desks, group tables or a U-shape, sized to your classroom.' },
+      { icon: 'seat', title: 'Add your constraints', text: 'Front-row students are placed first; keep-apart pairs are seated non-adjacent.' },
+      { icon: 'file', title: 'Print it', text: 'A clean chart for the wall, your planner, or the cover folder.' }
+    ],
+    guideTitle: 'The mirroring problem every seating chart has',
+    guide:
+      '<p style="color:var(--muted)">A seating chart is drawn on paper from above, but you use it standing at the front of the room facing the class. Those two orientations are horizontal mirrors of each other. The student who appears on the left of your chart is on your right when you look up — which is how you end up asking the wrong child a question.</p>' +
+      '<p style="color:var(--muted);margin-top:12px">Teacher view flips each row so the chart matches your actual view. It is worth generating both: the standard view for handing to a student or sticking on the wall, the mirrored one for the copy in your planner.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Choosing a layout</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><strong>Rows</strong> — direct instruction, tests, minimal chatter.</li><li><strong>Paired desks</strong> — think-pair-share, peer marking.</li><li><strong>Group tables</strong> — collaborative work; harder to regain whole-class attention.</li><li><strong>U-shape</strong> — discussion and eye contact, but fits fewer students.</li></ul></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Constraint order matters</h4><p style="color:var(--muted);font-size:13.8px">Front-row students are placed before the randomiser runs. If you shuffle first and then move students who need to be near the board, you disturb every keep-apart arrangement you just made — so the tool does it in the order that holds up.</p>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">When constraints genuinely cannot be met — three students who all must be separated in a room with two spare seats — you are told which pair failed rather than being handed a chart that quietly ignores it.</p></div></div>' +
+      '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>Student names stay in your browser. Nothing is uploaded or stored, so a real class list is safe to paste — and the printed chart is genuinely the fastest thing to leave for a cover teacher.</span></div>',
+    related: ['classroom-group-generator', 'random-student-pair-generator', 'student-roll-number-generator'],
+    faqs: [
+      { q: 'What is teacher view?', a: 'A mirrored version of the chart. A plan drawn from above is horizontally flipped compared to what you see standing at the front facing the class, so teacher view makes the left of the page match the left of your actual view.' },
+      { q: 'How do I keep two students apart?', a: 'List them as <code>Name &amp; Name</code> under keep apart. They will not be seated adjacent — or at the same table in group layouts. If the room is too full to honour it, the tool tells you which pair failed.' },
+      { q: 'Can I seat certain students at the front?', a: 'Yes. Names in the front-row field are placed in row one before anyone else is assigned, which is the right order for students with visual, hearing or attention needs.' },
+      { q: 'Which desk layout should I use?', a: 'Rows for direct instruction and assessment, paired desks for think-pair-share, group tables for collaborative work, and a U-shape for discussion. The layout genuinely changes how the lesson runs.' },
+      { q: 'How often should I change the seating plan?', a: 'Once a half-term is a common rhythm. Changing every lesson costs settling time; never changing lets unhelpful clusters harden.' },
+      { q: 'Can I print the chart?', a: 'Yes — the print view produces a clean chart with no interface around it, suitable for the wall, your planner, or a cover folder.' }
+    ],
+    seo: {
+      title: 'Seating charts: the mirroring problem, layouts and access needs',
+      lead: 'This <strong>seating chart generator</strong> creates a printable plan in seconds — four desk layouts, keep-apart rules, front-row placements for access needs, and a mirrored teacher view. Below: why teacher view exists, which layout suits which activity, and how often to change the plan.',
+      blocks: [
+        {
+          h: 'The mirroring problem every seating chart has',
+          html: '<p>A seating plan drawn from the students\' point of view is reversed from the teacher\'s. Standing at the front looking out, the student on <em>your</em> left is on the <em>right</em> of a chart drawn from the room\'s perspective.</p>' +
+            '<p>The consequence is small and constant: you look at the chart, look up, and address the wrong student. It happens most with a new class, which is exactly when a seating plan is most needed.</p>' +
+            '<p><strong>Teacher view</strong> flips the chart horizontally so it matches what you see from the front. The student on the left of the page is the student on your left. Print the teacher view for yourself and the standard view for anything displayed to the class or handed to a cover teacher who will read it from the door.</p>',
+          callout: { type: 'tip', text: 'Label the front of the room on the printed chart — "whiteboard" or "front" across the top edge. A cover teacher picking up a plan with no orientation marker has a 50% chance of reading it backwards, and no way to know which.' }
+        },
+        {
+          h: 'Which layout to use',
+          table: {
+            head: ['Layout', 'Best for', 'Trade-off'],
+            rows: [
+              ['Rows', 'Individual work, tests, exposition, quiet focus.', 'Discussion is difficult; back rows disengage more easily.'],
+              ['Pairs', 'Think-pair-share, practice with peer checking.', 'Off-task conversation is one desk away at all times.'],
+              ['Groups of four', 'Collaborative work, practicals, discussion tasks.', 'Some students always have their back to the board.'],
+              ['Horseshoe / U-shape', 'Whole-class discussion, languages, seminars.', 'Uses more floor space; awkward beyond about 24 students.']
+            ]
+          },
+          after: '<p>The layout should follow the activity rather than the room\'s habit. A class that discusses in rows and writes in groups has both arrangements working against it.</p>'
+        },
+        {
+          h: 'Access needs come first',
+          html: '<p>Front-row and specific placements are not a preference to be balanced against a random draw — they are a requirement to be satisfied before anything else is placed.</p>',
+          list: [
+            '<strong>Hearing or vision needs</strong> — near the front, with a clear sightline to the board and to the teacher\'s face for lip reading.',
+            '<strong>Attention and focus support</strong> — away from doors, windows and high-traffic routes.',
+            '<strong>Physical access</strong> — near the door, on an aisle, with room for equipment or a wheelchair to turn.',
+            '<strong>Support staff placement</strong> — space beside the student for an adult to sit without blocking a walkway.',
+            '<strong>Medical needs</strong> — close to the exit where a student may need to leave quickly.'
+          ],
+          after: '<p>The generator places pinned students first and randomises everyone else around them, so a required placement is never disturbed by a reshuffle.</p>',
+          callout: { type: 'warn', text: '<strong>Do not annotate the reason on a chart others will see.</strong> A plan showing why each student is placed where they are is a document containing sensitive information about children, and it gets left on desks and photographed. Pin the seat; keep the reason in the record where it belongs.' }
+        },
+        {
+          h: 'Building the chart',
+          steps: [
+            { t: 'Paste the class list', d: 'One name per line, straight from the register.' },
+            { t: 'Choose a layout and set the desk grid', d: 'Match the actual room — rows and columns, or table groups.' },
+            { t: 'Pin students who need specific seats', d: 'Front row, near the door, beside support staff.' },
+            { t: 'Add keep-apart rules', d: 'Named students are never seated adjacent or at the same table.' },
+            { t: 'Generate, then read the warnings', d: 'Constraints that could not be satisfied are listed rather than silently dropped.' },
+            { t: 'Print both views', d: 'Teacher view for you, standard view for display and for cover.' }
+          ]
+        },
+        {
+          h: 'Keeping students apart',
+          html: '<p>The rule prevents named students being seated adjacent — and in a grouped layout, from sharing a table.</p>' +
+            '<p>Two practical limits. In a small room with a full class, every seat is adjacent to several others, so a long list of keep-apart pairs can become unsatisfiable; the tool reports which constraint failed rather than producing a plan that quietly breaks one. And adjacency is not the only interaction that matters — students on opposite sides of a narrow room can hold a conversation perfectly well, so the constraint reduces a problem rather than eliminating it.</p>' +
+            '<p>Where a pairing genuinely cannot work, a pinned placement for one of them is more reliable than a keep-apart rule, because it survives every reshuffle unchanged.</p>'
+        },
+        {
+          h: 'How often to change the plan',
+          cards: [
+            { t: 'Every half term', d: 'The common rhythm. Long enough to settle and learn names, short enough to break up unproductive pairings.' },
+            { t: 'At the start of a new unit', d: 'Ties the change to the work rather than to behaviour, which makes it feel less like a punishment.' },
+            { t: 'When the activity changes', d: 'Rows for the assessment week, groups for the project. A layout change is a legitimate reason to redraw.' },
+            { t: 'Not weekly', d: 'Students take a lesson or two to settle into a new seat. Changing constantly spends that time repeatedly for no benefit.' }
+          ],
+          after: '<p>Whatever the interval, keep the previous charts. A record of who sat where is genuinely useful when reviewing how a class has worked over a term — and occasionally for far more mundane reasons, such as tracing who was near a broken window.</p>'
+        },
+        {
+          h: 'Related classroom tools',
+          list: [
+            '<a href="classroom-group-generator.html">Classroom Group Generator</a> — split the same class for group work.',
+            '<a href="random-student-pair-generator.html">Random Student Pair Generator</a> — pairs for talk tasks.',
+            '<a href="student-roll-number-generator.html">Student Roll Number Generator</a> — number the register.',
+            '<a href="presentation-order-generator.html">Presentation Order Generator</a> — fair speaking order.',
+            '<a href="random-question-picker.html">Random Question Picker</a> — cold-call fairly.'
+          ]
+        }
+      ],
+      keywords: [
+        'seating chart generator', 'classroom seating plan', 'printable seating chart',
+        'random seating chart', 'teacher view seating plan', 'keep students apart seating',
+        'desk layout classroom', 'horseshoe seating plan', 'seating plan template',
+        'class seating arrangement', 'front row seating access needs', 'seating chart maker free'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

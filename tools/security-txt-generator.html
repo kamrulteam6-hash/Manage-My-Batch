@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Security.txt Generator — RFC 9116 Compliant, Free | Manage My Batch</title>
+<meta name="description" content="Free security.txt generator following RFC 9116. Add Contact, Expires, Encryption, Policy and Acknowledgments fields with live validation and deployment snippets.">
+<link rel="canonical" href="https://managemybatch.com/tools/security-txt-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Security.txt Generator — RFC 9116 Compliant, Free">
+<meta property="og:description" content="Free security.txt generator following RFC 9116. Add Contact, Expires, Encryption, Policy and Acknowledgments fields with live validation and deployment snippets.">
+<meta property="og:url" content="https://managemybatch.com/tools/security-txt-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Security.txt Generator — RFC 9116 Compliant, Free">
+<meta name="twitter:description" content="Free security.txt generator following RFC 9116. Add Contact, Expires, Encryption, Policy and Acknowledgments fields with live validation and deployment snippets.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Generator Settings</div>
+
+    <div class="field">
+      <label for="siteUrl">Your domain <span style="color:var(--red)">*</span></label>
+      <input type="url" id="siteUrl" value="https://example.com" placeholder="https://example.com">
+      <div class="hint">RFC 9116 requires every URL in the file to use <code>https</code> and, ideally, your own domain.</div>
+    </div>
+
+    <div class="field">
+      <div class="label" style="display:flex;justify-content:space-between;align-items:center">
+        <span>Contact <span style="color:var(--red)">*</span></span>
+        <button type="button" class="btn btn-soft btn-sm" id="addContact"><span id="icoPlus"></span> Add</button>
+      </div>
+      <div class="hint" style="margin:0 0 10px">At least one is mandatory. List them in the order you prefer to be reached — email, form URL or phone.</div>
+      <div id="contacts"></div>
+    </div>
+
+    <div class="field">
+      <label for="expires">Expires <span style="color:var(--red)">*</span></label>
+      <div class="row">
+        <input type="date" id="expires">
+        <select id="expiresPreset">
+          <option value="">Custom date…</option>
+          <option value="90">90 days</option>
+          <option value="180">6 months</option>
+          <option value="365" selected>12 months (recommended)</option>
+          <option value="730">24 months</option>
+        </select>
+      </div>
+      <div class="hint">The only required date field. Researchers treat an expired file as unmaintained — set a calendar reminder to refresh it.</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label for="policy">Policy URL</label>
+      <input type="text" id="policy" value="/security-policy" placeholder="/security-policy or full URL">
+      <div class="hint">Your vulnerability disclosure policy: scope, safe harbour, expected response times.</div>
+    </div>
+
+    <div class="field">
+      <label for="encryption">Encryption (public key URL)</label>
+      <input type="text" id="encryption" value="/pgp-key.txt" placeholder="/pgp-key.txt or https://keys.openpgp.org/...">
+      <div class="hint">Must point <em>to</em> a key — never paste the key itself into security.txt.</div>
+    </div>
+
+    <div class="field">
+      <label for="ack">Acknowledgments URL</label>
+      <input type="text" id="ack" value="/hall-of-fame" placeholder="/hall-of-fame">
+      <div class="hint">A public thank-you page measurably increases quality report volume.</div>
+    </div>
+
+    <div class="field">
+      <label for="hiring">Hiring URL</label>
+      <input type="text" id="hiring" placeholder="/careers/security">
+    </div>
+
+    <div class="field">
+      <label for="csaf">CSAF (provider-metadata.json URL)</label>
+      <input type="text" id="csaf" placeholder="https://example.com/.well-known/csaf/provider-metadata.json">
+      <div class="hint">For vendors publishing machine-readable security advisories.</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label for="langs">Preferred-Languages</label>
+      <input type="text" id="langs" value="en, es" placeholder="en, de, fr">
+      <div class="hint">Comma-separated RFC 5646 tags. Only one <code>Preferred-Languages</code> line is allowed.</div>
+    </div>
+
+    <div class="field">
+      <label for="canonical">Canonical URL(s)</label>
+      <textarea id="canonical" placeholder="https://example.com/.well-known/security.txt" style="min-height:70px"></textarea>
+      <div class="hint">Leave blank to auto-fill with the standard <code>/.well-known/</code> location.</div>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Options</legend>
+      <div class="check-list">
+        <label class="check"><input type="checkbox" id="optAutoCanonical" checked><span><span class="t">Auto-generate Canonical</span><span class="d">Adds the <code>/.well-known/security.txt</code> URL for your domain.</span></span></label>
+        <label class="check"><input type="checkbox" id="optComments" checked><span><span class="t">Include header comments</span><span class="d">Human-readable notes above the machine-readable fields.</span></span></label>
+        <label class="check"><input type="checkbox" id="optSign"><span><span class="t">Add PGP signature placeholder</span><span class="d">Wraps the file in a clear-sign block for you to sign locally.</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="out-actions" style="margin-top:20px">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate security.txt</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated File<span class="spacer"></span>
+      <span class="result-pill" id="pill">ready</span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="file">security.txt</button>
+      <button type="button" data-tab="checks">RFC 9116 validation</button>
+      <button type="button" data-tab="deploy">Deploy &amp; sign</button>
+    </div>
+
+    <div data-panel="file">
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">.well-known/security.txt</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+      <div class="note note-info"><span id="icoInfo"></span><span>The canonical location is <code>/.well-known/security.txt</code>. Placing a copy at <code>/security.txt</code> as a fallback is allowed but optional.</span></div>
+    </div>
+
+    <div data-panel="checks" hidden><div id="checks"></div></div>
+    <div data-panel="deploy" hidden><div id="deploy"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoCopy:copy','icoDl:download','icoInfo:info','icoPlus:plus']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var contacts = [{ type: 'mailto', value: 'security@example.com' }, { type: 'url', value: '/security/report' }];
+
+  function renderContacts() {
+    $('#contacts').innerHTML = contacts.map(function (c, i) {
+      return '<div class="row-3" style="grid-template-columns:120px 1fr auto;margin-bottom:8px">' +
+        '<select data-i="' + i + '" data-f="type">' +
+        ['mailto:Email', 'url:URL', 'tel:Phone'].map(function (o) {
+          var p = o.split(':');
+          return '<option value="' + p[0] + '"' + (c.type === p[0] ? ' selected' : '') + '>' + p[1] + '</option>';
+        }).join('') + '</select>' +
+        '<input type="text" data-i="' + i + '" data-f="value" value="' + GT.escAttr(c.value) + '" placeholder="' +
+        (c.type === 'mailto' ? 'security@example.com' : c.type === 'tel' ? '+1-201-555-0123' : '/security/report') + '">' +
+        '<button type="button" class="icon-btn" data-del="' + i + '" aria-label="Remove">' + I.trash + '</button></div>';
+    }).join('');
+  }
+  $('#contacts').addEventListener('input', function (e) {
+    var i = e.target.getAttribute('data-i'); if (i == null) return;
+    contacts[i][e.target.getAttribute('data-f')] = e.target.value; build();
+  });
+  $('#contacts').addEventListener('change', function (e) {
+    var i = e.target.getAttribute('data-i');
+    if (i != null && e.target.getAttribute('data-f') === 'type') { renderContacts(); build(); }
+  });
+  $('#contacts').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-del]'); if (!b) return;
+    contacts.splice(b.getAttribute('data-del'), 1); renderContacts(); build();
+  });
+  $('#addContact').addEventListener('click', function () { contacts.push({ type: 'mailto', value: '' }); renderContacts(); build(); });
+
+  /* expiry */
+  function setExpiry(days) {
+    var d = new Date(); d.setDate(d.getDate() + parseInt(days, 10));
+    $('#expires').value = d.toISOString().slice(0, 10);
+  }
+  $('#expiresPreset').addEventListener('change', function () { if (this.value) { setExpiry(this.value); build(); } });
+  setExpiry(365);
+
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'security.txt', mime: 'text/plain' });
+
+  function base() { return GT.normUrl($('#siteUrl').value || '').replace(/\/+$/, ''); }
+  function abs(v) {
+    v = String(v || '').trim(); if (!v) return '';
+    if (/^https?:\/\//i.test(v)) return v;
+    if (/^(mailto|tel):/i.test(v)) return v;
+    return base() + (v.charAt(0) === '/' ? '' : '/') + v;
+  }
+  function contactValue(c) {
+    var v = (c.value || '').trim(); if (!v) return '';
+    if (c.type === 'mailto') return /^mailto:/i.test(v) ? v : 'mailto:' + v;
+    if (c.type === 'tel') return /^tel:/i.test(v) ? v : 'tel:' + v.replace(/\s+/g, '-');
+    return abs(v);
+  }
+
+  function build() {
+    var L = [], b = base();
+    if ($('#optComments').checked) {
+      L.push('# Security policy for ' + (b || 'example.com'),
+             '# Generated ' + GT.today() + ' by managemybatch.com — RFC 9116',
+             '# Please report vulnerabilities using the contacts below.', '');
+    }
+
+    contacts.forEach(function (c) { var v = contactValue(c); if (v) L.push('Contact: ' + v); });
+
+    var exp = $('#expires').value;
+    if (exp) L.push('Expires: ' + new Date(exp + 'T23:59:59Z').toISOString().replace(/\.\d{3}Z$/, 'Z'));
+
+    if ($('#encryption').value.trim()) L.push('Encryption: ' + abs($('#encryption').value));
+    if ($('#policy').value.trim()) L.push('Policy: ' + abs($('#policy').value));
+    if ($('#ack').value.trim()) L.push('Acknowledgments: ' + abs($('#ack').value));
+    if ($('#hiring').value.trim()) L.push('Hiring: ' + abs($('#hiring').value));
+    if ($('#csaf').value.trim()) L.push('CSAF: ' + abs($('#csaf').value));
+
+    var langs = $('#langs').value.trim();
+    if (langs) L.push('Preferred-Languages: ' + langs.split(',').map(function (x) { return x.trim(); }).filter(Boolean).join(', '));
+
+    var canon = GT.lines($('#canonical').value);
+    if (!canon.length && $('#optAutoCanonical').checked && b) canon = [b + '/.well-known/security.txt'];
+    canon.forEach(function (c) { L.push('Canonical: ' + abs(c)); });
+
+    var text = L.join('\n').replace(/\s+$/, '') + '\n';
+    if ($('#optSign').checked) {
+      text = '-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA512\n\n' + text +
+        '\n-----BEGIN PGP SIGNATURE-----\n' +
+        '# Replace this block by running:\n' +
+        '#   gpg --clearsign --digest-algo SHA512 security.txt\n' +
+        '-----END PGP SIGNATURE-----\n';
+    }
+    out.set(text, 'security.txt');
+    validate(text);
+    renderDeploy();
+    return text;
+  }
+
+  function validate(text) {
+    var c = [], b = base();
+    function add(s, m) { c.push({ s: s, m: m }); }
+
+    var vals = contacts.map(contactValue).filter(Boolean);
+    add(vals.length ? 'ok' : 'err', vals.length ? vals.length + ' Contact field(s) — at least one is required' : 'Contact is REQUIRED — add an email, form URL or phone number');
+
+    var badMail = contacts.filter(function (x) { return x.type === 'mailto' && x.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(x.value.replace(/^mailto:/i, '')); });
+    add(badMail.length ? 'err' : 'ok', badMail.length ? 'Invalid email address: ' + badMail[0].value : 'All email addresses are well-formed');
+
+    var exp = $('#expires').value;
+    if (!exp) add('err', 'Expires is REQUIRED by RFC 9116');
+    else {
+      var days = Math.round((new Date(exp) - new Date()) / 86400000);
+      add(days <= 0 ? 'err' : days > 365 ? 'warn' : 'ok',
+        days <= 0 ? 'Expires is in the past — researchers will treat the file as abandoned'
+          : 'Expires in ' + days + ' days' + (days > 365 ? ' — the RFC recommends less than a year' : ''));
+    }
+
+    var urls = [];
+    ['policy','encryption','ack','hiring','csaf'].forEach(function (id) { if ($('#' + id).value.trim()) urls.push(abs($('#' + id).value)); });
+    var insecure = urls.concat(vals).filter(function (u) { return /^http:\/\//i.test(u); });
+    add(insecure.length ? 'err' : 'ok', insecure.length ? 'These must use HTTPS: ' + insecure.join(', ') : 'All web URLs use HTTPS');
+
+    add(b && GT.isValidUrl(b) ? 'ok' : 'err', b ? 'Domain resolves to a valid URL' : 'Enter a valid domain');
+    add(/^Policy:/m.test(text) ? 'ok' : 'warn', /^Policy:/m.test(text) ? 'Policy URL present — sets scope and safe harbour expectations' : 'No Policy URL — researchers will not know your scope or whether they are protected');
+    add(/^Encryption:/m.test(text) ? 'ok' : 'warn', /^Encryption:/m.test(text) ? 'Encryption key URL present' : 'No Encryption key — reporters cannot send sensitive details securely');
+    add(/^Canonical:/m.test(text) ? 'ok' : 'warn', /^Canonical:/m.test(text) ? 'Canonical present — protects against the file being copied to another domain' : 'Canonical missing (recommended)');
+    add(/^Acknowledgments:/m.test(text) ? 'ok' : 'warn', /^Acknowledgments:/m.test(text) ? 'Acknowledgments page linked' : 'No Acknowledgments page — public credit drives higher-quality reports');
+    add(/^Preferred-Languages:.*\n[\s\S]*^Preferred-Languages:/m.test(text) ? 'err' : 'ok', 'Only one Preferred-Languages line (the RFC forbids more)');
+    add($('#optSign').checked ? 'warn' : 'ok', $('#optSign').checked ? 'Signature block is a PLACEHOLDER — sign locally with gpg before publishing' : 'Unsigned file (valid; signing is optional but recommended)');
+
+    var errs = c.filter(function (x) { return x.s === 'err'; }).length;
+    var warns = c.filter(function (x) { return x.s === 'warn'; }).length;
+    var pill = $('#pill');
+    pill.textContent = errs ? errs + ' error' + (errs > 1 ? 's' : '') : warns ? warns + ' suggestion' + (warns > 1 ? 's' : '') : 'RFC 9116 valid';
+    pill.style.background = errs ? 'var(--red-bg)' : warns ? 'var(--amber-bg)' : 'var(--green-bg)';
+    pill.style.color = errs ? 'var(--red)' : warns ? 'var(--amber)' : 'var(--green)';
+
+    $('#checks').innerHTML = c.map(function (x) {
+      return '<div class="note ' + (x.s === 'ok' ? 'note-ok' : x.s === 'warn' ? 'note-warn' : 'note-err') + '" style="margin-top:8px">' +
+        (x.s === 'ok' ? I.check : I.warn) + '<span>' + x.m + '</span></div>';
+    }).join('');
+  }
+
+  function renderDeploy() {
+    var b = base() || 'https://example.com';
+    $('#deploy').innerHTML = [
+      ['Upload location', 'Place the file at <code>/.well-known/security.txt</code>. Many servers hide dot-directories by default — confirm it returns <code>200</code>, not <code>403</code>.'],
+      ['Nginx', '<pre class="code">location = /.well-known/security.txt {\n  default_type text/plain;\n  charset utf-8;\n}\n# optional legacy fallback\nlocation = /security.txt {\n  return 301 /.well-known/security.txt;\n}</pre>'],
+      ['Apache', '<pre class="code">&lt;Files "security.txt"&gt;\n  ForceType text/plain\n&lt;/Files&gt;\nRedirect 301 /security.txt /.well-known/security.txt</pre>'],
+      ['Sign it with PGP (recommended)', '<pre class="code">gpg --clearsign --digest-algo SHA512 security.txt\nmv security.txt.asc security.txt</pre><p style="color:var(--muted);font-size:13.5px;margin-top:8px">Then publish the matching public key at the URL in your <code>Encryption</code> field.</p>'],
+      ['Verify', 'Fetch <code>' + b + '/.well-known/security.txt</code> and confirm: HTTP 200, <code>Content-Type: text/plain</code>, and a future <code>Expires</code> value.'],
+      ['Keep it alive', 'The <code>Expires</code> field is the whole point of the RFC — a stale file signals a dead programme. Automate a yearly refresh in CI alongside your certificate renewals.']
+    ].map(function (x) {
+      return '<div style="margin-bottom:18px"><h4 style="font-size:14.5px;margin-bottom:8px">' + x[0] + '</h4>' +
+        '<div style="color:var(--muted);font-size:13.8px">' + x[1] + '</div></div>';
+    }).join('');
+  }
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('security.txt generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+
+  renderContacts(); build();
+
+  GT.page({
+    slug: 'security-txt-generator',
+    lede: 'Publish a standards-compliant security.txt so researchers report vulnerabilities to you instead of dumping them publicly. Validated live against RFC 9116.',
+    steps: [
+      { icon: 'gear', title: 'Add your contacts', text: 'A monitored security inbox or report form, plus an expiry date one year out.' },
+      { icon: 'shield', title: 'Link your policy', text: 'Point to your disclosure policy, PGP key and hall of fame so reporters know the rules.' },
+      { icon: 'copy', title: 'Publish to /.well-known/', text: 'Upload, confirm it returns 200 as text/plain, and set a reminder before it expires.' }
+    ],
+    guideTitle: 'Why security.txt matters more than it looks',
+    guide:
+      '<p style="color:var(--muted)">When someone finds a flaw in your site, the clock starts. If they cannot find a contact in about two minutes, the realistic outcomes are: they give up, they post it publicly, or they sell it. security.txt — standardised as <strong>RFC 9116</strong> — is the machine-readable answer to “who do I tell?”, and scanners, bug bounty platforms and browser extensions all look for it automatically.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Required fields</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><code>Contact</code> — one or more, in preference order.</li><li><code>Expires</code> — an ISO 8601 timestamp. A file past its expiry is formally invalid.</li></ul>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">Optional but expected</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><code>Policy</code>, <code>Encryption</code>, <code>Acknowledgments</code></li><li><code>Preferred-Languages</code>, <code>Canonical</code>, <code>Hiring</code>, <code>CSAF</code></li></ul></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Mistakes that make the file useless</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>Pointing <code>Contact</code> at a general support inbox where tickets get closed as spam.</li><li>Letting <code>Expires</code> lapse — the single most common failure in the wild.</li><li>Serving it over HTTP, or from a path other than <code>/.well-known/</code>.</li><li>Pasting the PGP key inline instead of linking to it.</li><li>Publishing it with no policy, so reporters have no safe harbour and stay silent.</li></ul></div></div>' +
+      '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>Nothing in this file grants permission to test your systems. State scope and safe-harbour terms in the linked <code>Policy</code> document — that is what turns a security.txt into a functioning disclosure programme.</span></div>',
+    related: ['ai-crawler-robots-txt-generator', 'llms-txt-generator', 'ads-txt-generator'],
+    faqs: [
+      { q: 'What is security.txt?', a: 'A plain-text file at <code>/.well-known/security.txt</code>, defined by RFC 9116, that tells security researchers how to report vulnerabilities in your site. It is the security equivalent of robots.txt.' },
+      { q: 'Is security.txt required by law?', a: 'Not generally, but several frameworks and government procurement standards now expect a documented disclosure channel, and it is referenced in guidance from bodies including CISA and the UK NCSC.' },
+      { q: 'Is the Expires field mandatory?', a: 'Yes. RFC 9116 requires exactly one <code>Expires</code> field, and a file whose expiry has passed is considered invalid. Twelve months or less is the recommended window.' },
+      { q: 'Should I sign the file with PGP?', a: 'It is optional and recommended. A clear-signed file proves the contacts were not tampered with. Sign locally with <code>gpg --clearsign</code>; never paste your private key anywhere.' },
+      { q: 'Where exactly should the file live?', a: '<code>https://yourdomain.com/.well-known/security.txt</code>. You may also serve a copy or 301 redirect at <code>/security.txt</code>, but the <code>.well-known</code> path is the canonical one.' },
+      { q: 'What does the Canonical field do?', a: 'It states the URL(s) where this file is meant to live. If someone copies your file to another domain, the mismatch reveals it is not authoritative for that host.' }
+    ],
+    seo: {
+      title: 'security.txt: the RFC 9116 file every public site should have',
+      lead: 'This <strong>security.txt generator</strong> produces a standards-compliant disclosure file validated live against RFC 9116. Below: what each field does, which ones are mandatory, where the file must live, and why the <code>Expires</code> date matters more than it looks.',
+      blocks: [
+        {
+          h: 'What is security.txt?',
+          html: '<p><strong>security.txt</strong> is a plain-text file that tells security researchers how to report a vulnerability in your site. It was standardised as <strong>RFC 9116</strong> in 2022 and lives at a fixed, machine-discoverable location:</p>' +
+            '<p><code>https://example.com/.well-known/security.txt</code></p>' +
+            '<p>The problem it solves is mundane and expensive. A researcher finds a flaw, spends twenty minutes hunting for a contact address, gives up, and either tweets about it or does nothing. Neither outcome helps you. A file at a predictable path collapses that twenty minutes into one request.</p>' +
+            '<p>Automated scanners read it too, which means bug bounty platforms and disclosure tooling can route a report to you without a human ever searching your contact page.</p>'
+        },
+        {
+          h: 'The fields',
+          table: {
+            head: ['Field', 'Required', 'Purpose'],
+            rows: [
+              ['<code>Contact:</code>', 'Yes — at least one', 'A <code>mailto:</code>, <code>https:</code> or <code>tel:</code> URI. List in order of preference.'],
+              ['<code>Expires:</code>', 'Yes', 'ISO 8601 timestamp after which the file must not be trusted.'],
+              ['<code>Encryption:</code>', 'No', 'URL of a public key researchers can use to encrypt their report.'],
+              ['<code>Acknowledgments:</code>', 'No', 'Page thanking researchers who have reported responsibly.'],
+              ['<code>Preferred-Languages:</code>', 'No', 'Comma-separated language tags, e.g. <code>en, de</code>.'],
+              ['<code>Canonical:</code>', 'No', 'The URI where this file is authoritatively located.'],
+              ['<code>Policy:</code>', 'No', 'Link to your disclosure policy — scope, safe harbour, timelines.'],
+              ['<code>Hiring:</code>', 'No', 'Security-related job listings. Genuinely used.'],
+              ['<code>CSAF:</code>', 'No', 'Link to a CSAF provider metadata file for machine-readable advisories.']
+            ]
+          },
+          after: '<p>Fields may repeat. <code>Contact</code> in particular should — an email address and a reporting form is a sensible pair.</p>'
+        },
+        {
+          h: 'The Expires field is mandatory',
+          html: '<p>This surprises people. RFC 9116 requires <code>Expires</code>, and a file without it is non-compliant. Past the date, the specification says the file should no longer be trusted.</p>' +
+            '<p>The reason is rot. Security contacts change, teams disband, addresses bounce. A file from 2019 pointing at a departed employee is worse than no file: a researcher emails into a void and reasonably concludes you do not care. An expiry date forces a periodic review.</p>' +
+            '<p>Twelve months or less is the recommendation. Anything beyond that defeats the purpose.</p>',
+          callout: { type: 'warn', text: '<strong>Put a calendar reminder in at the same time you publish.</strong> Set it for a month before the expiry date. Almost every expired security.txt in the wild belongs to an organisation that meant to update it.' }
+        },
+        {
+          h: 'Where the file must live',
+          steps: [
+            { t: 'Primary location', d: '<code>/.well-known/security.txt</code> — this is the only location the RFC defines.' },
+            { t: 'Legacy fallback', d: 'A copy at <code>/security.txt</code> is permitted for compatibility. Serve both; some older scanners only check the root.' },
+            { t: 'HTTPS only', d: 'The file must be served over HTTPS with a valid certificate. Plain HTTP is non-compliant.' },
+            { t: 'Correct content type', d: '<code>text/plain; charset=utf-8</code>. Serving it as HTML or triggering a download breaks parsers.' },
+            { t: 'One file per domain', d: 'Each domain and subdomain that needs its own contact gets its own file. Use <code>Canonical</code> to point copies at the authoritative one.' }
+          ]
+        },
+        {
+          h: 'Should you sign it with PGP?',
+          cards: [
+            { t: 'Arguments for', d: 'A detached PGP signature proves the file was published by the domain owner, which matters if an attacker could substitute their own contact address.' },
+            { t: 'Arguments against', d: 'Very few researchers verify it, key management is an ongoing burden, and an expired signing key looks worse than no signature.' },
+            { t: 'A reasonable middle', d: 'Skip the signature; publish an <code>Encryption</code> key so reports can be sent to you confidentially. That is the part researchers actually use.' }
+          ]
+        },
+        {
+          h: 'Is security.txt legally required?',
+          html: '<p>Not as a general rule. It is a voluntary standard, and no jurisdiction mandates the file by name.</p>' +
+            '<p>It does, however, satisfy real obligations indirectly. Several government cyber agencies recommend it, some public-sector procurement frameworks ask for a documented disclosure route, and frameworks such as ISO 27001 and SOC 2 expect a defined vulnerability-intake process. A published security.txt is cheap evidence that one exists.</p>' +
+            '<p>The stronger argument is practical. Publishing a contact route and a policy converts unsolicited findings from an incident into a workflow.</p>',
+          callout: { type: 'tip', text: 'Point <code>Policy</code> at a page that states scope, what is out of bounds, expected response times and — critically — a safe-harbour statement. Researchers check for safe harbour before testing anything, and its absence is what pushes findings towards public disclosure.' }
+        },
+        {
+          h: 'Related site-root files',
+          list: [
+            '<a href="llms-txt-generator.html">llms.txt Generator</a> — a curated reading list for AI assistants.',
+            '<a href="ads-txt-generator.html">Ads.txt Generator</a> — IAB authorised digital sellers.',
+            '<a href="ai-crawler-robots-txt-generator.html">AI Crawler robots.txt Generator</a> — crawler access control.',
+            '<a href="sitemap-index-generator.html">Sitemap Index Generator</a> — sitemaps for large sites.'
+          ]
+        }
+      ],
+      keywords: [
+        'security.txt generator', 'rfc 9116', 'well-known security.txt', 'security txt file',
+        'vulnerability disclosure file', 'security.txt expires', 'security.txt example',
+        'responsible disclosure contact', 'security.txt validator', 'security.txt policy field',
+        'bug bounty contact file'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

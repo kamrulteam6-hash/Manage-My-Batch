@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Number Line Worksheet Generator — Printable Number Lines | Manage My Batch</title>
+<meta name="description" content="Free number line worksheet generator. Create missing number, plotting, addition jump, fraction and integer number line exercises with printable answer keys.">
+<link rel="canonical" href="https://managemybatch.com/tools/number-line-worksheet-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Number Line Worksheet Generator — Printable Number Lines">
+<meta property="og:description" content="Free number line worksheet generator. Create missing number, plotting, addition jump, fraction and integer number line exercises with printable answer keys.">
+<meta property="og:url" content="https://managemybatch.com/tools/number-line-worksheet-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Number Line Worksheet Generator — Printable Number Lines">
+<meta name="twitter:description" content="Free number line worksheet generator. Create missing number, plotting, addition jump, fraction and integer number line exercises with printable answer keys.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Worksheet Settings</div>
+
+    <div class="field">
+      <label for="mode">Exercise type</label>
+      <select id="mode">
+        <option value="missing" selected>Fill in the missing numbers</option>
+        <option value="plot">Plot the marked value</option>
+        <option value="identify">What number is the dot on?</option>
+        <option value="jump">Addition and subtraction jumps</option>
+        <option value="fraction">Fractions on a number line</option>
+      </select>
+      <div class="hint" id="modeHint"></div>
+    </div>
+
+    <div class="row">
+      <div class="field"><label for="min">Line starts at</label><input type="number" id="min" value="0"></div>
+      <div class="field"><label for="max">Line ends at</label><input type="number" id="max" value="20"></div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="step">Interval</label>
+        <select id="step">
+          <option value="1" selected>1</option>
+          <option value="2">2</option>
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="0.5">0.5</option>
+          <option value="0.1">0.1</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="blanks">Blanks per line</label>
+        <input type="number" id="blanks" value="3" min="1" max="10">
+      </div>
+    </div>
+
+    <div class="field" id="denomField" hidden>
+      <label for="denom">Fraction denominator</label>
+      <select id="denom">
+        <option value="2">Halves</option>
+        <option value="3">Thirds</option>
+        <option value="4" selected>Quarters</option>
+        <option value="5">Fifths</option>
+        <option value="8">Eighths</option>
+        <option value="10">Tenths</option>
+      </select>
+    </div>
+
+    <div class="row">
+      <div class="field"><label for="count">Questions</label><input type="number" id="count" value="8" min="1" max="30"></div>
+      <div class="field">
+        <label for="width">Line width</label>
+        <select id="width">
+          <option value="380">Narrow</option>
+          <option value="460" selected>Medium</option>
+          <option value="560">Wide</option>
+        </select>
+      </div>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Options</legend>
+      <div class="check-list">
+        <label class="check"><input type="checkbox" id="optNegatives">
+          <span><span class="t">Include negative numbers</span><span class="d">Extends the line below zero.</span></span></label>
+        <label class="check on"><input type="checkbox" id="optKey" checked>
+          <span><span class="t">Include answer key page</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="row">
+      <div class="field">
+        <label for="title">Worksheet title</label>
+        <input type="text" id="title" value="Number Lines">
+      </div>
+      <div class="field">
+        <label for="seed">Seed</label>
+        <div class="row" style="grid-template-columns:minmax(0,1fr) auto;gap:8px">
+          <input type="text" id="seed" value="nl-1">
+          <button type="button" class="btn btn-soft" id="newSeed"><span id="icoReset"></span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="out-actions">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate Worksheet</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Worksheet<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="preview">Preview</button>
+      <button type="button" data-tab="key">Answer key</button>
+      <button type="button" data-tab="guide">Teaching notes</button>
+    </div>
+
+    <div data-panel="preview">
+      <div id="preview"></div>
+      <div class="out-actions" style="margin-top:16px">
+        <button type="button" class="btn btn-primary" id="printBtn"><span id="icoFile"></span> Print / PDF</button>
+        <button type="button" class="btn btn-soft" id="regen"><span id="icoReset2"></span> New questions</button>
+      </div>
+      <div id="checks"></div>
+    </div>
+
+    <div data-panel="key" hidden><div id="key"></div></div>
+    <div data-panel="guide" hidden><div id="guide"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/worksheet.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$, W = GTWorksheet;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoReset:reset','icoReset2:reset','icoFile:file']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var HINTS = {
+    missing: 'Some labels are removed; the student writes them in.',
+    plot: 'A value is given; the student marks it on the line.',
+    identify: 'A dot is placed; the student reads off the value.',
+    jump: 'An arrow shows a jump; the student writes the calculation.',
+    fraction: 'The line runs from 0 to 1 (or beyond) divided into equal fractional parts.'
+  };
+
+  var items = [];
+
+  function build() {
+    var mode = $('#mode').value;
+    $('#modeHint').textContent = HINTS[mode];
+    $('#denomField').hidden = mode !== 'fraction';
+
+    var rand = W.rng($('#seed').value);
+    var n = Math.max(1, Math.min(30, parseInt($('#count').value, 10) || 1));
+    var width = parseInt($('#width').value, 10);
+    var blanks = Math.max(1, parseInt($('#blanks').value, 10) || 1);
+
+    var min = parseFloat($('#min').value), max = parseFloat($('#max').value);
+    var step = parseFloat($('#step').value);
+    if ($('#optNegatives').checked && min >= 0) min = -Math.abs(max);
+    if (min > max) { var t = min; min = max; max = t; }
+
+    items = [];
+
+    for (var i = 0; i < n; i++) {
+      if (mode === 'fraction') {
+        var d = parseInt($('#denom').value, 10);
+        var fMin = 0, fMax = 1, fStep = 1 / d;
+        var ticks = [];
+        for (var k = 0; k <= d; k++) ticks.push(k);
+        var hidden = rand.shuffle(ticks.slice(1, d)).slice(0, Math.min(blanks, d - 1));
+        var marks = ticks.map(function (k) {
+          var v = k / d;
+          var isHidden = hidden.indexOf(k) > -1;
+          return { v: v, label: isHidden ? '?' : (k === 0 ? '0' : k === d ? '1' : k + '/' + d) };
+        });
+        items.push({
+          html: W.numberLine(fMin, fMax, fStep, marks, { width: width }),
+          answer: hidden.sort(function (a, b) { return a - b; }).map(function (k) { return k + '/' + d; }).join(', ')
+        });
+        continue;
+      }
+
+      var count = Math.round((max - min) / step);
+      if (count < 2 || count > 60) { count = Math.max(2, Math.min(60, count)); }
+      var values = [];
+      for (var j = 0; j <= count; j++) values.push(+(min + j * step).toFixed(4));
+
+      if (mode === 'missing') {
+        var idxs = rand.shuffle(values.map(function (_, x) { return x; }).slice(1, values.length - 1))
+          .slice(0, Math.min(blanks, values.length - 2));
+        var marks2 = values.map(function (v, x) {
+          return { v: v, label: idxs.indexOf(x) > -1 ? '' : W.formatNum(v) };
+        });
+        items.push({
+          html: W.numberLine(min, max, step, marks2, { width: width }),
+          answer: idxs.sort(function (a, b) { return a - b; }).map(function (x) { return W.formatNum(values[x]); }).join(', ')
+        });
+      } else if (mode === 'identify') {
+        var pick = values[rand.int(1, values.length - 2)];
+        var marks3 = values.map(function (v) { return { v: v, label: W.formatNum(v), dot: Math.abs(v - pick) < 1e-9 }; });
+        items.push({
+          html: W.numberLine(min, max, step, marks3, { width: width }) +
+            '<div style="margin-top:2px">The dot is on <span style="display:inline-block;min-width:60px;border-bottom:1.5px solid #94a3b8">&nbsp;</span></div>',
+          answer: W.formatNum(pick)
+        });
+      } else if (mode === 'plot') {
+        var target = values[rand.int(1, values.length - 2)];
+        items.push({
+          html: '<div style="font-weight:700;margin-bottom:2px">Mark ' + W.formatNum(target) + ' on the line</div>' +
+            W.numberLine(min, max, step, values.map(function (v) { return { v: v, label: W.formatNum(v) }; }), { width: width }),
+          answer: W.formatNum(target)
+        });
+      } else {
+        /* jump */
+        var startIdx = rand.int(0, Math.max(0, values.length - 3));
+        var jump = rand.int(1, Math.min(6, values.length - 1 - startIdx));
+        var from = values[startIdx], to = values[startIdx + jump];
+        var marks4 = values.map(function (v) { return { v: v, label: W.formatNum(v) }; });
+        marks4.push({ v: from, dot: true, arrow: [from, to] });
+        items.push({
+          html: W.numberLine(min, max, step, marks4, { width: width }) +
+            '<div style="margin-top:2px">' + W.formatNum(from) +
+            ' + <span style="display:inline-block;min-width:38px;border-bottom:1.5px solid #94a3b8">&nbsp;</span> = ' +
+            '<span style="display:inline-block;min-width:44px;border-bottom:1.5px solid #94a3b8">&nbsp;</span></div>',
+          answer: W.formatNum(to - from) + ' → ' + W.formatNum(to)
+        });
+      }
+    }
+
+    W.preview('#preview', {
+      title: $('#title').value,
+      instructions: instructions(mode),
+      items: items,
+      previewColumns: 1
+    });
+    W.answerKeyPreview('#key', items);
+    renderChecks(mode, min, max, step);
+
+    $('#pill').textContent = items.length + ' number lines';
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+  }
+
+  function instructions(mode) {
+    return {
+      missing: 'Write the missing numbers in the empty spaces on each number line.',
+      plot: 'Mark the given number on each number line with a dot.',
+      identify: 'Write the number that each dot is pointing to.',
+      jump: 'Use the jump shown to complete each calculation.',
+      fraction: 'Write the missing fractions on each number line.'
+    }[mode];
+  }
+
+  function renderChecks(mode, min, max, step) {
+    var c = [];
+    var ticks = Math.round((max - min) / step) + 1;
+    if (ticks > 25) {
+      c.push(['warn', ticks + ' tick marks on one line will be cramped and hard to label. Increase the interval or narrow the range.']);
+    } else if (ticks < 4) {
+      c.push(['warn', 'Only ' + ticks + ' tick marks — the line may be too sparse to be useful.']);
+    } else {
+      c.push(['ok', ticks + ' tick marks per line.']);
+    }
+    if (parseInt($('#blanks').value, 10) >= ticks - 2 && mode === 'missing') {
+      c.push(['warn', 'Almost every label is blank, which removes the reference points students need to count from. Leave more labels visible.']);
+    }
+    if ($('#optNegatives').checked) {
+      c.push(['ok', 'Line extends below zero — good for introducing directed numbers and the idea that counting back continues past zero.']);
+    }
+    if (step < 1 && mode !== 'fraction') {
+      c.push(['warn', 'Decimal intervals need careful labelling. Check the preview to make sure the numbers are readable at print size.']);
+    }
+    if (mode === 'fraction' && parseInt($('#denom').value, 10) > 8) {
+      c.push(['warn', 'Denominators above 8 create many closely spaced ticks. Use a wide line, or fewer blanks.']);
+    }
+    $('#checks').innerHTML = c.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : 'note-warn') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+  }
+
+  $('#printBtn').addEventListener('click', function () {
+    W.print({
+      title: $('#title').value,
+      instructions: instructions($('#mode').value),
+      items: items,
+      columns: 1,
+      answerKey: $('#optKey').checked,
+      answerColumns: 3
+    });
+  });
+  $('#newSeed').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); });
+  $('#regen').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); GT.toast('New questions'); });
+
+  $('#guide').innerHTML = [
+    ['A number line makes structure visible', 'It turns number into distance. That is why it works so well for concepts that are hard to explain abstractly — that fractions live between whole numbers, that subtraction moves left, that −3 is genuinely smaller than −1. The picture does the explaining.'],
+    ['Leave enough reference points', 'In a missing-number exercise, students count on from the labels that remain. Blanking almost everything removes the scaffold and turns the task into guesswork. Two or three blanks on a line of ten ticks is about right.'],
+    ['Fractions on a line beat fractions as pizza', 'Circle diagrams work for halves and quarters and fall apart for sevenths. A number line handles any denominator, shows equivalence directly when two lines are stacked, and — crucially — shows that fractions are numbers with a position, not just parts of a shape.'],
+    ['Negative numbers need the line', 'The idea that counting back past zero keeps going is much easier to see than to state. Extending the line below zero is often the moment directed numbers click.'],
+    ['Jumps show the method, not just the answer', 'An arrow from 7 to 12 makes the relationship between the numbers visible, which supports mental strategies like bridging through ten. It is the difference between practising a fact and understanding it.'],
+    ['Watch the tick density when printing', 'More than about twenty-five ticks on one line becomes unreadable at print size. Widen the line or increase the interval — the preview here matches the printed output.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('');
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Worksheet generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'number-line-worksheet-generator',
+    lede: 'Five kinds of number line exercise — missing numbers, plotting, reading, jumps and fractions — drawn as crisp vectors with answer keys included.',
+    steps: [
+      { icon: 'gear', title: 'Choose the exercise', text: 'Missing numbers, plotting, identifying, jumps or fractions.' },
+      { icon: 'ruler', title: 'Set the range', text: 'Start, end and interval — including decimals and negatives.' },
+      { icon: 'file', title: 'Print with the key', text: 'One line per question, sized to stay readable on paper.' }
+    ],
+    guideTitle: 'Why the number line is the most useful diagram in primary maths',
+    guide:
+      '<p style="color:var(--muted)">A number line converts quantity into position. That single move makes a surprising number of difficult ideas visible rather than abstract — and it keeps working long after other models have broken down.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Where it outperforms other models</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><strong>Fractions.</strong> Pizza slices work for quarters and collapse at sevenths. A line handles any denominator and shows that a fraction is a number with a place.</li><li><strong>Negatives.</strong> Counting back past zero is obvious on a line and hard to state in words.</li><li><strong>Decimals.</strong> Zooming into the gap between 0.3 and 0.4 shows why 0.35 sits where it does.</li><li><strong>Mental strategies.</strong> A jump arrow makes bridging through ten a visible move.</li></ul></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Getting the density right</h4><p style="color:var(--muted);font-size:13.8px">The most common problem with printed number lines is cramming. Past roughly twenty-five tick marks, labels overlap and the whole thing becomes unreadable — especially after a photocopier has had a go at it.</p>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">This tool warns you when the tick count gets too high, and the on-screen preview is the same vector drawing that prints, so what you see is genuinely what you get.</p></div></div>' +
+      '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>In missing-number exercises, keep some labels visible. Students count on from the reference points that remain — blank out too many and the exercise stops being about number sense and becomes guesswork.</span></div>',
+    related: ['math-worksheet-generator', 'fraction-worksheet-generator', 'coordinate-grid-worksheet-generator'],
+    faqs: [
+      { q: 'What can I use number line worksheets for?', a: 'Counting on and back, missing numbers, plotting values, addition and subtraction jumps, decimals, negative numbers and fractions. The line makes the structure of number visible rather than abstract.' },
+      { q: 'How many tick marks should a line have?', a: 'Under about twenty-five. Beyond that the labels crowd and become unreadable in print. The tool warns you when the interval and range produce too many.' },
+      { q: 'Can I make number lines with negative numbers?', a: 'Yes — tick "Include negative numbers" and the line extends below zero, which is usually the clearest way to introduce directed numbers.' },
+      { q: 'Can I show fractions on a number line?', a: 'Yes, with halves through tenths. It is a better model than circle diagrams because it works for any denominator and shows fractions as numbers with a position.' },
+      { q: 'How many blanks should I leave?', a: 'Two or three on a line of about ten ticks. Students count on from the remaining labels, so removing too many turns the exercise into guesswork.' },
+      { q: 'Will the number lines print clearly?', a: 'Yes — they are SVG vectors, so they stay sharp at any size and survive photocopying far better than bitmap images.' }
+    ],
+    seo: {
+      title: 'Number line worksheets: the most useful diagram in primary maths',
+      lead: 'This <strong>number line worksheet generator</strong> produces five kinds of exercise — missing numbers, plotting, reading, jumps and fractions — drawn as crisp vectors with answer keys. Below: why the number line carries so much of primary maths, and how to set tick marks and blanks.',
+      blocks: [
+        {
+          h: 'Why the number line matters',
+          html: '<p>The number line is the one diagram that keeps working as the mathematics gets harder. Almost every other primary representation — counters, base ten blocks, fraction circles — is eventually abandoned. The number line is not.</p>',
+          list: [
+            '<strong>Counting and place value</strong> — where numbers sit relative to each other.',
+            '<strong>Addition and subtraction</strong> — as movement, which makes subtraction as difference rather than take-away visible.',
+            '<strong>Rounding</strong> — the classic use: which multiple of ten is nearer.',
+            '<strong>Negative numbers</strong> — the extension to the left is a continuation, not a new idea.',
+            '<strong>Fractions and decimals</strong> — a fraction becomes a position rather than a piece of pizza, which is what makes <sup>7</sup>⁄<sub>4</sub> comprehensible.',
+            '<strong>Coordinates and graphs</strong> — an axis is a number line, and later two of them.'
+          ],
+          after: '<p>A child fluent with a number line has a single mental model that carries from counting to algebra. That is why it is worth more practice than it usually gets.</p>'
+        },
+        {
+          h: 'The five exercise types',
+          table: {
+            head: ['Type', 'The task', 'Best for'],
+            rows: [
+              ['Missing numbers', 'Fill the blank ticks on a labelled line.', 'Counting patterns, sequences, place value.'],
+              ['Plotting', 'Mark a given number in the right position.', 'Estimation and proportional sense.'],
+              ['Reading', 'Write the value at a marked point.', 'Interpreting scales, reading gauges and axes.'],
+              ['Jumps', 'Show an addition or subtraction as arrows.', 'Making the operation visible as movement.'],
+              ['Fractions', 'Position fractions between whole numbers.', 'Understanding fractions as numbers, not shapes.']
+            ]
+          },
+          callout: { type: 'tip', text: 'Plotting is harder than reading, and the gap is bigger than most schemes assume. Reading a marked point is decoding; placing an unmarked one requires judging a proportion. Practise them separately before mixing them on one sheet.' }
+        },
+        {
+          h: 'How many tick marks',
+          html: '<p>The interval between ticks is the real difficulty control, more than the range.</p>',
+          cards: [
+            { t: 'Every unit', d: 'Ticks at each whole number. Counting is possible, so the line supports the child directly. Right for early work.' },
+            { t: 'Every 2, 5 or 10', d: 'The child must count in steps. Introduces the idea that a tick need not mean one.' },
+            { t: 'Labelled ends only', d: 'The hardest version and the most valuable. Position must be judged proportionally, which is genuine estimation.' },
+            { t: 'Unequal or awkward intervals', d: 'Steps of 3 or 25. Useful for older students, and closest to reading a real scale.' }
+          ],
+          after: '<p>A common sequence is ticks every unit, then every five with intermediate ticks unlabelled, then ends only. Each step removes support rather than adding content.</p>'
+        },
+        {
+          h: 'How many blanks',
+          html: '<p>For missing-number lines, leave roughly a third of the positions blank. Fewer and the pattern is given away; more and the child has too little to anchor to.</p>' +
+            '<p>Where the blanks fall matters as much as how many. Blanks at the ends require extrapolation — continuing the pattern beyond what is shown — which is harder than interpolation between two known values. A sheet with only interior blanks practises one skill; including a few at the ends practises both.</p>' +
+            '<p>Avoid consecutive blanks early on. Two adjacent unknowns mean the child has no immediate neighbour to count from, which turns a counting exercise into a reasoning one before they are ready.</p>'
+        },
+        {
+          h: 'Negative numbers and fractions',
+          steps: [
+            { t: 'Extend the line left of zero', d: 'Set a negative minimum. Seeing the line continue is what makes negatives feel like numbers rather than a notation.' },
+            { t: 'Keep zero visible', d: 'A line running from −10 to −2 is technically fine and pedagogically unhelpful early on. Zero is the anchor.' },
+            { t: 'For fractions, set the whole-number range small', d: '0 to 2 or 0 to 3. The subdivisions carry the difficulty; a wide range makes the ticks unreadable.' },
+            { t: 'Match subdivisions to the denominator', d: 'Quarters need four subdivisions per unit. Mismatched ticks make correct answers look wrong.' },
+            { t: 'Include improper fractions', d: 'Placing <sup>7</sup>⁄<sub>4</sub> is the exercise that makes improper fractions concrete.' }
+          ]
+        },
+        {
+          h: 'Printing',
+          html: '<p>The lines are drawn as vectors rather than images, so they print at the printer\'s full resolution — ticks stay thin and evenly spaced, and labels stay legible at small sizes. Scaling the page does not blur anything.</p>' +
+            '<p>Two practical points. Print in black and white to check contrast; a line that looks fine in colour on screen can be faint on a mono photocopier. And leave the default margins alone — the layout allows space for a child to write above and below the line, which is where their working goes.</p>',
+          callout: { type: 'warn', text: 'Check the tick spacing on a printed copy before running thirty. A range and interval combination that produces very tight ticks looks acceptable on screen and becomes unusable on paper, particularly after a photocopy.' }
+        },
+        {
+          h: 'Related worksheet tools',
+          list: [
+            '<a href="math-worksheet-generator.html">Math Worksheet Generator</a> — arithmetic practice to pair with the diagrams.',
+            '<a href="fraction-worksheet-generator.html">Fraction Worksheet Generator</a> — fraction skills in symbolic form.',
+            '<a href="coordinate-grid-worksheet-generator.html">Coordinate Grid Worksheet Generator</a> — two number lines at right angles.',
+            '<a href="clock-reading-worksheet-generator.html">Clock Reading Worksheet Generator</a> — reading a circular scale.',
+            '<a href="number-line-worksheet-generator.html">Number Line Worksheet Generator</a> — more line exercises.'
+          ]
+        }
+      ],
+      keywords: [
+        'number line worksheet generator', 'printable number line', 'missing numbers number line',
+        'number line to 100', 'negative numbers number line', 'fractions on a number line',
+        'number line addition jumps', 'blank number line printable', 'rounding number line',
+        'ks1 number line worksheet', 'number line answer key', 'plotting on a number line'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coupon Code Generator — Bulk Unique Discount Codes, Free | Manage My Batch</title>
+<meta name="description" content="Free coupon code generator. Create thousands of unique, hard-to-guess discount codes with readable alphabets, prefixes and brute-force resistance analysis.">
+<link rel="canonical" href="https://managemybatch.com/tools/coupon-code-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Coupon Code Generator — Bulk Unique Discount Codes, Free">
+<meta property="og:description" content="Free coupon code generator. Create thousands of unique, hard-to-guess discount codes with readable alphabets, prefixes and brute-force resistance analysis.">
+<meta property="og:url" content="https://managemybatch.com/tools/coupon-code-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Coupon Code Generator — Bulk Unique Discount Codes, Free">
+<meta name="twitter:description" content="Free coupon code generator. Create thousands of unique, hard-to-guess discount codes with readable alphabets, prefixes and brute-force resistance analysis.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Generator Settings</div>
+
+    <div class="field">
+      <label>Campaign type</label>
+      <div class="seg" id="preset">
+        <button type="button" class="on" data-p="unique">Unique per customer</button>
+        <button type="button" data-p="public">Public shared code</button>
+        <button type="button" data-p="referral">Referral</button>
+      </div>
+      <div class="hint" id="presetHint"></div>
+    </div>
+
+    <div class="row">
+      <div class="field"><label for="prefix">Prefix</label><input type="text" id="prefix" value="SAVE" placeholder="SAVE"></div>
+      <div class="field">
+        <label for="sep">Separator</label>
+        <select id="sep">
+          <option value="-" selected>Hyphen (-)</option>
+          <option value="">None</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="len">Random characters: <strong id="lenLabel">8</strong></label>
+      <input type="range" id="len" min="4" max="16" value="8" style="width:100%;accent-color:var(--blue)">
+      <div class="hint" id="lenHint"></div>
+    </div>
+
+    <div class="field">
+      <label for="alphabet">Character set</label>
+      <select id="alphabet">
+        <option value="readable" selected>Readable — no 0/O/1/I/L (32 chars)</option>
+        <option value="upper">Uppercase + digits (36 chars)</option>
+        <option value="alpha">Letters only (26 chars)</option>
+        <option value="digits">Digits only (10 chars)</option>
+        <option value="full">Mixed case + digits (62 chars)</option>
+      </select>
+      <div class="hint">Readable sets matter when codes are printed, read over the phone or typed from a flyer.</div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="groups">Group characters</label>
+        <select id="groups">
+          <option value="0" selected>No grouping</option>
+          <option value="3">Every 3 — ABC-DEF</option>
+          <option value="4">Every 4 — ABCD-EFGH</option>
+        </select>
+      </div>
+      <div class="field"><label for="count">How many codes</label><input type="number" id="count" value="20" min="1" max="20000"></div>
+    </div>
+
+    <div class="field">
+      <label for="preview">Preview</label>
+      <div class="seq-preview" id="preview">SAVE-K7QM9X3P</div>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Options</legend>
+      <div class="check-list">
+        <label class="check on"><input type="checkbox" id="optNoWords" checked><span><span class="t">Filter accidental words</span><span class="d">Rejects codes containing common offensive letter runs.</span></span></label>
+        <label class="check"><input type="checkbox" id="optSuffix"><span><span class="t">Add discount suffix</span><span class="d">Appends the offer, e.g. <code>-20OFF</code>.</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="field" id="suffixWrap" hidden>
+      <label for="suffix">Suffix</label>
+      <input type="text" id="suffix" value="20OFF">
+    </div>
+
+    <div class="out-actions">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate Coupon Codes</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated Codes<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="results">Results</button>
+      <button type="button" data-tab="security">Guess resistance</button>
+      <button type="button" data-tab="export">Export</button>
+      <button type="button" data-tab="guide">Campaign notes</button>
+    </div>
+
+    <div data-panel="results">
+      <div id="primary"></div>
+      <div id="more"></div>
+      <button type="button" class="btn btn-soft btn-block" id="regen" style="margin-top:18px">
+        <span id="icoReset"></span> Regenerate</button>
+      <div id="checks"></div>
+    </div>
+
+    <div data-panel="security" hidden><div id="security"></div></div>
+
+    <div data-panel="export" hidden>
+      <div class="field">
+        <label for="exportAs">Export format</label>
+        <select id="exportAs">
+          <option value="lines">Plain list</option>
+          <option value="csv">CSV single column</option>
+          <option value="csvIndexed">CSV with index</option>
+          <option value="json">JSON array</option>
+          <option value="sql">SQL INSERT</option>
+        </select>
+      </div>
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">coupon-codes.txt</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy all</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+      <div class="note note-info" style="margin-top:4px"><span id="icoInfo"></span>
+        <span>Single-column CSV is the format Shopify, WooCommerce and most email platforms expect for bulk discount imports.</span></div>
+    </div>
+
+    <div data-panel="guide" hidden><div id="guide"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/seqid.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoCopy:copy','icoDl:download','icoReset:reset','icoInfo:info']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var SETS = {
+    readable: 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789',
+    upper: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
+    alpha: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    digits: '0123456789',
+    full: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  };
+  /* Letter runs that read badly if they land in a printed code. */
+  var BAD = ['FUC', 'SHT', 'CNT', 'ASS', 'SEX', 'DIE', 'FAG', 'NIG', 'PIS', 'DIC', 'CUM', 'TIT'];
+
+  var HINTS = {
+    unique: 'One code per customer, single use. Length matters — these get emailed in bulk, so a guessable code lets anyone claim a discount they were not sent.',
+    public: 'A short memorable code for social posts and print. Guessability is irrelevant because it is public; readability is everything.',
+    referral: 'Tied to a referring customer. Medium length, readable, often with the referrer name or ID as the prefix.'
+  };
+  var PRESETS = {
+    unique: { prefix: 'SAVE', len: 10, alpha: 'readable', groups: 0, count: 200 },
+    public: { prefix: '', len: 6, alpha: 'alpha', groups: 0, count: 1 },
+    referral: { prefix: 'REF', len: 6, alpha: 'readable', groups: 0, count: 50 }
+  };
+
+  var codes = [];
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'coupon-codes.txt', mime: 'text/plain' });
+
+  function alphabet() { return SETS[$('#alphabet').value] || SETS.readable; }
+
+  function randCode(len, set) {
+    var b = new Uint8Array(len * 2);
+    crypto.getRandomValues(b);
+    var limit = Math.floor(256 / set.length) * set.length;
+    var s = '', i = 0;
+    while (s.length < len) {
+      if (i >= b.length) { b = new Uint8Array(len * 2); crypto.getRandomValues(b); i = 0; }
+      var v = b[i++];
+      if (v < limit) s += set[v % set.length];
+    }
+    return s;
+  }
+
+  function hasBadWord(s) {
+    var u = s.toUpperCase();
+    for (var i = 0; i < BAD.length; i++) if (u.indexOf(BAD[i]) > -1) return true;
+    return false;
+  }
+
+  function group(s) {
+    var g = parseInt($('#groups').value, 10) || 0;
+    if (!g) return s;
+    return (s.match(new RegExp('.{1,' + g + '}', 'g')) || [s]).join('-');
+  }
+
+  function build() {
+    var len = parseInt($('#len').value, 10);
+    var n = Math.max(1, Math.min(20000, parseInt($('#count').value, 10) || 1));
+    var set = alphabet();
+    var sep = $('#sep').value;
+    var prefix = $('#prefix').value.trim().toUpperCase();
+    var suffix = $('#optSuffix').checked ? $('#suffix').value.trim().toUpperCase() : '';
+
+    var seen = {}, res = [], attempts = 0;
+    while (res.length < n && attempts < n * 30) {
+      attempts++;
+      var core = randCode(len, set);
+      if ($('#optNoWords').checked && hasBadWord(core)) continue;
+      var full = [prefix, group(core), suffix].filter(Boolean).join(sep);
+      if (seen[full]) continue;
+      seen[full] = 1;
+      res.push(full);
+    }
+    codes = res;
+
+    $('#lenLabel').textContent = len;
+    var space = Math.pow(set.length, len);
+    $('#lenHint').innerHTML = set.length + ' possible characters → <strong>' +
+      (space > 1e15 ? space.toExponential(2) : Math.round(space).toLocaleString()) + '</strong> possible codes';
+
+    $('#preview').textContent = codes[0] || '—';
+    GTSeq.renderResults({ ids: codes, primary: '#primary', more: '#more', noun: 'Coupon Code', maxMore: 12 });
+    $('#pill').textContent = codes.length.toLocaleString() + ' code' + (codes.length === 1 ? '' : 's');
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+
+    var mode = $('#exportAs').value;
+    var ext = mode === 'json' ? 'json' : mode === 'sql' ? 'sql' : /csv/.test(mode) ? 'csv' : 'txt';
+    out.set(GTSeq.exportAs(codes, mode, { column: 'code', table: 'coupons' }), 'coupon-codes.' + ext);
+
+    renderSecurity(set.length, len, n);
+    renderChecks(len, n, res.length);
+  }
+
+  function renderSecurity(k, len, wanted) {
+    var space = Math.pow(k, len);
+    var issued = codes.length;
+    /* Probability a single random guess hits a valid code. */
+    var pHit = issued / space;
+    var guessesFor50 = Math.log(0.5) / Math.log(1 - Math.min(pHit, 0.999999));
+    function fmt(x) {
+      if (!isFinite(x)) return 'effectively never';
+      if (x > 1e12) return x.toExponential(2);
+      return Math.round(x).toLocaleString();
+    }
+    var rows = [
+      ['Code space', space > 1e15 ? space.toExponential(3) : Math.round(space).toLocaleString()],
+      ['Codes issued', issued.toLocaleString()],
+      ['Chance one random guess is valid', pHit < 1e-9 ? '< 1 in a billion' : '1 in ' + fmt(1 / pHit)],
+      ['Guesses for a 50% chance of one hit', fmt(guessesFor50)],
+      ['At 10 guesses/second, that is', isFinite(guessesFor50) ? humanTime(guessesFor50 / 10) : '—']
+    ];
+    function humanTime(sec) {
+      if (sec > 3.15e10) return (sec / 3.15e7).toExponential(2) + ' years';
+      if (sec > 3.15e7) return (sec / 3.15e7).toFixed(1) + ' years';
+      if (sec > 86400) return (sec / 86400).toFixed(1) + ' days';
+      if (sec > 3600) return (sec / 3600).toFixed(1) + ' hours';
+      return Math.round(sec) + ' seconds';
+    }
+    var weak = pHit > 1e-6;
+    $('#security').innerHTML =
+      '<div class="note ' + (weak ? 'note-warn' : 'note-ok') + '">' + (weak ? I.warn : I.check) +
+      '<span>' + (weak
+        ? 'These codes are <strong>guessable at scale</strong>. Someone scripting the checkout would find valid codes. Lengthen the code, shrink the batch, or rate-limit redemption attempts.'
+        : 'Guess resistance is strong for this batch size. Still rate-limit redemption attempts — that is what stops enumeration regardless of code length.') +
+      '</span></div>' +
+      rows.map(function (r) {
+        return '<div class="kv"><span class="k">' + r[0] + '</span><span class="v">' + r[1] + '</span></div>';
+      }).join('') +
+      '<div class="note note-info" style="margin-top:14px">' + I.info +
+      '<span>The risk grows with the <em>number of codes issued</em>, not just code length. Issuing 100,000 short codes makes each guess far more likely to land than issuing 100.</span></div>';
+  }
+
+  function renderChecks(len, wanted, got) {
+    var c = [];
+    if (got < wanted) c.push({ s: 'warn', m: 'Only ' + got.toLocaleString() + ' of ' + wanted.toLocaleString() + ' requested codes could be generated uniquely. The code space is too small for this batch — increase the length.' });
+    else c.push({ s: 'ok', m: got.toLocaleString() + ' unique codes generated with no collisions.' });
+    if (len < 6 && wanted > 1) c.push({ s: 'warn', m: 'Codes under 6 characters are easy to brute force when issued in bulk. Use short codes only for public campaigns where guessing does not matter.' });
+    if ($('#alphabet').value === 'full') c.push({ s: 'warn', m: 'Mixed case doubles the alphabet but causes support tickets — customers type lowercase and systems that compare case-sensitively reject valid codes. Match case-insensitively if you use this.' });
+    if ($('#alphabet').value === 'digits') c.push({ s: 'warn', m: 'Digits only gives a very small code space. Fine for short public codes, risky for bulk unique codes.' });
+    if (!$('#optNoWords').checked) c.push({ s: 'warn', m: 'Word filtering is off. Random letter strings occasionally spell something you would not want printed on a flyer.' });
+    GTSeq.renderChecks('#checks', c);
+  }
+
+  $('#guide').innerHTML = [
+    ['Unique codes and public codes are different products', 'A public code such as <code>SPRING20</code> is meant to be shared — short, memorable, guessability irrelevant. A unique per-customer code must resist guessing, because anyone who finds a valid one gets a discount you did not authorise. Never use a short random code for a bulk unique campaign.'],
+    ['Rate limiting beats code length', 'Even a strong code space falls to a script that can try unlimited codes at checkout. Limit redemption attempts per session and per IP, and you convert an enumeration attack into a non-event regardless of length.'],
+    ['Readable alphabets prevent support tickets', 'Removing 0/O and 1/I/L costs you a little entropy and saves a great deal of customer confusion, especially for codes printed on receipts, packaging or flyers.'],
+    ['Match case-insensitively', 'Customers will type lowercase whatever you print. Store codes uppercase and uppercase the input before comparing — this is the single most common cause of "my valid code does not work".'],
+    ['Set expiry and usage limits server-side', 'The code itself carries no rules. Single-use, minimum spend, product restrictions and expiry all have to be enforced by your store, not implied by the code format.'],
+    ['Watch for codes leaking to aggregators', 'Unique codes emailed to customers routinely end up posted on coupon sites. Single-use enforcement is what limits the damage — without it, one leaked code is unlimited discounts.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('');
+
+  $('#preset').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#preset button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    var k = b.getAttribute('data-p'), p = PRESETS[k];
+    $('#prefix').value = p.prefix; $('#len').value = p.len; $('#alphabet').value = p.alpha;
+    $('#groups').value = p.groups; $('#count').value = p.count;
+    $('#presetHint').textContent = HINTS[k];
+    build();
+  });
+  $('#presetHint').textContent = HINTS.unique;
+  $('#optSuffix').addEventListener('change', function () { $('#suffixWrap').hidden = !this.checked; });
+
+  GTSeq.bindCopy('#primary', function () { return codes; });
+  GTSeq.bindCopy('#more', function () { return codes; });
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Coupon codes generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+  $('#regen').addEventListener('click', build);
+  $('#exportAs').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'coupon-code-generator',
+    lede: 'Generate bulk unique discount codes with a readable alphabet — and see exactly how guessable your batch is before you send it to thousands of customers.',
+    steps: [
+      { icon: 'gear', title: 'Pick a campaign type', text: 'Unique per customer, a public shared code, or referral codes.' },
+      { icon: 'percent', title: 'Check guess resistance', text: 'The maths accounts for batch size, not just code length — that is what actually matters.' },
+      { icon: 'copy', title: 'Export for import', text: 'Single-column CSV drops straight into Shopify, WooCommerce or your email platform.' }
+    ],
+    guideTitle: 'Why short unique codes get abused',
+    guide:
+      '<p style="color:var(--muted)">The risk in a coupon campaign is not that someone guesses one specific code — it is that they guess <em>any</em> valid code. If you issue 50,000 unique codes from a space of 60 million, roughly one in every 1,200 random guesses succeeds. A script trying a few thousand codes at checkout will find several, and they will be on a deals forum within the hour.</p>' +
+      '<p style="color:var(--muted);margin-top:12px">This is why the Guess resistance tab calculates against your batch size rather than just code length. Doubling the number of codes issued doubles the attacker\'s hit rate.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Sensible defaults</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><strong>Public code:</strong> 5–8 readable letters. <code>SPRING20</code>.</li><li><strong>Unique bulk:</strong> 10+ random characters from a readable set.</li><li><strong>High-value offers:</strong> 12+ characters, plus strict rate limiting.</li><li><strong>Printed on packaging:</strong> readable alphabet, grouped in blocks of four.</li></ul></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Enforce the rules server-side</h4><p style="color:var(--muted);font-size:13.8px">A code is just a string — it carries no expiry, no usage limit and no minimum spend. All of that has to be enforced by your store. Single-use enforcement in particular is what contains the damage when a code inevitably leaks to a coupon aggregator.</p>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">And compare case-insensitively. Customers type lowercase no matter what you print.</p></div></div>' +
+      '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>Codes are generated with <code>crypto.getRandomValues()</code> using rejection sampling, so every character is uniformly distributed. Nothing is transmitted — you can generate live campaign codes here safely.</span></div>',
+    related: ['sku-generator', 'nanoid-generator', 'order-number-generator'],
+    faqs: [
+      { q: 'How long should a coupon code be?', a: 'For public shared codes, 5–8 memorable characters. For unique per-customer codes issued in bulk, at least 10 random characters — and check the Guess resistance tab, because the safe length depends on how many codes you issue.' },
+      { q: 'Why avoid the characters 0, O, 1, I and L?', a: 'They are visually ambiguous. Any code printed on a receipt, flyer or packaging, or read over the phone, will generate support tickets from customers who typed a one instead of an I.' },
+      { q: 'Can someone guess my coupon codes?', a: 'It depends on code length and how many you issue. If 50,000 codes exist in a space of 60 million, roughly one guess in 1,200 succeeds — trivially scriptable. Lengthen the code and rate-limit redemption attempts.' },
+      { q: 'Should coupon codes be case sensitive?', a: 'No. Store them uppercase and uppercase user input before comparing. Case-sensitive matching is the most common reason a genuinely valid code appears not to work.' },
+      { q: 'How do I import these into Shopify or WooCommerce?', a: 'Use the single-column CSV export. Both platforms, and most email marketing tools, accept a plain list of codes for bulk discount creation.' },
+      { q: 'How do I stop unique codes being shared publicly?', a: 'You cannot prevent sharing, but single-use enforcement in your store limits it to one redemption. Without that, a single code posted to a deals site becomes unlimited discounts.' }
+    ],
+    seo: {
+      title: 'Coupon codes: length, alphabet and how guessable your batch really is',
+      lead: 'This <strong>coupon code generator</strong> creates bulk unique discount codes from a readable alphabet and shows how guessable the batch is before you send it to thousands of customers. Below: how to size a code, which characters to drop, and how to stop unique codes ending up on a deals forum.',
+      blocks: [
+        {
+          h: 'Why short codes get abused',
+          html: '<p>A coupon batch has a property most people never calculate: the <strong>hit rate</strong>. It is the number of valid codes divided by the total number of possible codes, and it is the probability that a random guess works.</p>' +
+            '<p>Issue 10,000 codes of four characters from a 32-symbol alphabet and there are about a million possibilities — a hit rate of 1 in 100. A script trying a few thousand combinations finds dozens of working codes in seconds. Extend to eight characters and the space is roughly a trillion, so the same 10,000 codes give a hit rate around 1 in 100 million. The batch size did not change; the exposure did.</p>' +
+            '<p>This is why the tool shows the hit rate for your configuration rather than an abstract entropy figure. It is the number that tells you whether a batch is safe to send.</p>',
+          callout: { type: 'warn', text: '<strong>Never generate short codes for a large campaign.</strong> Discount-hunting scripts brute-force checkout endpoints continuously, and a dense code space is found within hours of the first code appearing publicly. Add characters — they cost nothing — and rate-limit your validation endpoint.' }
+        },
+        {
+          h: 'How long should a code be?',
+          table: {
+            head: ['Length', 'Space (32 symbols)', 'Suitable for'],
+            rows: [
+              ['4', '~1 million', 'Nothing bulk. A single shared code at most.'],
+              ['6', '~1 billion', 'Small batches, under 1,000 codes, with rate limiting.'],
+              ['8', '~1 trillion', 'The practical default for most campaigns.'],
+              ['10', '~10<sup>15</sup>', 'Large batches, high-value discounts.'],
+              ['12', '~10<sup>18</sup>', 'Very high value, or codes that live for years.']
+            ]
+          },
+          after: '<p>Add a readable prefix on top — <code>SUMMER-8KQR2M4T</code>. The prefix aids support and marketing without contributing to guessability, since an attacker learns it from the first published code anyway.</p>'
+        },
+        {
+          h: 'Drop the ambiguous characters',
+          html: '<p>Coupon codes get read from a printed card, a podcast, an email on a phone screen, or dictated to a support agent. Five characters cause nearly all transcription failures:</p>',
+          list: [
+            '<strong>0 and O</strong> — indistinguishable in most sans-serif fonts.',
+            '<strong>1, I and l</strong> — three glyphs, one apparent shape.',
+            '<strong>5 and S</strong>, and <strong>2 and Z</strong>, in some typefaces and most handwriting.',
+            '<strong>8 and B</strong> at small sizes or low print quality.'
+          ],
+          after: '<p>Removing them takes a 36-symbol alphabet down to about 31 and costs a fraction of a bit per character — recoverable by adding one character. What it buys is a measurable drop in "this code does not work" support tickets, which is the actual cost centre.</p>',
+          callout: { type: 'tip', text: 'Also strip vowels, or check the batch against a word list. With a full alphabet, a batch of 50,000 eight-character codes will contain something unfortunate, and it will be the one a customer screenshots.' }
+        },
+        {
+          h: 'Generating a batch',
+          steps: [
+            { t: 'Set the prefix', d: 'A campaign name — <code>SUMMER</code>, <code>WELCOME</code>, <code>VIP</code>. Makes the code recognisable and lets you filter redemptions by campaign.' },
+            { t: 'Choose length and alphabet', d: 'Eight characters, no ambiguous glyphs, uppercase only.' },
+            { t: 'Set the quantity', d: 'One per customer for a targeted campaign, or a pool sized to your expected redemption.' },
+            { t: 'Check the guessability panel', d: 'It reports the hit rate for exactly this configuration. If it reads worse than about 1 in a million, add a character.' },
+            { t: 'Export as CSV', d: 'Ready for Shopify, WooCommerce, Klaviyo or a mail merge.' },
+            { t: 'Keep the export', d: 'It is your record of what was issued. Reconciling redemptions later without it is unpleasant.' }
+          ]
+        },
+        {
+          h: 'Case sensitivity',
+          html: '<p>Generate uppercase, store uppercase, and compare case-insensitively. Almost every platform does this by default, and fighting it creates support tickets rather than security.</p>' +
+            '<p>The reasoning: mobile keyboards autocapitalise, some email clients change case in rendering, and a customer reading a code aloud does not convey case at all. Treating <code>summer8kqr</code> and <code>SUMMER8KQR</code> as different codes turns a typo into a failed sale.</p>' +
+            '<p>The security cost is real but small — case-insensitivity halves the effective alphabet for letters, roughly one bit per character. Adding one character to the length more than repays it.</p>'
+        },
+        {
+          h: 'Stopping codes being shared publicly',
+          html: '<p>Unique per-customer codes are leaked constantly. Someone posts theirs to a deals forum, and within an hour a hundred people have tried it. Uniqueness alone does not prevent this — it only means the first person to use it wins.</p>',
+          cards: [
+            { t: 'One redemption per code', d: 'The baseline. A leaked code is spent once, and the intended recipient may be the one who loses out — which is its own support problem.' },
+            { t: 'Bind the code to a customer', d: 'Validate that the redeeming account matches the issued one. The strongest control, and the one that makes leaked codes worthless.' },
+            { t: 'Short expiry', d: 'Seven to fourteen days limits the window in which a leaked batch is worth circulating.' },
+            { t: 'Minimum order value', d: 'Caps the damage from any single misuse and improves campaign economics anyway.' },
+            { t: 'Rate-limit validation', d: 'Cheap, and it defeats brute-forcing regardless of code length.' },
+            { t: 'Monitor redemption rates', d: 'A sudden spike on one campaign means the code is circulating. Alert on it.' }
+          ]
+        },
+        {
+          h: 'Importing into your platform',
+          html: '<p>The CSV export is a plain list, which is what every platform importer expects. Shopify\'s discount import takes a code column and applies one discount configuration across the batch. WooCommerce needs a coupon per code, so a CSV importer plugin or a bulk-generator extension does the work. Most email platforms take a code list as a per-recipient merge field, which is how a unique code reaches a unique customer.</p>' +
+            '<p>Whichever route, set the usage limit to one and the expiry date at import time rather than afterwards. Retrofitting limits onto ten thousand already-live codes is not a job anyone enjoys.</p>'
+        },
+        {
+          h: 'Related commerce tools',
+          list: [
+            '<a href="sku-generator.html">SKU Generator</a> — product codes the discount applies to.',
+            '<a href="order-number-generator.html">Order Number Generator</a> — customer-facing order references.',
+            '<a href="nanoid-generator.html">NanoID Generator</a> — the same maths for URL identifiers.',
+            '<a href="ticket-number-generator.html">Ticket Number Generator</a> — codes for events rather than discounts.',
+            '<a href="receipt-number-generator.html">Receipt Number Generator</a> — transaction references.'
+          ]
+        }
+      ],
+      keywords: [
+        'coupon code generator', 'bulk discount codes', 'unique promo codes',
+        'coupon code length', 'random voucher codes', 'shopify discount code import',
+        'woocommerce bulk coupons', 'guessable coupon codes', 'promo code generator csv',
+        'gift card code generator', 'readable code alphabet', 'one time use coupon'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

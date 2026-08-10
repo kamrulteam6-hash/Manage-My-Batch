@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>League Schedule Generator — Full Season Home &amp; Away Fixtures | Manage My Batch</title>
+<meta name="description" content="Free league schedule generator. Build a full home-and-away season with match weeks, dates, a fairness report and a printable fixture grid. Handles odd team counts.">
+<link rel="canonical" href="https://managemybatch.com/tools/league-schedule-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="League Schedule Generator — Full Season Home &amp; Away Fixtures">
+<meta property="og:description" content="Free league schedule generator. Build a full home-and-away season with match weeks, dates, a fairness report and a printable fixture grid. Handles odd team counts.">
+<meta property="og:url" content="https://managemybatch.com/tools/league-schedule-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="League Schedule Generator — Full Season Home &amp; Away Fixtures">
+<meta name="twitter:description" content="Free league schedule generator. Build a full home-and-away season with match weeks, dates, a fairness report and a printable fixture grid. Handles odd team counts.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Season Setup</div>
+
+    <div class="field">
+      <label for="teams">Teams — one per line</label>
+      <textarea id="teams" style="min-height:170px">Riverside
+Ashford
+Kingsway
+Northgate
+Belmont
+Carlton
+Denton
+Eastvale</textarea>
+      <div id="stats"></div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="legs">Season format</label>
+        <select id="legs">
+          <option value="2" selected>Home and away (full season)</option>
+          <option value="1">Single round only</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="start">Season starts</label>
+        <input type="date" id="start">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="every">Match weeks are</label>
+        <select id="every">
+          <option value="7" selected>Weekly</option>
+          <option value="14">Fortnightly</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="breakAfter">Mid-season break after week</label>
+        <input type="number" id="breakAfter" value="0" min="0" max="60">
+      </div>
+    </div>
+    <div class="hint" style="margin:-8px 0 16px">Set to 0 for no break. A break inserts a gap before the return fixtures.</div>
+
+    <div class="field">
+      <label for="breakLen">Break length (weeks)</label>
+      <input type="number" id="breakLen" value="2" min="1" max="12">
+    </div>
+
+    <div class="field">
+      <label for="title">League name</label>
+      <input type="text" id="title" value="Sunday League">
+    </div>
+
+    <div class="field">
+      <label for="seed">Seed</label>
+      <div class="row" style="grid-template-columns:minmax(0,1fr) auto;gap:8px">
+        <input type="text" id="seed" value="league-1">
+        <button type="button" class="btn btn-soft" id="newSeed"><span id="icoReset"></span></button>
+      </div>
+      <div class="hint">Changing the seed reshuffles which teams meet in which week.</div>
+    </div>
+
+    <div class="out-actions">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate Season</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Season<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="weeks">Match weeks</button>
+      <button type="button" data-tab="grid">Season grid</button>
+      <button type="button" data-tab="fair">Fairness report</button>
+      <button type="button" data-tab="guide">Notes</button>
+    </div>
+
+    <div data-panel="weeks">
+      <div id="weeks"></div>
+      <div class="out-actions" style="margin-top:16px">
+        <button type="button" class="btn btn-primary" id="printBtn"><span id="icoFile"></span> Print / PDF</button>
+        <button type="button" class="btn btn-ghost" id="csvBtn"><span id="icoDl"></span> Download CSV</button>
+        <button type="button" class="btn btn-soft" id="regen"><span id="icoReset2"></span> Redraw</button>
+      </div>
+      <div id="checks"></div>
+    </div>
+
+    <div data-panel="grid" hidden><div id="grid" style="overflow-x:auto"></div></div>
+    <div data-panel="fair" hidden><div id="fair"></div></div>
+    <div data-panel="guide" hidden><div id="guide"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/schedule.js"></script>
+<script src="../assets/js/roster.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$, S = GTSched;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoDl:download','icoReset:reset','icoReset2:reset','icoFile:file']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  $('#start').value = GT.today();
+  var teams = [], rounds = [], dates = [];
+
+  function build() {
+    var parsed = GTRoster.parseNames($('#teams').value);
+    teams = parsed.names;
+    GTRoster.rosterStats('#stats', parsed);
+
+    if (teams.length < 2) {
+      $('#weeks').innerHTML = '<div class="empty">Add at least two teams.</div>';
+      $('#pill').textContent = '—';
+      return;
+    }
+
+    var order = S.rng($('#seed').value).shuffle(teams);
+    rounds = S.roundRobin(order, { doubleRound: $('#legs').value === '2' });
+
+    /* Insert a mid-season gap by shifting later dates. */
+    var every = parseInt($('#every').value, 10);
+    var breakAfter = parseInt($('#breakAfter').value, 10) || 0;
+    var breakLen = parseInt($('#breakLen').value, 10) || 0;
+    dates = [];
+    var d0 = new Date($('#start').value + 'T12:00:00');
+    var offsetWeeks = 0;
+    for (var i = 0; i < rounds.length; i++) {
+      if (breakAfter && i === breakAfter) offsetWeeks += breakLen;
+      dates.push(new Date(d0.getTime() + (i * every + offsetWeeks * 7) * 86400000));
+    }
+
+    renderWeeks();
+    renderGrid();
+    renderFair();
+    renderChecks();
+
+    var total = rounds.reduce(function (a, r) { return a + r.length; }, 0);
+    $('#pill').textContent = rounds.length + ' weeks · ' + total + ' matches';
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+  }
+
+  function renderWeeks() {
+    var breakAfter = parseInt($('#breakAfter').value, 10) || 0;
+    $('#weeks').innerHTML = rounds.map(function (rd, ri) {
+      var brk = breakAfter && ri === breakAfter
+        ? '<div class="note note-info" style="margin:0 0 14px">' + I.info +
+          '<span>Mid-season break — ' + $('#breakLen').value + ' week' +
+          ($('#breakLen').value === '1' ? '' : 's') + ' off before the return fixtures.</span></div>' : '';
+      return brk + '<div style="margin-bottom:18px">' +
+        '<p class="more-label">Week ' + (ri + 1) + ' <span style="font-weight:500;color:var(--muted)">· ' +
+        S.fmtDate(dates[ri]) + (rd.byeTeam ? ' · bye: ' + GT.esc(rd.byeTeam) : '') + '</span></p>' +
+        '<div class="more-list">' + rd.map(function (m) {
+          return '<div class="more-row"><span class="mval" style="font-family:var(--sans);font-size:14.5px;font-weight:500">' +
+            GT.esc(m.home) + ' <span style="color:var(--muted-2);font-weight:400">v</span> ' + GT.esc(m.away) + '</span></div>';
+        }).join('') + '</div></div>';
+    }).join('');
+  }
+
+  function renderGrid() {
+    var played = {};
+    rounds.forEach(function (rd, ri) { rd.forEach(function (m) { played[m.home + '||' + m.away] = ri + 1; }); });
+    $('#grid').innerHTML =
+      '<p style="color:var(--muted);font-size:13.5px;margin-bottom:12px">Match week for every fixture. Rows are home teams, columns away.</p>' +
+      '<table style="border-collapse:collapse;font-size:12px">' +
+      '<tr><th style="padding:6px;border-bottom:1px solid var(--line)"></th>' +
+      teams.map(function (t) {
+        return '<th style="padding:6px;border-bottom:1px solid var(--line);writing-mode:vertical-rl;' +
+          'text-orientation:mixed;height:80px;font-weight:600">' + GT.esc(t) + '</th>';
+      }).join('') + '</tr>' +
+      teams.map(function (h) {
+        return '<tr><th style="padding:6px 10px 6px 0;text-align:left;border-bottom:1px solid var(--line-2);' +
+          'white-space:nowrap;font-weight:600">' + GT.esc(h) + '</th>' +
+          teams.map(function (a) {
+            if (h === a) return '<td style="padding:6px;border-bottom:1px solid var(--line-2);background:var(--line-2)"></td>';
+            var w = played[h + '||' + a];
+            return '<td style="padding:6px;text-align:center;border-bottom:1px solid var(--line-2);' +
+              (w ? 'color:var(--blue);font-weight:600' : 'color:var(--muted-2)') + '">' + (w || '·') + '</td>';
+          }).join('') + '</tr>';
+      }).join('') + '</table>';
+  }
+
+  function renderFair() {
+    var t = S.homeAwayTally(rounds);
+    /* Longest run of consecutive home or away games per team. */
+    var runs = {};
+    teams.forEach(function (team) {
+      var seq = [];
+      rounds.forEach(function (rd) {
+        rd.forEach(function (m) {
+          if (m.home === team) seq.push('H');
+          else if (m.away === team) seq.push('A');
+        });
+      });
+      var best = 0, cur = 0, last = null;
+      seq.forEach(function (s) {
+        if (s === last) cur++; else { cur = 1; last = s; }
+        if (cur > best) best = cur;
+      });
+      runs[team] = best;
+    });
+
+    $('#fair').innerHTML =
+      '<p style="color:var(--muted);font-size:13.5px;margin-bottom:12px">Home and away split, plus the longest run of consecutive matches on the same side. Long runs are the usual complaint in a league schedule.</p>' +
+      teams.map(function (n) {
+        var v = t[n] || { home: 0, away: 0 };
+        var run = runs[n];
+        return '<div class="kv"><span class="k">' + GT.esc(n) + '</span><span class="v">' +
+          v.home + 'H · ' + v.away + 'A' +
+          ' <span style="color:' + (run >= 4 ? 'var(--amber)' : 'var(--muted)') + '">· longest run ' + run + '</span>' +
+          '</span></div>';
+      }).join('');
+  }
+
+  function renderChecks() {
+    var c = [];
+    var total = rounds.reduce(function (a, r) { return a + r.length; }, 0);
+    c.push(['ok', total + ' matches over ' + rounds.length + ' match weeks, ' +
+      S.fmtDate(dates[0]) + ' to ' + S.fmtDate(dates[dates.length - 1]) + '.']);
+
+    if ($('#legs').value === '2') {
+      c.push(['ok', 'Home and away — every team hosts exactly as often as it travels.']);
+    } else {
+      var t = S.homeAwayTally(rounds);
+      var worst = Math.max.apply(null, Object.keys(t).map(function (k) { return Math.abs(t[k].home - t[k].away); }));
+      c.push(['warn', 'Single round — home and away differ by up to ' + worst +
+        ' for some teams. A full home-and-away season removes any venue advantage.']);
+    }
+    if (teams.length % 2 === 1) {
+      c.push(['warn', 'Odd number of teams, so one team is idle every week. Each gets the same number of byes across the season.']);
+    }
+    var breakAfter = parseInt($('#breakAfter').value, 10) || 0;
+    if (breakAfter && breakAfter >= rounds.length) {
+      c.push(['warn', 'The break is set after week ' + breakAfter + ' but the season only has ' +
+        rounds.length + ' weeks, so it has no effect.']);
+    }
+    if (rounds.length > 30) {
+      c.push(['warn', rounds.length + ' match weeks is a long season — check it fits the calendar you have.']);
+    }
+    $('#checks').innerHTML = c.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : 'note-warn') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+  }
+
+  $('#csvBtn').addEventListener('click', function () {
+    var rows = ['week,date,home,away'];
+    rounds.forEach(function (rd, ri) {
+      rd.forEach(function (m) {
+        rows.push([ri + 1, dates[ri].toISOString().slice(0, 10),
+          '"' + m.home.replace(/"/g, '""') + '"', '"' + m.away.replace(/"/g, '""') + '"'].join(','));
+      });
+    });
+    GT.download(rows.join('\n'), 'league-schedule.csv', 'text/csv');
+  });
+
+  $('#printBtn').addEventListener('click', function () {
+    GTRoster.printHtml($('#title').value,
+      '<h1>' + GT.esc($('#title').value) + '</h1>' +
+      '<p class="sub">' + teams.length + ' teams · ' + rounds.length + ' match weeks · ' +
+      rounds.reduce(function (a, r) { return a + r.length; }, 0) + ' matches</p>' +
+      '<div class="grid g2">' + rounds.map(function (rd, ri) {
+        return '<div class="card"><h3>Week ' + (ri + 1) +
+          ' <span style="font-weight:400;font-size:12px;color:#64748b">' + S.fmtDate(dates[ri]) + '</span></h3><ul>' +
+          rd.map(function (m) { return '<li>' + GT.esc(m.home) + ' v ' + GT.esc(m.away) + '</li>'; }).join('') +
+          (rd.byeTeam ? '<li style="color:#64748b"><em>' + GT.esc(rd.byeTeam) + ' — bye</em></li>' : '') +
+          '</ul></div>';
+      }).join('') + '</div>');
+  });
+  $('#newSeed').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); });
+  $('#regen').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); GT.toast('Redrawn'); });
+
+  $('#guide').innerHTML = [
+    ['Home and away is the only truly fair format', 'In a single round some teams host more often than they travel, and if your venue has any advantage at all — pitch, crowd, familiarity — that is a real edge nobody chose. A full home-and-away season gives every team exactly the same number of home fixtures.'],
+    ['Watch for long runs on the same side', 'Four consecutive away fixtures is the complaint that reaches the committee. The fairness report shows each team\'s longest run so you can spot it before publishing rather than after. Reshuffling the seed usually improves it.'],
+    ['The return half mirrors the first', 'In a double round the second half repeats the first with venues swapped. That makes the season predictable in a good way — teams know that whoever they played at home in week 3, they visit in the matching return week.'],
+    ['Mid-season breaks shift everything after them', 'Inserting a break moves every subsequent date. Decide on it before publishing, because a break added later invalidates every date teams have already put in their calendars.'],
+    ['Odd team counts mean idle weeks', 'Someone sits out every week. Across the season it evens out, but a team that draws its bye in week 1 has a longer wait for its first match — worth checking before you publish.'],
+    ['Publish the grid as well as the list', 'The season grid shows which week any given fixture falls in, which is how people actually look things up — "when do we play Kingsway at home?" is a grid question, not a list question.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('');
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Season generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'league-schedule-generator',
+    lede: 'Build a full home-and-away season with dated match weeks, a mid-season break, a lookup grid and a fairness report that catches long runs of away fixtures.',
+    steps: [
+      { icon: 'gear', title: 'Add teams and a start date', text: 'Weekly or fortnightly match weeks.' },
+      { icon: 'calendar', title: 'Check the fairness report', text: 'Home/away totals plus the longest run on the same side.' },
+      { icon: 'file', title: 'Publish', text: 'Print the season, or export CSV for a spreadsheet.' }
+    ],
+    guideTitle: 'What makes a league schedule feel fair',
+    guide:
+      '<p style="color:var(--muted)">A home-and-away season already guarantees the headline fairness: every team hosts exactly as often as it travels. What it does not guarantee is the <em>distribution</em>, and that is where complaints come from.</p>' +
+      '<p style="color:var(--muted);margin-top:12px">A team can finish with a perfect 7 home and 7 away and still have played four consecutive away fixtures in the middle of it. That is the run that gets raised at the committee meeting, and it is invisible in a totals column. The fairness report here shows each team\'s longest consecutive run alongside its totals, so you can spot the problem before publishing and reshuffle if it looks bad.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Season length</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><strong>6 teams</strong> — 10 weeks, 30 matches</li><li><strong>8 teams</strong> — 14 weeks, 56 matches</li><li><strong>10 teams</strong> — 18 weeks, 90 matches</li><li><strong>12 teams</strong> — 22 weeks, 132 matches</li></ul>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">Add weeks for any mid-season break, and check that total against the calendar you actually have.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Publish the grid too</h4><p style="color:var(--muted);font-size:13.8px">People do not read a season as a list. They ask "when do we play Kingsway at home?" — which is a lookup, not a scan. The season grid answers it directly: find the row, find the column, read the week number.</p>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">Send captains the grid and the CSV; pin the week-by-week list on the noticeboard.</p></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span>Decide on a mid-season break <strong>before</strong> publishing. Adding one afterwards shifts every subsequent date, and by then those dates are in people\'s calendars.</span></div>',
+    related: ['match-fixture-generator', 'round-robin-schedule-generator', 'tournament-bracket-generator'],
+    faqs: [
+      { q: 'How long is a home-and-away season?', a: 'Twice the number of teams minus two, in match weeks — eight teams gives 14 weeks and 56 matches. Add any mid-season break on top.' },
+      { q: 'Does every team get the same number of home games?', a: 'In a home-and-away season, yes, exactly. In a single round it is close but not equal, which is why the tool warns you if venue advantage matters.' },
+      { q: 'Why does the fairness report show a longest run?', a: 'Because equal totals can still hide four consecutive away fixtures. Runs are what teams actually complain about, and they are invisible in a home/away total.' },
+      { q: 'Can I add a mid-season break?', a: 'Yes — set the week to break after and the length. Every subsequent date shifts, so decide before publishing rather than after.' },
+      { q: 'What happens with an odd number of teams?', a: 'One team is idle each week. Byes are distributed evenly across the season, and the tool names the resting team in each match week.' },
+      { q: 'Can I export the schedule?', a: 'Yes — download a CSV with week, date, home and away as separate columns, which imports directly into a spreadsheet or a calendar tool.' }
+    ],
+    seo: {
+      title: 'League schedules: home and away seasons, breaks and fairness checks',
+      lead: 'This <strong>league schedule generator</strong> builds a full home-and-away season with dated match weeks, a mid-season break, a lookup grid and a fairness report that catches long away runs before you publish. Below: how a double round robin works, and what makes a fixture list feel fair.',
+      blocks: [
+        {
+          h: 'How long a home-and-away season is',
+          html: '<p>A league season where every team plays every other twice — once at home, once away — is a <strong>double round robin</strong>. The arithmetic is fixed:</p>',
+          table: {
+            head: ['Teams', 'Match weeks', 'Matches per team', 'Total matches'],
+            rows: [
+              ['6', '10', '10', '30'],
+              ['8', '14', '14', '56'],
+              ['10', '18', '18', '90'],
+              ['12', '22', '22', '132'],
+              ['16', '30', '30', '240'],
+              ['20', '38', '38', '380']
+            ]
+          },
+          after: '<p>With <em>n</em> teams: 2(<em>n</em>&nbsp;−&nbsp;1) match weeks and <em>n</em>(<em>n</em>&nbsp;−&nbsp;1) matches. The 20-team, 38-week figure is exactly why most national football leagues look the way they do.</p>'
+        },
+        {
+          h: 'The second half mirrors the first',
+          html: '<p>The standard construction runs a single round robin for the first half of the season, then repeats it with home and away reversed. Week 20 of a 38-week season is the reverse of week 1.</p>' +
+            '<p>The advantages are real: every pairing happens exactly twice with venues swapped, the schedule is easy to verify, and teams get a return fixture at a predictable interval.</p>' +
+            '<p>Some leagues deliberately reshuffle the second half instead, so that the reverse fixture does not fall in a fixed relationship to the original. It avoids two teams meeting twice within a short window when the mirror lands awkwardly, at the cost of a schedule that is harder to check by hand. The generator mirrors by default, which is what most leagues do.</p>'
+        },
+        {
+          h: 'What makes a schedule feel fair',
+          html: '<p>Every team plays the same number of matches, so fairness is not about the count. It is about the <em>distribution</em>, and there are four things people notice.</p>',
+          cards: [
+            { t: 'Alternation', d: 'Home, away, home, away is what everyone expects. Long runs either way feel like a punishment, whichever direction they run.' },
+            { t: 'Longest run', d: 'Three consecutive away fixtures is noticeable; four generates complaints. The fairness report shows the worst run in the schedule so you can see it before publishing.' },
+            { t: 'Start and end', d: 'Opening and closing the season at home is a small advantage, and doing both is conspicuous. Rotate it between seasons.' },
+            { t: 'Break symmetry', d: 'A mid-season break that leaves one team with five home games before it and one with five after looks arbitrary — because it is.' }
+          ],
+          callout: { type: 'warn', text: '<strong>An odd number of match weeks makes perfect balance impossible.</strong> Someone will have one more home game in each half or an uneven run somewhere. This is arithmetic, not a bug — the fix is to distribute the imbalance differently each season and to say so publicly.' }
+        },
+        {
+          h: 'Building the season',
+          steps: [
+            { t: 'Enter your teams', d: 'One per line. The order does not matter — the rotation handles pairing.' },
+            { t: 'Set the start date and interval', d: 'Weekly, fortnightly or a custom cadence. Each match week gets a real date.' },
+            { t: 'Add a mid-season break', d: 'A gap of one or more weeks at a chosen round. Dates after it shift automatically.' },
+            { t: 'Exclude blackout dates', d: 'Holidays, cup weekends, venue closures. The schedule skips them rather than clashing.' },
+            { t: 'Read the fairness report', d: 'Home/away counts per team, longest consecutive run, and any team opening and closing at the same venue.' },
+            { t: 'Export', d: 'CSV for a spreadsheet, or a printable grid for the noticeboard.' }
+          ]
+        },
+        {
+          h: 'Odd numbers of teams',
+          html: '<p>With an odd number, one team sits out each match week. The schedule adds a phantom opponent, and whoever is drawn against it has a bye.</p>' +
+            '<p>Two consequences worth planning for. The season becomes <em>n</em> weeks per half rather than <em>n</em>&nbsp;−&nbsp;1, because every team needs a week off. And every team has played a different number of matches at most points during the season, so a mid-season league table ranked on total points is misleading — rank on points per game, or publish "games played" prominently.</p>',
+          callout: { type: 'tip', text: 'If you can, recruit or drop a team to reach an even number. An odd-numbered league produces a bye every week, a table that needs explaining all season, and a final-round bye that can decide the title. Nothing about the format is broken; it is just permanently slightly awkward.' }
+        },
+        {
+          h: 'The lookup grid',
+          html: '<p>Alongside the chronological fixture list, the generator produces a <strong>grid</strong>: teams down the side, teams across the top, and the match week in each cell.</p>' +
+            '<p>It answers the question a fixture list answers badly — "when do we play them?" — without scanning 38 rows. Secretaries and captains use it constantly, and it is the format that belongs on a clubhouse wall.</p>' +
+            '<p>It is also the fastest way to verify a schedule by eye. Every cell should be filled exactly once in each triangle, the diagonal should be empty, and any duplicate or gap is immediately visible in a way it never is in a list.</p>'
+        },
+        {
+          h: 'Related scheduling tools',
+          list: [
+            '<a href="round-robin-schedule-generator.html">Round Robin Generator</a> — single round robins and pool stages.',
+            '<a href="match-fixture-generator.html">Match Fixture Generator</a> — venues, kick-off times and match numbers.',
+            '<a href="tournament-bracket-generator.html">Tournament Bracket Generator</a> — cup competitions alongside the league.',
+            '<a href="team-generator.html">Team Generator</a> — build the squads.',
+            '<a href="work-shift-rotation-generator.html">Work Shift Rotation Generator</a> — the same fairness reasoning for rotas.'
+          ]
+        }
+      ],
+      keywords: [
+        'league schedule generator', 'home and away fixtures', 'double round robin',
+        'football fixture generator', 'season schedule maker', 'league fixture list',
+        'fixture grid', 'mid season break scheduling', 'home away balance fairness',
+        'sports league planner', 'odd number of teams league', 'export fixtures csv'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

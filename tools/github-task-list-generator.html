@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GitHub Task List Generator — Nested Checklists for Issues &amp; PRs | Manage My Batch</title>
+<meta name="description" content="Free GitHub task list generator. Build nested markdown checklists with progress counts, templates for PR and release checklists, and live preview of the rendered result.">
+<link rel="canonical" href="https://managemybatch.com/tools/github-task-list-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="GitHub Task List Generator — Nested Checklists for Issues &amp; PRs">
+<meta property="og:description" content="Free GitHub task list generator. Build nested markdown checklists with progress counts, templates for PR and release checklists, and live preview of the rendered result.">
+<meta property="og:url" content="https://managemybatch.com/tools/github-task-list-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="GitHub Task List Generator — Nested Checklists for Issues &amp; PRs">
+<meta name="twitter:description" content="Free GitHub task list generator. Build nested markdown checklists with progress counts, templates for PR and release checklists, and live preview of the rendered result.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Checklist Builder</div>
+
+    <div class="field">
+      <label for="template">Start from a template</label>
+      <select id="template">
+        <option value="custom" selected>My own list</option>
+        <option value="pr">Pull request checklist</option>
+        <option value="release">Release checklist</option>
+        <option value="feature">Feature breakdown</option>
+        <option value="bug">Bug triage</option>
+        <option value="onboarding">Onboarding</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="items">Tasks — one per line</label>
+      <textarea id="items" style="min-height:230px">Design review
+  Wireframes approved
+  Copy signed off
+Build
+  API endpoint
+  Frontend form
+  Validation and error states
+Testing
+  Unit tests
+  Manual QA on staging
+Ship
+  Feature flag enabled
+  Docs updated</textarea>
+      <div class="hint">Indent with two spaces (or a tab) to nest a subtask. Prefix a line with <code>x </code> to mark it complete.</div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="marker">Checkbox style</label>
+        <select id="marker">
+          <option value="dash" selected>- [ ] (hyphen)</option>
+          <option value="star">* [ ] (asterisk)</option>
+          <option value="plus">+ [ ] (plus)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="indentSize">Indent width</label>
+        <select id="indentSize">
+          <option value="2" selected>2 spaces</option>
+          <option value="4">4 spaces</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <fieldset class="field">
+      <legend class="label">Options</legend>
+      <div class="check-list">
+        <label class="check"><input type="checkbox" id="optProgress"><span><span class="t">Add a progress line</span><span class="d">A count and a bar at the top, e.g. <code>3 / 12 complete</code>.</span></span></label>
+        <label class="check"><input type="checkbox" id="optParentHeading"><span><span class="t">Top level as headings</span><span class="d">Turns unindented lines into <code>###</code> headings instead of tasks.</span></span></label>
+        <label class="check"><input type="checkbox" id="optAssignee"><span><span class="t">Add assignee placeholders</span><span class="d">Appends <code>@username</code> to each task.</span></span></label>
+        <label class="check"><input type="checkbox" id="optIssueRefs"><span><span class="t">Add issue reference placeholders</span><span class="d">Appends <code>#000</code> so GitHub links and tracks them.</span></span></label>
+        <label class="check"><input type="checkbox" id="optDetails"><span><span class="t">Wrap in a collapsible &lt;details&gt;</span><span class="d">Keeps long checklists from dominating an issue.</span></span></label>
+        <label class="check on"><input type="checkbox" id="optAllUnchecked" checked><span><span class="t">Ignore existing x markers</span><span class="d">Force everything to unchecked.</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="field" id="detailsWrap" hidden>
+      <label for="summaryText">Collapsible summary text</label>
+      <input type="text" id="summaryText" value="Implementation checklist">
+    </div>
+
+    <div class="field">
+      <label for="title">Heading above the list</label>
+      <input type="text" id="title" placeholder="## Checklist">
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Task List<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="file">Markdown</button>
+      <button type="button" data-tab="preview">Preview</button>
+      <button type="button" data-tab="tips">GitHub behaviour</button>
+    </div>
+
+    <div data-panel="file">
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">checklist.md</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+      <div id="warnBox"></div>
+    </div>
+
+    <div data-panel="preview" hidden>
+      <p style="color:var(--muted);font-size:13.5px;margin-bottom:12px">Tick boxes here to update the generated markdown.</p>
+      <div id="preview"></div>
+    </div>
+
+    <div data-panel="tips" hidden><div id="tips"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoCopy:copy','icoDl:download']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var TEMPLATES = {
+    pr: 'Code\n  Self-reviewed the diff\n  No debug logging or commented-out code\n  Naming matches surrounding conventions\nTests\n  New tests cover the change\n  Full suite passes locally\n  Edge cases considered\nDocs\n  README or docs updated if behaviour changed\n  Changelog entry added\nReview\n  Screenshots attached for UI changes\n  Breaking changes called out in the description',
+    release: 'Pre-release\n  All milestone issues closed\n  Changelog written\n  Version number bumped\n  Dependencies audited\nStaging\n  Deployed to staging\n  Smoke tests pass\n  Migrations run cleanly\nRelease\n  Tag created\n  Production deploy\n  Monitoring dashboards checked\nPost-release\n  Release notes published\n  Announcement sent\n  Rollback plan documented',
+    feature: 'Discovery\n  Requirements confirmed\n  Edge cases listed\n  Technical approach agreed\nBackend\n  Data model\n  API endpoints\n  Authorization rules\n  Tests\nFrontend\n  Component built\n  Loading and error states\n  Responsive behaviour\n  Accessibility pass\nLaunch\n  Feature flag added\n  Analytics events\n  Documentation',
+    bug: 'Triage\n  Reproduced locally\n  Severity assigned\n  Affected versions identified\nInvestigation\n  Root cause found\n  Regression window identified\nFix\n  Patch written\n  Regression test added\n  Reviewed\nVerification\n  Verified on staging\n  Verified in production\n  Reporter notified',
+    onboarding: 'Access\n  GitHub organisation\n  Cloud console\n  Password manager\n  On-call rota\nEnvironment\n  Repository cloned\n  Dependencies installed\n  Local app running\n  Tests passing\nContext\n  Architecture overview read\n  Paired with a teammate\n  First good-first-issue picked'
+  };
+
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'checklist.md', mime: 'text/markdown' });
+
+  var tree = [];
+
+  function parse() {
+    var lines = $('#items').value.replace(/\r\n/g, '\n').split('\n');
+    var items = [];
+    lines.forEach(function (raw) {
+      if (!raw.trim()) return;
+      var expanded = raw.replace(/\t/g, '  ');
+      var lead = expanded.match(/^ */)[0].length;
+      var text = expanded.trim();
+      /* Accept existing markdown checkboxes and bullets as input. */
+      var checked = false;
+      var md = text.match(/^[-*+]\s*\[([ xX])\]\s*(.*)$/);
+      if (md) { checked = md[1].toLowerCase() === 'x'; text = md[2]; }
+      else {
+        text = text.replace(/^[-*+]\s+/, '');
+        var xm = text.match(/^x\s+(.*)$/i);
+        if (xm) { checked = true; text = xm[1]; }
+      }
+      if ($('#optAllUnchecked').checked) checked = false;
+      items.push({ depth: Math.floor(lead / 2), text: text, checked: checked });
+    });
+    /* Normalise depths so a jump of two levels does not produce broken nesting. */
+    var prev = -1;
+    items.forEach(function (it) {
+      if (it.depth > prev + 1) it.depth = prev + 1;
+      prev = it.depth;
+    });
+    return items;
+  }
+
+  function build() {
+    tree = parse();
+    var marker = { dash: '-', star: '*', plus: '+' }[$('#marker').value] || '-';
+    var iw = parseInt($('#indentSize').value, 10) || 2;
+    var headings = $('#optParentHeading').checked;
+
+    var total = 0, done = 0;
+    tree.forEach(function (it) {
+      if (headings && it.depth === 0) return;
+      total++; if (it.checked) done++;
+    });
+
+    var L = [];
+    var title = $('#title').value.trim();
+    if (title) L.push(/^#/.test(title) ? title : '## ' + title, '');
+
+    if ($('#optProgress').checked && total) {
+      var pct = Math.round((done / total) * 100);
+      var filled = Math.round(pct / 5);
+      L.push('**Progress:** ' + done + ' / ' + total + ' complete (' + pct + '%)');
+      L.push('');
+      L.push('`' + new Array(filled + 1).join('█') + new Array(20 - filled + 1).join('░') + '` ' + pct + '%');
+      L.push('');
+    }
+
+    if ($('#optDetails').checked) {
+      L.push('<details>');
+      L.push('<summary>' + ($('#summaryText').value || 'Checklist') + ' (' + done + '/' + total + ')</summary>');
+      L.push('');
+    }
+
+    tree.forEach(function (it) {
+      var text = it.text;
+      if ($('#optAssignee').checked) text += ' @username';
+      if ($('#optIssueRefs').checked) text += ' #000';
+
+      if (headings && it.depth === 0) {
+        L.push('');
+        L.push('### ' + it.text);
+        L.push('');
+        return;
+      }
+      var depth = headings ? Math.max(0, it.depth - 1) : it.depth;
+      var pad = new Array(depth * iw + 1).join(' ');
+      L.push(pad + marker + ' [' + (it.checked ? 'x' : ' ') + '] ' + text);
+    });
+
+    if ($('#optDetails').checked) { L.push(''); L.push('</details>'); }
+
+    var text2 = L.join('\n').replace(/\n{3,}/g, '\n\n').replace(/^\n+/, '').replace(/\s+$/, '') + '\n';
+    out.set(text2, 'checklist.md');
+
+    $('#pill').textContent = done + ' / ' + total + ' complete';
+    $('#pill').style.background = done === total && total ? 'var(--green-bg)' : 'var(--blue-50)';
+    $('#pill').style.color = done === total && total ? 'var(--green)' : 'var(--blue)';
+
+    renderPreview();
+    renderWarn(total);
+    renderTips();
+  }
+
+  function renderPreview() {
+    var headings = $('#optParentHeading').checked;
+    $('#preview').innerHTML = '<div style="border:1px solid var(--line);border-radius:12px;padding:16px">' +
+      tree.map(function (it, i) {
+        if (headings && it.depth === 0) {
+          return '<h3 style="font-size:15px;margin:' + (i ? '18px' : '0') + ' 0 8px">' + GT.esc(it.text) + '</h3>';
+        }
+        var depth = headings ? Math.max(0, it.depth - 1) : it.depth;
+        return '<label style="display:flex;gap:9px;align-items:flex-start;padding:4px 0;margin-left:' + (depth * 24) + 'px;cursor:pointer">' +
+          '<input type="checkbox" data-i="' + i + '"' + (it.checked ? ' checked' : '') +
+          ' style="margin-top:3px;accent-color:var(--blue);width:16px;height:16px">' +
+          '<span style="font-size:14px;' + (it.checked ? 'color:var(--muted);text-decoration:line-through' : '') + '">' +
+          GT.esc(it.text) + '</span></label>';
+      }).join('') + '</div>';
+  }
+
+  $('#preview').addEventListener('change', function (e) {
+    var i = e.target.getAttribute('data-i'); if (i == null) return;
+    tree[i].checked = e.target.checked;
+    /* Write the state back into the source textarea so it survives a rebuild. */
+    var marker = { dash: '-', star: '*', plus: '+' }[$('#marker').value] || '-';
+    $('#optAllUnchecked').checked = false;
+    $('#optAllUnchecked').closest('.check').classList.remove('on');
+    $('#items').value = tree.map(function (it) {
+      return new Array(it.depth * 2 + 1).join(' ') + (it.checked ? 'x ' : '') + it.text;
+    }).join('\n');
+    build();
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x.getAttribute('data-tab') === 'preview'); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== 'preview'; });
+  });
+
+  function renderWarn(total) {
+    var w = [];
+    if (!total) w.push(['err', 'No tasks yet — add one line per item.']);
+    if (total > 30) w.push(['warn', total + ' tasks in one list. GitHub renders it fine, but long checklists in an issue are hard to scan — consider splitting into separate issues and linking them, or wrapping this in a collapsible block.']);
+    var deep = tree.some(function (it) { return it.depth > 2; });
+    if (deep) w.push(['warn', 'Nesting deeper than three levels does not render reliably across Markdown viewers. Two levels is the practical maximum.']);
+    if ($('#optIssueRefs').checked) w.push(['warn', 'Issue references are placeholders (<code>#000</code>). Replace them with real numbers — GitHub then shows each linked issue\'s status inline and tracks completion automatically.']);
+    if ($('#optDetails').checked) w.push(['warn', 'Inside a <code>&lt;details&gt;</code> block, GitHub still renders the checkboxes but does not count them in the issue progress bar.']);
+    if (!w.length) w.push(['ok', 'Valid GitHub task list — checkboxes will be interactive in issues, PRs and comments.']);
+    $('#warnBox').innerHTML = w.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : x[0] === 'warn' ? 'note-warn' : 'note-err') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+  }
+
+  function renderTips() {
+    $('#tips').innerHTML = [
+      ['Checkboxes are clickable in issues and PRs', 'Anyone with write access can tick a box directly in the rendered view — no editing required. Each click is recorded in the issue timeline, so progress is auditable.'],
+      ['GitHub counts them automatically', 'An issue or PR body containing task list items shows a progress indicator in list views and project boards. It is the cheapest possible progress tracking.'],
+      ['The syntax is exact', 'It must be <code>- [ ]</code> or <code>- [x]</code>: a list marker, a space, a bracket pair with exactly one character inside. <code>-[ ]</code> and <code>- []</code> both render as plain text.'],
+      ['Reference issues to link progress', 'Writing <code>- [ ] Fix login bug #42</code> makes GitHub display the linked issue\'s title and state, and closing #42 does not auto-tick the box — but the status is visible at a glance.'],
+      ['Nest with two spaces', 'Sub-items are indented by two spaces relative to the parent. More than two levels of nesting renders inconsistently across viewers.'],
+      ['Task lists work in more than issues', 'They render in READMEs, wikis, discussions, comments and release notes. Only in issues, PRs and comments are they interactive.'],
+      ['Converting a task into an issue', 'Hovering a task item in an issue reveals a button that converts that line into a new issue, linked back to the original. It is the fastest way to break a plan into tracked work.']
+    ].map(function (x) {
+      return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+        '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+    }).join('');
+  }
+
+  $('#template').addEventListener('change', function () {
+    if (TEMPLATES[this.value]) { $('#items').value = TEMPLATES[this.value]; build(); }
+  });
+  $('#optDetails').addEventListener('change', function () { $('#detailsWrap').hidden = !this.checked; });
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'github-task-list-generator',
+    lede: 'Build nested GitHub task lists from plain text — with progress counts, PR and release templates, and a preview you can tick to update the markdown.',
+    steps: [
+      { icon: 'gear', title: 'Write or pick a list', text: 'One task per line, two spaces to nest. Templates cover PR, release, feature and triage checklists.' },
+      { icon: 'checklist', title: 'Add structure', text: 'Progress line, headings, assignee and issue placeholders, or a collapsible wrapper.' },
+      { icon: 'copy', title: 'Paste into GitHub', text: 'Checkboxes become interactive in issues, PRs and comments.' }
+    ],
+    guideTitle: 'Small syntax, disproportionate usefulness',
+    guide:
+      '<p style="color:var(--muted)">A task list is just a list item whose text begins with <code>[ ]</code> or <code>[x]</code>, but GitHub treats it as structured data. Boxes become clickable without editing the issue, completion is counted in list views and project boards, and any line can be converted into its own linked issue. For the cost of two characters it is the most effective lightweight tracking GitHub offers.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">The syntax is unforgiving</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><code>- [ ] task</code> — correct.</li><li><code>-[ ] task</code> — no space after the marker, renders as text.</li><li><code>- [] task</code> — empty brackets, renders as text.</li><li><code>- [X] task</code> — uppercase X is accepted.</li><li>Nest with exactly two spaces per level.</li></ul></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Getting more out of them</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>Reference real issue numbers and GitHub shows each one\'s title and open/closed state inline.</li><li>Keep lists under about twenty items — beyond that, split into linked issues.</li><li>Put a checklist in your pull request template so it appears automatically on every PR.</li><li>Wrap very long lists in <code>&lt;details&gt;</code>, accepting that GitHub then stops counting them in the progress bar.</li></ul></div></div>' +
+      '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>Paste an existing checklist back into the input — including one copied from a GitHub issue with its <code>- [x]</code> markers — and it will be parsed, renumbered and reformatted. Turn off “ignore existing x markers” to keep the completed state.</span></div>',
+    related: ['markdown-table-generator', 'html-table-generator', 'json-array-generator'],
+    faqs: [
+      { q: 'How do I create a checklist in GitHub?', a: 'Write list items in the form <code>- [ ] task</code> for unchecked and <code>- [x] task</code> for checked. In issues, pull requests and comments the boxes become clickable for anyone with write access.' },
+      { q: 'Why is my checkbox not rendering?', a: 'The syntax is exact: a list marker, a space, then brackets containing exactly one space or an x. <code>-[ ]</code> and <code>- []</code> both fail and render as literal text.' },
+      { q: 'How do I nest subtasks?', a: 'Indent by two spaces per level. This generator handles the indentation for you and normalises any level jumps that would otherwise break the nesting.' },
+      { q: 'Does GitHub track checklist progress?', a: 'Yes. An issue or PR whose body contains task list items shows a completed/total counter in issue lists and project boards, updated as boxes are ticked.' },
+      { q: 'Can I link tasks to issues?', a: 'Yes — include an issue reference like <code>#42</code> in the task text and GitHub renders the linked issue\'s title and state. You can also convert any task line into a new linked issue from the rendered view.' },
+      { q: 'Do task lists work in a README?', a: 'They render, but they are not interactive — clicking does nothing outside issues, pull requests and comments. In a README they are display-only.' }
+    ],
+    seo: {
+      title: 'GitHub task lists: syntax, nesting, progress tracking and issue links',
+      lead: 'This <strong>GitHub task list generator</strong> builds nested checklists from plain text, with progress counts and PR and release templates. Below: the exact syntax GitHub requires, why a checkbox sometimes renders as literal brackets, and what task lists unlock beyond a tidy issue.',
+      blocks: [
+        {
+          h: 'The syntax',
+          html: '<p>A task list is a Markdown list where each item begins with a bracketed space or <code>x</code>:</p>' +
+            '<p><code>- [ ] Not done yet</code><br><code>- [x] Done</code></p>' +
+            '<p>Three details are mandatory and all three are easy to get wrong:</p>',
+          ol: [
+            'A list marker first — <code>-</code>, <code>*</code> or <code>1.</code>. Brackets alone are not a task list.',
+            'A space between the marker and the opening bracket.',
+            'Exactly one character between the brackets: a space for unchecked, <code>x</code> or <code>X</code> for checked. <code>[]</code> with nothing inside does not render.'
+          ],
+          after: '<p>Get all three right and GitHub renders an interactive checkbox that anyone with write access can tick directly in the issue — which updates the underlying Markdown.</p>'
+        },
+        {
+          h: 'Why your checkbox renders as literal brackets',
+          table: {
+            head: ['What you wrote', 'Problem'],
+            rows: [
+              ['<code>[ ] Task</code>', 'No list marker. Add <code>- </code> in front.'],
+              ['<code>-[ ] Task</code>', 'No space after the dash.'],
+              ['<code>- [] Task</code>', 'Empty brackets. Needs a space inside.'],
+              ['<code>- [ x] Task</code>', 'Extra space. Exactly one character between the brackets.'],
+              ['<code>- [✓] Task</code>', 'Only <code>x</code> or <code>X</code> is recognised.'],
+              ['Inside a code fence', 'Code blocks render literally by design.'],
+              ['In a table cell', 'Task lists do not work inside tables. Use an emoji or a plain marker.']
+            ]
+          },
+          callout: { type: 'tip', text: 'If a list renders but the checkboxes are not clickable, you are looking at a rendered file rather than an issue — task lists are interactive in issues, pull requests, discussions and comments, but read-only in a README or any other Markdown file in the repository.' }
+        },
+        {
+          h: 'Nesting subtasks',
+          html: '<p>Indent a child item under its parent. GitHub is stricter than most Markdown renderers about how much:</p>' +
+            '<p><code>- [ ] Parent task</code><br><code>&nbsp;&nbsp;- [ ] Subtask</code><br><code>&nbsp;&nbsp;&nbsp;&nbsp;- [ ] Sub-subtask</code></p>' +
+            '<p>Two spaces per level with <code>-</code> markers, or four if you mix in ordered lists. Tabs work but mixing tabs and spaces in one list breaks the nesting, and it is invisible in the editor.</p>' +
+            '<p>Checking a parent does not check its children, and checking every child does not check the parent — the hierarchy is presentational. Progress counts, however, do include nested items.</p>',
+          callout: { type: 'warn', text: 'Keep nesting to two levels. Three levels of subtasks in one issue is a sign the issue should be several issues, and GitHub\'s progress count stops being meaningful when the tree is deep.' }
+        },
+        {
+          h: 'Progress tracking',
+          html: '<p>GitHub counts checked items automatically wherever the list appears, and surfaces the total in several places:</p>',
+          list: [
+            '<strong>Issue lists</strong> show <code>3 of 8</code> beside the title, so progress is visible without opening anything.',
+            '<strong>Pull requests</strong> show the same count, which makes a checklist an effective merge gate.',
+            '<strong>Project boards</strong> display a progress bar per card.',
+            '<strong>The issue itself</strong> shows a running total above the list.'
+          ],
+          after: '<p>Only the first task list block in the body is counted in some views, so keep one canonical checklist per issue rather than several scattered through the description.</p>'
+        },
+        {
+          h: 'Linking tasks to issues',
+          html: '<p>An item whose text is an issue URL or reference becomes a <strong>tracked task</strong> rather than a plain checkbox:</p>' +
+            '<p><code>- [ ] https://github.com/org/repo/issues/42</code><br><code>- [ ] #42</code></p>' +
+            '<p>GitHub renders the issue title, its state and its labels inline, and — importantly — ticks the box automatically when the referenced issue closes. The relationship appears on the child issue too, so a contributor arriving there can see what it is part of.</p>',
+          steps: [
+            { t: 'Use a full URL for cross-repository tracking', d: '<code>#42</code> only resolves within the same repository.' },
+            { t: 'Let closure drive the checkbox', d: 'Do not tick a tracked task by hand — closing the issue does it, and manual ticks get overwritten.' },
+            { t: 'Mix freely with plain items', d: 'A list can contain both tracked issues and ordinary checkboxes.' },
+            { t: 'Keep an epic to a readable size', d: 'Twenty tracked issues in one list is a roadmap, not a task.' }
+          ]
+        },
+        {
+          h: 'Where task lists earn their keep',
+          cards: [
+            { t: 'Pull request checklists', d: 'Tests added, docs updated, migration written, screenshots attached. In a PR template it becomes the review contract.' },
+            { t: 'Release checklists', d: 'Version bumped, changelog written, tag pushed, announcement drafted. The same list every time means nothing is remembered wrong.' },
+            { t: 'Epics', d: 'A parent issue tracking child issues, with progress that updates itself as work closes.' },
+            { t: 'Onboarding', d: 'A per-person issue from a template, with the setup steps as tickable items.' },
+            { t: 'Incident follow-ups', d: 'Action items from a postmortem, visible and countable rather than buried in prose.' }
+          ],
+          after: '<p>The generator includes templates for the first three, so a PR or release checklist is a paste rather than a memory exercise.</p>'
+        },
+        {
+          h: 'Related documentation tools',
+          list: [
+            '<a href="markdown-table-generator.html">Markdown Table Generator</a> — tables for the same documents.',
+            '<a href="html-table-generator.html">HTML Table Generator</a> — when Markdown tables run out.',
+            '<a href="json-array-generator.html">JSON Array Generator</a> — turn a list into structured data.',
+            '<a href="chore-rotation-generator.html">Chore Rotation Generator</a> — recurring task assignment away from the repository.'
+          ]
+        }
+      ],
+      keywords: [
+        'github task list generator', 'github checklist markdown', 'markdown checkbox',
+        'github task list syntax', 'nested task list github', 'pull request checklist template',
+        'release checklist template', 'github tracked issues', 'markdown to do list',
+        'checkbox not rendering github', 'github issue progress bar', 'epic issue github'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

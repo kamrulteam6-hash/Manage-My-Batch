@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Canonical Tag Generator — rel=canonical with URL Normalization | Manage My Batch</title>
+<meta name="description" content="Free canonical tag generator. Build rel=canonical link tags and HTTP Link headers, strip UTM parameters, normalize trailing slashes, and bulk-process URL lists.">
+<link rel="canonical" href="https://managemybatch.com/tools/canonical-tag-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Canonical Tag Generator — rel=canonical with URL Normalization">
+<meta property="og:description" content="Free canonical tag generator. Build rel=canonical link tags and HTTP Link headers, strip UTM parameters, normalize trailing slashes, and bulk-process URL lists.">
+<meta property="og:url" content="https://managemybatch.com/tools/canonical-tag-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Canonical Tag Generator — rel=canonical with URL Normalization">
+<meta name="twitter:description" content="Free canonical tag generator. Build rel=canonical link tags and HTTP Link headers, strip UTM parameters, normalize trailing slashes, and bulk-process URL lists.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Generator Settings</div>
+
+    <div class="field">
+      <label>Mode</label>
+      <div class="seg" id="mode">
+        <button type="button" class="on" data-m="single">Single URL</button>
+        <button type="button" data-m="bulk">Bulk list</button>
+      </div>
+    </div>
+
+    <div class="field" id="singleField">
+      <label for="url">Page URL <span style="color:var(--red)">*</span></label>
+      <input type="text" id="url" value="https://example.com/Blog/My-Post/?utm_source=newsletter&amp;id=42#section" placeholder="https://example.com/page?utm_source=x">
+      <div class="hint">Paste the messy URL as it appears in the wild — normalization is applied below.</div>
+    </div>
+
+    <div class="field" id="bulkField" hidden>
+      <label for="bulk">One URL per line</label>
+      <textarea id="bulk" style="min-height:150px" placeholder="https://example.com/page-1?utm_source=fb&#10;https://example.com/page-2/">https://example.com/product?color=red&utm_source=ads
+https://example.com/Blog/Post/
+https://example.com/page?b=2&a=1</textarea>
+    </div>
+
+    <div class="divider"></div>
+
+    <fieldset class="field">
+      <legend class="label">Normalization</legend>
+      <div class="check-list">
+        <label class="check"><input type="checkbox" id="nHttps" checked><span><span class="t">Force HTTPS</span><span class="d">Canonicals should always point at the secure version.</span></span></label>
+        <label class="check"><input type="checkbox" id="nTracking" checked><span><span class="t">Strip tracking parameters</span><span class="d">utm_*, gclid, fbclid, msclkid, mc_cid and friends.</span></span></label>
+        <label class="check"><input type="checkbox" id="nHash" checked><span><span class="t">Remove fragments (#…)</span><span class="d">Fragments are never part of a canonical URL.</span></span></label>
+        <label class="check"><input type="checkbox" id="nSortParams" checked><span><span class="t">Sort remaining query parameters</span><span class="d">?a=1&amp;b=2 and ?b=2&amp;a=1 become one URL.</span></span></label>
+        <label class="check"><input type="checkbox" id="nLower"><span><span class="t">Lowercase the path</span><span class="d">Only if your server treats paths case-insensitively.</span></span></label>
+        <label class="check"><input type="checkbox" id="nWww"><span><span class="t">Strip “www.”</span><span class="d">Pick one host form and stay consistent site-wide.</span></span></label>
+        <label class="check"><input type="checkbox" id="nAllParams"><span><span class="t">Strip ALL query parameters</span><span class="d">Aggressive — breaks paginated and filtered pages that should be indexed separately.</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="field">
+      <label for="trailing">Trailing slash</label>
+      <select id="trailing">
+        <option value="keep">Leave as-is</option>
+        <option value="add">Always add</option>
+        <option value="remove" selected>Always remove</option>
+      </select>
+      <div class="hint">Whichever you choose, it must match what your server actually serves with a 200 — a canonical to a redirecting URL is ignored.</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label for="override">Canonical target override</label>
+      <input type="text" id="override" placeholder="Leave blank to self-canonicalize">
+      <div class="hint">Set this only when consolidating a duplicate into a different page (e.g. a print view into the article).</div>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Output</legend>
+      <div class="check-list">
+        <label class="check"><input type="checkbox" id="optHeader"><span><span class="t">HTTP Link header form</span><span class="d">Needed for PDFs and other non-HTML documents.</span></span></label>
+        <label class="check"><input type="checkbox" id="optOg"><span><span class="t">Add og:url</span><span class="d">Keeps social shares pointing at the canonical.</span></span></label>
+        <label class="check"><input type="checkbox" id="optFw" checked><span><span class="t">Framework snippets</span><span class="d">Next.js, WordPress, React Helmet.</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="out-actions" style="margin-top:20px">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate canonical</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated Tag<span class="spacer"></span>
+      <span class="result-pill" id="pill">ready</span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="file">Output</button>
+      <button type="button" data-tab="diff">Normalization</button>
+      <button type="button" data-tab="rules">Rules &amp; pitfalls</button>
+    </div>
+
+    <div data-panel="file">
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">canonical.html</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+      <div id="warnBox"></div>
+    </div>
+
+    <div data-panel="diff" hidden><div id="diff"></div></div>
+    <div data-panel="rules" hidden><div id="rules"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoCopy:copy','icoDl:download']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var mode = 'single';
+  $('#mode').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#mode button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    mode = b.getAttribute('data-m');
+    $('#singleField').hidden = mode !== 'single';
+    $('#bulkField').hidden = mode !== 'bulk';
+    build();
+  });
+
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'canonical.html', mime: 'text/html' });
+
+  function normalize(raw) {
+    var s = String(raw || '').trim();
+    if (!s) return '';
+    if (!/^https?:\/\//i.test(s)) s = 'https://' + s.replace(/^\/+/, '');
+    var u;
+    try { u = new URL(s); } catch (e) { return ''; }
+
+    if ($('#nHttps').checked) u.protocol = 'https:';
+    u.hostname = u.hostname.toLowerCase().replace(/\.$/, '');
+    if ($('#nWww').checked) u.hostname = u.hostname.replace(/^www\./, '');
+    if ((u.protocol === 'https:' && u.port === '443') || (u.protocol === 'http:' && u.port === '80')) u.port = '';
+    if ($('#nHash').checked) u.hash = '';
+    if ($('#nLower').checked) u.pathname = u.pathname.toLowerCase();
+
+    if ($('#nAllParams').checked) u.search = '';
+    else if ($('#nTracking').checked || $('#nSortParams').checked) {
+      var drop = /^(utm_|gclid$|dclid$|fbclid$|msclkid$|mc_cid$|mc_eid$|_ga$|_gl$|yclid$|igshid$|ttclid$|twclid$|ref_src$|s_kwcid$|vero_id$|piwik_|pk_|hsa_|epik$)/i;
+      var keep = [];
+      u.searchParams.forEach(function (v, k) { if (!$('#nTracking').checked || !drop.test(k)) keep.push([k, v]); });
+      if ($('#nSortParams').checked) keep.sort(function (a, b) { return a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0; });
+      u.search = '';
+      keep.forEach(function (p) { u.searchParams.append(p[0], p[1]); });
+    }
+
+    var t = $('#trailing').value;
+    var isFile = /\.[a-z0-9]{1,8}$/i.test(u.pathname);
+    if (t === 'add' && !isFile && !/\/$/.test(u.pathname)) u.pathname += '/';
+    if (t === 'remove' && u.pathname.length > 1) u.pathname = u.pathname.replace(/\/+$/, '');
+    if (u.pathname === '') u.pathname = '/';
+
+    return u.toString();
+  }
+
+  function inputs() {
+    return mode === 'single' ? [$('#url').value] : GT.lines($('#bulk').value);
+  }
+
+  function build() {
+    var raws = inputs().filter(Boolean);
+    var results = raws.map(function (r) {
+      var n = normalize(r);
+      var target = $('#override').value.trim() ? normalize($('#override').value) : n;
+      return { raw: r.trim(), norm: n, target: target };
+    });
+
+    var text;
+    if (mode === 'single') {
+      var r = results[0] || { target: '' };
+      var lines = ['<link rel="canonical" href="' + r.target + '" />'];
+      if ($('#optOg').checked) lines.push('<meta property="og:url" content="' + r.target + '" />');
+      if ($('#optHeader').checked) lines.push('', '<!-- HTTP response header form (for PDFs and other non-HTML files) -->',
+        'Link: <' + r.target + '>; rel="canonical"');
+      if ($('#optFw').checked) {
+        lines.push('', '<!-- Next.js App Router -->',
+          'export const metadata = { alternates: { canonical: "' + r.target + '" } };',
+          '', '<!-- React Helmet -->',
+          '<Helmet><link rel="canonical" href="' + r.target + '" /></Helmet>',
+          '', '<!-- WordPress (functions.php) -->',
+          'add_action("wp_head", fn() => printf(\'<link rel="canonical" href="%s">\', esc_url("' + r.target + '")));');
+      }
+      text = lines.join('\n');
+    } else {
+      text = '<!-- source URL  →  canonical -->\n' + results.map(function (x) {
+        return '<!-- ' + x.raw + ' -->\n<link rel="canonical" href="' + x.target + '" />';
+      }).join('\n\n');
+    }
+
+    out.set(text, mode === 'single' ? 'canonical.html' : 'canonicals.html');
+    renderDiff(results);
+    renderWarn(results);
+    var changed = results.filter(function (x) { return x.raw.replace(/\/$/, '') !== x.norm.replace(/\/$/, ''); }).length;
+    var pill = $('#pill');
+    pill.textContent = results.length + ' URL' + (results.length === 1 ? '' : 's') + (changed ? ' · ' + changed + ' normalized' : '');
+    pill.style.background = 'var(--green-bg)'; pill.style.color = 'var(--green)';
+    return text;
+  }
+
+  function renderDiff(results) {
+    $('#diff').innerHTML = results.map(function (x) {
+      var same = x.raw === x.target;
+      return '<div style="margin-bottom:18px">' +
+        '<div class="kv" style="border:0;padding-bottom:4px"><span class="k">Input</span></div>' +
+        '<pre class="code" style="padding:10px">' + GT.esc(x.raw) + '</pre>' +
+        '<div class="kv" style="border:0;padding:8px 0 4px"><span class="k">Canonical</span>' +
+        '<span class="v" style="color:' + (same ? 'var(--muted)' : 'var(--green)') + '">' + (same ? 'unchanged' : 'normalized') + '</span></div>' +
+        '<pre class="code" style="padding:10px;border:1px solid ' + (same ? 'var(--line)' : '#bbf7d0') + '">' + GT.esc(x.target) + '</pre></div>';
+    }).join('') || '<p style="color:var(--muted)">Enter a URL.</p>';
+  }
+
+  function renderWarn(results) {
+    var w = [];
+    var bad = results.filter(function (x) { return !x.target || !GT.isValidUrl(x.target); });
+    if (bad.length) w.push(['err', bad.length + ' URL(s) could not be parsed — check for typos or missing hosts.']);
+    if ($('#nAllParams').checked) w.push(['warn', 'Stripping <strong>all</strong> query parameters will canonicalize <code>?page=2</code> and every filtered variant onto the base URL. That is correct for tracking noise and wrong for pagination — verify before shipping.']);
+    if ($('#override').value.trim()) w.push(['warn', 'You are canonicalizing to a different URL. Do this only when the pages are genuine duplicates — cross-canonicalizing distinct content removes it from search.']);
+    if ($('#nLower').checked) w.push(['warn', 'Lowercasing paths is only safe if your server serves the lowercase form with a 200. On case-sensitive servers this produces a canonical to a 404.']);
+    if (results.some(function (x) { return /^http:/i.test(x.target); })) w.push(['err', 'Canonical points at an insecure HTTP URL — enable “Force HTTPS”.']);
+    if (!w.length) w.push(['ok', 'Canonical URLs look clean and self-consistent.']);
+    $('#warnBox').innerHTML = w.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : x[0] === 'warn' ? 'note-warn' : 'note-err') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+  }
+
+  $('#rules').innerHTML = [
+    ['It is a hint, not a command', 'Google treats rel=canonical as one signal among several — internal links, sitemaps and redirects all vote too. If your signals contradict each other, Google picks its own winner and reports “Duplicate, Google chose different canonical” in Search Console.'],
+    ['Always self-canonicalize', 'Every indexable page should carry a canonical pointing at itself. It costs nothing and it neutralises parameter variants you have not thought of yet.'],
+    ['Never canonicalize to a redirect', 'The canonical target must return 200. Pointing at a URL that 301s makes the signal ambiguous and it is usually ignored.'],
+    ['One canonical per page', 'Two conflicting rel=canonical tags cause Google to ignore both. Watch for a theme and a plugin both injecting one.'],
+    ['Do not mix with noindex', 'A canonical says “index this other URL instead”; noindex says “index nothing”. Together they send contradictory instructions and behaviour is unpredictable. Choose one.'],
+    ['Pagination', 'Do not canonicalize page 2 of a series onto page 1 — they are distinct content. Self-canonicalize each page instead.'],
+    ['Cross-domain canonicals', 'Valid and useful for syndicated content: the syndicating site canonicals back to your original. It only works if the other site cooperates.'],
+    ['Hreflang interaction', 'Each language version must canonical to itself. Canonicalizing every locale to the English page destroys the hreflang cluster — the single most common international SEO bug.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:18px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('');
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Canonical generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'canonical-tag-generator',
+    lede: 'Turn messy, parameter-laden URLs into clean rel=canonical tags — with normalization rules that consolidate duplicates instead of creating new ones.',
+    steps: [
+      { icon: 'link', title: 'Paste the URL', text: 'One URL or a whole list, complete with UTM parameters and inconsistent slashes.' },
+      { icon: 'gear', title: 'Choose normalization', text: 'Strip tracking, force HTTPS, sort parameters and settle the trailing-slash question once.' },
+      { icon: 'copy', title: 'Ship the tag', text: 'Copy the link element, HTTP header or framework snippet into every indexable page.' }
+    ],
+    guideTitle: 'What canonicalization actually fixes',
+    guide:
+      '<p style="color:var(--muted)">The same content reachable at several URLs splits its own ranking signals. <code>?utm_source=newsletter</code>, <code>/Page/</code> versus <code>/page</code>, <code>www</code> versus bare host, <code>?a=1&amp;b=2</code> versus <code>?b=2&amp;a=1</code> — to a crawler these are four different pages competing with each other. rel=canonical tells Google which one to consolidate everything onto.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Good reasons to canonicalize</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>Campaign URLs with tracking parameters.</li><li>Faceted navigation producing sorted or filtered duplicates.</li><li>Print and AMP variants of an article.</li><li>Products reachable from multiple category paths.</li><li>Content syndicated to a partner site.</li></ul></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">When a redirect is the better tool</h4><p style="color:var(--muted);font-size:13.8px">A canonical is a hint; a 301 is an instruction. If the duplicate URL should never be reachable again — a moved page, a retired domain, an old slug — use a permanent redirect instead. Reserve canonicals for URLs that must keep working for users while consolidating for search.</p><p style="color:var(--muted);font-size:13.8px;margin-top:10px">Need the redirect rules? The <a href="nginx-redirect-generator.html">Nginx redirect generator</a> builds them from a URL list.</p></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>The most damaging mistake:</strong> a site-wide canonical pointing every page at the homepage. It is usually a mis-set template variable, and it can deindex an entire site within weeks. Always spot-check the rendered tag on a handful of live URLs after deployment.</span></div>',
+    related: ['hreflang-tag-generator', 'meta-robots-tag-generator', 'nginx-redirect-generator'],
+    faqs: [
+      { q: 'What is a canonical tag?', a: 'A <code>&lt;link rel="canonical"&gt;</code> element naming the preferred URL for a piece of content, so search engines consolidate ranking signals onto one URL instead of splitting them across duplicates.' },
+      { q: 'Should every page have a canonical tag?', a: 'Yes — every indexable page should self-canonicalize. It is harmless when there are no duplicates and it protects you from parameter variants appearing later.' },
+      { q: 'Does a canonical tag guarantee which URL is indexed?', a: 'No. It is a strong hint, but Google weighs it against internal links, sitemaps, redirects and content similarity. Conflicting signals are why Search Console sometimes reports a different chosen canonical.' },
+      { q: 'Can I canonicalize to another domain?', a: 'Yes. Cross-domain canonicals are the standard way to handle syndicated content, letting the original publisher keep the ranking signals.' },
+      { q: 'Canonical or 301 redirect?', a: 'Use a 301 when the duplicate should stop being reachable. Use a canonical when both URLs must keep working for users — tracking links, print views, filtered listings.' },
+      { q: 'Should I strip query parameters from canonicals?', a: 'Strip tracking parameters like utm_*, gclid and fbclid, which never change the content. Keep parameters that do change it, such as pagination or a product variant, and let those pages self-canonicalize.' }
+    ],
+    seo: {
+      title: 'Canonical tags: how rel=canonical consolidates duplicate URLs',
+      lead: 'This <strong>canonical tag generator</strong> normalises messy URLs and writes the <code>&lt;link rel="canonical"&gt;</code> markup, HTTP header or sitemap entry that tells Google which version to index. Below: how canonicalization works, when to use a redirect instead, and the mistakes that quietly deindex pages.',
+      blocks: [
+        {
+          h: 'What is a canonical tag?',
+          html: '<p>A <strong>canonical tag</strong> is a single line in the <code>&lt;head&gt;</code> of a page that names the preferred URL for that content:</p>' +
+            '<p><code>&lt;link rel="canonical" href="https://example.com/shoes"&gt;</code></p>' +
+            '<p>When several URLs serve the same or near-identical content, search engines have to pick one to index. Left alone they guess. The canonical tag is how you make the choice explicit — consolidating ranking signals from every duplicate onto the one address you actually want ranking.</p>' +
+            '<p>Duplicates are rarely deliberate. They arrive through tracking parameters, session IDs, faceted navigation, print views, trailing-slash inconsistency, HTTP and HTTPS both resolving, and <code>www</code> versus bare domain. Each variant is a distinct URL to a crawler, even though a human sees one page.</p>'
+        },
+        {
+          h: 'What canonicalization fixes',
+          table: {
+            head: ['Duplicate source', 'Example', 'Canonical target'],
+            rows: [
+              ['Tracking parameters', '<code>/shoes?utm_source=newsletter</code>', '<code>/shoes</code>'],
+              ['Session IDs', '<code>/cart?sid=8f3a2c</code>', '<code>/cart</code>'],
+              ['Sort and filter facets', '<code>/shoes?sort=price&amp;colour=black</code>', '<code>/shoes</code> or the indexable facet'],
+              ['Trailing slash variants', '<code>/about/</code> and <code>/about</code>', 'Whichever your site actually serves'],
+              ['Protocol and host', '<code>http://www.example.com/</code>', '<code>https://example.com/</code>'],
+              ['Pagination', '<code>/blog?page=2</code>', 'Self-canonical — never page 1'],
+              ['Syndicated copies', 'A partner republishing your article', 'Your original URL, cross-domain']
+            ]
+          },
+          callout: { type: 'warn', text: '<strong>Never canonicalize paginated pages to page 1.</strong> Page 2 contains different products or articles; pointing it at page 1 tells Google that content does not need indexing, and the items only reachable from deeper pages fall out of the index entirely. Paginated pages should be self-canonical.' }
+        },
+        {
+          h: 'How to generate canonical tags',
+          steps: [
+            { t: 'Paste your URLs', d: 'One per line — export them from a crawl, your sitemap, or Search Console\'s page report.' },
+            { t: 'Choose normalization rules', d: 'Force HTTPS, strip or keep <code>www</code>, lowercase the path, drop tracking parameters, and settle the trailing slash to match what your server actually serves.' },
+            { t: 'Review the before and after', d: 'The tool shows each original URL beside its canonical target so you can spot a rule that is too aggressive.' },
+            { t: 'Pick your output format', d: 'HTML link tags for normal pages, an HTTP <code>Link</code> header for PDFs and other non-HTML files, or sitemap entries for bulk review.' },
+            { t: 'Ship the self-referencing tag too', d: 'Every canonical URL should carry a canonical tag pointing at itself. It costs nothing and prevents parameterised copies being indexed.' }
+          ]
+        },
+        {
+          h: 'Canonical tag or 301 redirect?',
+          html: '<p>They solve overlapping problems and are not interchangeable. The deciding question is whether both URLs need to stay reachable for users.</p>',
+          cards: [
+            { t: 'Use a 301 redirect', d: 'When the old URL should no longer be visited at all — a moved page, a retired product, an HTTP-to-HTTPS upgrade. It is a directive, not a hint, and passes signals fastest.' },
+            { t: 'Use a canonical tag', d: 'When both URLs must keep working — filtered listings, tracked campaign links, print views, near-identical product variants. Users still reach the variant; only the index consolidates.' },
+            { t: 'Use both, carefully', d: 'Never on the same pair. A page that redirects should not also be a canonical target of the URL it redirects to, and a canonical chain plus a redirect chain is how signals get lost.' }
+          ],
+          after: '<p>For redirect rules, see the <a href="nginx-redirect-generator.html">Nginx redirect generator</a>.</p>'
+        },
+        {
+          h: 'Common canonical tag mistakes',
+          list: [
+            '<strong>Relative URLs.</strong> Always use the absolute form including the protocol. A relative canonical resolves differently across environments and can point at staging.',
+            '<strong>Canonicalizing to a redirected URL.</strong> The chain wastes crawl budget and Google may ignore the hint entirely. Point at the final 200-response URL.',
+            '<strong>Canonicalizing to a noindexed page.</strong> You are consolidating signals onto a page you told Google not to index — usually both disappear.',
+            '<strong>Multiple canonical tags on one page.</strong> Google ignores all of them. This happens when a CMS and an SEO plugin both inject one.',
+            '<strong>Blocking the canonical target in robots.txt.</strong> If the target cannot be crawled, the relationship cannot be confirmed.',
+            '<strong>Canonicalizing every variant to the homepage.</strong> A classic bulk-fix disaster: the whole site collapses to one indexed URL.',
+            '<strong>Mismatched hreflang and canonical.</strong> Each language version must canonicalize to itself, never to the English original.'
+          ]
+        },
+        {
+          h: 'Is the canonical tag a directive?',
+          html: '<p>No. Google treats <code>rel=canonical</code> as a <em>strong hint</em>, not a command. It weighs your declaration alongside internal links, sitemap inclusion, redirects and hreflang, then picks what it considers the true canonical — which can differ from yours. Search Console reports this as "Alternate page with proper canonical tag" or, less happily, "Duplicate, Google chose different canonical than user".</p>' +
+            '<p>When Google disagrees, the fix is consistency rather than repetition. Link internally to the canonical URL only, list only the canonical in your sitemap, make sure it returns 200, and ensure the duplicate really is a duplicate. Conflicting signals are the usual cause.</p>',
+          callout: { type: 'tip', text: 'Cross-domain canonicals work and are the correct tool for syndicated content — ask republishers to canonicalize to your original. It is a request, though: you are relying on their markup, so a link back to the source is worth negotiating too.' }
+        },
+        {
+          h: 'Related technical SEO tools',
+          list: [
+            '<a href="hreflang-tag-generator.html">Hreflang Tag Generator</a> — language and region targeting with return-tag validation.',
+            '<a href="meta-robots-tag-generator.html">Meta Robots Tag Generator</a> — per-page indexing and snippet directives.',
+            '<a href="x-robots-tag-generator.html">X-Robots-Tag Generator</a> — indexing rules for PDFs, images and directories.',
+            '<a href="nginx-redirect-generator.html">Nginx Redirect Generator</a> — 301 rules for URLs that have genuinely moved.',
+            '<a href="sitemap-index-generator.html">Sitemap Index Generator</a> — submit only canonical URLs for crawling.'
+          ]
+        }
+      ],
+      keywords: [
+        'canonical tag generator', 'rel canonical', 'canonical url', 'duplicate content seo',
+        'canonical tag example', 'self referencing canonical', 'canonical vs 301 redirect',
+        'cross domain canonical', 'canonical tag best practices', 'link rel canonical header',
+        'strip utm parameters canonical', 'google chose different canonical'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

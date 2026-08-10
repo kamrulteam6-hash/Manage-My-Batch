@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Random Byte Generator — Hex, Base64, C Array &amp; More | Manage My Batch</title>
+<meta name="description" content="Generate cryptographically secure random bytes and export as hex, Base64, Base64URL, decimal, binary, C array, Python bytes, Go slice or a JavaScript Uint8Array.">
+<link rel="canonical" href="https://managemybatch.com/tools/random-byte-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Random Byte Generator — Hex, Base64, C Array &amp; More">
+<meta property="og:description" content="Generate cryptographically secure random bytes and export as hex, Base64, Base64URL, decimal, binary, C array, Python bytes, Go slice or a JavaScript Uint8Array.">
+<meta property="og:url" content="https://managemybatch.com/tools/random-byte-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Random Byte Generator — Hex, Base64, C Array &amp; More">
+<meta name="twitter:description" content="Generate cryptographically secure random bytes and export as hex, Base64, Base64URL, decimal, binary, C array, Python bytes, Go slice or a JavaScript Uint8Array.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Generator Settings</div>
+
+    <div class="field">
+      <label for="size">Byte count: <strong id="sizeLabel">32</strong> bytes</label>
+      <input type="range" id="size" min="1" max="256" value="32" style="width:100%;accent-color:var(--blue)">
+      <input type="number" id="sizeNum" value="32" min="1" max="8192" style="margin-top:8px">
+      <div class="hint" id="bitsHint"></div>
+    </div>
+
+    <div class="field">
+      <label for="preset">Common sizes</label>
+      <select id="preset">
+        <option value="">Custom…</option>
+        <option value="12">12 — AES-GCM nonce / IV</option>
+        <option value="16">16 — AES-128 key, salt, UUID</option>
+        <option value="24">24 — ChaCha20-Poly1305 nonce (XChaCha)</option>
+        <option value="32" selected>32 — AES-256 key, HMAC-SHA256 secret</option>
+        <option value="48">48 — HMAC-SHA384</option>
+        <option value="64">64 — HMAC-SHA512, signing secret</option>
+        <option value="128">128 — long-term master key material</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="count">How many sets?</label>
+      <div class="row" style="grid-template-columns:minmax(0,1fr) auto">
+        <input type="number" id="count" value="1" min="1" max="500">
+        <button type="button" class="btn btn-ghost" id="regen"><span id="icoReset"></span> Regenerate</button>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label for="format">Output format</label>
+      <select id="format">
+        <optgroup label="Encodings">
+          <option value="hex" selected>Hexadecimal</option>
+          <option value="hexspace">Hex, space separated</option>
+          <option value="base64">Base64</option>
+          <option value="base64url">Base64URL (URL &amp; filename safe)</option>
+          <option value="binary">Binary (8 bits per byte)</option>
+          <option value="decimal">Decimal, comma separated</option>
+          <option value="octal">Octal</option>
+        </optgroup>
+        <optgroup label="Source code">
+          <option value="js">JavaScript Uint8Array</option>
+          <option value="c">C / C++ array</option>
+          <option value="python">Python bytes literal</option>
+          <option value="go">Go []byte</option>
+          <option value="java">Java byte[]</option>
+          <option value="rust">Rust [u8; N]</option>
+          <option value="csharp">C# byte[]</option>
+          <option value="sql">SQL binary literal</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Options</legend>
+      <div class="check-list">
+        <label class="check"><input type="checkbox" id="optUpper"><span><span class="t">Uppercase hex</span><span class="d">Applies to hex and code output.</span></span></label>
+        <label class="check"><input type="checkbox" id="optWrap" checked><span><span class="t">Wrap long lines</span><span class="d">Breaks output at 16 bytes per line for readability.</span></span></label>
+        <label class="check"><input type="checkbox" id="optVar" checked><span><span class="t">Include variable declaration</span><span class="d">Emits a complete statement rather than a bare literal.</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="field">
+      <label for="varName">Variable name</label>
+      <input type="text" id="varName" value="key" placeholder="key">
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Random Bytes<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="file">Output</button>
+      <button type="button" data-tab="all">All encodings</button>
+      <button type="button" data-tab="code">Generate in code</button>
+    </div>
+
+    <div data-panel="file">
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">bytes.txt</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download text</button>
+        <button class="btn btn-soft" id="dlBin">Download .bin</button>
+      </div>
+      <div class="note note-ok"><span id="icoCheck"></span><span>Bytes come from the operating system CSPRNG via <code>crypto.getRandomValues()</code>. Generation is local — no request is made, and nothing is stored.</span></div>
+    </div>
+
+    <div data-panel="all" hidden><div id="allEnc"></div></div>
+    <div data-panel="code" hidden><div id="code"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoCopy:copy','icoDl:download','icoReset:reset','icoCheck:check']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var sets = [];
+
+  function gen(n) { var b = new Uint8Array(n); crypto.getRandomValues(b); return b; }
+
+  function toHex(b, up, sep) {
+    var s = Array.prototype.map.call(b, function (x) { return x.toString(16).padStart(2, '0'); }).join(sep || '');
+    return up ? s.toUpperCase() : s;
+  }
+  function toB64(b) {
+    var s = ''; for (var i = 0; i < b.length; i++) s += String.fromCharCode(b[i]);
+    return btoa(s);
+  }
+  function toB64url(b) { return toB64(b).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }
+  function wrap(s, per) {
+    if (!$('#optWrap').checked) return s;
+    var re = new RegExp('(.{1,' + per + '})', 'g');
+    return (s.match(re) || [s]).join('\n');
+  }
+  function list(b, fn, perLine) {
+    var items = Array.prototype.map.call(b, fn);
+    if (!$('#optWrap').checked) return items.join(', ');
+    var rows = [];
+    for (var i = 0; i < items.length; i += perLine) rows.push('  ' + items.slice(i, i + perLine).join(', '));
+    return rows.join(',\n').replace(/,\n/g, ',\n');
+  }
+
+  function encode(b, fmt) {
+    var up = $('#optUpper').checked, name = $('#varName').value || 'key', decl = $('#optVar').checked;
+    var hx = function (x) { return (up ? '0X' : '0x') + (up ? x.toString(16).toUpperCase() : x.toString(16)).padStart(2, '0'); };
+    switch (fmt) {
+      case 'hex': return wrap(toHex(b, up), 64);
+      case 'hexspace': return wrap(toHex(b, up, ' '), 48);
+      case 'base64': return wrap(toB64(b), 76);
+      case 'base64url': return wrap(toB64url(b), 76);
+      case 'binary': return wrap(Array.prototype.map.call(b, function (x) { return x.toString(2).padStart(8, '0'); }).join(' '), 71);
+      case 'decimal': return wrap(Array.prototype.join.call(b, ', '), 72);
+      case 'octal': return Array.prototype.map.call(b, function (x) { return '0o' + x.toString(8).padStart(3, '0'); }).join(', ');
+      case 'js': return (decl ? 'const ' + name + ' = ' : '') + 'new Uint8Array([\n' + list(b, hx, 12) + '\n])' + (decl ? ';' : '');
+      case 'c': return (decl ? 'static const unsigned char ' + name + '[' + b.length + '] = ' : '') + '{\n' + list(b, hx, 12) + '\n}' + (decl ? ';' : '');
+      case 'python': return (decl ? name + ' = ' : '') + 'bytes.fromhex("' + toHex(b, false) + '")\n' +
+        '# or as a literal:\n# ' + name + ' = b"' + Array.prototype.map.call(b, function (x) { return '\\x' + x.toString(16).padStart(2, '0'); }).join('') + '"';
+      case 'go': return (decl ? name + ' := ' : '') + '[]byte{\n' + list(b, hx, 12) + '\n}';
+      case 'java': return (decl ? 'byte[] ' + name + ' = ' : '') + '{\n' + list(b, function (x) {
+        return '(byte) ' + hx(x);
+      }, 6) + '\n}' + (decl ? ';' : '');
+      case 'rust': return (decl ? 'const ' + name.toUpperCase() + ': [u8; ' + b.length + '] = ' : '') + '[\n' + list(b, hx, 12) + '\n]' + (decl ? ';' : '');
+      case 'csharp': return (decl ? 'byte[] ' + name + ' = ' : '') + 'new byte[] {\n' + list(b, hx, 12) + '\n}' + (decl ? ';' : '');
+      case 'sql': return "-- MySQL / SQLite\nX'" + toHex(b, true) + "'\n\n-- PostgreSQL\n'\\x" + toHex(b, false) + "'::bytea";
+    }
+    return toHex(b, up);
+  }
+
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'bytes.txt', mime: 'text/plain' });
+
+  var EXT = { js: 'js', c: 'h', python: 'py', go: 'go', java: 'java', rust: 'rs', csharp: 'cs', sql: 'sql' };
+
+  function build() {
+    var n = Math.max(1, Math.min(8192, parseInt($('#sizeNum').value, 10) || 1));
+    var count = Math.max(1, Math.min(500, parseInt($('#count').value, 10) || 1));
+    var fmt = $('#format').value;
+
+    sets = []; for (var i = 0; i < count; i++) sets.push(gen(n));
+
+    var text = sets.map(function (b, i) {
+      return (count > 1 ? '// set ' + (i + 1) + '\n' : '') + encode(b, fmt);
+    }).join('\n\n');
+
+    out.set(text, 'bytes.' + (EXT[fmt] || 'txt'));
+
+    $('#sizeLabel').textContent = n;
+    $('#bitsHint').innerHTML = n + ' bytes = <strong>' + (n * 8) + ' bits</strong> · ' + (n * 2) +
+      ' hex chars · ' + Math.ceil(n / 3) * 4 + ' Base64 chars';
+    $('#pill').textContent = n + ' bytes · ' + (n * 8) + ' bits';
+    $('#pill').style.background = n * 8 >= 128 ? 'var(--green-bg)' : 'var(--amber-bg)';
+    $('#pill').style.color = n * 8 >= 128 ? 'var(--green)' : 'var(--amber)';
+
+    renderAll();
+  }
+
+  function renderAll() {
+    var b = sets[0]; if (!b) return;
+    var encs = [
+      ['Hexadecimal', toHex(b, false)],
+      ['Hex (uppercase)', toHex(b, true)],
+      ['Base64', toB64(b)],
+      ['Base64URL', toB64url(b)],
+      ['Decimal', Array.prototype.join.call(b, ', ')],
+      ['Binary (first 8 bytes)', Array.prototype.map.call(b.slice(0, 8), function (x) { return x.toString(2).padStart(8, '0'); }).join(' ')]
+    ];
+    $('#allEnc').innerHTML = encs.map(function (e) {
+      return '<div style="margin-bottom:14px"><div class="kv" style="border:0;padding-bottom:6px">' +
+        '<span class="k">' + e[0] + '</span><span class="v">' + e[1].length + ' chars</span></div>' +
+        '<pre class="code" style="padding:11px;max-height:120px">' + GT.esc(e[1]) + '</pre></div>';
+    }).join('') +
+    '<div class="note note-info">' + I.info +
+    '<span>All rows above encode the <strong>same bytes</strong>. Base64 packs 6 bits per character against hex\'s 4, which is why it is roughly a third shorter for identical entropy.</span></div>';
+  }
+
+  $('#code').innerHTML = [
+    ['Node.js', "import { randomBytes } from 'node:crypto';\n\nconst key = randomBytes(32);\nkey.toString('hex');\nkey.toString('base64url');"],
+    ['Browser / Deno', 'const key = crypto.getRandomValues(new Uint8Array(32));'],
+    ['Python', "import secrets\n\nkey = secrets.token_bytes(32)\nsecrets.token_hex(32)\nsecrets.token_urlsafe(32)"],
+    ['Go', 'key := make([]byte, 32)\nif _, err := rand.Read(key); err != nil { panic(err) }  // crypto/rand'],
+    ['Rust', '// rand = "0.8"\nlet mut key = [0u8; 32];\nOsRng.fill_bytes(&mut key);'],
+    ['Java', 'byte[] key = new byte[32];\nSecureRandom.getInstanceStrong().nextBytes(key);'],
+    ['Shell', 'openssl rand 32 > key.bin\nopenssl rand -base64 32\nhead -c 32 /dev/urandom | base64'],
+    ['Web Crypto — derive a key directly', "const key = await crypto.subtle.generateKey(\n  { name: 'AES-GCM', length: 256 },\n  true,\n  ['encrypt', 'decrypt']\n);"]
+  ].map(function (b) {
+    return '<div style="margin-bottom:18px"><h4 style="font-size:14.5px;margin-bottom:8px">' + b[0] + '</h4>' +
+      '<pre class="code">' + GT.esc(b[1]) + '</pre></div>';
+  }).join('');
+
+  $('#dlBin').addEventListener('click', function () {
+    if (!sets[0]) return;
+    var blob = new Blob([sets[0]], { type: 'application/octet-stream' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = 'random-' + sets[0].length + '.bin';
+    document.body.appendChild(a); a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); document.body.removeChild(a); }, 300);
+    GT.toast('Downloaded raw binary');
+  });
+
+  $('#preset').addEventListener('change', function () {
+    if (!this.value) return;
+    $('#sizeNum').value = this.value; $('#size').value = Math.min(256, +this.value); build();
+  });
+  $('#size').addEventListener('input', function () { $('#sizeNum').value = this.value; build(); });
+  $('#sizeNum').addEventListener('input', function () {
+    var v = parseInt(this.value, 10) || 1; if (v <= 256) $('#size').value = v; build();
+  });
+  $('#regen').addEventListener('click', build);
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); });
+  ['#count','#format','#optUpper','#optWrap','#optVar','#varName'].forEach(function (s) {
+    $(s).addEventListener('change', build); $(s).addEventListener('input', build);
+  });
+
+  build();
+
+  GT.page({
+    slug: 'random-byte-generator',
+    lede: 'Generate cryptographically secure random bytes and drop them straight into your language of choice — hex, Base64, C array, Python bytes, Go slice or raw binary.',
+    steps: [
+      { icon: 'gear', title: 'Choose a byte count', text: 'Presets cover AES keys, GCM nonces, salts and HMAC secrets.' },
+      { icon: 'dice', title: 'Pick an output format', text: 'Seven encodings and eight source-code formats, all describing the same bytes.' },
+      { icon: 'copy', title: 'Copy or download', text: 'Copy the snippet, save as text, or download the raw .bin file.' }
+    ],
+    guideTitle: 'Sizing key material correctly',
+    guide:
+      '<p style="color:var(--muted)">Cryptographic primitives specify their inputs in bytes, and getting the size wrong is not a style issue — an AES-256 implementation handed 16 bytes either throws or silently pads, and a reused GCM nonce destroys the confidentiality of every message encrypted under that key.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Reference sizes</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><strong>12 bytes</strong> — AES-GCM nonce. Unique per message, never reused with the same key.</li><li><strong>16 bytes</strong> — AES-128 key, CBC IV, password salt.</li><li><strong>24 bytes</strong> — XChaCha20 nonce.</li><li><strong>32 bytes</strong> — AES-256 key, HMAC-SHA256 secret, session token.</li><li><strong>64 bytes</strong> — HMAC-SHA512, JWT signing secrets.</li></ul></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Encoding, briefly</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><strong>Hex</strong> — 2 characters per byte. Readable, safe everywhere, longest.</li><li><strong>Base64</strong> — ~1.33 characters per byte. Contains <code>+</code>, <code>/</code> and <code>=</code>, which need escaping in URLs.</li><li><strong>Base64URL</strong> — same density, uses <code>-</code> and <code>_</code> and drops padding. The right choice for tokens in URLs.</li><li><strong>Raw binary</strong> — no expansion at all. Use for key files, never for anything pasted into a text field.</li></ul></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>Nonces are not secrets, but they must be unique.</strong> Generating a fresh random nonce per message is correct. Hard-coding one from this page into your source is the single most common way to break AES-GCM in production.</span></div>' +
+      '<div class="note note-info" style="margin-top:12px">' + GTI.info + '<span>Every mainstream OS exposes a CSPRNG seeded from hardware entropy — <code>getrandom()</code> on Linux, <code>BCryptGenRandom</code> on Windows. <code>crypto.getRandomValues()</code>, which this page uses, is a thin wrapper over it. There is no reason to write your own.</span></div>',
+    related: ['random-hex-string-generator', 'dummy-api-key-generator', 'nanoid-generator'],
+    faqs: [
+      { q: 'Are these bytes cryptographically secure?', a: 'Yes. They come from <code>crypto.getRandomValues()</code>, which is backed by the operating system CSPRNG. Generation happens entirely in your browser with no network request.' },
+      { q: 'How many bytes do I need for an encryption key?', a: '16 bytes for AES-128, 32 bytes for AES-256. HMAC secrets should match the hash output size — 32 bytes for SHA-256, 64 for SHA-512. When unsure, 32 bytes is a safe default.' },
+      { q: 'What is the difference between Base64 and Base64URL?', a: 'Base64URL replaces <code>+</code> and <code>/</code> with <code>-</code> and <code>_</code> and drops the <code>=</code> padding, so the value can appear in a URL or filename without escaping. The underlying bytes are identical.' },
+      { q: 'Can I download the raw bytes?', a: 'Yes — the “Download .bin” button saves the exact bytes with no encoding applied, which is what most key-loading utilities and OpenSSL expect.' },
+      { q: 'Why does Base64 output end with equals signs?', a: 'Base64 encodes in 3-byte groups. When the input length is not a multiple of three, <code>=</code> characters pad the final group. Base64URL omits this padding entirely.' },
+      { q: 'Is it safe to generate production keys in a browser?', a: 'The randomness itself is sound and nothing is transmitted. The risk is handling: a key on screen can be captured by screen recording, shoulder-surfing, or a browser extension. For high-value production keys, generate on the target machine with <code>openssl rand</code> or your cloud KMS.' }
+    ],
+    seo: {
+      title: 'Random bytes: sizing key material and choosing an encoding',
+      lead: 'This <strong>random byte generator</strong> produces cryptographically secure bytes and formats them for your language — hex, Base64, Base64URL, a C array, Python <code>bytes</code>, a Go slice or raw binary. Below: how many bytes each algorithm needs, what Base64 padding means, and when a browser is the wrong place to make a key.',
+      blocks: [
+        {
+          h: 'Where the randomness comes from',
+          html: '<p>Every byte here comes from <code>crypto.getRandomValues()</code>, the browser\'s cryptographically secure pseudo-random number generator. It draws from the operating system entropy pool — <code>/dev/urandom</code> on Unix, <code>BCryptGenRandom</code> on Windows — and is the same source a server-side <code>crypto.randomBytes()</code> uses.</p>' +
+            '<p>It is emphatically not <code>Math.random()</code>, which is fast, seeded from an unspecified source and predictable from a handful of observed outputs. <code>Math.random()</code> has no place anywhere near a key, a token or a password reset link.</p>' +
+            '<p>Nothing is transmitted. Generation happens in the page, and no value is logged, stored or sent anywhere — you can confirm it in the network tab.</p>'
+        },
+        {
+          h: 'How many bytes do you need?',
+          table: {
+            head: ['Purpose', 'Bytes', 'Notes'],
+            rows: [
+              ['AES-128 key', '16', 'Still perfectly adequate. Faster than AES-256 on hardware without AES-NI.'],
+              ['AES-256 key', '32', 'The common default. Required by some compliance regimes.'],
+              ['ChaCha20 key', '32', 'Fixed by the algorithm.'],
+              ['AES-GCM nonce / IV', '12', 'Must be unique per message under the same key — never reused.'],
+              ['CBC IV', '16', 'One block. Unique per message, and it need not be secret.'],
+              ['HMAC-SHA256 key', '32', 'Matching the hash output size is the recommendation.'],
+              ['Session token', '32', '256 bits. Comfortable margin against any online attack.'],
+              ['API key', '32', 'Usually encoded to a printable form and given a prefix.'],
+              ['Password salt', '16', 'Unique per password, stored alongside the hash, not secret.'],
+              ['CSRF token', '16–32', 'Per session or per form.']
+            ]
+          },
+          after: '<p>When in doubt, 32 bytes. It is 256 bits, it satisfies every mainstream requirement, and the cost of the extra 16 bytes is nothing.</p>',
+          callout: { type: 'warn', text: '<strong>Never reuse a nonce or IV with the same key.</strong> With AES-GCM, reusing a nonce does not merely weaken the encryption — it leaks the authentication key and allows forgery. Generate a fresh nonce per message, or use a counter you can prove never repeats.' }
+        },
+        {
+          h: 'Base64 and Base64URL',
+          html: '<p>Both encode three bytes into four printable characters. They differ in two characters and in padding:</p>',
+          cards: [
+            { t: 'Base64', d: 'Alphabet <code>A–Z a–z 0–9 + /</code>, padded with <code>=</code>. Standard for MIME and most config files. The <code>+</code> and <code>/</code> break in URLs and filenames.' },
+            { t: 'Base64URL', d: 'Substitutes <code>-</code> for <code>+</code> and <code>_</code> for <code>/</code>, and usually drops the padding. What JWTs use, and what belongs in a query string or a path segment.' },
+            { t: 'Hex', d: 'Two characters per byte, so 33% longer than Base64. Unambiguous, case-insensitive, trivially readable — the right choice for anything a human will compare by eye.' }
+          ],
+          after: '<p>The padding <code>=</code> characters appear when your byte count is not a multiple of three: one <code>=</code> for a remainder of two bytes, two for a remainder of one. They carry no data and exist so decoders know where the input ends. Choose a byte count divisible by three — 24 or 33 — and the padding disappears.</p>'
+        },
+        {
+          h: 'Output formats',
+          steps: [
+            { t: 'Choose the byte count', d: 'From the table above, or whatever your library documents.' },
+            { t: 'Pick the encoding', d: 'Hex for config files and comparisons, Base64URL for tokens and URLs, raw binary for key files.' },
+            { t: 'Pick the language form', d: 'A C array, a Python <code>bytes</code> literal, a Go byte slice, a Java array or a JavaScript <code>Uint8Array</code> — ready to paste into source.' },
+            { t: 'Download raw if you need a key file', d: 'The exact bytes, no encoding layer, for tools that expect a binary key on disk.' },
+            { t: 'Generate several at once', d: 'When you need a key, an IV and a salt, produce them in one go rather than three visits.' }
+          ]
+        },
+        {
+          h: 'Should you generate production keys in a browser?',
+          html: '<p>Honest answer: for a real production secret, no — and not because the randomness is weak. <code>crypto.getRandomValues()</code> is a proper CSPRNG and the entropy is fine.</p>' +
+            '<p>The problem is everything around it. A generated key passes through the clipboard, may be captured by a clipboard manager, could be shoulder-surfed, and lives in a browser tab that might be sharing a screen. A browser extension with page access can read the DOM. None of these is a flaw in this tool; they are properties of the environment.</p>',
+          list: [
+            '<strong>Fine here:</strong> development keys, test fixtures, local <code>.env</code> values, examples in documentation, throwaway tokens.',
+            '<strong>Generate on the target machine instead:</strong> production signing keys, database encryption keys, anything under a compliance regime.',
+            '<strong>Use instead:</strong> <code>openssl rand -hex 32</code>, <code>head -c 32 /dev/urandom | base64</code>, or your cloud provider\'s KMS — which generates the key inside a boundary it never leaves.'
+          ],
+          callout: { type: 'tip', text: 'The strongest option is a key you never see at all. AWS KMS, Google Cloud KMS, Azure Key Vault and Hashicorp Vault generate and store key material internally and expose only operations. A key that never touches a clipboard cannot be leaked by one.' }
+        },
+        {
+          h: 'Related security tools',
+          list: [
+            '<a href="random-hex-string-generator.html">Random Hex String Generator</a> — the same entropy, sized in hex characters.',
+            '<a href="dummy-api-key-generator.html">Dummy API Key Generator</a> — obviously fake keys for documentation.',
+            '<a href="nanoid-generator.html">NanoID Generator</a> — URL-safe random identifiers.',
+            '<a href="uuid-v7-generator.html">UUID v7 Generator</a> — standard identifiers, not secrets.',
+            '<a href="security-txt-generator.html">security.txt Generator</a> — publish a vulnerability contact.'
+          ]
+        }
+      ],
+      keywords: [
+        'random byte generator', 'generate random bytes', 'crypto random bytes online',
+        'aes key generator', 'encryption key length', 'random iv generator',
+        'base64 random bytes', 'secure random hex', 'hmac key generator',
+        'random salt generator', 'openssl rand alternative', 'csprng online'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

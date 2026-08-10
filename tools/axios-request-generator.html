@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Axios Request Generator — Instances, Interceptors &amp; TypeScript | Manage My Batch</title>
+<meta name="description" content="Free Axios code generator. Build requests, configured instances and interceptors with error handling, timeouts, retries and TypeScript types — from a simple request form.">
+<link rel="canonical" href="https://managemybatch.com/tools/axios-request-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Axios Request Generator — Instances, Interceptors &amp; TypeScript">
+<meta property="og:description" content="Free Axios code generator. Build requests, configured instances and interceptors with error handling, timeouts, retries and TypeScript types — from a simple request form.">
+<meta property="og:url" content="https://managemybatch.com/tools/axios-request-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Axios Request Generator — Instances, Interceptors &amp; TypeScript">
+<meta name="twitter:description" content="Free Axios code generator. Build requests, configured instances and interceptors with error handling, timeouts, retries and TypeScript types — from a simple request form.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Request Builder</div>
+    <div id="reqForm"></div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label for="style">Code style</label>
+      <select id="style">
+        <option value="async" selected>async/await function</option>
+        <option value="shorthand">Shorthand call (axios.post)</option>
+        <option value="config">Config object (axios(config))</option>
+        <option value="instance">Configured instance</option>
+        <option value="interceptors">Instance + interceptors</option>
+        <option value="react">React hook</option>
+        <option value="retry">Instance with retry logic</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Language</label>
+      <div class="seg" id="lang">
+        <button type="button" class="on" data-l="js">JavaScript</button>
+        <button type="button" data-l="ts">TypeScript</button>
+      </div>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Include</legend>
+      <div class="check-list">
+        <label class="check on"><input type="checkbox" id="optTryCatch" checked><span><span class="t">try / catch with axios.isAxiosError</span><span class="d">Distinguishes a server response from a network failure.</span></span></label>
+        <label class="check on"><input type="checkbox" id="optTimeout" checked><span><span class="t">Timeout</span></span></label>
+        <label class="check"><input type="checkbox" id="optProgress"><span><span class="t">Upload / download progress</span><span class="d">Something fetch cannot do without a manual stream reader.</span></span></label>
+        <label class="check"><input type="checkbox" id="optCancel"><span><span class="t">AbortController for cancellation</span></span></label>
+        <label class="check"><input type="checkbox" id="optValidate"><span><span class="t">Custom validateStatus</span><span class="d">Decide which status codes count as success.</span></span></label>
+        <label class="check on"><input type="checkbox" id="optEnv" checked><span><span class="t">Read the token from an env variable</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="row">
+      <div class="field"><label for="timeoutMs">Timeout (ms)</label><input type="number" id="timeoutMs" value="10000" min="100"></div>
+      <div class="field"><label for="fnName">Function name</label><input type="text" id="fnName" value="createUser"></div>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated Code<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="file">Code</button>
+      <button type="button" data-tab="errors">Error handling</button>
+      <button type="button" data-tab="vs">Axios vs fetch</button>
+    </div>
+
+    <div data-panel="file">
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">request.js</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+      <div id="warnBox"></div>
+    </div>
+
+    <div data-panel="errors" hidden><div id="errors"></div></div>
+    <div data-panel="vs" hidden><div id="vs"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/httpreq.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoCopy:copy','icoDl:download']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var req = GTReq.mount($('#reqForm'), build);
+  var lang = 'js';
+
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'request.js', mime: 'text/plain' });
+
+  function ts() { return lang === 'ts'; }
+  function ind(s, n) {
+    var pad = new Array(n + 1).join(' ');
+    return s.split('\n').map(function (l) { return l ? pad + l : l; }).join('\n');
+  }
+  function origin() {
+    try { return new URL(req.fullUrl()).origin; } catch (e) { return 'https://api.example.com'; }
+  }
+  function pathOnly() {
+    try { var u = new URL(req.fullUrl()); return u.pathname + u.search; } catch (e) { return '/'; }
+  }
+
+  function headersObj(skipContentType) {
+    var m = req.model;
+    var hs = req.allHeaders().filter(function (h) {
+      if (skipContentType && /^content-type$/i.test(h.k)) return false;
+      return true;
+    });
+    if (!hs.length) return null;
+    return '{\n' + hs.map(function (h) {
+      var v;
+      if (/^authorization$/i.test(h.k) && /^Bearer /.test(h.v) && $('#optEnv').checked) v = '`Bearer ${process.env.API_TOKEN}`';
+      else if (m.auth === 'apikey' && h.k === (m.apiKeyName || 'X-API-Key') && $('#optEnv').checked) v = 'process.env.API_KEY';
+      else v = "'" + h.v.replace(/'/g, "\\'") + "'";
+      return "  '" + h.k + "': " + v + ',';
+    }).join('\n') + '\n}';
+  }
+
+  function dataLiteral() {
+    var m = req.model;
+    if (req.noBody()) return null;
+    if (m.bodyType === 'json') {
+      /* Axios serialises plain objects automatically — no JSON.stringify needed. */
+      try { return JSON.stringify(JSON.parse(m.body), null, 2); } catch (e) { return m.body; }
+    }
+    if (m.bodyType === 'text') return "'" + m.body.replace(/'/g, "\\'").replace(/\n/g, '\\n') + "'";
+    if (m.bodyType === 'form') {
+      return 'new URLSearchParams({\n' + m.form.filter(function (f) { return f.k.trim(); }).map(function (f) {
+        return "  '" + f.k.trim() + "': '" + String(f.v).replace(/'/g, "\\'") + "',";
+      }).join('\n') + '\n})';
+    }
+    if (m.bodyType === 'multipart') return 'formData';
+    return null;
+  }
+
+  function multipartPrelude() {
+    var m = req.model;
+    if (req.noBody() || m.bodyType !== 'multipart') return '';
+    return 'const formData = new FormData();\n' +
+      m.form.filter(function (f) { return f.k.trim(); }).map(function (f) {
+        return "formData.append('" + f.k.trim() + "', '" + String(f.v).replace(/'/g, "\\'") + "');";
+      }).join('\n') + '\n\n';
+  }
+
+  function configLines(includeUrl) {
+    var m = req.model, lines = [];
+    if (includeUrl) {
+      lines.push("method: '" + m.method.toLowerCase() + "',");
+      lines.push('url: ' + JSON.stringify(req.fullUrl()) + ',');
+    }
+    var h = headersObj(m.bodyType === 'multipart');
+    if (h) lines.push('headers: ' + h + ',');
+    var d = dataLiteral();
+    if (d) lines.push('data: ' + d + ',');
+    if ($('#optTimeout').checked) lines.push('timeout: ' + ($('#timeoutMs').value || 10000) + ',');
+    if ($('#optCancel').checked) lines.push('signal: controller.signal,');
+    if ($('#optValidate').checked) lines.push('validateStatus: (status) => status < 500,   // resolve on 4xx, reject only on server errors');
+    if ($('#optProgress').checked) {
+      lines.push('onUploadProgress: (e) => {');
+      lines.push('  if (e.total) console.log(`upload ${Math.round((e.loaded / e.total) * 100)}%`);');
+      lines.push('},');
+      lines.push('onDownloadProgress: (e) => {');
+      lines.push('  if (e.total) console.log(`download ${Math.round((e.loaded / e.total) * 100)}%`);');
+      lines.push('},');
+    }
+    return lines;
+  }
+
+  function catchBlock(fn) {
+    return 'catch (error) {\n' +
+      '  if (axios.isAxiosError(error)) {\n' +
+      '    if (error.response) {\n' +
+      '      // The server replied with a status outside validateStatus.\n' +
+      "      console.error('Server error', error.response.status, error.response.data);\n" +
+      '    } else if (error.request) {\n' +
+      '      // The request was sent but no response arrived — timeout, DNS, offline.\n' +
+      "      console.error('No response received', error.code);\n" +
+      '    } else {\n' +
+      "      console.error('Request setup failed', error.message);\n" +
+      '    }\n' +
+      '  } else {\n' +
+      '    throw error;\n' +
+      '  }\n' +
+      '  throw error;\n' +
+      '}';
+  }
+
+  function build() {
+    var m = req.model;
+    var style = $('#style').value;
+    var fn = $('#fnName').value || 'makeRequest';
+    var imp = ts() ? "import axios, { AxiosError, AxiosInstance } from 'axios';\n\n" : "import axios from 'axios';\n\n";
+    var retType = ts() ? ': Promise<ApiResponse>' : '';
+    var iface = ts() ? 'interface ApiResponse {\n  [key: string]: unknown;\n}\n\n' : '';
+    var text = '';
+    var ctrl = $('#optCancel').checked ? 'const controller = new AbortController();\n\n' : '';
+
+    if (style === 'shorthand') {
+      var d = dataLiteral();
+      var cfg = configLines(false);
+      var args = [JSON.stringify(req.fullUrl())];
+      if (d && ['post', 'put', 'patch'].indexOf(m.method.toLowerCase()) > -1) args.push(d);
+      if (cfg.filter(function (l) { return l.indexOf('data:') !== 0; }).length) {
+        args.push('{\n' + ind(cfg.filter(function (l) { return l.indexOf('data:') !== 0; }).join('\n'), 2) + '\n}');
+      }
+      text = imp + multipartPrelude() + ctrl +
+        'const { data } = await axios.' + m.method.toLowerCase() + '(' + args.join(', ') + ');';
+    } else if (style === 'config') {
+      text = imp + multipartPrelude() + ctrl +
+        'const response = await axios({\n' + ind(configLines(true).join('\n'), 2) + '\n});\n\n' +
+        'console.log(response.status, response.data);';
+    } else if (style === 'instance') {
+      text = imp + iface +
+        'const api' + (ts() ? ': AxiosInstance' : '') + ' = axios.create({\n' +
+        '  baseURL: ' + JSON.stringify(origin()) + ',\n' +
+        '  timeout: ' + ($('#timeoutMs').value || 10000) + ',\n' +
+        '  headers: {\n' +
+        "    'Content-Type': 'application/json',\n" +
+        '    Authorization: `Bearer ${process.env.API_TOKEN}`,\n' +
+        '  },\n' +
+        '});\n\n' +
+        'export async function ' + fn + '()' + retType + ' {\n' +
+        '  const { data } = await api.' + m.method.toLowerCase() + '(' + JSON.stringify(pathOnly()) +
+        (dataLiteral() && ['post', 'put', 'patch'].indexOf(m.method.toLowerCase()) > -1 ? ', ' + ind(dataLiteral(), 2).trim() : '') + ');\n' +
+        '  return data;\n' +
+        '}';
+    } else if (style === 'interceptors') {
+      text = imp +
+        'const api = axios.create({\n' +
+        '  baseURL: ' + JSON.stringify(origin()) + ',\n' +
+        '  timeout: ' + ($('#timeoutMs').value || 10000) + ',\n' +
+        '});\n\n' +
+        '// Attach auth to every outgoing request in one place.\n' +
+        'api.interceptors.request.use((config) => {\n' +
+        '  const token = process.env.API_TOKEN;\n' +
+        '  if (token) config.headers.Authorization = `Bearer ${token}`;\n' +
+        '  return config;\n' +
+        '});\n\n' +
+        '// Normalise errors and handle auth expiry centrally.\n' +
+        'api.interceptors.response.use(\n' +
+        '  (response) => response,\n' +
+        '  async (error) => {\n' +
+        '    if (error.response?.status === 401) {\n' +
+        '      // refresh the token, redirect to login, etc.\n' +
+        '    }\n' +
+        '    return Promise.reject(error);\n' +
+        '  },\n' +
+        ');\n\n' +
+        'export async function ' + fn + '()' + retType + ' {\n' +
+        '  const { data } = await api.' + m.method.toLowerCase() + '(' + JSON.stringify(pathOnly()) +
+        (dataLiteral() && ['post', 'put', 'patch'].indexOf(m.method.toLowerCase()) > -1 ? ', ' + ind(dataLiteral(), 2).trim() : '') + ');\n' +
+        '  return data;\n' +
+        '}';
+    } else if (style === 'retry') {
+      text = imp +
+        'const api = axios.create({\n' +
+        '  baseURL: ' + JSON.stringify(origin()) + ',\n' +
+        '  timeout: ' + ($('#timeoutMs').value || 10000) + ',\n' +
+        '});\n\n' +
+        '// Retry idempotent requests on network errors and 5xx, with backoff.\n' +
+        'api.interceptors.response.use(undefined, async (error) => {\n' +
+        '  const config = error.config;\n' +
+        '  if (!config || config.__retryCount >= 3) return Promise.reject(error);\n\n' +
+        '  const status = error.response?.status;\n' +
+        '  const retryable = !error.response || (status >= 500 && status < 600) || status === 429;\n' +
+        '  if (!retryable) return Promise.reject(error);\n\n' +
+        '  config.__retryCount = (config.__retryCount ?? 0) + 1;\n' +
+        '  const delay = 250 * 2 ** (config.__retryCount - 1);\n' +
+        '  await new Promise((r) => setTimeout(r, delay));\n' +
+        '  return api(config);\n' +
+        '});\n\n' +
+        'export async function ' + fn + '()' + retType + ' {\n' +
+        '  const { data } = await api.' + m.method.toLowerCase() + '(' + JSON.stringify(pathOnly()) + ');\n' +
+        '  return data;\n' +
+        '}';
+    } else if (style === 'react') {
+      text = imp +
+        'function useData() {\n' +
+        '  const [data, setData] = useState' + (ts() ? '<unknown>' : '') + '(null);\n' +
+        '  const [error, setError] = useState' + (ts() ? '<Error | null>' : '') + '(null);\n' +
+        '  const [loading, setLoading] = useState(true);\n\n' +
+        '  useEffect(() => {\n' +
+        '    const controller = new AbortController();\n\n' +
+        '    axios({\n' +
+        ind(configLines(true).filter(function (l) { return l.indexOf('signal:') !== 0; }).join('\n'), 6) + '\n' +
+        '      signal: controller.signal,\n' +
+        '    })\n' +
+        '      .then((res) => setData(res.data))\n' +
+        '      .catch((e) => {\n' +
+        '        if (!axios.isCancel(e)) setError(e);\n' +
+        '      })\n' +
+        '      .finally(() => setLoading(false));\n\n' +
+        '    return () => controller.abort();\n' +
+        '  }, []);\n\n' +
+        '  return { data, error, loading };\n' +
+        '}';
+    } else {
+      text = imp + iface + multipartPrelude() + ctrl +
+        'export async function ' + fn + '()' + retType + ' {\n' +
+        ind(($('#optTryCatch').checked
+          ? 'try {\n' +
+            '  const response = await axios({\n' + ind(configLines(true).join('\n'), 4) + '\n  });\n\n' +
+            '  return response.data' + (ts() ? ' as ApiResponse' : '') + ';\n' +
+            '} ' + catchBlock(fn)
+          : 'const response = await axios({\n' + ind(configLines(true).join('\n'), 2) + '\n});\n\nreturn response.data;'), 2) + '\n' +
+        '}';
+    }
+
+    out.set(text, 'request.' + (ts() ? 'ts' : 'js'));
+    $('#pill').textContent = m.method + ' · ' + (ts() ? 'TypeScript' : 'JavaScript');
+    $('#pill').style.background = 'var(--purple-bg)'; $('#pill').style.color = 'var(--purple)';
+
+    renderErrors();
+    renderVs();
+    renderWarn();
+  }
+
+  function renderErrors() {
+    $('#errors').innerHTML =
+      '<p style="color:var(--muted);font-size:13.8px;margin-bottom:14px">An Axios error falls into exactly three shapes. Checking them in this order is the difference between a useful log line and “Request failed”.</p>' +
+      '<pre class="code">' + GT.esc(
+        'try {\n' +
+        '  const { data } = await api.get(\'/users\');\n' +
+        '} catch (error) {\n' +
+        '  if (!axios.isAxiosError(error)) throw error;\n\n' +
+        '  if (error.response) {\n' +
+        '    // 1. The server responded with 4xx or 5xx.\n' +
+        '    error.response.status;      // 404\n' +
+        '    error.response.data;        // parsed error body\n' +
+        '    error.response.headers;\n' +
+        '  } else if (error.request) {\n' +
+        '    // 2. Request sent, no response: timeout, offline, DNS, CORS.\n' +
+        '    error.code;                 // ECONNABORTED, ERR_NETWORK\n' +
+        '  } else {\n' +
+        '    // 3. Something broke before the request went out.\n' +
+        '    error.message;\n' +
+        '  }\n' +
+        '}') + '</pre>' +
+      '<h4 style="font-size:14.5px;margin:18px 0 8px">Common error codes</h4>' +
+      [['ECONNABORTED', 'The timeout you configured was hit.'],
+       ['ERR_NETWORK', 'No response at all — offline, DNS failure, or a CORS block in the browser.'],
+       ['ERR_CANCELED', 'You aborted it via AbortController. Filter these out with <code>axios.isCancel()</code>.'],
+       ['ECONNREFUSED', 'Nothing is listening on that host and port.'],
+       ['ETIMEDOUT', 'The operating system gave up on the connection.']
+      ].map(function (r) {
+        return '<div class="kv"><span class="k"><code>' + r[0] + '</code></span><span class="v" style="font-family:var(--sans);font-weight:500;max-width:60%;text-align:right">' + r[1] + '</span></div>';
+      }).join('');
+  }
+
+  function renderVs() {
+    $('#vs').innerHTML =
+      [['Rejects on 4xx/5xx', 'Yes, automatically', 'No — check response.ok yourself'],
+       ['JSON handling', 'Automatic both ways', 'Manual JSON.stringify and .json()'],
+       ['Timeout', 'Built-in <code>timeout</code> option', 'AbortSignal.timeout() by hand'],
+       ['Interceptors', 'First-class', 'Wrap fetch yourself'],
+       ['Upload progress', 'Supported', 'Not available without streams'],
+       ['Bundle cost', '~13 KB gzipped', 'Zero — it is built in'],
+       ['Node support', 'Works everywhere', 'Built in from Node 18'],
+       ['XSRF token handling', 'Built in', 'Manual']
+      ].map(function (r) {
+        return '<div class="kv"><span class="k"><strong>' + r[0] + '</strong><br><span style="font-size:12.5px">Axios: ' + r[1] + '</span></span>' +
+          '<span class="v" style="font-family:var(--sans);font-weight:500;max-width:45%;text-align:right;font-size:12.5px;color:var(--muted)">fetch: ' + r[2] + '</span></div>';
+      }).join('') +
+      '<div class="note note-info" style="margin-top:14px">' + I.info +
+      '<span>Axios earns its 13 KB when you need interceptors for auth refresh, progress events for uploads, or consistent behaviour across a large codebase. For a handful of simple calls, <a href="fetch-api-request-generator.html">fetch</a> with a small wrapper is usually the better trade.</span></div>';
+  }
+
+  function renderWarn() {
+    var w = [], m = req.model;
+    var jv = req.jsonValid();
+    if (!jv.ok) w.push(['err', 'The JSON body is invalid: ' + GT.esc(jv.msg)]);
+    if (m.bodyType === 'json') w.push(['ok', 'Axios serialises plain objects and sets <code>Content-Type: application/json</code> automatically — no <code>JSON.stringify</code> needed.']);
+    if (m.bodyType === 'multipart') w.push(['warn', 'For FormData, let Axios set <code>Content-Type</code> so the multipart boundary is included. In Node you may need <code>...formData.getHeaders()</code>.']);
+    if (!$('#optTimeout').checked) w.push(['warn', 'No timeout set. Axios defaults to 0, which means wait forever.']);
+    if ($('#optValidate').checked) w.push(['warn', 'A custom <code>validateStatus</code> changes which responses throw. With <code>status < 500</code>, a 404 resolves successfully — your code must then check the status itself.']);
+    if (!$('#optEnv').checked && (m.auth === 'bearer' || m.auth === 'apikey')) w.push(['warn', 'The token is hard-coded. In browser bundles any token is readable by the user regardless — proxy through your own server if it must stay secret.']);
+    if (!w.length) w.push(['ok', 'Request looks correctly configured.']);
+    $('#warnBox').innerHTML = w.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : x[0] === 'warn' ? 'note-warn' : 'note-err') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+  }
+
+  $('#lang').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#lang button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    lang = b.getAttribute('data-l'); build();
+  });
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'axios-request-generator',
+    lede: 'Generate Axios requests, configured instances and interceptors — with the three-branch error handling that makes failures actually diagnosable.',
+    steps: [
+      { icon: 'gear', title: 'Describe the request', text: 'The same form as the cURL and fetch generators, so you can compare outputs directly.' },
+      { icon: 'swap', title: 'Choose a pattern', text: 'One-off call, shared instance, interceptors for auth, or an instance with retry and backoff.' },
+      { icon: 'copy', title: 'Copy into your client', text: 'JavaScript or TypeScript, with error handling that separates server errors from network failures.' }
+    ],
+    guideTitle: 'Instances and interceptors are the reason to use Axios',
+    guide:
+      '<p style="color:var(--muted)">A single Axios call is barely different from a fetch call. What Axios actually buys you appears once you have thirty of them: a configured instance holds the base URL, timeout and default headers in one place, and interceptors let you attach auth, refresh expired tokens, log requests and normalise errors without touching a single call site.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">What belongs in an interceptor</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>Attaching the auth header from wherever your token lives.</li><li>Catching 401s to refresh a token and replay the original request.</li><li>Adding a correlation ID header for tracing.</li><li>Converting API error shapes into your own error class.</li><li>Retry with backoff for 5xx and 429 responses.</li></ul></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">The error shape nobody reads carefully</h4><p style="color:var(--muted);font-size:13.8px">An Axios error has three mutually exclusive forms. <code>error.response</code> exists when the server replied with a bad status. <code>error.request</code> exists when the request went out but nothing came back — a timeout, an offline client, a CORS block. Neither exists when the failure happened while building the request.</p>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">Logging <code>error.message</code> alone collapses all three into "Request failed", which is why so much production debugging starts from nothing. The generated catch block branches on all three.</p></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>Retry only idempotent requests.</strong> Retrying a GET is safe. Retrying a POST that timed out may create a second order, because the timeout tells you nothing about whether the server processed the first one. Restrict automatic retries to GET, PUT and DELETE, or require an idempotency key.</span></div>',
+    related: ['fetch-api-request-generator', 'curl-command-generator', 'json-test-data-generator'],
+    faqs: [
+      { q: 'Do I need JSON.stringify with Axios?', a: 'No. Axios serialises plain JavaScript objects automatically and sets <code>Content-Type: application/json</code> for you. Passing an already-stringified value results in a double-encoded body.' },
+      { q: 'How do I handle errors properly in Axios?', a: 'Check <code>axios.isAxiosError(error)</code>, then branch on <code>error.response</code> (server replied with a bad status), <code>error.request</code> (no response — timeout, offline, CORS) and neither (setup failure). The Error handling tab shows the full pattern.' },
+      { q: 'What is an Axios instance for?', a: 'It holds shared configuration — base URL, timeout, default headers — so every call site stays short and changing the API host is a one-line edit. It is also where interceptors are registered.' },
+      { q: 'How do I add an auth token to every request?', a: 'Use a request interceptor. It runs before each call and can read the current token from storage, which means refreshed tokens are picked up automatically without changing any call site.' },
+      { q: 'Should I use Axios or fetch?', a: 'fetch is built in and free. Axios is worth its ~13 KB when you need interceptors, upload progress, automatic JSON handling and errors that throw on 4xx. For a handful of simple calls, fetch with a small wrapper wins.' },
+      { q: 'How do I cancel an Axios request?', a: 'Pass <code>signal</code> from an <code>AbortController</code> and call <code>controller.abort()</code>. Filter the resulting error with <code>axios.isCancel()</code> so a deliberate cancellation is not logged as a failure. The old CancelToken API is deprecated.' }
+    ],
+    seo: {
+      title: 'Axios requests: instances, interceptors and error handling that works',
+      lead: 'This <strong>Axios request generator</strong> writes requests, configured instances and interceptors with the three-branch error handling most tutorials skip. Below: why <code>error.response</code> is often undefined, what an instance is actually for, and when fetch is the better choice.',
+      blocks: [
+        {
+          h: 'What Axios does that fetch does not',
+          html: '<p><strong>Axios</strong> is an HTTP client for browsers and Node that wraps the underlying transport and adds the things almost every application ends up writing by hand.</p>',
+          list: [
+            '<strong>Automatic JSON.</strong> Objects are serialised on the way out and parsed on the way in — <code>response.data</code> is already an object.',
+            '<strong>HTTP errors reject.</strong> A 404 or 500 throws, so <code>try/catch</code> and <code>.catch()</code> behave the way you expect.',
+            '<strong>Interceptors.</strong> One place to attach auth headers, log requests, or refresh an expired token.',
+            '<strong>Instances.</strong> A pre-configured client with a base URL, default headers and a timeout.',
+            '<strong>A real timeout option.</strong> One config value instead of an <code>AbortController</code> and a <code>setTimeout</code>.',
+            '<strong>Upload and download progress.</strong> Available natively, unlike with <code>fetch</code>.'
+          ],
+          callout: { type: 'tip', text: 'You never need <code>JSON.stringify</code> with Axios. Pass a plain object as the data argument and Axios serialises it and sets <code>Content-Type: application/json</code> for you. Stringifying first results in a double-encoded string that arrives at the server as a quoted blob.' }
+        },
+        {
+          h: 'Error handling has three branches, not one',
+          html: '<p>This is where most Axios code is wrong. An Axios failure can mean three completely different things, and treating them alike produces the "Network Error" message that tells nobody anything.</p>',
+          cards: [
+            { t: 'error.response exists', d: 'The server answered with a 4xx or 5xx. You have <code>status</code>, <code>headers</code> and <code>data</code> — the error body usually explains exactly what was wrong.' },
+            { t: 'error.request exists, response does not', d: 'The request went out and nothing came back: DNS failure, connection refused, CORS block, or a timeout. Retryable.' },
+            { t: 'Neither exists', d: 'The request was never made — a bug in your config or serialisation. <code>error.message</code> is all you have, and it is your code at fault.' }
+          ],
+          after: '<p>The generated code branches on all three, and adds <code>axios.isAxiosError(error)</code> in TypeScript so the error is typed rather than <code>unknown</code>.</p>'
+        },
+        {
+          h: 'Why instances are the point',
+          html: '<p>Calling <code>axios.get()</code> directly works, but it means the base URL, auth header and timeout are repeated at every call site. An <strong>instance</strong> captures them once:</p>',
+          steps: [
+            { t: 'Create the client', d: '<code>const api = axios.create({ baseURL, timeout: 10000, headers })</code> in one module.' },
+            { t: 'Import it everywhere', d: 'Call sites become <code>api.get(\'/users\')</code> — no host, no headers, no repetition.' },
+            { t: 'Change environments in one place', d: 'Staging versus production is one config value, not a search-and-replace.' },
+            { t: 'Isolate third-party APIs', d: 'A separate instance per upstream service, each with its own auth and timeout, so a Stripe token never leaks into a request to your own backend.' },
+            { t: 'Attach interceptors to the instance', d: 'Not to the global <code>axios</code> object — global interceptors affect every library in your bundle that uses Axios.' }
+          ]
+        },
+        {
+          h: 'Interceptors: auth and token refresh',
+          html: '<p>A <strong>request interceptor</strong> runs before every request leaves. The standard use is reading the current token and setting the <code>Authorization</code> header — reading it per request rather than at module load matters, because a token captured once goes stale on the first refresh.</p>' +
+            '<p>A <strong>response interceptor</strong> runs on the way back. The classic pattern catches a 401, refreshes the token, and retries the original request once. Two details make the difference between a working implementation and an infinite loop:</p>',
+          ol: [
+            'Mark the retried request (<code>config._retry = true</code>) and refuse to refresh a second time for the same request.',
+            'Share a single in-flight refresh promise, so five concurrent 401s trigger one refresh rather than five.',
+            'Never intercept the refresh endpoint itself — a 401 from the refresh call must fail through to a logout, not recurse.'
+          ],
+          callout: { type: 'warn', text: '<strong>Interceptors registered on the global <code>axios</code> object apply to every consumer of Axios in your bundle</strong>, including third-party SDKs. Attaching an <code>Authorization</code> header globally can send your token to an unrelated API. Always register on your own instance.' }
+        },
+        {
+          h: 'Axios or fetch?',
+          table: {
+            head: ['Consideration', 'Axios', 'fetch'],
+            rows: [
+              ['Bundle cost', '~13 KB gzipped.', 'Zero — built in.'],
+              ['HTTP errors', 'Rejects automatically.', 'Resolves; you must check <code>res.ok</code>.'],
+              ['JSON handling', 'Automatic both ways.', 'Manual <code>JSON.stringify</code> and <code>await res.json()</code>.'],
+              ['Timeouts', 'A config option.', '<code>AbortSignal.timeout()</code>, or an AbortController.'],
+              ['Interceptors', 'Built in.', 'A wrapper function you write.'],
+              ['Upload progress', 'Supported.', 'Not supported.'],
+              ['Node support', 'Same API in Node and browser.', 'Native since Node 18.']
+            ]
+          },
+          after: '<p>Practical rule: for a handful of calls, or a bundle-size-sensitive library, use <a href="fetch-api-request-generator.html">fetch</a>. For an application with shared auth, retries and consistent error handling across dozens of endpoints, Axios earns its 13 KB.</p>'
+        },
+        {
+          h: 'Cancelling requests',
+          html: '<p>The old <code>CancelToken</code> API is deprecated. Modern Axios uses the standard <code>AbortController</code>, the same primitive as fetch:</p>' +
+            '<p><code>const c = new AbortController(); api.get(\'/search\', { signal: c.signal }); c.abort();</code></p>' +
+            '<p>The two situations that need it are the same in every application: a search-as-you-type field where each keystroke supersedes the last request, and a component that unmounts while a request is still in flight. Aborting on cleanup prevents both a wasted response and a state update on an unmounted component.</p>' +
+            '<p>An aborted request rejects with <code>ERR_CANCELED</code>. Check for it and return early rather than showing an error — a cancellation is not a failure.</p>'
+        },
+        {
+          h: 'Related HTTP tools',
+          list: [
+            '<a href="fetch-api-request-generator.html">Fetch API Request Generator</a> — the same request without a dependency.',
+            '<a href="curl-command-generator.html">curl Command Generator</a> — reproduce the request on the command line.',
+            '<a href="json-test-data-generator.html">JSON Test Data Generator</a> — realistic request bodies and mock responses.',
+            '<a href="dummy-api-key-generator.html">Dummy API Key Generator</a> — safe placeholder credentials for examples.'
+          ]
+        }
+      ],
+      keywords: [
+        'axios request generator', 'axios post json', 'axios interceptors', 'axios instance',
+        'axios error handling', 'axios vs fetch', 'axios bearer token', 'axios timeout',
+        'axios cancel request', 'axios typescript', 'axios refresh token', 'axios network error'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

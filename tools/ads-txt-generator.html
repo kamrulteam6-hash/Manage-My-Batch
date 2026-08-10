@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ads.txt Generator — Free IAB ads.txt &amp; app-ads.txt Builder | Manage My Batch</title>
+<meta name="description" content="Free ads.txt generator with 20+ ad network presets (AdSense, Ad Manager, Amazon, Media.net, Criteo). Build IAB-compliant ads.txt and app-ads.txt files with live validation.">
+<link rel="canonical" href="https://managemybatch.com/tools/ads-txt-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Ads.txt Generator — Free IAB ads.txt &amp; app-ads.txt Builder">
+<meta property="og:description" content="Free ads.txt generator with 20+ ad network presets (AdSense, Ad Manager, Amazon, Media.net, Criteo). Build IAB-compliant ads.txt and app-ads.txt files with live validation.">
+<meta property="og:url" content="https://managemybatch.com/tools/ads-txt-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ads.txt Generator — Free IAB ads.txt &amp; app-ads.txt Builder">
+<meta name="twitter:description" content="Free ads.txt generator with 20+ ad network presets (AdSense, Ad Manager, Amazon, Media.net, Criteo). Build IAB-compliant ads.txt and app-ads.txt files with live validation.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Generator Settings</div>
+
+    <div class="field">
+      <label>File type</label>
+      <div class="seg" id="ftype">
+        <button type="button" class="on" data-t="ads">ads.txt — websites</button>
+        <button type="button" data-t="app">app-ads.txt — apps</button>
+      </div>
+      <div class="hint" id="ftypeHint">Goes at the root of your website. Declares which companies may sell your web inventory.</div>
+    </div>
+
+    <div class="field">
+      <label for="pubId">Your publisher ID <span style="font-weight:400;color:var(--muted)">(auto-fills presets)</span></label>
+      <input type="text" id="pubId" placeholder="pub-0000000000000000" value="pub-0000000000000000">
+      <div class="hint">For Google, this is the <code>pub-…</code> ID from your AdSense or Ad Manager account.</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <div class="label">Add from a network preset</div>
+      <div class="hint" style="margin:0 0 10px">Presets insert the canonical domain and certification authority ID. Always replace the seller ID with the one your account manager gave you.</div>
+      <div class="row" style="grid-template-columns:1fr auto">
+        <select id="presetSel"></select>
+        <button type="button" class="btn btn-ghost" id="addPreset"><span id="icoPlus"></span> Add</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="label" style="display:flex;justify-content:space-between;align-items:center">
+        <span>Seller records</span>
+        <button type="button" class="btn btn-soft btn-sm" id="addRow">Add blank row</button>
+      </div>
+      <div id="rows"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label for="bulk">Paste existing / bulk records</label>
+      <textarea id="bulk" placeholder="google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0" style="min-height:90px"></textarea>
+      <button type="button" class="btn btn-soft btn-sm" id="importBulk" style="margin-top:8px">Import &amp; merge</button>
+      <div class="hint">Parses standard IAB rows, ignores comments, and de-duplicates against what you already have.</div>
+    </div>
+
+    <div class="field">
+      <label for="managers">OWNERDOMAIN / MANAGERDOMAIN variables</label>
+      <div class="row">
+        <input type="text" id="ownerDomain" placeholder="OWNERDOMAIN=example.com">
+        <input type="text" id="managerDomain" placeholder="MANAGERDOMAIN=partner.com">
+      </div>
+      <div class="hint">ads.txt 1.1 variables used to identify the inventory owner and any monetisation partner.</div>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Options</legend>
+      <div class="check-list">
+        <label class="check"><input type="checkbox" id="optSort" checked><span><span class="t">Sort by domain</span><span class="d">Keeps diffs readable when partners change.</span></span></label>
+        <label class="check"><input type="checkbox" id="optDedupe" checked><span><span class="t">Remove duplicate rows</span><span class="d">Duplicates are ignored by crawlers but inflate the file.</span></span></label>
+        <label class="check"><input type="checkbox" id="optComments" checked><span><span class="t">Group with comments</span><span class="d">Adds a <code>#</code> heading per network.</span></span></label>
+        <label class="check"><input type="checkbox" id="optContact"><span><span class="t">Add CONTACT line</span><span class="d">Optional IAB variable for buyer questions.</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="field" id="contactWrap" hidden>
+      <label for="contactEmail">Contact email</label>
+      <input type="text" id="contactEmail" placeholder="adops@example.com">
+    </div>
+
+    <div class="out-actions" style="margin-top:20px">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate file</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated File<span class="spacer"></span>
+      <span class="result-pill" id="pill">0 records</span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="file">File</button>
+      <button type="button" data-tab="checks">Validation</button>
+      <button type="button" data-tab="ref">Field reference</button>
+    </div>
+
+    <div data-panel="file">
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">ads.txt</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+      <div class="note note-info"><span id="icoInfo"></span><span id="locNote"></span></div>
+    </div>
+
+    <div data-panel="checks" hidden><div id="checks"></div></div>
+    <div data-panel="ref" hidden><div id="ref"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoCopy:copy','icoDl:download','icoInfo:info','icoPlus:plus']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  /* ------------------- network presets (domain + TAG-ID) ------------------- */
+  var PRESETS = [
+    { n: 'Google AdSense',        d: 'google.com',            c: 'f08c47fec0942fa0', r: 'DIRECT', idHint: 'pub-…' },
+    { n: 'Google Ad Manager',     d: 'google.com',            c: 'f08c47fec0942fa0', r: 'DIRECT', idHint: 'pub-…' },
+    { n: 'Google AdX (reseller)', d: 'google.com',            c: 'f08c47fec0942fa0', r: 'RESELLER', idHint: 'pub-…' },
+    { n: 'Amazon Publisher Svcs', d: 'aps.amazon.com',        c: '',                  r: 'DIRECT' },
+    { n: 'Amazon A9',             d: 'amazon-adsystem.com',   c: '',                  r: 'DIRECT' },
+    { n: 'Media.net',             d: 'media.net',             c: '',                  r: 'DIRECT' },
+    { n: 'Criteo',                d: 'criteo.com',            c: '9fac4a4a87c2a44f', r: 'DIRECT' },
+    { n: 'PubMatic',              d: 'pubmatic.com',          c: '5d62403b186f2ace', r: 'RESELLER' },
+    { n: 'Rubicon / Magnite',     d: 'rubiconproject.com',    c: '0bfd66d529a55807', r: 'RESELLER' },
+    { n: 'Magnite (DV+)',         d: 'magnite.com',           c: '1a4e959a1b50034a', r: 'DIRECT' },
+    { n: 'OpenX',                 d: 'openx.com',             c: '6a698e2ec38604c6', r: 'RESELLER' },
+    { n: 'AppNexus / Xandr',      d: 'appnexus.com',          c: 'f5ab79cb980f11d1', r: 'RESELLER' },
+    { n: 'Index Exchange',        d: 'indexexchange.com',     c: '50b1c356f2c5c8fc', r: 'RESELLER' },
+    { n: 'Sovrn',                 d: 'sovrn.com',             c: 'fafdf38b16bf6b2b', r: 'RESELLER' },
+    { n: 'Triplelift',            d: 'triplelift.com',        c: '6c33edb13117fd86', r: 'RESELLER' },
+    { n: 'Sharethrough',          d: 'sharethrough.com',      c: 'd53b998a7bd4ecd2', r: 'RESELLER' },
+    { n: 'Smaato',                d: 'smaato.com',            c: '07bcf65f187117b4', r: 'RESELLER' },
+    { n: 'Unity Ads',             d: 'unity.com',             c: '96cabb5fbdde37a7', r: 'DIRECT' },
+    { n: 'AppLovin',              d: 'applovin.com',          c: '',                  r: 'DIRECT' },
+    { n: 'ironSource',            d: 'ironsrc.com',           c: '',                  r: 'DIRECT' },
+    { n: 'Vungle / Liftoff',      d: 'vungle.com',            c: 'c107d686becd2d77', r: 'DIRECT' },
+    { n: 'InMobi',                d: 'inmobi.com',            c: '83e75a7ae333ca9d', r: 'DIRECT' },
+    { n: 'Taboola',               d: 'taboola.com',           c: 'c228e6794e811952', r: 'DIRECT' },
+    { n: 'Outbrain',              d: 'outbrain.com',          c: 'a0ce8c1481d4d1af', r: 'DIRECT' },
+    { n: 'Yahoo / Verizon',       d: 'yahoo.com',             c: 'e1a5b5b6e3255540', r: 'RESELLER' },
+    { n: 'Teads',                 d: 'teads.tv',              c: '15a9c44f6d26cbe1', r: 'RESELLER' },
+    { n: 'Adform',                d: 'adform.com',            c: '9f5210a2f0999e32', r: 'RESELLER' },
+    { n: 'Improve Digital',       d: 'improvedigital.com',    c: '2ed5b1d3fbf8f8f0', r: 'RESELLER' }
+  ];
+
+  var rows = [
+    { d: 'google.com', id: 'pub-0000000000000000', r: 'DIRECT', c: 'f08c47fec0942fa0', label: 'Google AdSense' }
+  ];
+
+  $('#presetSel').innerHTML = PRESETS.map(function (p, i) {
+    return '<option value="' + i + '">' + p.n + ' — ' + p.d + '</option>';
+  }).join('');
+
+  $('#addPreset').addEventListener('click', function () {
+    var p = PRESETS[+$('#presetSel').value];
+    rows.push({ d: p.d, id: /google\.com/.test(p.d) ? ($('#pubId').value.trim() || '') : '', r: p.r, c: p.c, label: p.n });
+    renderRows(); build();
+    GT.toast('Added ' + p.n + ' — set your seller ID');
+  });
+  $('#addRow').addEventListener('click', function () {
+    rows.push({ d: '', id: '', r: 'DIRECT', c: '', label: '' }); renderRows(); build();
+  });
+
+  function renderRows() {
+    $('#rows').innerHTML = rows.map(function (r, i) {
+      return '<div class="rep"><div class="rep-head"><span class="n">' + (r.label || 'Record ' + (i + 1)) + '</span>' +
+        '<button type="button" class="icon-btn" data-del="' + i + '" aria-label="Remove">' + I.trash + '</button></div>' +
+        '<div class="row" style="margin-bottom:8px">' +
+        '<input type="text" data-i="' + i + '" data-f="d" value="' + GT.escAttr(r.d) + '" placeholder="Exchange domain (google.com)">' +
+        '<input type="text" data-i="' + i + '" data-f="id" value="' + GT.escAttr(r.id) + '" placeholder="Publisher / seller ID">' +
+        '</div><div class="row">' +
+        '<select data-i="' + i + '" data-f="r">' +
+        ['DIRECT', 'RESELLER'].map(function (o) { return '<option' + (r.r === o ? ' selected' : '') + '>' + o + '</option>'; }).join('') +
+        '</select>' +
+        '<input type="text" data-i="' + i + '" data-f="c" value="' + GT.escAttr(r.c) + '" placeholder="TAG-ID (optional)"></div></div>';
+    }).join('') || '<p style="color:var(--muted);font-size:13.8px">No records yet — add one from a preset above.</p>';
+  }
+  $('#rows').addEventListener('input', function (e) {
+    var i = e.target.getAttribute('data-i'); if (i == null) return;
+    rows[i][e.target.getAttribute('data-f')] = e.target.value; build();
+  });
+  $('#rows').addEventListener('change', function (e) {
+    var i = e.target.getAttribute('data-i'); if (i == null) return;
+    rows[i][e.target.getAttribute('data-f')] = e.target.value; build();
+  });
+  $('#rows').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-del]'); if (!b) return;
+    rows.splice(b.getAttribute('data-del'), 1); renderRows(); build();
+  });
+
+  $('#importBulk').addEventListener('click', function () {
+    var added = 0;
+    GT.lines($('#bulk').value).forEach(function (l) {
+      if (l.charAt(0) === '#') return;
+      if (/^[A-Z]+=/.test(l)) return;
+      var p = l.split('#')[0].split(',').map(function (x) { return x.trim(); });
+      if (p.length < 3 || !p[0]) return;
+      var rec = { d: p[0].toLowerCase(), id: p[1], r: (p[2] || 'DIRECT').toUpperCase(), c: p[3] || '', label: '' };
+      var key = rec.d + '|' + rec.id + '|' + rec.r;
+      if (rows.some(function (x) { return (x.d + '|' + x.id + '|' + x.r).toLowerCase() === key.toLowerCase(); })) return;
+      rows.push(rec); added++;
+    });
+    renderRows(); build();
+    GT.toast(added ? 'Imported ' + added + ' new record(s)' : 'Nothing new to import');
+  });
+
+  $('#ftype').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#ftype button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $('#ftypeHint').textContent = b.getAttribute('data-t') === 'app'
+      ? 'Goes at the root of the developer website listed in your App Store / Google Play listing — not inside the app.'
+      : 'Goes at the root of your website. Declares which companies may sell your web inventory.';
+    build();
+  });
+  $('#optContact').addEventListener('change', function () { $('#contactWrap').hidden = !this.checked; });
+
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'ads.txt', mime: 'text/plain' });
+
+  function fileName() { return $$('#ftype button').filter(function (b) { return b.classList.contains('on'); })[0].getAttribute('data-t') === 'app' ? 'app-ads.txt' : 'ads.txt'; }
+
+  function valid() {
+    return rows.filter(function (r) { return r.d.trim() && r.id.trim(); });
+  }
+
+  function build() {
+    var recs = valid().map(function (r) {
+      return { d: r.d.trim().toLowerCase().replace(/^https?:\/\//, '').replace(/\/.*$/, ''),
+               id: r.id.trim(), r: (r.r || 'DIRECT').toUpperCase(), c: r.c.trim(), label: r.label };
+    });
+    if ($('#optDedupe').checked) {
+      var seen = {};
+      recs = recs.filter(function (r) { var k = (r.d + '|' + r.id + '|' + r.r).toLowerCase(); if (seen[k]) return false; seen[k] = 1; return true; });
+    }
+    if ($('#optSort').checked) recs.sort(function (a, b) { return a.d < b.d ? -1 : a.d > b.d ? 1 : (a.r < b.r ? -1 : 1); });
+
+    var L = [];
+    L.push('# ' + fileName() + ' — generated ' + GT.today() + ' by managemybatch.com');
+    L.push('# Format: <exchange domain>, <publisher ID>, <DIRECT|RESELLER>, <certification authority ID>');
+    L.push('');
+
+    var od = $('#ownerDomain').value.trim(), md = $('#managerDomain').value.trim();
+    if (od) L.push(/=/.test(od) ? od : 'OWNERDOMAIN=' + od.replace(/^https?:\/\//, ''));
+    if (md) L.push(/=/.test(md) ? md : 'MANAGERDOMAIN=' + md.replace(/^https?:\/\//, ''));
+    if ($('#optContact').checked && $('#contactEmail').value.trim()) L.push('CONTACT=' + $('#contactEmail').value.trim());
+    if (od || md || ($('#optContact').checked && $('#contactEmail').value.trim())) L.push('');
+
+    var lastLabel = null;
+    recs.forEach(function (r) {
+      if ($('#optComments').checked && r.label && r.label !== lastLabel) { L.push('# ' + r.label); lastLabel = r.label; }
+      L.push([r.d, r.id, r.r].concat(r.c ? [r.c] : []).join(', '));
+    });
+
+    var text = L.join('\n').replace(/\s+$/, '') + '\n';
+    out.set(text, fileName());
+
+    var pill = $('#pill');
+    pill.textContent = recs.length + ' record' + (recs.length === 1 ? '' : 's');
+    pill.style.background = recs.length ? 'var(--green-bg)' : 'var(--amber-bg)';
+    pill.style.color = recs.length ? 'var(--green)' : 'var(--amber)';
+
+    $('#locNote').innerHTML = fileName() === 'app-ads.txt'
+      ? 'Upload to <code>https://yourdomain.com/app-ads.txt</code> — the developer website URL in your store listing must match this domain exactly, or crawlers will never find the file.'
+      : 'Upload to <code>https://yourdomain.com/ads.txt</code> (root only — subdirectories are not crawled). Serve as <code>text/plain</code> with a 200 status.';
+
+    validate(recs);
+    return text;
+  }
+
+  function validate(recs) {
+    var c = [];
+    function add(s, m) { c.push({ s: s, m: m }); }
+
+    add(recs.length ? 'ok' : 'err', recs.length ? recs.length + ' valid records' : 'No complete records — each row needs a domain and a seller ID');
+
+    var badDomain = recs.filter(function (r) { return !/^[a-z0-9-]+(\.[a-z0-9-]+)+$/.test(r.d); });
+    add(badDomain.length ? 'err' : 'ok', badDomain.length ? 'Invalid exchange domains: ' + GT.uniq(badDomain.map(function (r) { return r.d; })).join(', ') : 'All exchange domains are bare hostnames (no https://, no paths)');
+
+    var placeholder = recs.filter(function (r) { return /^pub-0+$/.test(r.id) || !r.id; });
+    add(placeholder.length ? 'err' : 'ok', placeholder.length ? placeholder.length + ' record(s) still use the placeholder publisher ID — replace with your real ID or ad serving will fail' : 'No placeholder publisher IDs');
+
+    var badRel = recs.filter(function (r) { return r.r !== 'DIRECT' && r.r !== 'RESELLER'; });
+    add(badRel.length ? 'err' : 'ok', 'Relationship field is DIRECT or RESELLER on every row');
+
+    var badTag = recs.filter(function (r) { return r.c && !/^[a-f0-9]{16}$/i.test(r.c); });
+    add(badTag.length ? 'warn' : 'ok', badTag.length ? 'TAG certification IDs should be 16 hex characters: ' + GT.uniq(badTag.map(function (r) { return r.c; })).join(', ') : 'All certification authority IDs are well-formed');
+
+    var g = recs.filter(function (r) { return r.d === 'google.com'; });
+    var gDirect = g.filter(function (r) { return r.r === 'DIRECT'; });
+    if (g.length) add(gDirect.length ? 'ok' : 'warn', gDirect.length ? 'Google DIRECT record present — required for AdSense and Ad Manager' : 'You have Google rows but none marked DIRECT — AdSense requires a DIRECT line with your own pub- ID');
+
+    var dupIds = {}, dup = [];
+    recs.forEach(function (r) { var k = r.d + '|' + r.id + '|' + r.r; if (dupIds[k]) dup.push(k); dupIds[k] = 1; });
+    add(dup.length ? 'warn' : 'ok', dup.length ? 'Duplicate rows detected — enable “Remove duplicates”' : 'No duplicate rows');
+
+    add(recs.length < 5000 ? 'ok' : 'warn', 'Record count within practical crawler limits');
+
+    var errs = c.filter(function (x) { return x.s === 'err'; }).length;
+    if (errs) { $('#pill').textContent = errs + ' error' + (errs > 1 ? 's' : ''); $('#pill').style.background = 'var(--red-bg)'; $('#pill').style.color = 'var(--red)'; }
+
+    $('#checks').innerHTML = c.map(function (x) {
+      return '<div class="note ' + (x.s === 'ok' ? 'note-ok' : x.s === 'warn' ? 'note-warn' : 'note-err') + '" style="margin-top:8px">' +
+        (x.s === 'ok' ? I.check : I.warn) + '<span>' + x.m + '</span></div>';
+    }).join('');
+  }
+
+  $('#ref').innerHTML = [
+    ['Field 1 — Exchange domain', 'The canonical domain of the SSP or exchange, exactly as they publish it. Bare hostname: <code>google.com</code>, never <code>https://google.com/</code>.'],
+    ['Field 2 — Publisher account ID', 'Your seller ID <em>within that exchange</em>. It differs per network — copying another site\'s ID is what ads.txt exists to catch.'],
+    ['Field 3 — Relationship', '<code>DIRECT</code> means you have a contract with that exchange and it is paid directly. <code>RESELLER</code> means you authorised them to resell your inventory through another party.'],
+    ['Field 4 — Certification authority ID', 'The optional 16-character TAG ID identifying the exchange. Include it when the network publishes one.'],
+    ['Variables', '<code>OWNERDOMAIN=</code> names the business that owns the inventory. <code>MANAGERDOMAIN=</code> names a partner that monetises on your behalf. <code>CONTACT=</code> gives buyers a human to email. Variables go before the records.'],
+    ['Comments', 'Anything after <code>#</code> on a line is ignored — use it to label each network so future edits are safe.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:18px"><h4 style="font-size:14.5px;margin-bottom:8px">' + x[0] + '</h4>' +
+      '<div style="color:var(--muted);font-size:13.8px">' + x[1] + '</div></div>';
+  }).join('');
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast(fileName() + ' generated'); });
+  ['#ownerDomain','#managerDomain','#contactEmail'].forEach(function (s) { $(s).addEventListener('input', build); });
+  ['#optSort','#optDedupe','#optComments','#optContact'].forEach(function (s) { $(s).addEventListener('change', build); });
+
+  renderRows(); build();
+
+  GT.page({
+    slug: 'ads-txt-generator',
+    lede: 'Build IAB-compliant ads.txt and app-ads.txt files from 28 network presets, with validation that catches the placeholder IDs and malformed rows that silently kill revenue.',
+    steps: [
+      { icon: 'gear', title: 'Add your networks', text: 'Pick each exchange from the preset list — the domain and TAG ID are filled in for you.' },
+      { icon: 'money', title: 'Set your real seller IDs', text: 'Paste the publisher ID each network issued you. The validator flags placeholders.' },
+      { icon: 'copy', title: 'Upload to your root', text: 'Publish at /ads.txt and re-check whenever you add or drop a partner.' }
+    ],
+    guideTitle: 'How ads.txt protects your revenue',
+    guide:
+      '<p style="color:var(--muted)">ads.txt (Authorized Digital Sellers) is a public list of the companies allowed to sell your ad inventory. Buyers crawl it before bidding: if a seller offers your domain but is not in your file, the bid is treated as counterfeit and dropped. Without the file, spoofers can sell fake impressions against your brand — and many DSPs now refuse to buy unauthorised inventory at all.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">DIRECT vs RESELLER</h4><p style="color:var(--muted);font-size:13.8px">Use <code>DIRECT</code> only where you hold the account and get paid by that exchange. Everything routed through an intermediary is <code>RESELLER</code>. Marking a reseller as DIRECT is a common audit failure and can get you flagged for misrepresentation.</p>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">app-ads.txt is different</h4><p style="color:var(--muted);font-size:13.8px">For mobile apps, crawlers read the developer website URL from your store listing and fetch <code>app-ads.txt</code> from <em>that</em> domain root. If the store listing points at a page rather than the domain you host the file on, nothing is found.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Rules that trip people up</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>The file must be at the <strong>root</strong>. <code>/ads/ads.txt</code> is never read.</li><li>Subdomains that serve ads need their own file unless you use a subdomain redirect.</li><li>Redirects are permitted but limited — keep it to a single hop within your own domain.</li><li>It must return <code>200</code> as <code>text/plain</code>. A 404 page rendered as HTML counts as “no file”.</li><li>Removing a partner from the file cuts their demand within days, so never prune blindly.</li></ul></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span>Seller IDs are account-specific. Copying rows from another publisher\'s ads.txt directs revenue to <em>them</em>, not you. Always take the ID from your own network dashboard.</span></div>',
+    related: ['security-txt-generator', 'llms-txt-generator', 'canonical-tag-generator'],
+    faqs: [
+      { q: 'What is an ads.txt file?', a: 'A plain-text file at your domain root listing every company authorised to sell your advertising inventory, in the IAB format <code>domain, publisher ID, DIRECT|RESELLER, TAG ID</code>. Buyers use it to reject spoofed inventory.' },
+      { q: 'Is ads.txt required for AdSense?', a: 'It is not strictly mandatory, but Google shows a warning in AdSense when your site has no file, and unauthorised inventory is filtered from many buyers. In practice you should always publish one.' },
+      { q: 'What is the difference between ads.txt and app-ads.txt?', a: 'Same format, different discovery. ads.txt covers websites and is fetched from the site\'s own root. app-ads.txt covers mobile apps and is fetched from the developer website listed in your App Store or Google Play entry.' },
+      { q: 'DIRECT or RESELLER — which do I use?', a: 'DIRECT if you hold the account with that exchange and are paid by them directly. RESELLER if another company sells your inventory on your behalf through that exchange.' },
+      { q: 'Do I need ads.txt on every subdomain?', a: 'Any subdomain that serves ads and is treated as its own site by buyers needs its own file, unless you redirect that subdomain\'s /ads.txt to the parent domain\'s file.' },
+      { q: 'How long until changes take effect?', a: 'Crawlers typically refresh every 24 hours to a few days. Adding a partner is safe immediately; removing one stops their bidding once the crawl updates, so coordinate removals with the network.' }
+    ],
+    seo: {
+      title: 'Ads.txt explained: authorised sellers, DIRECT vs RESELLER, and app-ads.txt',
+      lead: 'This <strong>ads.txt generator</strong> builds IAB-compliant authorised-seller files from network presets and validates every line before you publish. Below: what each field means, how buyers use the file, and the mistakes that quietly cut programmatic revenue.',
+      blocks: [
+        {
+          h: 'What is ads.txt?',
+          html: '<p><strong>ads.txt</strong> — Authorized Digital Sellers — is a public text file at your domain root listing every company allowed to sell your advertising inventory. The IAB introduced it in 2017 to kill domain spoofing, where a fraudster offers "impressions on example.com" that example.com never had.</p>' +
+            '<p>The mechanism is simple. Before bidding, a buyer fetches <code>https://example.com/ads.txt</code> and checks whether the seller offering the inventory appears in it. If not, the bid is treated as unauthorised and dropped. Most major DSPs now refuse unauthorised inventory outright.</p>' +
+            '<p>The file is a whitelist, not a description of your ad stack. Everything in it is public, and everything not in it is unsellable.</p>'
+        },
+        {
+          h: 'The four fields',
+          table: {
+            head: ['Field', 'Required', 'Meaning'],
+            rows: [
+              ['Exchange domain', 'Yes', 'The canonical domain of the SSP, exactly as they publish it. Bare hostname — <code>google.com</code>, not <code>https://google.com/</code>.'],
+              ['Publisher account ID', 'Yes', 'Your seller ID <em>within that exchange</em>. Different for every network.'],
+              ['Relationship', 'Yes', '<code>DIRECT</code> if you hold the account and are paid by that exchange. <code>RESELLER</code> if a partner sells on your behalf.'],
+              ['Certification authority ID', 'No', 'The 16-character TAG ID identifying the exchange. Include it whenever the network publishes one.']
+            ]
+          },
+          after: '<p>Variables go above the records: <code>OWNERDOMAIN=</code> names the business owning the inventory, <code>MANAGERDOMAIN=</code> names a monetisation partner, and <code>CONTACT=</code> gives buyers a human to email. Anything after <code>#</code> is a comment.</p>',
+          callout: { type: 'warn', text: '<strong>Seller IDs are account-specific.</strong> Copying rows out of another publisher\'s ads.txt sends revenue to <em>them</em>, not you — and the placeholder IDs floating around in blog examples authorise nobody. Always take the ID from your own network dashboard.' }
+        },
+        {
+          h: 'DIRECT or RESELLER?',
+          html: '<p>Get this wrong and you fail supply-chain audits. The test is who pays you.</p>',
+          cards: [
+            { t: 'DIRECT', d: 'You have a contract with that exchange and receive payment from them. Your own AdSense, Ad Manager or direct SSP accounts.' },
+            { t: 'RESELLER', d: 'Another company — an ad network, a managed partner, a header-bidding wrapper provider — is authorised to sell your inventory through that exchange.' },
+            { t: 'Both, sometimes', d: 'The same exchange can legitimately appear twice with different IDs: one DIRECT row for your own account, one RESELLER row for a partner\'s.' }
+          ],
+          after: '<p>Marking a reseller as DIRECT is the most common audit failure and is treated as misrepresentation, not a typo.</p>'
+        },
+        {
+          h: 'app-ads.txt is discovered differently',
+          html: '<p>The format is identical; the lookup is not. For mobile apps, crawlers read the <strong>developer website URL</strong> from your App Store or Google Play listing, then fetch <code>app-ads.txt</code> from the root of <em>that</em> domain.</p>' +
+            '<p>Two things follow. First, the store listing must point at a domain you control and can host a file on — if it points at a Facebook page or a deep link, nothing is found. Second, the file lives at the domain root, so <code>https://example.com/app-ads.txt</code>, never inside a subfolder.</p>' +
+            '<p>A publisher with both a website and apps needs both files, and they often list different networks.</p>'
+        },
+        {
+          h: 'Publishing rules that trip people up',
+          list: [
+            '<strong>Root only.</strong> <code>/ads/ads.txt</code> and <code>/.well-known/ads.txt</code> are never read.',
+            '<strong>Must return 200 as <code>text/plain</code>.</strong> A styled 404 page counts as "no file" and a <code>text/html</code> content type can be rejected outright.',
+            '<strong>Subdomains that serve ads need their own file</strong>, unless you redirect that subdomain\'s <code>/ads.txt</code> to the parent.',
+            '<strong>Redirects are allowed but limited.</strong> Keep it to a single hop, ideally within your own domain.',
+            '<strong>Do not block it in robots.txt.</strong> Crawlers must be able to fetch it.',
+            '<strong>One record per line, comma-separated.</strong> Wrapped lines and smart quotes from a word processor break parsing.',
+            '<strong>Removing a partner cuts their demand within days</strong>, so coordinate removals rather than pruning blindly.'
+          ]
+        },
+        {
+          h: 'How to build your file',
+          steps: [
+            { t: 'Choose ads.txt or app-ads.txt', d: 'Websites take the first, apps the second. If you have both, generate them separately.' },
+            { t: 'Add networks from the presets', d: 'The canonical domain and TAG ID are filled in for you — these are the two fields most often mistyped.' },
+            { t: 'Paste in your real seller IDs', d: 'From each network\'s dashboard. The validator flags anything that looks like a placeholder.' },
+            { t: 'Set the relationship on each row', d: 'DIRECT only where you hold the account.' },
+            { t: 'Add variables and comments', d: '<code>OWNERDOMAIN</code>, <code>CONTACT</code>, and a comment per network so future edits are safe.' },
+            { t: 'Upload to your root and re-check', d: 'Revisit whenever you add or drop a partner, and audit quarterly regardless.' }
+          ],
+          callout: { type: 'tip', text: 'Keep a comment above each block naming the partner and the date it was added. Ads.txt files accumulate rows from long-dead integrations, and an undocumented row is one nobody dares remove.' }
+        },
+        {
+          h: 'Related publisher and site-root tools',
+          list: [
+            '<a href="security-txt-generator.html">security.txt Generator</a> — the RFC 9116 vulnerability-contact file for your root.',
+            '<a href="llms-txt-generator.html">llms.txt Generator</a> — tell AI assistants which pages to read.',
+            '<a href="ai-crawler-robots-txt-generator.html">AI Crawler robots.txt Generator</a> — control which crawlers reach your content.',
+            '<a href="canonical-tag-generator.html">Canonical Tag Generator</a> — keep duplicate ad-bearing URLs out of the index.'
+          ]
+        }
+      ],
+      keywords: [
+        'ads.txt generator', 'app-ads.txt generator', 'ads.txt format', 'ads.txt direct reseller',
+        'what is ads.txt', 'ads.txt adsense', 'iab ads.txt spec', 'ownerdomain ads.txt',
+        'ads.txt validator', 'ads.txt example', 'authorized digital sellers', 'ads.txt subdomain'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

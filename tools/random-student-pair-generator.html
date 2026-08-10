@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Random Student Pair Generator — No-Repeat Partner Rounds | Manage My Batch</title>
+<meta name="description" content="Free random student pair generator for teachers. Pair a class fairly with guaranteed no-repeat rounds, keep-apart rules, odd-number handling and printable output.">
+<link rel="canonical" href="https://managemybatch.com/tools/random-student-pair-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Random Student Pair Generator — No-Repeat Partner Rounds">
+<meta property="og:description" content="Free random student pair generator for teachers. Pair a class fairly with guaranteed no-repeat rounds, keep-apart rules, odd-number handling and printable output.">
+<meta property="og:url" content="https://managemybatch.com/tools/random-student-pair-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Random Student Pair Generator — No-Repeat Partner Rounds">
+<meta name="twitter:description" content="Free random student pair generator for teachers. Pair a class fairly with guaranteed no-repeat rounds, keep-apart rules, odd-number handling and printable output.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Class Setup</div>
+
+    <div class="field">
+      <label for="names">Student names — one per line</label>
+      <textarea id="names" style="min-height:200px">Amara
+Ben
+Chen
+Diego
+Elena
+Farah
+Grace
+Hugo
+Ines
+Jonas
+Layla
+Mateo</textarea>
+      <div id="rosterStats"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="row">
+      <div class="field">
+        <label for="rounds">Number of rounds</label>
+        <input type="number" id="rounds" value="1" min="1" max="40">
+      </div>
+      <div class="field">
+        <label for="odd">If the class is odd</label>
+        <select id="odd">
+          <option value="trio" selected>Make one group of three</option>
+          <option value="sitout">Leave one student unpaired</option>
+        </select>
+      </div>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Fairness</legend>
+      <div class="check-list">
+        <label class="check on"><input type="checkbox" id="optNoRepeat" checked>
+          <span><span class="t">No repeat partners across rounds</span><span class="d">Uses a round-robin schedule so everyone works with someone new each time.</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="field">
+      <label for="apart">Keep apart — one pair per line</label>
+      <textarea id="apart" style="min-height:70px" placeholder="Ben & Chen&#10;Grace & Hugo"></textarea>
+      <div class="hint">Format <code>Name &amp; Name</code>. Applied when no-repeat mode is off.</div>
+    </div>
+
+    <div class="field">
+      <label for="seed">Seed</label>
+      <div class="row" style="grid-template-columns:minmax(0,1fr) auto;gap:8px">
+        <input type="text" id="seed" value="class-a">
+        <button type="button" class="btn btn-soft" id="newSeed"><span id="icoReset"></span></button>
+      </div>
+      <div class="hint">Same seed and class list always give the same pairs — useful if you want to reproduce today's grouping tomorrow.</div>
+    </div>
+
+    <div class="out-actions">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate Pairs</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Pairs<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="results">Pairs</button>
+      <button type="button" data-tab="matrix">Who has worked with whom</button>
+      <button type="button" data-tab="guide">Teaching notes</button>
+    </div>
+
+    <div data-panel="results">
+      <div id="rounds"></div>
+      <div class="out-actions" style="margin-top:18px">
+        <button type="button" class="btn btn-primary" id="printBtn"><span id="icoFile"></span> Print / PDF</button>
+        <button type="button" class="btn btn-ghost" id="copyBtn"><span id="icoCopy"></span> Copy</button>
+        <button type="button" class="btn btn-soft" id="regen"><span id="icoReset2"></span> Reshuffle</button>
+      </div>
+      <div id="checks"></div>
+    </div>
+
+    <div data-panel="matrix" hidden><div id="matrix" style="overflow-x:auto"></div></div>
+    <div data-panel="guide" hidden><div id="guide"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/roster.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoCopy:copy','icoReset:reset','icoReset2:reset','icoFile:file']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var result = null, names = [];
+
+  function build() {
+    var parsed = GTRoster.parseNames($('#names').value);
+    names = parsed.names;
+    GTRoster.rosterStats('#rosterStats', parsed);
+
+    if (names.length < 2) {
+      $('#rounds').innerHTML = '<div class="empty">Add at least two students.</div>';
+      $('#pill').textContent = '—';
+      $('#matrix').innerHTML = '';
+      return;
+    }
+
+    var wanted = Math.max(1, Math.min(40, parseInt($('#rounds').value, 10) || 1));
+    result = GTRoster.makePairs(names, {
+      seed: $('#seed').value,
+      rounds: wanted,
+      oddMode: $('#odd').value,
+      apart: GTRoster.parsePairs($('#apart').value),
+      noRepeat: $('#optNoRepeat').checked
+    });
+
+    renderRounds();
+    renderMatrix();
+    renderChecks(wanted);
+
+    $('#pill').textContent = names.length + ' students · ' + result.rounds.length + ' round' + (result.rounds.length === 1 ? '' : 's');
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+  }
+
+  function renderRounds() {
+    $('#rounds').innerHTML = result.rounds.map(function (r, ri) {
+      return '<div style="margin-bottom:' + (result.rounds.length > 1 ? '22px' : '0') + '">' +
+        (result.rounds.length > 1
+          ? '<p class="more-label">Round ' + (ri + 1) + (r.recycled ? ' <span style="color:var(--amber);font-weight:500">· partners repeat from here</span>' : '') + '</p>'
+          : '') +
+        '<div class="more-list">' + r.pairs.map(function (p, i) {
+          var isTrio = p.length === 3, isSolo = p.length === 1;
+          return '<div class="more-row">' +
+            '<span style="font-size:12px;color:var(--muted-2);width:22px;flex:none">' + (i + 1) + '</span>' +
+            '<span class="mval" style="font-family:var(--sans);font-size:14.5px;font-weight:500">' +
+            p.map(GT.esc).join(' <span style="color:var(--muted-2);font-weight:400">+</span> ') + '</span>' +
+            (isTrio ? '<span class="chip" style="font-family:var(--sans)">trio</span>' : '') +
+            (isSolo ? '<span class="chip" style="font-family:var(--sans);background:var(--amber-bg);color:var(--amber);border-color:transparent">on their own</span>' : '') +
+            '</div>';
+        }).join('') + '</div></div>';
+    }).join('');
+  }
+
+  function renderMatrix() {
+    if (!result || names.length > 30) {
+      $('#matrix').innerHTML = names.length > 30
+        ? '<p style="color:var(--muted);font-size:13.8px">The matrix is hidden for classes over 30 students — it becomes unreadable.</p>' : '';
+      return;
+    }
+    var met = {};
+    result.rounds.forEach(function (r) {
+      r.pairs.forEach(function (p) {
+        p.forEach(function (a) {
+          p.forEach(function (b) { if (a !== b) met[a + '||' + b] = 1; });
+        });
+      });
+    });
+    $('#matrix').innerHTML =
+      '<p style="color:var(--muted);font-size:13.8px;margin-bottom:12px">A tick means those two students are paired at some point across the rounds above. Useful for checking nobody is repeatedly left out of a mix.</p>' +
+      '<table style="border-collapse:collapse;font-size:11.5px">' +
+      '<tr><th style="padding:6px;border-bottom:1px solid var(--line)"></th>' +
+      names.map(function (n) {
+        return '<th style="padding:6px;border-bottom:1px solid var(--line);writing-mode:vertical-rl;text-orientation:mixed;font-weight:600;height:70px">' +
+          GT.esc(n) + '</th>';
+      }).join('') + '</tr>' +
+      names.map(function (a) {
+        return '<tr><th style="padding:6px 10px 6px 0;text-align:left;border-bottom:1px solid var(--line-2);white-space:nowrap;font-weight:600">' +
+          GT.esc(a) + '</th>' +
+          names.map(function (b) {
+            if (a === b) return '<td style="padding:6px;border-bottom:1px solid var(--line-2);background:var(--line-2)"></td>';
+            var yes = met[a + '||' + b];
+            return '<td style="padding:6px;text-align:center;border-bottom:1px solid var(--line-2);color:' +
+              (yes ? 'var(--green)' : 'var(--muted-2)') + '">' + (yes ? '✓' : '·') + '</td>';
+          }).join('') + '</tr>';
+      }).join('') + '</table>';
+  }
+
+  function renderChecks(wanted) {
+    var c = [];
+    if ($('#optNoRepeat').checked && result.maxUniqueRounds) {
+      if (wanted > result.maxUniqueRounds) {
+        c.push(['warn', 'With ' + names.length + ' students, only <strong>' + result.maxUniqueRounds +
+          ' rounds</strong> are possible before partners must repeat. Rounds beyond that reuse the schedule and are marked above.']);
+      } else {
+        c.push(['ok', 'Every student works with a different partner in each round. ' +
+          result.maxUniqueRounds + ' unique rounds are available for this class size.']);
+      }
+    }
+    if (names.length % 2 === 1) {
+      c.push(['warn', 'Odd number of students — ' + ($('#odd').value === 'trio'
+        ? 'one group of three is created each round. With no-repeat mode on, a different student joins the trio each time.'
+        : 'one student sits out each round. With no-repeat mode on, it is a different student every round.')]);
+    }
+    if ($('#optNoRepeat').checked && $('#apart').value.trim()) {
+      c.push(['warn', 'Keep-apart rules are ignored in no-repeat mode, because the round-robin schedule must pair everyone with everyone. Turn off no-repeat to apply them.']);
+    }
+    if (!c.length) c.push(['ok', 'Pairs generated.']);
+    $('#checks').innerHTML = c.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : 'note-warn') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+  }
+
+  function asText() {
+    return result.rounds.map(function (r, ri) {
+      return (result.rounds.length > 1 ? 'Round ' + (ri + 1) + '\n' : '') +
+        r.pairs.map(function (p, i) { return (i + 1) + '. ' + p.join(' + '); }).join('\n');
+    }).join('\n\n');
+  }
+
+  $('#copyBtn').addEventListener('click', function () { GT.copy(asText(), 'Pairs'); });
+  $('#printBtn').addEventListener('click', function () {
+    var body = '<h1>Student Pairs</h1><p class="sub">' + names.length + ' students · ' +
+      new Date().toLocaleDateString() + '</p>' +
+      result.rounds.map(function (r, ri) {
+        return '<div class="card" style="margin-bottom:16px"><h3>' +
+          (result.rounds.length > 1 ? 'Round ' + (ri + 1) : 'Pairs') + '</h3><ol>' +
+          r.pairs.map(function (p) { return '<li>' + GT.esc(p.join('  +  ')) + '</li>'; }).join('') +
+          '</ol></div>';
+      }).join('');
+    GTRoster.printHtml('Student Pairs', body);
+  });
+  $('#newSeed').addEventListener('click', function () {
+    $('#seed').value = Math.random().toString(36).slice(2, 8); build();
+  });
+  $('#regen').addEventListener('click', function () {
+    $('#seed').value = Math.random().toString(36).slice(2, 8); build();
+  });
+
+  $('#guide').innerHTML = [
+    ['No-repeat mode uses a real schedule, not luck', 'Random pairing repeats partners surprisingly fast — with 12 students, two random rounds have a good chance of repeating at least one pair. No-repeat mode uses the round-robin circle method, which guarantees every student meets every other exactly once across n−1 rounds.'],
+    ['Odd classes: trio or sit-out', 'A group of three keeps everyone working, but the trio member gets a different experience. Sitting one student out is cleaner for strict pair tasks like peer interviews. In no-repeat mode, the tool rotates who is affected so the same student is never repeatedly singled out.'],
+    ['Use the seed to reproduce a grouping', 'If a lesson gets interrupted and you want the same pairs next time, keep the seed. Change it — or press Reshuffle — for a genuinely different arrangement.'],
+    ['Keep-apart rules trade off against no-repeat', 'The round-robin schedule pairs everyone with everyone by design, so it cannot honour exclusions. If separating two students matters more than full mixing, turn no-repeat off and the greedy pairing will respect your list.'],
+    ['Check the matrix for isolated students', 'Over several sessions, the matrix view shows who has actually worked together. It is a quick way to spot a student who keeps landing with the same small group.'],
+    ['Project it or print it', 'The print view produces a clean handout or a display-board page with no interface around it, which is usually faster than reading names aloud.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('');
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Pairs generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'random-student-pair-generator',
+    lede: 'Pair a class fairly in seconds — with a round-robin schedule that guarantees nobody repeats a partner, sensible handling of odd class sizes, and a printable output.',
+    steps: [
+      { icon: 'gear', title: 'Paste your class list', text: 'One name per line. Numbering and bullets from a copied register are stripped automatically.' },
+      { icon: 'pair', title: 'Choose rounds', text: 'No-repeat mode guarantees a different partner every round, for as many rounds as the class size allows.' },
+      { icon: 'file', title: 'Print or project', text: 'A clean handout or display page, with no interface around it.' }
+    ],
+    guideTitle: 'Random pairing repeats faster than you would think',
+    guide:
+      '<p style="color:var(--muted)">Shuffling a class and pairing them off feels random enough, but repeats appear quickly. In a class of twelve, running two independent random rounds has roughly a one-in-three chance of producing at least one identical pair — and students notice immediately when they get the same partner twice.</p>' +
+      '<p style="color:var(--muted);margin-top:12px">The round-robin circle method solves this properly. It generates a schedule where every student is paired with every other student exactly once, across n−1 rounds. That is a guarantee rather than a probability, which is why this tool uses it whenever no-repeat mode is on.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">How many unique rounds you get</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>8 students → 7 rounds</li><li>12 students → 11 rounds</li><li>20 students → 19 rounds</li><li>30 students → 29 rounds</li></ul>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">Odd classes are handled by adding a virtual place, which becomes the trio slot or the sit-out — and it rotates, so no student is repeatedly affected.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">When to turn no-repeat off</h4><p style="color:var(--muted);font-size:13.8px">The round-robin schedule pairs everyone with everyone by construction, so it cannot honour keep-apart rules. If separating two particular students matters more than complete mixing, switch no-repeat off — the greedy pairing then respects your exclusion list on every round.</p>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">Everything runs in your browser, so student names are never transmitted or stored anywhere.</p></div></div>',
+    related: ['classroom-group-generator', 'presentation-order-generator', 'classroom-seating-chart-generator'],
+    faqs: [
+      { q: 'How do I stop students getting the same partner twice?', a: 'Leave no-repeat mode on. It uses a round-robin schedule where each student is paired with each other student exactly once, so across n−1 rounds nobody repeats a partner.' },
+      { q: 'What happens with an odd number of students?', a: 'Choose either a group of three or one student sitting out. In no-repeat mode the tool rotates which student is affected, so the same person is never singled out repeatedly.' },
+      { q: 'Can I stop two specific students being paired?', a: 'Yes — list them as <code>Name &amp; Name</code> under keep apart, and turn off no-repeat mode. The round-robin schedule cannot honour exclusions because it pairs everyone with everyone by design.' },
+      { q: 'How many no-repeat rounds can I get?', a: 'One fewer than the class size — 12 students gives 11 rounds. Beyond that the schedule restarts, and the tool marks those rounds so you know partners are repeating.' },
+      { q: 'Can I reproduce the same pairs later?', a: 'Yes. Keep the seed value the same and the identical class list produces identical pairs. Press Reshuffle for a genuinely different arrangement.' },
+      { q: 'Are student names stored anywhere?', a: 'No. Everything runs in your browser and nothing is uploaded, logged or saved, so it is safe to paste a real class register.' }
+    ],
+    seo: {
+      title: 'Pairing a class: the birthday problem, no-repeat rounds and odd numbers',
+      lead: 'This <strong>student pair generator</strong> pairs a class fairly in seconds, with a round-robin schedule that guarantees nobody repeats a partner and sensible handling of odd class sizes. Below: why naive random pairing repeats so quickly, and how many no-repeat rounds you can actually get.',
+      blocks: [
+        {
+          h: 'Random pairing repeats faster than you would think',
+          html: '<p>Pair a class of 24 at random each lesson and you will see repeats almost immediately. It feels like a fault in the randomness; it is not.</p>' +
+            '<p>There are 276 possible pairs in a class of 24, but only 12 pairs are used per round. What matters is not how many pairs exist but how quickly the ones you have used accumulate — the same reasoning behind the birthday problem, where 23 people give a better-than-even chance of a shared birthday.</p>' +
+            '<p>After three or four independent random rounds, some students have already worked together twice while others have never been paired at all. The distribution is uneven precisely because each round is drawn without reference to the last.</p>',
+          callout: { type: 'tip', text: 'If you pair a class regularly, use no-repeat mode from the first lesson rather than switching to it later. Once the early rounds have been drawn independently, the schedule cannot recover the pairings they wasted.' }
+        },
+        {
+          h: 'No-repeat rounds',
+          html: '<p>The fix is to schedule pairings rather than draw them. Using the same <a href="round-robin-schedule-generator.html">round robin rotation</a> that schedules sports fixtures, every student can be paired with every other exactly once before anyone repeats.</p>',
+          table: {
+            head: ['Class size', 'No-repeat rounds', 'Pairs per round'],
+            rows: [
+              ['8', '7', '4'],
+              ['12', '11', '6'],
+              ['16', '15', '8'],
+              ['20', '19', '10'],
+              ['24', '23', '12'],
+              ['30', '29', '15']
+            ]
+          },
+          after: '<p>With <em>n</em> students there are <em>n</em>&nbsp;−&nbsp;1 no-repeat rounds — for a class of 24, twenty-three lessons of pairing before anyone works with the same partner twice. That is more than a term.</p>'
+        },
+        {
+          h: 'Odd numbers',
+          html: '<p>With an odd class, one student has no partner each round. There are three reasonable ways to handle it, and the generator supports all three.</p>',
+          cards: [
+            { t: 'One group of three', d: 'The most common choice. A trio works for most talk tasks, and the rotation moves it so the same students are not always in it.' },
+            { t: 'One student works with you', d: 'Effective for a student who benefits from adult support, and it makes the odd position a positive rather than a leftover.' },
+            { t: 'One student sits out', d: 'Only where the task genuinely suits it. Rotate strictly so the same person is never repeatedly excluded.' }
+          ],
+          after: '<p>Whichever you choose, the rotation ensures the odd position circulates. A class of 25 gives every student exactly one turn in the odd position across 25 rounds.</p>'
+        },
+        {
+          h: 'Generating pairs',
+          steps: [
+            { t: 'Paste the class list', d: 'One name per line, from your register.' },
+            { t: 'Choose single draw or a full schedule', d: 'A single draw for one lesson; a schedule when you will pair repeatedly.' },
+            { t: 'Set the number of rounds', d: 'Up to <em>n</em>&nbsp;−&nbsp;1 without repeats. Beyond that, the rotation cycles round again.' },
+            { t: 'Add keep-apart rules', d: 'Named students are never paired. The tool reports if a rule cannot be honoured.' },
+            { t: 'Set odd-number handling', d: 'Trio, work with the teacher, or rotate out.' },
+            { t: 'Print the schedule', d: 'A round-per-column sheet you can tick off across the term.' }
+          ]
+        },
+        {
+          h: 'Keeping specific students apart',
+          html: '<p>A keep-apart rule removes that pairing from the schedule entirely, and the rotation fills the gap with the next available partner for each of them.</p>' +
+            '<p>Two consequences worth knowing. It shortens the no-repeat run slightly, because one pairing that would have been used is not available. And a long list of exclusions in a small class can make a complete round impossible — the tool warns rather than quietly pairing them anyway.</p>' +
+            '<p>Keep the list short. Three or four genuine exclusions work fine; twenty means you are constructing the pairings by hand with extra steps.</p>',
+          callout: { type: 'warn', text: 'Keep-apart lists name specific children and imply something about them. Do not print or project a chart that shows the exclusions — generate the pairs, print the pairs, and keep the rules to yourself.' }
+        },
+        {
+          h: 'Reproducing the same pairs',
+          html: '<p>Keep the seed and the class list identical and the same pairs come out. Change either and you get a new arrangement.</p>' +
+            '<p>This matters for a schedule spread across a term. If you generate ten rounds in September and lose the printout in November, regenerating with the same seed and the same list recovers exactly the same schedule — provided the list has not changed. Adding or removing a student changes the rotation, which is unavoidable: the pairings are derived from the list itself.</p>' +
+            '<p>Where a student joins mid-term, generate a fresh schedule from that point rather than trying to patch the old one, and accept that a few pairings will repeat.</p>'
+        },
+        {
+          h: 'Where the class list goes',
+          html: '<p>Nowhere. Everything runs in your browser: names are processed on your own machine and are never transmitted, stored or logged. After the page loads, the tool makes no network requests at all — you can verify it in the network tab.</p>' +
+            '<p>That is deliberate. A class list is personal data about children, and a tool that uploaded it would make you a party to sharing pupil information with a third party. Closing the tab clears everything, so print or export anything you want to keep.</p>'
+        },
+        {
+          h: 'Related classroom tools',
+          list: [
+            '<a href="classroom-group-generator.html">Classroom Group Generator</a> — groups rather than pairs.',
+            '<a href="classroom-seating-chart-generator.html">Classroom Seating Chart Generator</a> — seat the same class.',
+            '<a href="presentation-order-generator.html">Presentation Order Generator</a> — fair speaking order.',
+            '<a href="random-question-picker.html">Random Question Picker</a> — draw without replacement.',
+            '<a href="round-robin-schedule-generator.html">Round Robin Generator</a> — the rotation behind no-repeat mode.'
+          ]
+        }
+      ],
+      keywords: [
+        'random student pair generator', 'classroom pairing tool', 'no repeat partners',
+        'pair students randomly', 'talk partners generator', 'random partner picker',
+        'odd number of students pairing', 'round robin pairing', 'class pair schedule',
+        'peer work pairs', 'random pairs from list', 'printable pairing schedule'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

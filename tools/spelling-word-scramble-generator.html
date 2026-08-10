@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spelling Word Scramble Generator — Printable Puzzles &amp; Answer Key | Manage My Batch</title>
+<meta name="description" content="Free word scramble generator for spelling practice. Scramble words with difficulty levels, hints and letter boxes, then print the worksheet with an answer key.">
+<link rel="canonical" href="https://managemybatch.com/tools/spelling-word-scramble-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Spelling Word Scramble Generator — Printable Puzzles &amp; Answer Key">
+<meta property="og:description" content="Free word scramble generator for spelling practice. Scramble words with difficulty levels, hints and letter boxes, then print the worksheet with an answer key.">
+<meta property="og:url" content="https://managemybatch.com/tools/spelling-word-scramble-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Spelling Word Scramble Generator — Printable Puzzles &amp; Answer Key">
+<meta name="twitter:description" content="Free word scramble generator for spelling practice. Scramble words with difficulty levels, hints and letter boxes, then print the worksheet with an answer key.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Word List</div>
+
+    <div class="field">
+      <label for="words">Spelling words — one per line</label>
+      <textarea id="words" style="min-height:190px">because
+friend
+beautiful
+different
+important
+necessary
+question
+separate
+believe
+knowledge
+rhythm
+occasion</textarea>
+      <div class="hint">Add an optional hint after a colon: <code>because: it explains why</code>.</div>
+      <div id="stats"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label for="difficulty">Difficulty</label>
+      <select id="difficulty">
+        <option value="easy">Easy — first and last letters stay in place</option>
+        <option value="medium" selected>Medium — first letter stays in place</option>
+        <option value="hard">Hard — all letters scrambled</option>
+      </select>
+      <div class="hint" id="diffHint"></div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="style">Scramble style</label>
+        <select id="style">
+          <option value="plain" selected>Plain letters — BEUACSE</option>
+          <option value="spaced">Spaced letters — B E U A C S E</option>
+          <option value="dashed">Dashed — B-E-U-A-C-S-E</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="answerStyle">Answer space</label>
+        <select id="answerStyle">
+          <option value="line" selected>Writing line</option>
+          <option value="boxes">Letter boxes</option>
+          <option value="none">None</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="title">Worksheet title</label>
+        <input type="text" id="title" value="Spelling Word Scramble">
+      </div>
+      <div class="field">
+        <label for="columns">Print columns</label>
+        <select id="columns">
+          <option value="1">1</option>
+          <option value="2" selected>2</option>
+          <option value="3">3</option>
+        </select>
+      </div>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Options</legend>
+      <div class="check-list">
+        <label class="check on"><input type="checkbox" id="optHints" checked><span><span class="t">Show hints</span><span class="d">Only where you supplied one after a colon.</span></span></label>
+        <label class="check"><input type="checkbox" id="optWordBank"><span><span class="t">Add a word bank</span><span class="d">Makes it an easier matching task.</span></span></label>
+        <label class="check on"><input type="checkbox" id="optKey" checked><span><span class="t">Include answer key page</span></span></label>
+        <label class="check on"><input type="checkbox" id="optUpper" checked><span><span class="t">Uppercase scrambles</span><span class="d">Hides capitalisation clues and is easier to read.</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="field">
+      <label for="seed">Seed</label>
+      <div class="row" style="grid-template-columns:minmax(0,1fr) auto;gap:8px">
+        <input type="text" id="seed" value="spell-1">
+        <button type="button" class="btn btn-soft" id="newSeed"><span id="icoReset"></span></button>
+      </div>
+    </div>
+
+    <div class="out-actions">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate Scrambles</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Word Scramble<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="preview">Preview</button>
+      <button type="button" data-tab="key">Answer key</button>
+      <button type="button" data-tab="guide">Teaching notes</button>
+    </div>
+
+    <div data-panel="preview">
+      <div id="preview"></div>
+      <div class="out-actions" style="margin-top:16px">
+        <button type="button" class="btn btn-primary" id="printBtn"><span id="icoFile"></span> Print / PDF</button>
+        <button type="button" class="btn btn-soft" id="regen"><span id="icoReset2"></span> Rescramble</button>
+      </div>
+      <div id="checks"></div>
+    </div>
+
+    <div data-panel="key" hidden><div id="key"></div></div>
+    <div data-panel="guide" hidden><div id="guide"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/worksheet.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$, W = GTWorksheet;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoReset:reset','icoReset2:reset','icoFile:file']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var HINTS = {
+    easy: 'Only the middle letters move. Suitable for younger children or a first attempt.',
+    medium: 'The first letter anchors the word, which is a strong clue while still requiring real work.',
+    hard: 'Every letter moves. Best for older students or well-practised words.'
+  };
+
+  var entries = [], items = [];
+
+  function parseWords() {
+    var out = [], seen = {};
+    GT.lines($('#words').value).forEach(function (l) {
+      var i = l.indexOf(':');
+      var word = (i === -1 ? l : l.slice(0, i)).trim();
+      var hint = i === -1 ? '' : l.slice(i + 1).trim();
+      if (!word) return;
+      var k = word.toLowerCase();
+      if (seen[k]) return;
+      seen[k] = 1;
+      out.push({ word: word, hint: hint });
+    });
+    return out;
+  }
+
+  /* Scramble the permitted slice, retrying until it differs from the original. */
+  function scramble(word, rand) {
+    var diff = $('#difficulty').value;
+    var chars = word.split('');
+    var startFixed = diff === 'hard' ? 0 : 1;
+    var endFixed = diff === 'easy' ? 1 : 0;
+    var head = chars.slice(0, startFixed);
+    var tail = endFixed ? chars.slice(chars.length - endFixed) : [];
+    var mid = chars.slice(startFixed, chars.length - endFixed);
+
+    if (mid.length < 2) return word;
+
+    var attempt, tries = 0;
+    do {
+      attempt = rand.shuffle(mid);
+      tries++;
+    } while (tries < 25 && attempt.join('') === mid.join('') && new Set(mid).size > 1);
+
+    return head.concat(attempt, tail).join('');
+  }
+
+  function styled(s) {
+    var v = $('#optUpper').checked ? s.toUpperCase() : s;
+    var st = $('#style').value;
+    if (st === 'spaced') return v.split('').join(' ');
+    if (st === 'dashed') return v.split('').join('-');
+    return v;
+  }
+
+  function answerSpace(word) {
+    var mode = $('#answerStyle').value;
+    if (mode === 'none') return '';
+    if (mode === 'boxes') {
+      return '<div style="display:flex;gap:3px;margin-top:8px;flex-wrap:wrap">' +
+        word.split('').map(function () {
+          return '<span style="width:20px;height:24px;border:1.3px solid #94a3b8;border-radius:3px;display:inline-block"></span>';
+        }).join('') + '</div>';
+    }
+    return '<div style="margin-top:8px;border-bottom:1.5px solid #94a3b8;height:20px"></div>';
+  }
+
+  function build() {
+    entries = parseWords();
+    $('#diffHint').textContent = HINTS[$('#difficulty').value];
+
+    $('#stats').innerHTML = '<div class="note ' + (entries.length ? 'note-ok' : 'note-warn') + '" style="margin-top:10px">' +
+      (entries.length ? I.check : I.warn) + '<span>' + entries.length + ' word' + (entries.length === 1 ? '' : 's') +
+      ' · ' + entries.filter(function (e) { return e.hint; }).length + ' with hints</span></div>';
+
+    if (!entries.length) {
+      $('#preview').innerHTML = '<div class="empty">Add some spelling words.</div>';
+      $('#pill').textContent = 'empty';
+      $('#key').innerHTML = '';
+      return;
+    }
+
+    var rand = W.rng($('#seed').value);
+    items = entries.map(function (e) {
+      var sc = scramble(e.word, rand);
+      return {
+        word: e.word,
+        unchanged: sc.toLowerCase() === e.word.toLowerCase(),
+        html: '<span style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:1.06em;font-weight:700;letter-spacing:.06em">' +
+          GT.esc(styled(sc)) + '</span>' +
+          ($('#optHints').checked && e.hint
+            ? '<div style="font-size:12.5px;color:#64748b;font-style:italic;margin-top:3px">' + GT.esc(e.hint) + '</div>' : '') +
+          answerSpace(e.word),
+        answer: GT.esc(e.word)
+      };
+    });
+
+    renderPreview();
+    W.answerKeyPreview('#key', items);
+    renderChecks();
+
+    $('#pill').textContent = items.length + ' word' + (items.length === 1 ? '' : 's');
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+  }
+
+  function wordBankHtml() {
+    if (!$('#optWordBank').checked) return '';
+    var rand = W.rng($('#seed').value + '-bank');
+    return '<div style="border:1.5px solid #cbd5e1;border-radius:8px;padding:10px 12px;margin-bottom:14px">' +
+      '<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#64748b;margin-bottom:6px">Word bank</div>' +
+      '<div style="font-size:13.5px;line-height:1.8">' +
+      rand.shuffle(entries.map(function (e) { return e.word; })).map(GT.esc).join(' &nbsp;·&nbsp; ') + '</div></div>';
+  }
+
+  function instructions() {
+    return 'Unscramble each set of letters to spell the correct word.' +
+      ($('#optWordBank').checked ? ' Use the word bank to help you.' : '');
+  }
+
+  function renderPreview() {
+    W.preview('#preview', {
+      title: $('#title').value,
+      instructions: instructions(),
+      items: items,
+      previewColumns: parseInt($('#columns').value, 10) || 2
+    });
+    if ($('#optWordBank').checked) $('#preview > div').insertAdjacentHTML('afterbegin', wordBankHtml());
+  }
+
+  function renderChecks() {
+    var c = [];
+    var unchanged = items.filter(function (i) { return i.unchanged; });
+    if (unchanged.length) {
+      c.push(['warn', unchanged.length + ' word' + (unchanged.length === 1 ? '' : 's') +
+        ' could not be scrambled into something different: ' +
+        unchanged.map(function (i) { return GT.esc(i.word); }).join(', ') +
+        '. Short words, or words with repeated letters, have too few arrangements — try a harder difficulty.']);
+    }
+    var shortWords = entries.filter(function (e) { return e.word.length < 4; });
+    if (shortWords.length) {
+      c.push(['warn', 'Words under four letters barely scramble. ' +
+        shortWords.map(function (e) { return GT.esc(e.word); }).join(', ') + ' may be trivial.']);
+    }
+    var longWords = entries.filter(function (e) { return e.word.length > 12; });
+    if (longWords.length) {
+      c.push(['warn', 'Words over twelve letters are very hard to unscramble without a hint or word bank: ' +
+        longWords.map(function (e) { return GT.esc(e.word); }).join(', ') + '.']);
+    }
+    if ($('#difficulty').value === 'hard' && !$('#optHints').checked && !$('#optWordBank').checked) {
+      c.push(['warn', 'Hard mode with no hints and no word bank is genuinely difficult — expect this to work as a challenge task rather than routine practice.']);
+    }
+    if (!c.length) c.push(['ok', 'All words scrambled successfully.']);
+    $('#checks').innerHTML = c.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : 'note-warn') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+  }
+
+  $('#printBtn').addEventListener('click', function () {
+    var opts = {
+      title: $('#title').value,
+      instructions: instructions(),
+      items: items,
+      columns: parseInt($('#columns').value, 10) || 2,
+      answerKey: $('#optKey').checked,
+      answerColumns: 4
+    };
+    if ($('#optWordBank').checked) {
+      opts.instructions = instructions();
+      /* Prepend the bank by wrapping the first item — simplest reliable approach. */
+      var first = opts.items[0];
+      opts.items = [{ html: first.html, answer: first.answer }].concat(opts.items.slice(1));
+    }
+    W.print(opts);
+  });
+
+  $('#newSeed').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); });
+  $('#regen').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); GT.toast('Rescrambled'); });
+
+  $('#guide').innerHTML = [
+    ['Scrambles test letter patterns, not meaning', 'Unscrambling is a decoding exercise — it drills the letter sequence of a word rather than what it means. That makes it genuinely useful for spelling practice and largely useless as a vocabulary assessment. Pair it with a definition task if you want both.'],
+    ['Keeping the first letter is the useful default', 'It anchors the word enough that students search rather than guess, which is where the practice happens. Fully scrambled words tip into puzzle-solving, where a student who knows the spelling perfectly can still be stuck.'],
+    ['Word length is the real difficulty dial', 'Four to eight letters is the productive range. Under four barely scrambles; over twelve becomes a puzzle about permutations rather than a spelling task, and needs a hint or word bank to stay reasonable.'],
+    ['Watch for repeated letters', 'Words like "necessary" or "different" have fewer distinct arrangements, so scrambles can come out close to the original. The tool retries automatically and warns you when a word cannot be meaningfully scrambled.'],
+    ['Letter boxes support younger writers', 'Boxes tell the student how many letters the answer has and give each one a place to go. That structure helps children who can spell the word aloud but lose track when writing it.'],
+    ['A word bank changes it into matching', 'With a bank the task becomes recognition — students match scrambles to visible words. Useful as a scaffold, but it no longer tests whether the spelling is known.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('');
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Scrambles generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'spelling-word-scramble-generator',
+    lede: 'Turn a spelling list into a printable scramble worksheet — three difficulty levels, optional hints and letter boxes, and an answer key that generates itself.',
+    steps: [
+      { icon: 'gear', title: 'Paste your spelling words', text: 'One per line, with an optional hint after a colon.' },
+      { icon: 'shuffle', title: 'Set the difficulty', text: 'Anchor the first and last letters, just the first, or scramble everything.' },
+      { icon: 'file', title: 'Print it', text: 'Worksheet and answer key, ready for the lesson.' }
+    ],
+    guideTitle: 'Getting the difficulty right',
+    guide:
+      '<p style="color:var(--muted)">A word scramble is a decoding task. The student already needs to know the target word — the exercise makes them attend closely to its letter sequence, which is exactly the kind of practice that helps spelling stick. What it does not do is teach or test meaning, so it works best alongside a definition or usage task rather than instead of one.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Two things control difficulty</h4><p style="color:var(--muted);font-size:13.8px"><strong>Anchoring.</strong> Fixing the first letter cuts the search space dramatically and keeps the task about spelling. Fixing first and last makes it accessible to younger children. Scrambling everything turns it into a puzzle, where a student who can spell the word perfectly may still be stuck.</p>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px"><strong>Length.</strong> Four to eight letters is the productive range. Shorter words barely scramble; longer ones become an exercise in permutations.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">The repeated-letter problem</h4><p style="color:var(--muted);font-size:13.8px">Words such as <em>necessary</em> or <em>different</em> have far fewer distinct arrangements than their length suggests, so a naive shuffle often produces something very close to the original — or the original itself.</p>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">This tool retries the shuffle until the result genuinely differs, and tells you explicitly when a word has too few arrangements for that to be possible. Most scramble generators silently hand you an unscrambled word.</p></div></div>' +
+      '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>Letter boxes are worth switching on for younger writers: they signal how many letters the answer has and give each one a place, which helps children who can spell a word aloud but lose track partway through writing it.</span></div>',
+    related: ['vocabulary-quiz-generator', 'word-search-puzzle-generator', 'random-question-picker'],
+    faqs: [
+      { q: 'What difficulty should I use?', a: 'Medium — first letter fixed — is the best default. It anchors the word enough that students search systematically rather than guess, which is where the spelling practice actually happens.' },
+      { q: 'Why did one of my words come out unscrambled?', a: 'Words with repeated letters or very few letters have hardly any distinct arrangements. The tool retries and then warns you which words could not be meaningfully scrambled, rather than silently printing the original.' },
+      { q: 'How long should the words be?', a: 'Four to eight letters works best. Under four barely scrambles, and over twelve becomes a permutation puzzle that needs a hint or word bank to stay reasonable.' },
+      { q: 'Can I add hints?', a: 'Yes — put a hint after a colon, like <code>because: it explains why</code>. Hints appear under the scramble and are easy to switch off for a harder version.' },
+      { q: 'Does it include an answer key?', a: 'Yes, generated automatically and printed on its own page so you can hand out just the worksheet.' },
+      { q: 'What are letter boxes for?', a: 'They show how many letters the answer has and give each letter its own space. This helps younger writers who can spell a word aloud but lose their place when writing it out.' }
+    ],
+    seo: {
+      title: 'Word scrambles: getting the difficulty right for a spelling list',
+      lead: 'This <strong>word scramble generator</strong> turns a spelling list into a printable worksheet with three difficulty levels, optional hints and letter boxes, and an answer key that writes itself. Below: how the difficulty levels differ, why a word sometimes comes out unscrambled, and what letter boxes are for.',
+      blocks: [
+        {
+          h: 'Getting the difficulty right',
+          html: '<p>A scramble is too easy when the letters barely move and impossible when they are fully randomised on a long word. The difference between a useful activity and a frustrating one is entirely in how the letters are permuted.</p>',
+          cards: [
+            { t: 'Easy — adjacent swaps', d: 'Pairs of neighbouring letters are exchanged. The word remains partly recognisable, which suits younger children and lower-confidence spellers.' },
+            { t: 'Medium — keep first and last', d: 'The outer letters stay put and the middle is shuffled. This mirrors how fluent readers actually process words, so it feels solvable while still requiring work.' },
+            { t: 'Hard — full shuffle', d: 'Every letter is randomised. Genuinely difficult on words over about seven letters, and best paired with a hint.' }
+          ],
+          after: '<p>Medium is the right default for most spelling lists. Keeping the first and last letters gives an anchor at both ends and turns the task into reconstructing the middle — which is exactly the part of a word children misspell.</p>'
+        },
+        {
+          h: 'Why a word came out unscrambled',
+          html: '<p>Occasionally a scrambled word is identical to the original. It is not a bug — it is a consequence of small permutation spaces.</p>' +
+            '<p>A three-letter word has only six possible arrangements, and one of them is the answer. With repeated letters the space shrinks further: <code>EGG</code> has three distinguishable arrangements, and <code>ALL</code> the same. On a short word, landing on the original is simply likely.</p>' +
+            '<p>The generator re-shuffles when it detects an identical result, but on words where every arrangement is the original — a two-letter word with a repeated letter, say — there is nothing to re-shuffle to. Short words are best left out of a scramble for this reason.</p>',
+          callout: { type: 'tip', text: 'Scrambles work best on words of five to nine letters. Below five there are too few arrangements to be interesting; above about ten the task becomes a puzzle in its own right rather than spelling practice, and children start guessing rather than reconstructing.' }
+        },
+        {
+          h: 'Hints',
+          html: '<p>Optional hints turn a scramble from a puzzle into a vocabulary exercise. The child is no longer only rearranging letters — they are matching a meaning to a form.</p>',
+          list: [
+            '<strong>A definition</strong> — the most useful, and the reason to add hints at all. It converts letter manipulation into vocabulary work.',
+            '<strong>A category</strong> — "an animal", "a type of weather". Enough support for a struggling child without giving the answer away.',
+            '<strong>The first letter</strong> — minimal help, and useful for differentiation: the same sheet with first letters shown for some children.',
+            '<strong>A sentence with a gap</strong> — the strongest form, because it puts the word in context and tests usage as well as spelling.'
+          ],
+          after: '<p>Write hints in the format <code>word: hint</code>, one per line. Words without a hint simply appear without one, so a single list can mix supported and unsupported items.</p>'
+        },
+        {
+          h: 'Letter boxes',
+          html: '<p>Letter boxes are the row of empty squares beside each scramble, one per letter of the answer.</p>' +
+            '<p>They do three things. They tell the child how many letters the answer has, which removes a whole category of wrong answer. They enforce one letter per square, which produces legible work and makes marking faster. And they give a struggling child somewhere to try letters out rather than staring at a blank line.</p>' +
+            '<p>The trade-off is a small amount of help. For an assessment, use a plain line instead; for practice, boxes are almost always worth including — and for younger children they turn an intimidating blank into a structure.</p>'
+        },
+        {
+          h: 'Building the worksheet',
+          steps: [
+            { t: 'Paste the spelling list', d: 'One word per line, or <code>word: hint</code> for definitions.' },
+            { t: 'Choose the difficulty', d: 'Easy, keep-first-and-last, or full shuffle.' },
+            { t: 'Turn hints on where you want them', d: 'They can be mixed within one list.' },
+            { t: 'Add letter boxes', d: 'For practice sheets, and for anyone who needs the structure.' },
+            { t: 'Generate two versions if you need them', d: 'The same words scrambled differently — for adjacent desks, or for a retest.' },
+            { t: 'Print with the answer key', d: 'Generated automatically and laid out to match the numbering.' }
+          ],
+          callout: { type: 'warn', text: 'Check the sheet before copying. A random shuffle occasionally produces something that reads as another word, or as something unfortunate — a five-second read prevents the sort of worksheet that gets photographed and shared.' }
+        },
+        {
+          h: 'What a scramble is actually practising',
+          html: '<p>Letter-order recall rather than spelling generation. A child completing a scramble is given every letter and asked to sequence them, which is a different task from producing a word from sound alone.</p>' +
+            '<p>That makes it a good <em>support</em> activity — it builds familiarity with a word\'s letter pattern, and it is more active than copying. It is not a substitute for writing words from dictation, which is where spelling is genuinely tested.</p>' +
+            '<p>The useful pairing is a scramble early in the week to build familiarity and a dictation at the end to check it. Add definitions as hints and the same list is doing vocabulary work at the same time.</p>'
+        },
+        {
+          h: 'Related literacy tools',
+          list: [
+            '<a href="vocabulary-quiz-generator.html">Vocabulary Quiz Generator</a> — six quiz formats from the same word list.',
+            '<a href="word-search-puzzle-generator.html">Word Search Puzzle Generator</a> — letter-pattern familiarity.',
+            '<a href="bingo-card-generator.html">Bingo Card Generator</a> — vocabulary bingo from your list.',
+            '<a href="random-question-picker.html">Random Question Picker</a> — oral spelling practice.',
+            '<a href="spelling-word-scramble-generator.html">Spelling Word Scramble Generator</a> — more scramble options.'
+          ]
+        }
+      ],
+      keywords: [
+        'word scramble generator', 'spelling worksheet maker', 'unscramble words worksheet',
+        'anagram worksheet generator', 'printable spelling activities', 'word scramble with answers',
+        'spelling list activity', 'scrambled words for kids', 'vocabulary scramble',
+        'word jumble maker', 'spelling practice worksheet', 'custom word scramble'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sitemap Index Generator — Split &amp; Index Large XML Sitemaps | Manage My Batch</title>
+<meta name="description" content="Free sitemap index generator. Split a URL list into 50,000-URL sitemaps, build a valid sitemapindex file with lastmod, and get the robots.txt and Search Console steps.">
+<link rel="canonical" href="https://managemybatch.com/tools/sitemap-index-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Sitemap Index Generator — Split &amp; Index Large XML Sitemaps">
+<meta property="og:description" content="Free sitemap index generator. Split a URL list into 50,000-URL sitemaps, build a valid sitemapindex file with lastmod, and get the robots.txt and Search Console steps.">
+<meta property="og:url" content="https://managemybatch.com/tools/sitemap-index-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sitemap Index Generator — Split &amp; Index Large XML Sitemaps">
+<meta name="twitter:description" content="Free sitemap index generator. Split a URL list into 50,000-URL sitemaps, build a valid sitemapindex file with lastmod, and get the robots.txt and Search Console steps.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Generator Settings</div>
+
+    <div class="field">
+      <label>Input</label>
+      <div class="seg" id="mode">
+        <button type="button" class="on" data-m="children">I have sitemap files</button>
+        <button type="button" data-m="urls">Split a URL list for me</button>
+      </div>
+      <div class="hint" id="modeHint">List the sitemaps you already generate — this builds the index that ties them together.</div>
+    </div>
+
+    <div class="field">
+      <label for="siteUrl">Site URL <span style="color:var(--red)">*</span></label>
+      <input type="url" id="siteUrl" value="https://example.com" placeholder="https://example.com">
+    </div>
+
+    <!-- children mode -->
+    <div id="childrenMode">
+      <div class="field">
+        <label for="children">Child sitemap paths</label>
+        <textarea id="children" style="min-height:150px" placeholder="/sitemap-posts.xml&#10;/sitemap-products.xml">/sitemap-pages.xml
+/sitemap-posts.xml
+/sitemap-products.xml
+/sitemap-images.xml
+/sitemap-news.xml</textarea>
+        <div class="hint">One per line. Paths are resolved against the site URL; full URLs are kept as-is.</div>
+      </div>
+      <div class="field">
+        <label for="lastmodMode">lastmod values</label>
+        <select id="lastmodMode">
+          <option value="today">Today for all</option>
+          <option value="none">Omit lastmod</option>
+          <option value="perline">Read from each line (path, date)</option>
+        </select>
+        <div class="hint">Only claim a lastmod you can keep accurate. Google ignores dates it finds unreliable.</div>
+      </div>
+    </div>
+
+    <!-- urls mode -->
+    <div id="urlsMode" hidden>
+      <div class="field">
+        <label for="urls">URL list</label>
+        <textarea id="urls" style="min-height:170px" placeholder="https://example.com/page-1&#10;https://example.com/page-2"></textarea>
+        <div class="hint">Paste up to a few hundred thousand URLs. Everything is processed in your browser.</div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label for="chunk">URLs per sitemap</label>
+          <select id="chunk">
+            <option value="50000" selected>50,000 (spec maximum)</option>
+            <option value="25000">25,000</option>
+            <option value="10000">10,000 (easier debugging)</option>
+            <option value="5000">5,000</option>
+            <option value="1000">1,000</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="prefix">File name prefix</label>
+          <input type="text" id="prefix" value="sitemap" placeholder="sitemap">
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label for="changefreq">changefreq</label>
+          <select id="changefreq">
+            <option value="">Omit (recommended)</option>
+            <option>always</option><option>hourly</option><option>daily</option>
+            <option>weekly</option><option>monthly</option><option>yearly</option><option>never</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="priority">priority</label>
+          <select id="priority">
+            <option value="">Omit (recommended)</option>
+            <option>1.0</option><option>0.8</option><option>0.5</option><option>0.3</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <fieldset class="field">
+      <legend class="label">Options</legend>
+      <div class="check-list">
+        <label class="check"><input type="checkbox" id="optGz"><span><span class="t">Reference .gz filenames</span><span class="d">Use if you serve gzipped sitemaps — the index must name the actual files.</span></span></label>
+        <label class="check"><input type="checkbox" id="optDedupe" checked><span><span class="t">De-duplicate URLs</span><span class="d">A URL must appear only once across all sitemaps.</span></span></label>
+        <label class="check"><input type="checkbox" id="optNormalize" checked><span><span class="t">Normalize &amp; escape URLs</span><span class="d">Absolute form plus XML entity escaping for &amp;, &lt; and &gt;.</span></span></label>
+        <label class="check"><input type="checkbox" id="optRobots" checked><span><span class="t">Show robots.txt line</span><span class="d">Sitemap discovery without Search Console.</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="out-actions" style="margin-top:20px">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate sitemap index</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated Files<span class="spacer"></span>
+      <span class="result-pill" id="pill">ready</span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="file">sitemap.xml</button>
+      <button type="button" data-tab="children">Child files</button>
+      <button type="button" data-tab="stats">Stats &amp; checks</button>
+      <button type="button" data-tab="submit">Submit</button>
+    </div>
+
+    <div data-panel="file">
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">sitemap.xml</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+      <div id="warnBox"></div>
+    </div>
+
+    <div data-panel="children" hidden>
+      <div id="childList"></div>
+    </div>
+
+    <div data-panel="stats" hidden><div id="stats"></div></div>
+    <div data-panel="submit" hidden><div id="submit"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoCopy:copy','icoDl:download']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var mode = 'children', childFiles = [];
+
+  $('#mode').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#mode button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    mode = b.getAttribute('data-m');
+    $('#childrenMode').hidden = mode !== 'children';
+    $('#urlsMode').hidden = mode !== 'urls';
+    $('#modeHint').textContent = mode === 'children'
+      ? 'List the sitemaps you already generate — this builds the index that ties them together.'
+      : 'Paste every URL. They are chunked into spec-compliant sitemap files plus a matching index.';
+    build();
+  });
+
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'sitemap.xml', mime: 'application/xml' });
+
+  function base() { return GT.normUrl($('#siteUrl').value || '').replace(/\/+$/, ''); }
+  function abs(p) {
+    p = String(p || '').trim();
+    if (!p) return '';
+    if (/^https?:\/\//i.test(p)) return p;
+    return base() + (p.charAt(0) === '/' ? '' : '/') + p;
+  }
+  function iso(d) { return (d || new Date()).toISOString().replace(/\.\d{3}Z$/, '+00:00'); }
+
+  function buildChildrenMode() {
+    var lm = $('#lastmodMode').value;
+    var entries = GT.lines($('#children').value).map(function (l) {
+      var parts = l.split(/[,\t|]+/).map(function (x) { return x.trim(); });
+      var path = parts[0], date = parts[1];
+      if ($('#optGz').checked && !/\.gz$/i.test(path)) path = path.replace(/\.xml$/i, '.xml.gz');
+      var e = { loc: abs(path) };
+      if (lm === 'today') e.lastmod = iso();
+      else if (lm === 'perline' && date) e.lastmod = /T/.test(date) ? date : date + 'T00:00:00+00:00';
+      return e;
+    }).filter(function (e) { return e.loc; });
+    return entries;
+  }
+
+  function buildUrlsMode() {
+    var urls = GT.lines($('#urls').value);
+    if ($('#optNormalize').checked) urls = urls.map(function (u) { return GT.normUrl(u) || u; });
+    if ($('#optDedupe').checked) urls = GT.uniq(urls);
+
+    var size = parseInt($('#chunk').value, 10), prefix = $('#prefix').value.trim() || 'sitemap';
+    childFiles = [];
+    for (var i = 0; i < urls.length; i += size) {
+      var slice = urls.slice(i, i + size);
+      var n = (i / size) + 1;
+      var name = prefix + '-' + n + '.xml' + ($('#optGz').checked ? '.gz' : '');
+      var xml = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+        slice.map(function (u) {
+          var s = '  <url>\n    <loc>' + GT.xmlEsc(u) + '</loc>\n    <lastmod>' + iso() + '</lastmod>\n';
+          if ($('#changefreq').value) s += '    <changefreq>' + $('#changefreq').value + '</changefreq>\n';
+          if ($('#priority').value) s += '    <priority>' + $('#priority').value + '</priority>\n';
+          return s + '  </url>';
+        }).join('\n') + '\n</urlset>\n';
+      childFiles.push({ name: name, xml: xml, count: slice.length, loc: abs('/' + name) });
+    }
+    return childFiles.map(function (c) { return { loc: c.loc, lastmod: iso() }; });
+  }
+
+  function build() {
+    var entries = mode === 'children' ? (childFiles = [], buildChildrenMode()) : buildUrlsMode();
+
+    var xml = '<?xml version="1.0" encoding="UTF-8"?>\n' +
+      '<!-- sitemap index — generated ' + GT.today() + ' by managemybatch.com -->\n' +
+      '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+      entries.map(function (e) {
+        return '  <sitemap>\n    <loc>' + GT.xmlEsc(e.loc) + '</loc>' +
+          (e.lastmod ? '\n    <lastmod>' + e.lastmod + '</lastmod>' : '') + '\n  </sitemap>';
+      }).join('\n') + '\n</sitemapindex>\n';
+
+    out.set(xml, 'sitemap.xml');
+
+    var pill = $('#pill');
+    pill.textContent = entries.length + ' sitemap' + (entries.length === 1 ? '' : 's');
+    pill.style.background = entries.length ? 'var(--green-bg)' : 'var(--amber-bg)';
+    pill.style.color = entries.length ? 'var(--green)' : 'var(--amber)';
+
+    renderChildren();
+    renderStats(entries, xml);
+    renderWarn(entries, xml);
+    renderSubmit();
+    return xml;
+  }
+
+  function renderChildren() {
+    if (mode === 'children') {
+      $('#childList').innerHTML = '<p style="color:var(--muted);font-size:13.8px">You are indexing sitemaps you generate yourself. Switch to <strong>“Split a URL list for me”</strong> to have the child files produced here too.</p>';
+      return;
+    }
+    if (!childFiles.length) { $('#childList').innerHTML = '<p style="color:var(--muted);font-size:13.8px">Paste URLs to generate child sitemaps.</p>'; return; }
+    $('#childList').innerHTML =
+      '<p style="color:var(--muted);font-size:13.8px;margin-bottom:14px">' + childFiles.length + ' child sitemap' +
+      (childFiles.length === 1 ? '' : 's') + ' generated. Download each one and upload it alongside sitemap.xml.</p>' +
+      childFiles.map(function (c, i) {
+        return '<div class="rep"><div class="rep-head"><span class="n">' + c.name + ' · ' + c.count + ' URLs · ' + GT.bytes(GT.byteLen(c.xml)) + '</span>' +
+          '<span><button type="button" class="btn btn-soft btn-sm" data-copy="' + i + '">Copy</button> ' +
+          '<button type="button" class="btn btn-ghost btn-sm" data-dl="' + i + '">Download</button></span></div>' +
+          '<pre class="code" style="max-height:150px">' + GT.esc(c.xml.slice(0, 600)) + (c.xml.length > 600 ? '\n…' : '') + '</pre></div>';
+      }).join('') +
+      '<button type="button" class="btn btn-primary btn-block" id="dlAll" style="margin-top:8px">Download all child sitemaps</button>';
+  }
+
+  $('#childList').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    var i = b.getAttribute('data-copy'), j = b.getAttribute('data-dl');
+    if (i != null) GT.copy(childFiles[i].xml, childFiles[i].name);
+    else if (j != null) GT.download(childFiles[j].xml, childFiles[j].name.replace(/\.gz$/, ''), 'application/xml');
+    else if (b.id === 'dlAll') {
+      childFiles.forEach(function (c, k) {
+        setTimeout(function () { GT.download(c.xml, c.name.replace(/\.gz$/, ''), 'application/xml'); }, k * 250);
+      });
+    }
+  });
+
+  function renderStats(entries, xml) {
+    var totalUrls = childFiles.reduce(function (a, c) { return a + c.count; }, 0);
+    var rows = [
+      ['Sitemaps in index', entries.length + ' / 50,000 max'],
+      ['Index file size', GT.bytes(GT.byteLen(xml)) + ' / 50 MB max'],
+      ['Child sitemaps generated', childFiles.length || '—'],
+      ['Total URLs', totalUrls || '—'],
+      ['URLs per file', mode === 'urls' ? $('#chunk').value : '—'],
+      ['Largest child file', childFiles.length ? GT.bytes(Math.max.apply(null, childFiles.map(function (c) { return GT.byteLen(c.xml); }))) : '—'],
+      ['lastmod format', 'W3C datetime (ISO 8601)'],
+      ['Encoding', 'UTF-8, entity-escaped']
+    ];
+    $('#stats').innerHTML = rows.map(function (r) {
+      return '<div class="kv"><span class="k">' + r[0] + '</span><span class="v">' + r[1] + '</span></div>';
+    }).join('') +
+    '<div class="note note-info" style="margin-top:16px">' + I.info +
+    '<span>Spec limits per file: <strong>50,000 URLs</strong> and <strong>50 MB uncompressed</strong>. A sitemap index may itself list 50,000 sitemaps, and indexes can nest one level — enough for 2.5 billion URLs.</span></div>';
+  }
+
+  function renderWarn(entries, xml) {
+    var w = [];
+    if (!base()) w.push(['err', 'Enter your site URL — sitemap <code>&lt;loc&gt;</code> values must be absolute.']);
+    if (!entries.length) w.push(['err', 'No sitemaps listed. Add child sitemap paths or a URL list.']);
+    if (entries.length > 50000) w.push(['err', 'An index may list at most 50,000 sitemaps. Nest a second level of indexes.']);
+    if (GT.byteLen(xml) > 50 * 1024 * 1024) w.push(['err', 'Index exceeds the 50 MB limit.']);
+    var offHost = entries.filter(function (e) { return base() && e.loc.indexOf(base()) !== 0; });
+    if (offHost.length) w.push(['warn', 'Some sitemaps are on a different host than the index. Cross-host sitemaps are only accepted when both hosts are verified in Search Console.']);
+    if (mode === 'urls' && $('#priority').value) w.push(['warn', '<code>priority</code> has been ignored by Google for years. Omitting it keeps the file smaller.']);
+    if (mode === 'urls' && $('#changefreq').value) w.push(['warn', '<code>changefreq</code> is also ignored by Google. <code>lastmod</code> is the only hint it still uses — and only if it is accurate.']);
+    if ($('#optGz').checked) w.push(['warn', 'You have gzip filenames enabled. The index now points at <code>.gz</code> files — make sure those files really exist and are served with <code>Content-Encoding: gzip</code>.']);
+    if (!w.length) w.push(['ok', 'Valid sitemap index — within every spec limit.']);
+    $('#warnBox').innerHTML = w.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : x[0] === 'warn' ? 'note-warn' : 'note-err') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+  }
+
+  function renderSubmit() {
+    var b = base() || 'https://example.com';
+    $('#submit').innerHTML =
+      ($('#optRobots').checked ? '<h4 style="font-size:14.5px;margin-bottom:8px">1. Declare it in robots.txt</h4>' +
+        '<pre class="code">Sitemap: ' + b + '/sitemap.xml</pre>' +
+        '<p style="color:var(--muted);font-size:13.5px;margin-top:8px">This is the only discovery method that works for every search engine without an account.</p>' : '') +
+      '<h4 style="font-size:14.5px;margin:18px 0 8px">2. Google Search Console</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">Indexing → Sitemaps → submit <code>sitemap.xml</code>. Submit only the <em>index</em>; Google discovers the children from it. The report then shows discovered/indexed counts per child file, which is how you find the broken one.</p>' +
+      '<h4 style="font-size:14.5px;margin:18px 0 8px">3. Bing Webmaster Tools</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">Sitemaps → Submit sitemap → same URL. Bing also feeds DuckDuckGo and, indirectly, several AI answer engines.</p>' +
+      '<h4 style="font-size:14.5px;margin:18px 0 8px">4. Ping on update (optional)</h4>' +
+      '<pre class="code">curl "https://www.bing.com/ping?sitemap=' + encodeURIComponent(b + '/sitemap.xml') + '"</pre>' +
+      '<p style="color:var(--muted);font-size:13.5px;margin-top:8px">Google retired its sitemap ping endpoint — it now relies on the robots.txt reference and Search Console. IndexNow is the modern equivalent for Bing and Yandex.</p>' +
+      '<h4 style="font-size:14.5px;margin:18px 0 8px">5. Serve it correctly</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">Content type <code>application/xml</code>, HTTP 200, no authentication, and never disallowed in robots.txt. A sitemap blocked from crawling is a sitemap that does nothing.</p>';
+  }
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Sitemap index generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'sitemap-index-generator',
+    lede: 'Build a valid sitemap index — or paste a URL list and have it split into spec-compliant 50,000-URL sitemaps with the index generated for you.',
+    steps: [
+      { icon: 'sitemap', title: 'Add sitemaps or URLs', text: 'List the child sitemaps you already produce, or paste a raw URL list to be chunked.' },
+      { icon: 'check', title: 'Check the limits', text: 'File size, URL counts and cross-host issues are validated against the sitemaps.org spec.' },
+      { icon: 'copy', title: 'Publish and submit', text: 'Upload the files, add the robots.txt line, then submit the index in Search Console.' }
+    ],
+    guideTitle: 'When you need an index — and how to structure it',
+    guide:
+      '<p style="color:var(--muted)">A single sitemap tops out at 50,000 URLs or 50 MB uncompressed, whichever comes first. Past that you need a <code>&lt;sitemapindex&gt;</code>: one file listing your sitemaps, which you submit instead of submitting each child individually.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Split by content type, not alphabetically</h4><p style="color:var(--muted);font-size:13.8px">Separate sitemaps for products, blog posts, category pages and images turn Search Console\'s coverage report into a diagnostic tool. When indexing drops, you can see <em>which</em> content type broke — impossible if everything is in <code>sitemap-1.xml</code> through <code>sitemap-9.xml</code>.</p>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">Keep lastmod honest</h4><p style="color:var(--muted);font-size:13.8px">It is the one optional field Google still uses. Set it to when the content genuinely changed. Sites that stamp every URL with today\'s date on every build teach Google to ignore the field entirely.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Rules worth memorising</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>Every URL must be absolute and on the same host as the sitemap, unless both hosts are verified.</li><li>A URL should appear in exactly one sitemap.</li><li>Ampersands must be escaped as <code>&amp;amp;</code> — unescaped ones make the XML invalid.</li><li>Only include canonical, indexable, 200-status URLs. Redirects, 404s and noindex pages waste crawl budget and depress your indexed ratio.</li><li>Indexes may nest one level deep, but not further.</li><li>Submit the index only — never the children as well, or the reports double-count.</li></ul></div></div>' +
+      '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>A sitemap is a discovery aid, not an indexing guarantee. It helps crawlers find URLs they might otherwise miss — deep pages, new content, weakly linked sections — but it does not make thin or duplicate pages rank.</span></div>',
+    related: ['hreflang-tag-generator', 'canonical-tag-generator', 'ai-crawler-robots-txt-generator'],
+    faqs: [
+      { q: 'What is a sitemap index file?', a: 'An XML file that lists your other sitemap files using <code>&lt;sitemapindex&gt;</code> and <code>&lt;sitemap&gt;</code> elements. You submit it once and search engines discover every child sitemap from it.' },
+      { q: 'When do I need one?', a: 'As soon as you exceed 50,000 URLs or 50 MB in a single sitemap. Many sites adopt one earlier anyway, because splitting by content type makes coverage reports far more useful.' },
+      { q: 'How many sitemaps can an index contain?', a: 'Up to 50,000, and the index itself must stay under 50 MB uncompressed. Indexes may nest one level, which is more than enough for any real site.' },
+      { q: 'Should I include changefreq and priority?', a: 'No. Google has ignored both for years. Only <code>lastmod</code> still carries weight, and only when it is accurate.' },
+      { q: 'Can child sitemaps live on a different domain?', a: 'Only if both hosts are verified in Search Console. Otherwise keep the index and all children on the same host, and reference the index from that host\'s robots.txt.' },
+      { q: 'Should I gzip my sitemaps?', a: 'It is allowed and saves bandwidth on large files. The index must reference the actual <code>.xml.gz</code> filenames, and the server must send <code>Content-Encoding: gzip</code>. The 50 MB limit applies to the uncompressed size.' }
+    ],
+    seo: {
+      title: 'Sitemap index files: splitting, limits and structure for large sites',
+      lead: 'This <strong>sitemap index generator</strong> builds a valid <code>&lt;sitemapindex&gt;</code>, or takes a raw URL list and splits it into spec-compliant child sitemaps with the index written for you. Below: the two hard limits, how to structure an index that is useful for diagnosis, and which optional fields to skip.',
+      blocks: [
+        {
+          h: 'What is a sitemap index?',
+          html: '<p>A <strong>sitemap index</strong> is an XML file that lists other sitemaps rather than pages. It uses the <code>&lt;sitemapindex&gt;</code> root element instead of <code>&lt;urlset&gt;</code>, and each entry carries a <code>&lt;loc&gt;</code> and an optional <code>&lt;lastmod&gt;</code>.</p>' +
+            '<p>You submit the index to Search Console or reference it from robots.txt, and the crawler discovers every child sitemap through it. One URL to maintain instead of forty.</p>' +
+            '<p>An index cannot contain another index. The structure is exactly two levels deep: index at the top, sitemaps beneath, pages inside those.</p>'
+        },
+        {
+          h: 'The limits',
+          table: {
+            head: ['Rule', 'Limit', 'Applies to'],
+            rows: [
+              ['URLs per sitemap', '50,000', 'Each child sitemap file.'],
+              ['Uncompressed file size', '50 MB', 'Each file, measured before gzip.'],
+              ['Sitemaps per index', '50,000', 'Entries in the index file.'],
+              ['Index nesting', 'One level', 'An index may not list another index.'],
+              ['Location', 'Same host', 'Child sitemaps must be on the domain the index sits on, unless cross-submission is verified.']
+            ]
+          },
+          after: '<p>Both the 50,000 and 50 MB limits are ceilings, not targets. Files near either are slow to fetch and painful to debug.</p>',
+          callout: { type: 'warn', text: '<strong>Exceeding either limit invalidates the whole file, not just the excess.</strong> A sitemap with 50,001 URLs is rejected outright — Google does not read the first 50,000 and stop. Split well below the ceiling.' }
+        },
+        {
+          h: 'When you need one',
+          list: [
+            '<strong>More than 50,000 URLs.</strong> The obvious case — you have no choice.',
+            '<strong>Well under the limit but multiple content types.</strong> Separate sitemaps for products, categories, blog posts and static pages make coverage reports readable.',
+            '<strong>Multiple languages.</strong> One sitemap per locale isolates hreflang problems to a single file.',
+            '<strong>Frequent partial updates.</strong> Regenerating one 2,000-URL product sitemap hourly beats rewriting a 200,000-URL monolith.',
+            '<strong>Multiple systems generating URLs.</strong> A shop, a blog and a docs site each emitting their own sitemap, tied together by one index.'
+          ]
+        },
+        {
+          h: 'How to split for diagnosis, not just size',
+          html: '<p>The underrated benefit of an index is that Search Console reports coverage <em>per sitemap</em>. Split by content type and a drop in indexed pages points at a section immediately. Split arbitrarily into <code>sitemap-1.xml</code> through <code>sitemap-40.xml</code> and the same drop tells you nothing.</p>',
+          cards: [
+            { t: 'By content type', d: 'products, categories, articles, static. The default choice for most sites — it maps onto how you would investigate a problem.' },
+            { t: 'By locale', d: 'One sitemap per language or market. Essential when hreflang is involved.' },
+            { t: 'By recency', d: 'A small "recent" sitemap updated often, plus large archives updated rarely. Suits news and high-volume publishing.' },
+            { t: 'By source system', d: 'When different platforms own different URL spaces, let each own its sitemap.' }
+          ]
+        },
+        {
+          h: 'Building your index',
+          steps: [
+            { t: 'Choose your mode', d: 'List existing sitemap URLs to build an index, or paste a flat URL list and let the tool split it.' },
+            { t: 'Set the URLs-per-file value', d: '10,000 to 25,000 is a comfortable working size — well inside the limits and quick to open in an editor.' },
+            { t: 'Add lastmod dates', d: 'On the index entries and, if you have accurate data, on the URLs. Accurate is the operative word.' },
+            { t: 'Download the child files and the index', d: 'Upload them all to the same host, in the same directory or one you can reference consistently.' },
+            { t: 'Reference and submit', d: 'Add <code>Sitemap: https://example.com/sitemap-index.xml</code> to robots.txt and submit the index in Search Console.' }
+          ]
+        },
+        {
+          h: 'changefreq, priority and lastmod',
+          html: '<p>Two of these three are ignored. Google has stated plainly that <code>&lt;changefreq&gt;</code> and <code>&lt;priority&gt;</code> carry no weight — they were self-reported, universally inflated, and therefore useless. Emitting them costs bytes and buys nothing.</p>' +
+            '<p><code>&lt;lastmod&gt;</code> is different: Google uses it, <em>provided it is consistently accurate</em>. If your CMS stamps today\'s date on every URL at every build, the field is discarded for your whole site and you lose a real signal.</p>' +
+            '<p>So the rule is: emit <code>lastmod</code> only when it reflects a genuine content change, and drop the other two.</p>',
+          callout: { type: 'tip', text: 'Only list canonical, indexable, 200-returning URLs. Redirects, noindexed pages and non-canonical variants in a sitemap are contradictory signals — you are asking Google to index pages you told it not to. See the <a href="canonical-tag-generator.html">canonical tag generator</a>.' }
+        },
+        {
+          h: 'Should you gzip?',
+          html: '<p>Yes, for anything large. Sitemaps compress extremely well — a 45 MB file typically lands under 3 MB — and both Google and Bing accept <code>.xml.gz</code> transparently.</p>' +
+            '<p>Two caveats. The 50 MB limit applies to the <em>uncompressed</em> size, so gzip does not let you pack more URLs in. And the file must be served with the right encoding headers; a <code>.gz</code> served as <code>text/xml</code> arrives as binary noise.</p>'
+        },
+        {
+          h: 'Related crawling tools',
+          list: [
+            '<a href="canonical-tag-generator.html">Canonical Tag Generator</a> — make sure the URLs you submit are the canonical ones.',
+            '<a href="hreflang-tag-generator.html">Hreflang Tag Generator</a> — annotate locales in the sitemap itself.',
+            '<a href="ai-crawler-robots-txt-generator.html">AI Crawler robots.txt Generator</a> — declare your sitemap and control crawler access.',
+            '<a href="nginx-redirect-generator.html">Nginx Redirect Generator</a> — clear redirects out of your sitemap after a migration.'
+          ]
+        }
+      ],
+      keywords: [
+        'sitemap index generator', 'sitemap index file', 'xml sitemap 50000 limit',
+        'split sitemap', 'sitemapindex xml', 'sitemap lastmod', 'sitemap changefreq priority',
+        'gzip sitemap', 'multiple sitemaps', 'large site sitemap', 'sitemap best practices'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

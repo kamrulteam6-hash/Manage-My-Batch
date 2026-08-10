@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Random Hex String Generator — Secure, Free | Manage My Batch</title>
+<meta name="description" content="Generate cryptographically secure random hex strings. Set length in bytes or characters, add 0x or # prefixes, choose casing and separators, and export in bulk.">
+<link rel="canonical" href="https://managemybatch.com/tools/random-hex-string-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Random Hex String Generator — Secure, Free">
+<meta property="og:description" content="Generate cryptographically secure random hex strings. Set length in bytes or characters, add 0x or # prefixes, choose casing and separators, and export in bulk.">
+<meta property="og:url" content="https://managemybatch.com/tools/random-hex-string-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Random Hex String Generator — Secure, Free">
+<meta name="twitter:description" content="Generate cryptographically secure random hex strings. Set length in bytes or characters, add 0x or # prefixes, choose casing and separators, and export in bulk.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Generator Settings</div>
+
+    <div class="field">
+      <label for="preset">Common presets</label>
+      <select id="preset">
+        <option value="custom">Custom…</option>
+        <option value="token32">Session token — 32 bytes / 64 chars</option>
+        <option value="secret64">Signing secret — 64 bytes / 128 chars</option>
+        <option value="aes256">AES-256 key — 32 bytes</option>
+        <option value="aes128">AES-128 key — 16 bytes</option>
+        <option value="iv">AES-GCM IV — 12 bytes</option>
+        <option value="salt">Password salt — 16 bytes</option>
+        <option value="color">Hex colour — #RRGGBB</option>
+        <option value="mac">MAC address — 6 bytes, colon separated</option>
+        <option value="short">Short ID — 4 bytes / 8 chars</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Length measured in</label>
+      <div class="seg" id="unit">
+        <button type="button" class="on" data-u="bytes">Bytes</button>
+        <button type="button" data-u="chars">Hex characters</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="len">Length: <strong id="lenLabel">32</strong> <span id="unitLabel">bytes</span></label>
+      <input type="range" id="len" min="1" max="256" value="32" style="width:100%;accent-color:var(--blue)">
+      <input type="number" id="lenNum" min="1" max="4096" value="32" style="margin-top:8px">
+      <div class="hint" id="entropyHint"></div>
+    </div>
+
+    <div class="field">
+      <label for="count">How many strings?</label>
+      <div class="row" style="grid-template-columns:minmax(0,1fr) auto">
+        <input type="number" id="count" value="5" min="1" max="5000">
+        <button type="button" class="btn btn-ghost" id="regen"><span id="icoReset"></span> Regenerate</button>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label>Case</label>
+      <div class="seg" id="caseSeg">
+        <button type="button" class="on" data-c="lower">lowercase</button>
+        <button type="button" data-c="upper">UPPERCASE</button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="prefix">Prefix</label>
+        <select id="prefix">
+          <option value="">None</option><option value="0x">0x</option>
+          <option value="#">#</option><option value="\\x">\x</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="sep">Byte separator</label>
+        <select id="sep">
+          <option value="">None</option><option value=":">Colon (:)</option>
+          <option value="-">Hyphen (-)</option><option value=" ">Space</option>
+          <option value=", ">Comma</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="output">Output as</label>
+      <select id="output">
+        <option value="lines">Plain list</option>
+        <option value="json">JSON array</option>
+        <option value="env">.env variables</option>
+        <option value="quoted">Quoted &amp; comma-separated</option>
+      </select>
+      <input type="text" id="envName" placeholder="SECRET_KEY" style="margin-top:8px" hidden>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated Strings<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="file">Output</button>
+      <button type="button" data-tab="strength">Strength</button>
+      <button type="button" data-tab="code">Generate in code</button>
+    </div>
+
+    <div data-panel="file">
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">hex.txt</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy all</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+        <button class="btn btn-soft" id="copyOne">Copy first</button>
+      </div>
+      <div class="note note-ok"><span id="icoCheck"></span><span>Generated locally with <code>crypto.getRandomValues()</code>. Nothing leaves your browser, so these are safe to use as real secrets — but rotate anything you paste into a shared screen or chat.</span></div>
+    </div>
+
+    <div data-panel="strength" hidden><div id="strength"></div></div>
+    <div data-panel="code" hidden><div id="code"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoCopy:copy','icoDl:download','icoReset:reset','icoCheck:check']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var unit = 'bytes', caseMode = 'lower', vals = [];
+
+  var PRESETS = {
+    token32: { bytes: 32, sep: '', prefix: '', count: 1 },
+    secret64: { bytes: 64, sep: '', prefix: '', count: 1 },
+    aes256: { bytes: 32, sep: '', prefix: '', count: 1 },
+    aes128: { bytes: 16, sep: '', prefix: '', count: 1 },
+    iv: { bytes: 12, sep: '', prefix: '', count: 1 },
+    salt: { bytes: 16, sep: '', prefix: '', count: 1 },
+    color: { bytes: 3, sep: '', prefix: '#', count: 8 },
+    mac: { bytes: 6, sep: ':', prefix: '', count: 5 },
+    short: { bytes: 4, sep: '', prefix: '', count: 10 }
+  };
+
+  function bytesLen() {
+    var v = parseInt($('#lenNum').value, 10) || 1;
+    return unit === 'chars' ? Math.ceil(v / 2) : v;
+  }
+
+  function randHexBytes(n) {
+    var b = new Uint8Array(n); crypto.getRandomValues(b);
+    return Array.prototype.map.call(b, function (x) { return x.toString(16).padStart(2, '0'); });
+  }
+
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'hex.txt', mime: 'text/plain' });
+
+  function build() {
+    var nBytes = Math.max(1, Math.min(4096, bytesLen()));
+    var count = Math.max(1, Math.min(5000, parseInt($('#count').value, 10) || 1));
+    var sep = $('#sep').value, prefix = $('#prefix').value.replace('\\\\x', '\\x');
+
+    vals = [];
+    for (var i = 0; i < count; i++) {
+      var parts = randHexBytes(nBytes);
+      var s = parts.join(sep);
+      if (unit === 'chars') {
+        var want = parseInt($('#lenNum').value, 10) || 2;
+        if (!sep) s = s.slice(0, want);
+      }
+      if (caseMode === 'upper') s = s.toUpperCase();
+      vals.push(prefix + s);
+    }
+
+    var mode = $('#output').value, text, file = 'hex.txt';
+    if (mode === 'json') { text = JSON.stringify(vals, null, 2); file = 'hex.json'; }
+    else if (mode === 'env') {
+      var name = ($('#envName').value || 'SECRET_KEY').toUpperCase().replace(/[^A-Z0-9_]/g, '_');
+      text = vals.map(function (v, i) { return name + (vals.length > 1 ? '_' + (i + 1) : '') + '=' + v; }).join('\n');
+      file = '.env';
+    }
+    else if (mode === 'quoted') text = vals.map(function (v) { return '"' + v + '"'; }).join(', ');
+    else text = vals.join('\n');
+
+    out.set(text, file);
+
+    var bits = nBytes * 8;
+    $('#lenLabel').textContent = $('#lenNum').value;
+    $('#unitLabel').textContent = unit === 'bytes' ? 'bytes' : 'hex characters';
+    $('#entropyHint').innerHTML = nBytes + ' bytes = ' + (nBytes * 2) + ' hex characters = <strong>' + bits + ' bits</strong> of entropy';
+    $('#pill').textContent = count + ' × ' + bits + ' bits';
+    $('#pill').style.background = bits >= 128 ? 'var(--green-bg)' : bits >= 64 ? 'var(--amber-bg)' : 'var(--red-bg)';
+    $('#pill').style.color = bits >= 128 ? 'var(--green)' : bits >= 64 ? 'var(--amber)' : 'var(--red)';
+
+    renderStrength(bits);
+  }
+
+  function renderStrength(bits) {
+    var levels = [
+      [256, 'Overkill for almost everything', 'green', 'Signing keys where you want a very wide margin.'],
+      [128, 'Strong — the modern standard', 'green', 'Session tokens, API secrets, AES-128/256 keys. Not brute-forceable by anyone.'],
+      [96, 'Good', 'green', 'Fine for most tokens and nonces.'],
+      [64, 'Adequate for non-secrets', 'amber', 'Acceptable for unique identifiers; too short for anything an attacker can guess offline.'],
+      [32, 'Weak', 'red', 'Brute-forceable in seconds. Display codes only, always behind rate limiting.'],
+      [0, 'Trivially guessable', 'red', 'Do not use this as a secret.']
+    ];
+    var hit = levels.find(function (l) { return bits >= l[0]; });
+    var rows = [
+      ['Your string', bits + ' bits (' + (bits / 8) + ' bytes)'],
+      ['Assessment', hit[1]],
+      ['AES-128 key', '128 bits'],
+      ['AES-256 key', '256 bits'],
+      ['Typical session token', '128–256 bits'],
+      ['UUID v4 randomness', '122 bits'],
+      ['GCM nonce / IV', '96 bits (12 bytes)']
+    ];
+    $('#strength').innerHTML =
+      '<div class="note note-' + (hit[2] === 'green' ? 'ok' : hit[2] === 'amber' ? 'warn' : 'err') + '">' +
+      (hit[2] === 'green' ? I.check : I.warn) + '<span><strong>' + hit[1] + '</strong> — ' + hit[3] + '</span></div>' +
+      rows.map(function (r) {
+        return '<div class="kv"><span class="k">' + r[0] + '</span><span class="v">' + r[1] + '</span></div>';
+      }).join('') +
+      '<div class="note note-info" style="margin-top:14px">' + I.info +
+      '<span>Hex encodes 4 bits per character, so a hex string is always twice as long as the bytes it represents. If length matters, Base64 packs 6 bits per character and Base64URL keeps it safe in URLs — see the <a href="random-byte-generator.html">random byte generator</a>.</span></div>';
+  }
+
+  $('#code').innerHTML = [
+    ['Node.js', "import { randomBytes } from 'node:crypto';\n\nconst token = randomBytes(32).toString('hex');"],
+    ['Browser / Deno', "const bytes = crypto.getRandomValues(new Uint8Array(32));\nconst hex = [...bytes].map(b => b.toString(16).padStart(2, '0')).join('');"],
+    ['Python', "import secrets\n\ntoken = secrets.token_hex(32)   # 64 hex characters"],
+    ['Go', 'b := make([]byte, 32)\nrand.Read(b)              // crypto/rand\nhex.EncodeToString(b)'],
+    ['PHP', "$token = bin2hex(random_bytes(32));"],
+    ['Ruby', "require 'securerandom'\ntoken = SecureRandom.hex(32)"],
+    ['Shell', 'openssl rand -hex 32\n# or\nhead -c 32 /dev/urandom | xxd -p -c 64'],
+    ['Never do this', "// Math.random() is NOT cryptographically secure.\n// Predictable from a handful of outputs.\nconst bad = Math.random().toString(16).slice(2);"]
+  ].map(function (b) {
+    return '<div style="margin-bottom:18px"><h4 style="font-size:14.5px;margin-bottom:8px">' + b[0] + '</h4>' +
+      '<pre class="code">' + GT.esc(b[1]) + '</pre></div>';
+  }).join('');
+
+  $('#preset').addEventListener('change', function () {
+    var p = PRESETS[this.value]; if (!p) return;
+    unit = 'bytes';
+    $$('#unit button').forEach(function (x) { x.classList.toggle('on', x.getAttribute('data-u') === 'bytes'); });
+    $('#lenNum').value = p.bytes; $('#len').value = Math.min(256, p.bytes);
+    $('#sep').value = p.sep; $('#prefix').value = p.prefix; $('#count').value = p.count;
+    build();
+  });
+  $('#unit').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#unit button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    unit = b.getAttribute('data-u'); build();
+  });
+  $('#caseSeg').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#caseSeg button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    caseMode = b.getAttribute('data-c'); build();
+  });
+  $('#len').addEventListener('input', function () { $('#lenNum').value = this.value; build(); });
+  $('#lenNum').addEventListener('input', function () {
+    var v = parseInt(this.value, 10) || 1;
+    if (v <= 256) $('#len').value = v;
+    build();
+  });
+  $('#output').addEventListener('change', function () { $('#envName').hidden = this.value !== 'env'; build(); });
+  $('#copyOne').addEventListener('click', function () { GT.copy(vals[0] || '', 'String'); });
+  $('#regen').addEventListener('click', build);
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); });
+  ['#count','#sep','#prefix','#envName'].forEach(function (s) {
+    $(s).addEventListener('change', build); $(s).addEventListener('input', build);
+  });
+
+  build();
+
+  GT.page({
+    slug: 'random-hex-string-generator',
+    lede: 'Cryptographically secure random hex — sized in bytes or characters, with the prefixes, casing and separators each format actually needs.',
+    steps: [
+      { icon: 'gear', title: 'Pick a preset or a length', text: 'AES key, session token, salt, MAC address or hex colour — the sizing is done for you.' },
+      { icon: 'hash', title: 'Check the strength tab', text: 'See how many bits you actually have and whether that is enough for the job.' },
+      { icon: 'copy', title: 'Export', text: 'Copy one, copy all, or emit ready-to-paste .env lines.' }
+    ],
+    guideTitle: 'Bytes, characters and the mistake in between',
+    guide:
+      '<p style="color:var(--muted)">Hex encodes exactly 4 bits per character, so <em>n</em> bytes always render as <em>2n</em> characters. This is where a surprising number of security bugs start: a developer asked for "a 32-character key", got 16 bytes of entropy, and shipped half the strength they believed they had. Specify secrets in <strong>bytes</strong> and let the encoding follow.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Sizes worth memorising</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><strong>16 bytes</strong> — AES-128 key, password salt.</li><li><strong>12 bytes</strong> — AES-GCM nonce. Never reuse one with the same key.</li><li><strong>32 bytes</strong> — AES-256 key, session token, HMAC secret. The sensible default for anything secret.</li><li><strong>64 bytes</strong> — JWT signing secrets where you want extra margin.</li><li><strong>3 bytes</strong> — a hex colour.</li></ul></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Where hex is the wrong encoding</h4><p style="color:var(--muted);font-size:13.8px">Hex is readable and universally supported, but it is the least dense common encoding. 32 bytes is 64 hex characters versus 44 in Base64. When the value travels in a URL or a header where length matters, Base64URL is the better choice — the <a href="random-byte-generator.html">random byte generator</a> emits both.</p>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">Hex remains the right call for anything a human will read aloud, diff, or paste into a config file where a stray <code>+</code> or <code>/</code> would cause trouble.</p></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong><code>Math.random()</code> is not a secret generator.</strong> It is a fast statistical PRNG whose internal state can be recovered from a few outputs. Anything guarding access must come from <code>crypto.getRandomValues()</code>, <code>crypto.randomBytes()</code>, Python\'s <code>secrets</code> module or an equivalent CSPRNG — which is what this page uses.</span></div>',
+    related: ['random-byte-generator', 'dummy-api-key-generator', 'nanoid-generator'],
+    faqs: [
+      { q: 'Are these random hex strings secure?', a: 'Yes. They come from <code>crypto.getRandomValues()</code>, the browser cryptographic PRNG, and are generated entirely on your device with no network request. Nothing is logged or transmitted.' },
+      { q: 'How many bytes should a secret key be?', a: '32 bytes (256 bits) is the modern default for session tokens, API secrets and AES-256 keys. 16 bytes is acceptable for AES-128 and salts. Below 16 bytes, treat it as an identifier rather than a secret.' },
+      { q: 'What is the difference between bytes and hex characters?', a: 'Each byte is two hex characters. A 32-byte key is a 64-character hex string. Always specify secrets in bytes — asking for "32 characters" silently halves your entropy.' },
+      { q: 'Can I use this for an AES key?', a: 'Yes. Choose the AES-128 or AES-256 preset, which sizes the output to 16 or 32 bytes. Since generation happens locally you are not exposing the key, but treat it like any secret: store it in a secrets manager, never in source control.' },
+      { q: 'Why is my hex colour only 6 characters?', a: 'A colour is 3 bytes — one each for red, green and blue — which is 6 hex characters, conventionally written with a <code>#</code> prefix. Select the hex colour preset and the prefix and length are set for you.' },
+      { q: 'Should I use hex or Base64?', a: 'Hex is easier to read and safe everywhere. Base64 is about 33% shorter for the same entropy, which matters in URLs and headers. Use Base64URL if the value travels in a URL, hex if a human will handle it.' }
+    ],
+    seo: {
+      title: 'Random hex strings: bytes vs characters, and where each format is used',
+      lead: 'This <strong>random hex generator</strong> produces cryptographically secure hexadecimal — sized in bytes or characters, with the prefixes, casing and separators each format expects. Below: the off-by-half mistake that halves your key strength, and which formats want which length.',
+      blocks: [
+        {
+          h: 'Bytes and characters are not the same thing',
+          html: '<p>Hexadecimal encodes <strong>one byte as two characters</strong>. Every value from <code>00</code> to <code>ff</code> is a single byte, and 32 hex characters are 16 bytes.</p>' +
+            '<p>This is the single most consequential confusion in the topic. "A 32-byte key" and "a 32-character hex key" differ by a factor of two: 256 bits versus 128 bits. Ask a library for <code>randomBytes(32)</code> and you get 64 hex characters; paste a 32-character string into a field expecting 32 bytes and you have quietly halved your security margin.</p>' +
+            '<p>The generator lets you specify either and always shows both, so the number you paste is the number you meant.</p>',
+          table: {
+            head: ['Bytes', 'Hex characters', 'Bits', 'Typical use'],
+            rows: [
+              ['4', '8', '32', 'Short reference or checksum.'],
+              ['8', '16', '64', 'Non-security identifiers.'],
+              ['12', '24', '96', 'AES-GCM nonce material.'],
+              ['16', '32', '128', 'AES-128 key, IV, salt, MD5-length value.'],
+              ['20', '40', '160', 'SHA-1 length — a Git commit hash.'],
+              ['32', '64', '256', 'AES-256 key, session token, SHA-256 length.'],
+              ['64', '128', '512', 'HMAC-SHA512 key, JWT signing secret.']
+            ]
+          }
+        },
+        {
+          h: 'Format conventions',
+          html: '<p>Hex appears in a dozen contexts, each with its own expectations about prefix, casing and separators. Getting them wrong produces errors that are rarely descriptive.</p>',
+          cards: [
+            { t: 'Ethereum and EVM', d: 'Lowercase with a <code>0x</code> prefix. Addresses are 20 bytes, private keys 32. Checksummed addresses use mixed case meaningfully — do not "normalise" them.' },
+            { t: 'MAC addresses', d: 'Six bytes, colon- or hyphen-separated, conventionally lowercase on Unix and uppercase on Windows.' },
+            { t: 'CSS colours', d: 'Three or six characters after a <code>#</code>. Eight with an alpha channel. Case-insensitive.' },
+            { t: 'C and embedded', d: '<code>0x</code> per byte in an array initialiser, usually uppercase digits.' },
+            { t: 'Config files and env vars', d: 'Bare lowercase, no prefix, no separators. What <code>openssl rand -hex</code> produces.' },
+            { t: 'GUID-style', d: 'Grouped 8-4-4-4-12 with hyphens — but if you want a UUID, generate a real one.' }
+          ],
+          after: '<p>The tool applies whichever convention you pick, including separator, casing and prefix, so the output pastes in without hand-editing.</p>'
+        },
+        {
+          h: 'Generating a key',
+          steps: [
+            { t: 'Decide in bytes, not characters', d: 'Libraries and specifications are written in bytes. Convert once, at the point of generation.' },
+            { t: 'Use 32 bytes unless told otherwise', d: '256 bits satisfies AES-256, HMAC-SHA256 and every session-token recommendation.' },
+            { t: 'Pick lowercase, no separators, for config', d: 'The form every parser accepts and no shell mangles.' },
+            { t: 'Copy once, straight to its destination', d: 'A secret that visits three intermediate files is a secret in three places.' },
+            { t: 'Rotate on the same schedule you would any secret', d: 'A generated key is exactly as sensitive as one from a KMS.' }
+          ],
+          callout: { type: 'warn', text: '<strong>A hex string is not a password hash and not a good password.</strong> It is key material. For anything a person types, use a passphrase; for anything stored to verify a password, use Argon2id or bcrypt with a per-password salt — which this tool can generate.' }
+        },
+        {
+          h: 'Hex or Base64?',
+          html: '<p>Both encode arbitrary bytes as text. The trade-off is size against readability.</p>',
+          list: [
+            '<strong>Hex is 2× the byte length.</strong> Base64 is about 1.33×. For a 32-byte key that is 64 characters against 44.',
+            '<strong>Hex is case-insensitive and unambiguous.</strong> No <code>+</code> versus <code>-</code>, no padding, no <code>l</code>/<code>I</code> confusion. Comparing two hex strings by eye is realistic; comparing two Base64 strings is not.',
+            '<strong>Hex is safe everywhere.</strong> No URL-encoding, no shell quoting, no filename problems. Base64 needs the URL-safe variant to travel in a query string.',
+            '<strong>Base64 wins on size</strong> whenever the value is transmitted often or stored in bulk.'
+          ],
+          after: '<p>Rule of thumb: hex for configuration, identifiers and anything a human touches; Base64URL for tokens on the wire. See the <a href="random-byte-generator.html">random byte generator</a> for Base64 and language-native output.</p>'
+        },
+        {
+          h: 'Why hex colours are six characters',
+          html: '<p>A colour is three bytes — red, green and blue, each 0–255 — so six hex characters. <code>#ff8800</code> is red 255, green 136, blue 0.</p>' +
+            '<p>The three-character form is shorthand: each character is doubled, so <code>#f80</code> expands to <code>#ff8800</code>. It can only express colours whose channel values happen to be doubled digits, which is why most palettes use the full six.</p>' +
+            '<p>Eight characters add an alpha byte at the end (<code>#ff8800cc</code>), supported in every current browser. Note the ordering differs from Android\'s <code>#AARRGGBB</code>, which is a reliable source of confusion when porting a palette.</p>'
+        },
+        {
+          h: 'Related generators',
+          list: [
+            '<a href="random-byte-generator.html">Random Byte Generator</a> — Base64, language literals and raw binary output.',
+            '<a href="dummy-api-key-generator.html">Dummy API Key Generator</a> — provider-shaped placeholder credentials.',
+            '<a href="nanoid-generator.html">NanoID Generator</a> — shorter URL-safe identifiers.',
+            '<a href="uuid-v7-generator.html">UUID v7 Generator</a> — standard 128-bit identifiers.',
+            '<a href="mongodb-objectid-generator.html">MongoDB ObjectId Generator</a> — 24-character hex identifiers with structure.'
+          ]
+        }
+      ],
+      keywords: [
+        'random hex generator', 'random hex string', 'hex key generator',
+        'generate 32 byte hex', 'secure random hex online', 'hex vs base64',
+        'aes key hex', 'random hex color', 'openssl rand hex', 'hex token generator',
+        'bytes to hex characters', 'random mac address'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

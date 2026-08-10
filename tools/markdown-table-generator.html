@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Markdown Table Generator — CSV to GitHub Tables, Free | Manage My Batch</title>
+<meta name="description" content="Free Markdown table generator. Convert CSV, TSV or Excel data into aligned GitHub-flavored Markdown tables with per-column alignment, pipe escaping and a live preview.">
+<link rel="canonical" href="https://managemybatch.com/tools/markdown-table-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Markdown Table Generator — CSV to GitHub Tables, Free">
+<meta property="og:description" content="Free Markdown table generator. Convert CSV, TSV or Excel data into aligned GitHub-flavored Markdown tables with per-column alignment, pipe escaping and a live preview.">
+<meta property="og:url" content="https://managemybatch.com/tools/markdown-table-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Markdown Table Generator — CSV to GitHub Tables, Free">
+<meta name="twitter:description" content="Free Markdown table generator. Convert CSV, TSV or Excel data into aligned GitHub-flavored Markdown tables with per-column alignment, pipe escaping and a live preview.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Table Settings</div>
+
+    <div class="field">
+      <label for="data">Paste CSV, TSV or Excel data</label>
+      <textarea id="data" style="min-height:180px">Feature,Free,Pro,Enterprise
+Projects,3,Unlimited,Unlimited
+Storage,1 GB,100 GB,1 TB
+Support,Community,Email,24/7 phone
+Price,$0,$19,Custom</textarea>
+      <div class="hint">Copy directly from a spreadsheet — tabs, commas, semicolons and pipes are detected automatically.</div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="delim">Delimiter</label>
+        <select id="delim">
+          <option value="auto" selected>Auto-detect</option>
+          <option value=",">Comma</option>
+          <option value="&#9;">Tab</option>
+          <option value=";">Semicolon</option>
+          <option value="|">Pipe</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="style">Output style</label>
+        <select id="style">
+          <option value="padded" selected>Aligned (padded columns)</option>
+          <option value="compact">Compact (minimal width)</option>
+          <option value="pretty">Pretty (extra spacing)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <div class="label">Column alignment</div>
+      <div class="hint" style="margin:0 0 10px">GitHub renders alignment from the colons in the separator row. Numeric columns are detected and right-aligned by default.</div>
+      <div id="aligns"></div>
+    </div>
+
+    <div class="field">
+      <label for="alignAll">Set all columns to</label>
+      <div class="seg" id="alignAll">
+        <button type="button" data-a="left">Left</button>
+        <button type="button" data-a="center">Center</button>
+        <button type="button" data-a="right">Right</button>
+        <button type="button" class="on" data-a="auto">Auto</button>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <fieldset class="field">
+      <legend class="label">Options</legend>
+      <div class="check-list">
+        <label class="check on"><input type="checkbox" id="optHeader" checked><span><span class="t">First row is the header</span><span class="d">Markdown tables require a header row — one is invented if you turn this off.</span></span></label>
+        <label class="check on"><input type="checkbox" id="optEscape" checked><span><span class="t">Escape pipe characters</span><span class="d">A raw <code>|</code> inside a cell splits the row. Escaped as <code>\\|</code>.</span></span></label>
+        <label class="check on"><input type="checkbox" id="optOuter" checked><span><span class="t">Leading and trailing pipes</span><span class="d">Optional in the spec, but far more readable in raw form.</span></span></label>
+        <label class="check"><input type="checkbox" id="optBoldHeader"><span><span class="t">Bold the header text</span></span></label>
+        <label class="check"><input type="checkbox" id="optBreaks"><span><span class="t">Convert newlines to &lt;br&gt;</span><span class="d">Markdown tables cannot contain real line breaks inside a cell.</span></span></label>
+        <label class="check on"><input type="checkbox" id="optTrim" checked><span><span class="t">Trim cell whitespace</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="field">
+      <label for="empty">Placeholder for empty cells</label>
+      <input type="text" id="empty" value="—" placeholder="—">
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Markdown Table<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="file">Markdown</button>
+      <button type="button" data-tab="preview">Preview</button>
+      <button type="button" data-tab="tips">Syntax notes</button>
+    </div>
+
+    <div data-panel="file">
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">table.md</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+      <div id="warnBox"></div>
+    </div>
+
+    <div data-panel="preview" hidden>
+      <div id="preview" style="overflow-x:auto"></div>
+    </div>
+
+    <div data-panel="tips" hidden><div id="tips"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoCopy:copy','icoDl:download']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var aligns = [], grid = [];
+
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'table.md', mime: 'text/markdown' });
+
+  function detectDelim(text) {
+    var d = $('#delim').value;
+    if (d !== 'auto') return d;
+    var first = (text.split(/\r?\n/)[0] || '');
+    var counts = [['\t', (first.match(/\t/g) || []).length], [',', (first.match(/,/g) || []).length],
+                  [';', (first.match(/;/g) || []).length], ['|', (first.match(/\|/g) || []).length]];
+    counts.sort(function (a, b) { return b[1] - a[1]; });
+    return counts[0][1] ? counts[0][0] : ',';
+  }
+
+  function parseLine(line, d) {
+    var arr = [], cur = '', inQ = false;
+    for (var i = 0; i < line.length; i++) {
+      var c = line[i];
+      if (inQ) {
+        if (c === '"') { if (line[i + 1] === '"') { cur += '"'; i++; } else inQ = false; }
+        else cur += c;
+      } else if (c === '"') inQ = true;
+      else if (c === d) { arr.push(cur); cur = ''; }
+      else cur += c;
+    }
+    arr.push(cur);
+    return arr;
+  }
+
+  function readGrid() {
+    var text = $('#data').value.replace(/\r\n/g, '\n').replace(/\n+$/, '');
+    if (!text.trim()) return [];
+    /* Accept an existing markdown table as input too. */
+    if (/^\s*\|/.test(text) && /\|\s*$/m.test(text)) {
+      var mdRows = text.split('\n').filter(function (l) { return l.trim(); })
+        .filter(function (l) { return !/^\s*\|?[\s:\-|]+\|?\s*$/.test(l); })
+        .map(function (l) {
+          return l.replace(/^\s*\|/, '').replace(/\|\s*$/, '').split(/(?<!\\)\|/).map(function (c) {
+            return c.replace(/\\\|/g, '|').trim();
+          });
+        });
+      if (mdRows.length) return normalize(mdRows);
+    }
+    var d = detectDelim(text);
+    return normalize(text.split('\n').map(function (l) { return parseLine(l, d); }));
+  }
+
+  function normalize(g) {
+    var width = Math.max.apply(null, g.map(function (r) { return r.length; }));
+    g.forEach(function (r) { while (r.length < width) r.push(''); });
+    if ($('#optTrim').checked) g = g.map(function (r) { return r.map(function (c) { return c.trim(); }); });
+    return g;
+  }
+
+  function autoAlign(i) {
+    var start = $('#optHeader').checked ? 1 : 0;
+    var vals = grid.slice(start).map(function (r) { return (r[i] || '').trim(); }).filter(Boolean);
+    if (!vals.length) return 'left';
+    return vals.every(function (v) { return /^-?[$€£]?\s?[\d,]+(\.\d+)?%?$/.test(v); }) ? 'right' : 'left';
+  }
+
+  function renderAligns() {
+    if (!grid.length) { $('#aligns').innerHTML = ''; return; }
+    var head = $('#optHeader').checked ? grid[0] : grid[0].map(function (_, i) { return 'Column ' + (i + 1); });
+    $('#aligns').innerHTML = head.map(function (h, i) {
+      var cur = aligns[i] || 'auto';
+      return '<div class="row" style="grid-template-columns:minmax(0,1fr) auto;margin-bottom:8px;align-items:center">' +
+        '<span style="font-size:13.5px;font-weight:600;color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' +
+        GT.esc(h || 'Column ' + (i + 1)) + '</span>' +
+        '<select data-align="' + i + '" style="width:auto;min-width:110px">' +
+        ['auto:Auto', 'left:Left', 'center:Center', 'right:Right'].map(function (o) {
+          var p = o.split(':');
+          return '<option value="' + p[0] + '"' + (cur === p[0] ? ' selected' : '') + '>' + p[1] + '</option>';
+        }).join('') + '</select></div>';
+    }).join('');
+  }
+
+  $('#aligns').addEventListener('change', function (e) {
+    var i = e.target.getAttribute('data-align');
+    if (i == null) return;
+    aligns[i] = e.target.value;
+    build(true);
+  });
+  $('#alignAll').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#alignAll button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    var a = b.getAttribute('data-a');
+    aligns = grid.length ? grid[0].map(function () { return a; }) : [];
+    renderAligns(); build(true);
+  });
+
+  function escCell(v) {
+    var s = String(v == null ? '' : v);
+    if ($('#optEscape').checked) s = s.replace(/\|/g, '\\|');
+    if ($('#optBreaks').checked) s = s.replace(/\n/g, '<br>');
+    else s = s.replace(/\n/g, ' ');
+    if (!s.trim()) s = $('#empty').value || '';
+    return s;
+  }
+
+  function visualWidth(s) {
+    /* Rough width: count wide CJK/emoji as two columns so padding looks right. */
+    var w = 0;
+    for (var i = 0; i < s.length; i++) {
+      var c = s.codePointAt(i);
+      if (c > 0x1100 && (c <= 0x115f || c === 0x2329 || c === 0x232a ||
+          (c >= 0x2e80 && c <= 0xa4cf) || (c >= 0xac00 && c <= 0xd7a3) ||
+          (c >= 0xf900 && c <= 0xfaff) || (c >= 0xfe30 && c <= 0xfe6f) ||
+          (c >= 0xff00 && c <= 0xff60) || (c >= 0xffe0 && c <= 0xffe6) ||
+          (c >= 0x1f300 && c <= 0x1faff))) { w += 2; if (c > 0xffff) i++; }
+      else w += 1;
+    }
+    return w;
+  }
+
+  function pad(s, len, align) {
+    var diff = Math.max(0, len - visualWidth(s));
+    if (align === 'right') return new Array(diff + 1).join(' ') + s;
+    if (align === 'center') {
+      var l = Math.floor(diff / 2);
+      return new Array(l + 1).join(' ') + s + new Array(diff - l + 1).join(' ');
+    }
+    return s + new Array(diff + 1).join(' ');
+  }
+
+  function build(keepAligns) {
+    grid = readGrid();
+    if (!grid.length) {
+      out.set('<!-- paste some data -->', 'table.md');
+      $('#pill').textContent = 'empty';
+      $('#preview').innerHTML = '';
+      return;
+    }
+    if (!keepAligns && aligns.length !== grid[0].length) {
+      aligns = grid[0].map(function () { return 'auto'; });
+      renderAligns();
+    }
+
+    var head, body;
+    if ($('#optHeader').checked) { head = grid[0].slice(); body = grid.slice(1); }
+    else { head = grid[0].map(function (_, i) { return 'Column ' + (i + 1); }); body = grid.slice(); }
+
+    if ($('#optBoldHeader').checked) head = head.map(function (h) { return h.trim() ? '**' + h + '**' : h; });
+
+    head = head.map(escCell);
+    body = body.map(function (r) { return r.map(escCell); });
+
+    var cols = head.length;
+    var effAligns = [];
+    for (var i = 0; i < cols; i++) {
+      var a = aligns[i] || 'auto';
+      effAligns.push(a === 'auto' ? autoAlign(i) : a);
+    }
+
+    var style = $('#style').value;
+    var widths = [];
+    for (var c = 0; c < cols; c++) {
+      var w = visualWidth(head[c] || '');
+      body.forEach(function (r) { w = Math.max(w, visualWidth(r[c] || '')); });
+      /* Separator needs at least 3 characters to hold colons. */
+      widths.push(style === 'compact' ? 3 : Math.max(3, w));
+    }
+
+    var padStr = style === 'pretty' ? '  ' : ' ';
+    var lead = $('#optOuter').checked ? '|' : '';
+    var tail = $('#optOuter').checked ? '|' : '';
+
+    function row(cells) {
+      return lead + cells.map(function (v, i2) {
+        var s = style === 'compact' ? v : pad(v, widths[i2], effAligns[i2]);
+        return padStr + s + padStr;
+      }).join('|') + tail;
+    }
+
+    function sep() {
+      return lead + effAligns.map(function (a2, i3) {
+        var w2 = widths[i3];
+        if (a2 === 'right') return padStr + new Array(Math.max(2, w2)).join('-') + ':' + padStr;
+        if (a2 === 'center') return padStr + ':' + new Array(Math.max(1, w2 - 1)).join('-') + ':' + padStr;
+        return padStr + new Array(Math.max(3, w2) + 1).join('-') + padStr;
+      }).join('|') + tail;
+    }
+
+    var lines = [row(head), sep()].concat(body.map(row));
+    var text = lines.join('\n') + '\n';
+
+    out.set(text, 'table.md');
+    $('#pill').textContent = body.length + ' rows × ' + cols + ' cols';
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+
+    renderPreview(head, body, effAligns);
+    renderWarn(head, body);
+    renderTips();
+  }
+
+  function renderPreview(head, body, al) {
+    function inline(s) {
+      return GT.esc(s)
+        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+        .replace(/`([^`]+)`/g, '<code>$1</code>')
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
+        .replace(/&lt;br&gt;/g, '<br>')
+        .replace(/\\\|/g, '|');
+    }
+    $('#preview').innerHTML =
+      '<p style="color:var(--muted);font-size:13.5px;margin-bottom:12px">Approximate GitHub rendering — bold, code spans and links are shown.</p>' +
+      '<table style="border-collapse:collapse;width:100%;font-size:13.5px">' +
+      '<thead><tr>' + head.map(function (h, i) {
+        return '<th style="text-align:' + al[i] + ';padding:9px 12px;border:1px solid var(--line);background:var(--bg-soft)">' + inline(h) + '</th>';
+      }).join('') + '</tr></thead><tbody>' +
+      body.map(function (r) {
+        return '<tr>' + r.map(function (v, i) {
+          return '<td style="text-align:' + al[i] + ';padding:9px 12px;border:1px solid var(--line)">' + inline(v) + '</td>';
+        }).join('') + '</tr>';
+      }).join('') + '</tbody></table>';
+  }
+
+  function renderWarn(head, body) {
+    var w = [];
+    var raw = $('#data').value;
+    if (!$('#optEscape').checked && /\|/.test(raw)) {
+      w.push(['err', 'Your data contains <code>|</code> characters and escaping is off — those rows will split into extra columns. Turn escaping back on.']);
+    }
+    if (/\n/.test(raw) && $('#optBreaks').checked) {
+      w.push(['ok', 'Multi-line cell content is converted to <code>&lt;br&gt;</code>, which GitHub renders inside table cells.']);
+    }
+    var blank = head.some(function (h) { return !h.trim() || h === ($('#empty').value || ''); });
+    if (blank) w.push(['warn', 'One or more header cells are empty. Markdown allows it, but the column has no accessible label.']);
+    if (body.length > 40) w.push(['warn', body.length + ' rows is long for a README. Consider linking to a full table or collapsing it inside a <code>&lt;details&gt;</code> block.']);
+    if (head.length > 6) w.push(['warn', head.length + ' columns will scroll horizontally on GitHub mobile. Fewer, wider columns usually read better.']);
+    if (!w.length) w.push(['ok', 'Valid GitHub-flavored Markdown with an alignment row.']);
+    $('#warnBox').innerHTML = w.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : x[0] === 'warn' ? 'note-warn' : 'note-err') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+  }
+
+  function renderTips() {
+    $('#tips').innerHTML = [
+      ['The separator row is mandatory', 'A Markdown table is only recognised when the second line is a row of dashes. Without it the whole block renders as a paragraph full of pipes.'],
+      ['Colons set alignment', '<code>---</code> is left, <code>:---:</code> is centred, <code>---:</code> is right. Alignment lives in the separator row only, never in the data rows.'],
+      ['Column widths do not matter', 'The padding in the raw text has no effect on rendering — it only makes the source readable in a diff. Choose compact if you would rather keep the file narrow.'],
+      ['Escape pipes inside cells', 'A literal <code>|</code> must be written <code>\\|</code>, otherwise it is read as a column separator. This matters constantly when documenting shell commands or regex.'],
+      ['No real line breaks in cells', 'A table row must be one line. Use <code>&lt;br&gt;</code> for a visual line break inside a cell — GitHub renders it, and so do most other Markdown engines.'],
+      ['Inline formatting works', 'Bold, italics, <code>code</code>, links and images all render inside cells. Block elements — lists, headings, fenced code blocks — do not.'],
+      ['Tables are a GFM extension', 'They are not part of original Markdown or CommonMark. GitHub, GitLab, Obsidian, Notion and most static site generators support them, but a strict CommonMark renderer will not.']
+    ].map(function (x) {
+      return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+        '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+    }).join('');
+  }
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); });
+  $('#data').addEventListener('input', function () { build(); });
+  ['#delim','#style','#optHeader','#optEscape','#optOuter','#optBoldHeader','#optBreaks','#optTrim','#empty']
+    .forEach(function (s) { $(s).addEventListener('change', function () { build(true); }); $(s).addEventListener('input', function () { build(true); }); });
+
+  build();
+
+  GT.page({
+    slug: 'markdown-table-generator',
+    lede: 'Turn spreadsheet data into clean, aligned GitHub-flavored Markdown tables — with pipe escaping, per-column alignment and a live preview.',
+    steps: [
+      { icon: 'gear', title: 'Paste your data', text: 'CSV, TSV, a copy from Excel, or an existing Markdown table you want to reformat.' },
+      { icon: 'grid', title: 'Set alignment', text: 'Per column, or all at once. Numeric columns are right-aligned automatically.' },
+      { icon: 'copy', title: 'Paste into your README', text: 'Padded output stays readable in the raw file and in diffs.' }
+    ],
+    guideTitle: 'Markdown tables, and where they run out',
+    guide:
+      '<p style="color:var(--muted)">Markdown tables are a GitHub-flavored extension rather than part of the original spec, which is why they are simultaneously everywhere and slightly inconsistent. The core is simple: a header row, a separator row of dashes, then data rows, all delimited by pipes.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Things that trip people up</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>Forgetting the separator row — the block silently renders as a paragraph.</li><li>An unescaped <code>|</code> inside a cell, which splits the row. Extremely common when documenting shell pipelines or regex.</li><li>Trying to put a bullet list or a fenced code block inside a cell. Only inline formatting works.</li><li>Expecting a real newline in a cell to render. Use <code>&lt;br&gt;</code>.</li><li>Assuming column padding affects the output. It does not — it is purely for the source.</li></ul></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Aligned or compact?</h4><p style="color:var(--muted);font-size:13.8px"><strong>Aligned</strong> pads every column to the same width. The raw Markdown is readable as a table even before rendering, which makes reviews far easier — but any edit to one cell can reflow the whole block in a diff.</p>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px"><strong>Compact</strong> uses minimal widths. Diffs stay tiny and edits touch one line, at the cost of an unreadable source. For tables that change often — a status matrix, a changelog — compact is usually the better trade.</p></div></div>' +
+      '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>Paste an existing Markdown table back into the input and it will be parsed and reformatted. That is the quickest way to realign a table that has drifted after editing, or to switch a whole file from padded to compact.</span></div>',
+    related: ['html-table-generator', 'github-task-list-generator', 'csv-test-data-generator'],
+    faqs: [
+      { q: 'How do I create a table in Markdown?', a: 'Write a header row of pipe-separated cells, then a separator row of dashes, then your data rows. The separator row is mandatory — without it nothing renders as a table.' },
+      { q: 'How do I align columns?', a: 'Put colons in the separator row: <code>:---</code> for left, <code>:---:</code> for centre, <code>---:</code> for right. This generator writes them for you, and detects numeric columns to right-align automatically.' },
+      { q: 'How do I put a pipe character inside a cell?', a: 'Escape it as <code>\\|</code>. Keep the escaping option enabled and it is handled automatically — essential when your table documents shell commands or regular expressions.' },
+      { q: 'Can I have multiple lines inside one cell?', a: 'Not as real line breaks — a table row must be a single line. Use <code>&lt;br&gt;</code> instead, which GitHub and most other renderers honour inside cells.' },
+      { q: 'Can I put a list or code block in a cell?', a: 'No. Only inline formatting works: bold, italics, inline code, links and images. Block-level elements break the table.' },
+      { q: 'Do Markdown tables work everywhere?', a: 'They are a GitHub-flavored Markdown extension, supported by GitHub, GitLab, Obsidian, Notion, Docusaurus and most static site generators — but not by a strict CommonMark renderer.' }
+    ],
+    seo: {
+      title: 'Markdown tables: syntax, alignment, escaping and where they run out',
+      lead: 'This <strong>Markdown table generator</strong> turns pasted spreadsheet or CSV data into clean, aligned GitHub-flavored tables with pipe escaping handled. Below: the syntax, how alignment works, what you cannot put in a cell, and which platforms support tables at all.',
+      blocks: [
+        {
+          h: 'The syntax',
+          html: '<p>A Markdown table is a header row, a delimiter row, and any number of body rows, with cells separated by pipes:</p>' +
+            '<p><code>| Name | Role |</code><br><code>| --- | --- |</code><br><code>| Ada | Engineer |</code></p>' +
+            '<p>The <strong>delimiter row is mandatory</strong> — without it, the block is just paragraphs containing pipe characters. It must have the same number of cells as the header, and each cell needs at least three dashes in most parsers.</p>' +
+            '<p>Leading and trailing pipes are optional and column widths need not line up; the parser does not care. Humans reading the raw file do, which is why the generator pads every column to a consistent width.</p>'
+        },
+        {
+          h: 'Alignment',
+          html: '<p>Colons in the delimiter row control per-column alignment:</p>',
+          table: {
+            head: ['Delimiter', 'Alignment', 'Use for'],
+            rows: [
+              ['<code>---</code>', 'Default (left in every renderer).', 'Text.'],
+              ['<code>:---</code>', 'Left, stated explicitly.', 'Text, when the rest of the table is aligned.'],
+              ['<code>:---:</code>', 'Centre.', 'Status marks, short flags, yes/no columns.'],
+              ['<code>---:</code>', 'Right.', 'Numbers, prices, dates, counts.']
+            ]
+          },
+          after: '<p>Right-aligning numeric columns is the single change that most improves a data table: digits line up by place value, so magnitudes are comparable at a glance.</p>',
+          callout: { type: 'tip', text: 'Alignment is applied by the renderer, not by the raw text. A table that looks perfectly aligned in your editor may render left-aligned everywhere if you padded with spaces instead of using colons.' }
+        },
+        {
+          h: 'Escaping pipes',
+          html: '<p>A literal <code>|</code> inside a cell splits it in two. Escape it with a backslash: <code>\\|</code>.</p>' +
+            '<p>This bites most often with keyboard shortcuts (<code>Ctrl\\|C</code>), shell commands, regex alternations and union types in code examples. The generator escapes pipes in your data automatically, which matters when you are pasting a column of shell one-liners.</p>' +
+            '<p>Inside inline code the rule still applies in GitHub-flavored Markdown — <code>`a | b`</code> in a cell breaks the row, and it must be written <code>`a \\| b`</code>. This is the most commonly reported "Markdown table bug" and it is specified behaviour.</p>'
+        },
+        {
+          h: 'What you cannot put in a cell',
+          html: '<p>Markdown tables have a hard structural limit: <strong>one line per cell</strong>. The row ends at the newline, so nothing that requires its own line works.</p>',
+          cards: [
+            { t: 'No line breaks', d: 'Use <code>&lt;br&gt;</code> for a soft break inside a cell. It works in GitHub and most renderers, at the cost of being HTML in your Markdown.' },
+            { t: 'No lists', d: 'A bullet list needs line breaks. Approximate with <code>&lt;br&gt;• item</code>, or restructure so each item is a row.' },
+            { t: 'No fenced code blocks', d: 'Inline code with backticks works; a fenced block does not. Long snippets belong below the table with a reference from it.' },
+            { t: 'No nested tables', d: 'Not expressible. If you need one, the data wants a different shape.' },
+            { t: 'No column or row spans', d: 'Every row has the same number of cells. Merged headers require HTML.' }
+          ],
+          after: '<p>When you hit two or more of these, stop fighting the syntax and use an <a href="html-table-generator.html">HTML table</a> — Markdown renderers pass raw HTML through, so you can embed one directly in the document.</p>'
+        },
+        {
+          h: 'Building a table from data',
+          steps: [
+            { t: 'Paste from a spreadsheet or CSV', d: 'Tab-separated data straight from Excel, Sheets or Numbers is detected automatically.' },
+            { t: 'Confirm the header row', d: 'The first row becomes the header. Toggle it off if your data has none and you want generic headings.' },
+            { t: 'Set alignment per column', d: 'Right for numeric, centre for status, left for everything else.' },
+            { t: 'Choose padded or compact output', d: 'Padded is far more readable in the raw file and diffs cleanly. Compact is smaller and fine when nobody edits the source by hand.' },
+            { t: 'Check the preview, then copy', d: 'The preview renders exactly what GitHub will show, including escaped pipes.' }
+          ]
+        },
+        {
+          h: 'Where tables are supported',
+          html: '<p>Tables are not part of original Markdown. They come from <strong>GitHub-flavored Markdown</strong> and the CommonMark tables extension, so support varies more than people expect.</p>',
+          list: [
+            '<strong>Works:</strong> GitHub, GitLab, Bitbucket, Obsidian, Notion, Discord (in some contexts), VS Code preview, MkDocs, Docusaurus, Jekyll with kramdown, Pandoc.',
+            '<strong>Needs a plugin:</strong> some static site generators using strict CommonMark, and older Python-Markdown installs without the <code>tables</code> extension.',
+            '<strong>Does not work:</strong> plain CommonMark with no extensions, several comment systems, and most chat clients — where a table becomes a wall of pipes.'
+          ],
+          callout: { type: 'warn', text: 'Before committing a table to a docs site, render it in that site — not in your editor. VS Code\'s preview uses GitHub-flavored Markdown and will happily show a table your production generator does not support.' }
+        },
+        {
+          h: 'Related formatting tools',
+          list: [
+            '<a href="html-table-generator.html">HTML Table Generator</a> — accessible markup with spans, captions and scope attributes.',
+            '<a href="github-task-list-generator.html">GitHub Task List Generator</a> — nested checklists for issues and PRs.',
+            '<a href="csv-test-data-generator.html">CSV Test Data Generator</a> — sample data to tabulate.',
+            '<a href="html-select-option-generator.html">HTML Select Option Generator</a> — turn the same list into a dropdown.'
+          ]
+        }
+      ],
+      keywords: [
+        'markdown table generator', 'markdown table syntax', 'markdown table alignment',
+        'csv to markdown table', 'excel to markdown', 'github flavored markdown table',
+        'markdown table escape pipe', 'markdown table line break', 'markdown table example',
+        'readme table', 'markdown table formatter', 'multiline markdown table cell'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

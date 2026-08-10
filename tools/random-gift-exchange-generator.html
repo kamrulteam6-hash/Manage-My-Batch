@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Random Gift Exchange Generator — Draws, Budgets &amp; Wishlists | Manage My Batch</title>
+<meta name="description" content="Free gift exchange generator. Organise any swap — Secret Santa, white elephant, family draws — with budgets, wishlists, group rules and printable slips.">
+<link rel="canonical" href="https://managemybatch.com/tools/random-gift-exchange-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Random Gift Exchange Generator — Draws, Budgets &amp; Wishlists">
+<meta property="og:description" content="Free gift exchange generator. Organise any swap — Secret Santa, white elephant, family draws — with budgets, wishlists, group rules and printable slips.">
+<meta property="og:url" content="https://managemybatch.com/tools/random-gift-exchange-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Random Gift Exchange Generator — Draws, Budgets &amp; Wishlists">
+<meta name="twitter:description" content="Free gift exchange generator. Organise any swap — Secret Santa, white elephant, family draws — with budgets, wishlists, group rules and printable slips.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Exchange Setup</div>
+
+    <div class="field">
+      <label>Exchange style</label>
+      <div class="seg" id="style">
+        <button type="button" class="on" data-s="draw">Name draw</button>
+        <button type="button" data-s="white">White elephant</button>
+        <button type="button" data-s="groups">Family groups</button>
+      </div>
+      <div class="hint" id="styleHint"></div>
+    </div>
+
+    <div class="field">
+      <label for="people" id="peopleLabel">Participants — one per line</label>
+      <textarea id="people" style="min-height:170px">Ana | books, coffee
+Ben | cycling gear
+Cara | plants, candles
+Dan | vinyl records
+Eve | baking
+Finn | board games
+Gemma | stationery
+Hari | hot sauce</textarea>
+      <div class="hint">Add a wishlist after a pipe: <code>Ana | books, coffee</code>. Optional.</div>
+      <div id="stats"></div>
+    </div>
+
+    <div class="field" id="groupsField" hidden>
+      <label for="groups">Group membership — one per line</label>
+      <textarea id="groups" style="min-height:80px" placeholder="Smith: Ana, Ben&#10;Jones: Cara, Dan">Smith: Ana, Ben
+Jones: Cara, Dan</textarea>
+      <div class="hint">People in the same group never draw each other — useful for families buying within households.</div>
+    </div>
+
+    <div class="field" id="exclField">
+      <label for="exclusions">Never match — one pair per line</label>
+      <textarea id="exclusions" style="min-height:60px" placeholder="Ana &amp; Ben"></textarea>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="row">
+      <div class="field"><label for="budget">Budget</label><input type="text" id="budget" value="£20"></div>
+      <div class="field"><label for="date">Exchange date</label><input type="date" id="date"></div>
+    </div>
+
+    <div class="field">
+      <label for="note">Note on every slip</label>
+      <input type="text" id="note" placeholder="e.g. Wrap it and bring it to Sunday lunch">
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Options</legend>
+      <div class="check-list">
+        <label class="check on"><input type="checkbox" id="optWishlist" checked>
+          <span><span class="t">Show the recipient's wishlist on the slip</span></span></label>
+        <label class="check on"><input type="checkbox" id="optHide" checked>
+          <span><span class="t">Hide the result from me</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="field">
+      <label for="seed">Draw seed</label>
+      <div class="row" style="grid-template-columns:minmax(0,1fr) auto;gap:8px">
+        <input type="text" id="seed" value="swap-1">
+        <button type="button" class="btn btn-soft" id="newSeed"><span id="icoReset"></span></button>
+      </div>
+    </div>
+
+    <div class="out-actions">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Run the Exchange</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Result<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="result">Result</button>
+      <button type="button" data-tab="guide">Formats explained</button>
+    </div>
+
+    <div data-panel="result">
+      <div id="result"></div>
+      <div class="out-actions" style="margin-top:16px">
+        <button type="button" class="btn btn-primary" id="printBtn"><span id="icoFile"></span> Print</button>
+        <button type="button" class="btn btn-soft" id="regen"><span id="icoReset2"></span> Redraw</button>
+      </div>
+      <div id="checks"></div>
+    </div>
+
+    <div data-panel="guide" hidden><div id="guide"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/schedule.js"></script>
+<script src="../assets/js/roster.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$, S = GTSched;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoReset:reset','icoReset2:reset','icoFile:file']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var HINTS = {
+    draw: 'Everyone is assigned one person to buy for. The classic format.',
+    white: 'Everyone brings one wrapped gift; the draw sets the order for picking and stealing.',
+    groups: 'Nobody draws someone from their own household or group.'
+  };
+
+  var style = 'draw', people = [], result = null;
+
+  function parsePeople() {
+    var seen = {}, list = [];
+    GT.lines($('#people').value).forEach(function (l) {
+      var i = l.indexOf('|');
+      var name = (i === -1 ? l : l.slice(0, i)).replace(/^\s*\d+\s*[.)]\s*/, '').trim();
+      var wish = i === -1 ? '' : l.slice(i + 1).trim();
+      if (!name) return;
+      var k = name.toLowerCase();
+      if (seen[k]) return;
+      seen[k] = 1;
+      list.push({ name: name, wish: wish });
+    });
+    return list;
+  }
+
+  function groupExclusions() {
+    var pairs = [];
+    GT.lines($('#groups').value).forEach(function (l) {
+      var i = l.indexOf(':');
+      if (i === -1) return;
+      var members = l.slice(i + 1).split(',').map(function (x) { return x.trim(); }).filter(Boolean);
+      for (var a = 0; a < members.length; a++) {
+        for (var b = a + 1; b < members.length; b++) pairs.push([members[a], members[b]]);
+      }
+    });
+    return pairs;
+  }
+
+  function build() {
+    people = parsePeople();
+    $('#styleHint').textContent = HINTS[style];
+    $('#groupsField').hidden = style !== 'groups';
+    $('#peopleLabel').textContent = style === 'white' ? 'Participants — one per line' : 'Participants — one per line';
+
+    var withWish = people.filter(function (p) { return p.wish; }).length;
+    $('#stats').innerHTML = '<div class="note ' + (people.length ? 'note-ok' : 'note-warn') + '" style="margin-top:10px">' +
+      (people.length ? I.check : I.warn) + '<span>' + people.length + ' participant' + (people.length === 1 ? '' : 's') +
+      (withWish ? ' · ' + withWish + ' with wishlists' : '') + '</span></div>';
+
+    if (people.length < 3) {
+      $('#result').innerHTML = '<div class="empty">Add at least three participants.</div>';
+      $('#pill').textContent = '—'; $('#checks').innerHTML = '';
+      return;
+    }
+
+    var names = people.map(function (p) { return p.name; });
+
+    if (style === 'white') {
+      var order = S.rng($('#seed').value).shuffle(names);
+      result = { order: order };
+      renderWhite(order);
+    } else {
+      var exclusions = GTRoster.parsePairs($('#exclusions').value);
+      if (style === 'groups') exclusions = exclusions.concat(groupExclusions());
+      /* Normalise names against the participant list. */
+      exclusions = exclusions.map(function (p) {
+        var a = names.filter(function (n) { return n.toLowerCase() === String(p[0]).toLowerCase(); })[0];
+        var b = names.filter(function (n) { return n.toLowerCase() === String(p[1]).toLowerCase(); })[0];
+        return a && b ? [a, b] : null;
+      }).filter(Boolean);
+
+      result = S.drawNames(names, { seed: $('#seed').value, exclusions: exclusions, singleCycle: true });
+      result.exclusions = exclusions;
+      renderDraw();
+    }
+
+    renderChecks();
+    $('#pill').textContent = result.error ? 'no valid draw' : people.length + ' participants';
+    $('#pill').style.background = result.error ? 'var(--red-bg)' : 'var(--green-bg)';
+    $('#pill').style.color = result.error ? 'var(--red)' : 'var(--green)';
+  }
+
+  function wishFor(name) {
+    var p = people.filter(function (x) { return x.name === name; })[0];
+    return p ? p.wish : '';
+  }
+
+  function renderDraw() {
+    if (result.error) { $('#result').innerHTML = '<div class="empty">No valid draw — see below.</div>'; return; }
+    var hide = $('#optHide').checked;
+    $('#result').innerHTML = '<div class="grid g2">' + people.map(function (p) {
+      var target = result.map[p.name];
+      var wish = $('#optWishlist').checked ? wishFor(target) : '';
+      return '<div class="card" style="padding:14px;box-shadow:none">' +
+        '<div style="font-size:12px;color:var(--muted)">Slip for</div>' +
+        '<div style="font-weight:700;font-size:15px;margin-bottom:8px">' + GT.esc(p.name) + '</div>' +
+        '<div style="font-size:12px;color:var(--muted)">Buying for</div>' +
+        '<div style="font-weight:700;font-size:15px;color:' + (hide ? 'var(--muted-2)' : 'var(--blue)') + '">' +
+        (hide ? '• • • • •' : GT.esc(target)) + '</div>' +
+        (wish && !hide ? '<div style="font-size:12.5px;color:var(--muted);margin-top:6px">Wishlist: ' + GT.esc(wish) + '</div>' : '') +
+        '</div>';
+    }).join('') + '</div>';
+  }
+
+  function renderWhite(order) {
+    $('#result').innerHTML =
+      '<div class="note note-info" style="margin-top:0">' + I.info +
+      '<span>Everyone brings one wrapped gift. Player 1 opens a gift; each following player may either open a new one or steal an already-opened gift. A stolen gift cannot be immediately stolen back.</span></div>' +
+      '<p class="more-label" style="margin-top:14px">Picking order</p><div class="more-list">' +
+      order.map(function (n, i) {
+        return '<div class="more-row"><span style="width:26px;flex:none;font-weight:700;color:var(--muted-2)">' +
+          (i + 1) + '</span><span class="mval" style="font-family:var(--sans);font-size:14.5px;font-weight:500">' +
+          GT.esc(n) + '</span></div>';
+      }).join('') + '</div>';
+  }
+
+  function renderChecks() {
+    var c = [];
+    if (style === 'white') {
+      c.push(['ok', 'Picking order shuffled. Going first means the smallest choice but the right to a final steal in most rule sets.']);
+      c.push(['warn', 'Agree the steal limit before you start — commonly three steals per gift, after which it is frozen. Without a limit the game does not end.']);
+    } else if (result.error) {
+      var names = people.map(function (p) { return p.name; });
+      var trouble = S.exclusionTrouble(names, result.exclusions || []);
+      c.push(['err', 'No valid draw. ' + (trouble.length
+        ? trouble.map(GT.esc).join(', ') + ' cannot be matched with anyone under the current rules.'
+        : 'The group and exclusion rules leave no valid arrangement — try removing a rule.')]);
+    } else {
+      c.push(['ok', 'Valid draw — nobody has themselves, and no two people are buying for each other.']);
+      if (style === 'groups') {
+        var gp = groupExclusions();
+        c.push([gp.length ? 'ok' : 'warn', gp.length
+          ? gp.length + ' within-group pairing' + (gp.length === 1 ? '' : 's') + ' excluded.'
+          : 'No groups defined yet — add them as <code>Household: Name, Name</code>.']);
+      }
+      var noWish = people.filter(function (p) { return !p.wish; });
+      if ($('#optWishlist').checked && noWish.length) {
+        c.push(['warn', noWish.length + ' participant' + (noWish.length === 1 ? ' has' : 's have') +
+          ' no wishlist, so their slip will not show one. Add hints after a pipe character.']);
+      }
+    }
+    $('#checks').innerHTML = c.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : x[0] === 'warn' ? 'note-warn' : 'note-err') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+  }
+
+  $('#printBtn').addEventListener('click', function () {
+    var meta = [];
+    if ($('#budget').value.trim()) meta.push('Budget: ' + $('#budget').value.trim());
+    if ($('#date').value) meta.push(S.fmtDateFull(new Date($('#date').value + 'T12:00:00')));
+    if ($('#note').value.trim()) meta.push($('#note').value.trim());
+
+    if (style === 'white') {
+      GTRoster.printHtml('Gift exchange order',
+        '<h1>White Elephant — picking order</h1>' +
+        (meta.length ? '<p class="sub">' + GT.esc(meta.join(' · ')) + '</p>' : '') +
+        '<table><tr><th style="width:60px">Order</th><th>Player</th></tr>' +
+        result.order.map(function (n, i) {
+          return '<tr><td>' + (i + 1) + '</td><td>' + GT.esc(n) + '</td></tr>';
+        }).join('') + '</table>');
+      return;
+    }
+    if (result.error) { GT.toast('Fix the draw first'); return; }
+
+    var w = window.open('', '_blank');
+    if (!w) { GT.toast('Allow pop-ups to print'); return; }
+    w.document.write('<!DOCTYPE html><html><head><meta charset="utf-8"><title>Gift exchange slips</title><style>' +
+      'body{font-family:Arial,Helvetica,sans-serif;color:#0f172a;margin:12mm}' +
+      '.wrap{display:grid;grid-template-columns:1fr 1fr;gap:8mm}' +
+      '.slip{border:1.5px dashed #94a3b8;border-radius:8px;padding:14px;break-inside:avoid;min-height:40mm}' +
+      '.for{font-size:11px;color:#64748b}.name{font-size:17px;font-weight:700;margin:2px 0 10px}' +
+      '.lbl{font-size:11px;color:#64748b}.rec{font-size:19px;font-weight:700}' +
+      '.wish{font-size:11.5px;color:#475569;margin-top:6px}' +
+      '.meta{margin-top:10px;font-size:11px;color:#475569;line-height:1.5}' +
+      '@media print{body{margin:8mm}}</style></head><body><div class="wrap">' +
+      people.map(function (p) {
+        var target = result.map[p.name];
+        var wish = $('#optWishlist').checked ? wishFor(target) : '';
+        return '<div class="slip"><div class="for">Gift exchange slip for</div>' +
+          '<div class="name">' + GT.esc(p.name) + '</div>' +
+          '<div class="lbl">You are buying for</div>' +
+          '<div class="rec">' + GT.esc(target) + '</div>' +
+          (wish ? '<div class="wish">Wishlist: ' + GT.esc(wish) + '</div>' : '') +
+          (meta.length ? '<div class="meta">' + meta.map(GT.esc).join('<br>') + '</div>' : '') +
+          '</div>';
+      }).join('') + '</div><script>window.onload=function(){window.print()}<' + '/script></body></html>');
+    w.document.close();
+  });
+
+  $('#style').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#style button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    style = b.getAttribute('data-s');
+    $('#exclField').hidden = style === 'white';
+    build();
+  });
+  $('#newSeed').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); });
+  $('#regen').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); GT.toast('Redrawn'); });
+
+  $('#guide').innerHTML = [
+    ['Name draw', 'Everyone is assigned one person and buys them a gift. Each person gives once and receives once, and with the single-chain draw used here nobody is buying for the person who is buying for them. The default, and the fairest.'],
+    ['White elephant', 'Everyone brings one wrapped gift and the draw sets the picking order. Player one opens a gift; each subsequent player either opens a new one or steals an opened one. The person who stole loses their gift and picks again. Agree a steal limit — usually three per gift — or the game never ends.'],
+    ['Family groups', 'For extended families where each household already buys internally. Everyone in the same group is excluded from drawing each other, so gifts cross between households. Add groups as <code>Household: Name, Name</code>.'],
+    ['Wishlists prevent bad gifts', 'Two or three concrete hints — "books, coffee, plants" — make an enormous difference to what people actually receive, especially when the giver does not know the recipient well. They print on the slip so nobody has to ask around and give the secret away.'],
+    ['Set a budget and say it twice', 'The most common source of awkwardness is mismatched spending. Put the budget on every slip, not just in the invitation, so it is in front of everyone when they shop.'],
+    ['Going first is not always worst', 'In white elephant, player one has the least choice initially but in most rule sets gets a final steal at the end. It is worth stating which rule you are using before you start.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('');
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Exchange generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'random-gift-exchange-generator',
+    lede: 'Run any gift swap — a name draw, white elephant, or a family exchange where households never draw each other — with wishlists and budgets on every printed slip.',
+    steps: [
+      { icon: 'gear', title: 'Pick a format', text: 'Name draw, white elephant picking order, or family groups.' },
+      { icon: 'gift', title: 'Add wishlists', text: 'A pipe character after each name; two or three hints is plenty.' },
+      { icon: 'file', title: 'Print the slips', text: 'Recipient, wishlist, budget and date all on one slip.' }
+    ],
+    guideTitle: 'Choosing a format',
+    guide:
+      '<p style="color:var(--muted)">"Gift exchange" covers several genuinely different games, and picking the wrong one is why some office swaps fall flat. The three here cover almost every case.</p>' +
+      '<div class="grid g3" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Name draw</h4><p style="color:var(--muted);font-size:13.8px">Each person is assigned someone and buys for them. Everyone gives once and receives once. Best when people know each other reasonably well and want a thoughtful gift.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">White elephant</h4><p style="color:var(--muted);font-size:13.8px">Everyone brings one wrapped gift; the draw only sets the picking order. Stealing makes it a game. Best for groups where people do not know each other well.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Family groups</h4><p style="color:var(--muted);font-size:13.8px">Households are excluded from drawing internally, so gifts cross between families. Best for extended-family Christmases where people already buy within their own home.</p></div></div>' +
+      '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span><strong>Wishlists matter more than budgets.</strong> Two or three concrete hints — "books, coffee, plants" — transform what people actually receive, particularly when the giver barely knows the recipient. They print on the slip, so nobody has to ask around and reveal who they drew.</span></div>' +
+      '<div class="note note-warn" style="margin-top:12px">' + GTI.warn + '<span>If you run white elephant, agree the steal limit before the first gift is opened — commonly three steals per gift, after which it is frozen. Without a cap the game genuinely does not terminate.</span></div>',
+    related: ['secret-santa-generator', 'chore-rotation-generator', 'team-generator'],
+    faqs: [
+      { q: 'What is the difference from Secret Santa?', a: 'A name draw is Secret Santa. This tool adds two other formats — white elephant, where the draw only sets a picking order, and family groups, where households never draw each other.' },
+      { q: 'How do family group exclusions work?', a: 'List each household as <code>Household: Name, Name</code>. Everyone in the same group is excluded from drawing each other, so every gift crosses between households.' },
+      { q: 'How do wishlists work?', a: 'Add them after a pipe character: <code>Ana | books, coffee</code>. The recipient\'s wishlist prints on their giver\'s slip, so nobody has to ask around and reveal the draw.' },
+      { q: 'What are white elephant rules?', a: 'Everyone brings one wrapped gift. Player one opens a gift; each following player either opens a new one or steals an opened one, and whoever was stolen from picks again. Set a steal limit — usually three per gift — or the game will not end.' },
+      { q: 'Can two people be assigned to each other?', a: 'No. The draw builds a single chain, so reciprocal pairs are structurally impossible, which keeps it a genuine secret.' },
+      { q: 'Can I organise it and take part?', a: 'Yes — leave "Hide the result from me" on, print the slips without looking, and hand them out folded.' }
+    ],
+    seo: {
+      title: 'Gift exchange draws: formats, household exclusions and mutual pairs',
+      lead: 'This <strong>gift exchange generator</strong> runs any swap — a name draw, white elephant, or a family exchange where households never draw each other — with wishlists and budgets on every printed slip. Below: how to choose a format, how group exclusions work, and how to organise a draw you are also in.',
+      blocks: [
+        {
+          h: 'Choosing a format',
+          html: '<p>"Gift exchange" covers several games with quite different dynamics. Picking the wrong one for the group is why some office swaps are fun and others are awkward.</p>',
+          cards: [
+            { t: 'Name draw (Secret Santa)', d: 'Everyone draws one person and buys for them. Anonymous, one gift each, and the assignment is secret until the day. The default for offices and large families.' },
+            { t: 'White elephant', d: 'Everyone brings one wrapped gift; participants take turns opening or stealing. No assignment needed — the fun is in the stealing. Best with 6–20 people.' },
+            { t: 'Family group exchange', d: 'A name draw where households never draw within themselves. Stops a couple buying for each other under the guise of the game.' },
+            { t: 'Mutual pairs', d: 'People are matched two-way — you buy for the person buying for you. Simpler, and better for small groups where anonymity is impossible anyway.' }
+          ],
+          after: '<p>For a pure Secret Santa with exclusions and a strict no-mutual-pairs rule, the <a href="secret-santa-generator.html">Secret Santa generator</a> is the more focused tool. This one covers the wider set of formats.</p>'
+        },
+        {
+          h: 'Household and group exclusions',
+          html: '<p>A group exclusion says that nobody in a household draws anyone else from it. Enter each household as a group and the draw treats them as mutually excluded.</p>' +
+            '<p>The arithmetic matters here, and it is why some draws fail. If one group contains more than half the participants, there are not enough people outside it for its members to draw — the draw is impossible, not unlucky. Six people with a household of four leaves only two possible recipients for four givers.</p>',
+          steps: [
+            { t: 'List every participant', d: 'One per line.' },
+            { t: 'Mark the groups', d: 'Households, couples, teams — whatever should not draw within itself.' },
+            { t: 'Add individual exclusions if needed', d: 'Two people who exchanged last year, or who have agreed to buy separately.' },
+            { t: 'Generate', d: 'The draw retries until it finds an arrangement satisfying every rule.' },
+            { t: 'Read the warning if it appears', d: 'An impossible constraint set is reported explicitly rather than being silently relaxed.' }
+          ],
+          callout: { type: 'warn', text: '<strong>No group can hold more than half the participants.</strong> Above that, at least one member has nobody left to draw, and no amount of reshuffling helps. The fix is more participants or fewer exclusions — the tool tells you which group is the problem.' }
+        },
+        {
+          h: 'Wishlists and budgets',
+          html: '<p>Every printed slip carries the recipient\'s name, the agreed budget and their wishlist if they supplied one. It is the single change that most improves the gifts.</p>' +
+            '<p>Wishlists solve the real problem with a name draw: you have drawn a colleague you speak to twice a month and have no idea what they like. A three-item list turns an anxious guess into a straightforward purchase, and it substantially reduces the number of unwanted candles in circulation.</p>' +
+            '<p>The budget belongs on the slip rather than in an email, because the email is what nobody can find in December. Print it on every slip and there is no ambiguity about whether the limit was £10 or £20 — which is the other thing that makes a swap awkward.</p>',
+          list: [
+            'Ask for three items at different prices, so the giver has a choice within the budget.',
+            'Include a "please do not buy" line — allergies, dietary restrictions, things they already own.',
+            'Keep the budget a firm number rather than a range. Ranges get rounded upwards by some people and not others.',
+            'Set a deadline for wishlists a week before the draw, not after it.'
+          ]
+        },
+        {
+          h: 'White elephant rules',
+          html: '<p>White elephant needs no assignment, but it does need rules agreed before anyone opens anything. The common set:</p>',
+          table: {
+            head: ['Rule', 'Effect'],
+            rows: [
+              ['Draw numbers for turn order', 'Player 1 opens first, and gets the last turn to swap at the end.'],
+              ['On your turn, open a gift or steal one', 'The person stolen from then takes another turn.'],
+              ['A gift can be stolen twice, then it is frozen', 'Prevents an endless chain over one popular item.'],
+              ['You cannot steal back immediately', 'Stops two people trading the same gift forever.'],
+              ['Player 1 gets a final swap', 'Compensates for having no gifts to choose from at the start.']
+            ]
+          },
+          after: '<p>Agree the steal limit before you start. Almost every white elephant that drags on does so because nobody set one, and the game hinges entirely on that number.</p>'
+        },
+        {
+          h: 'Can two people draw each other?',
+          html: '<p>By default, no. Mutual pairs are prevented in name-draw mode, because a two-way match is generally considered a failed draw — the anonymity disappears and the pair effectively drops out of the wider exchange.</p>' +
+            '<p>You can allow them deliberately, and in a small group it is sometimes the sensible choice: with four participants, prohibiting mutual pairs sharply limits the possible arrangements and makes the draw feel less random rather than more.</p>' +
+            '<p>Mutual-pairs mode makes them the point — everyone is matched two-way, which suits a small team or a group that would rather exchange openly than pretend at secrecy.</p>',
+          callout: { type: 'tip', text: 'Print the slips folded, or use the individual reveal links, so the organiser never sees who drew whom. A draw where one person knows every assignment is not really anonymous, and that person spends December being asked leading questions.' }
+        },
+        {
+          h: 'Organising and taking part',
+          html: '<p>You can do both, and the draw runs in your browser so nothing is sent anywhere — but the printed slips are visible to whoever prints them.</p>' +
+            '<p>Two ways to keep your own assignment a surprise. Print the slips folded and have someone else distribute them, taking yours without looking. Or generate the draw, close the results without reading, and have a second person open the print view and hand them out.</p>' +
+            '<p>Everything runs client-side: no names, wishlists or assignments are transmitted, stored or logged. That is also why there is no "email everyone their assignment" feature — it would require sending your participants\' details to a server, which for a family gift draw is a poor trade.</p>'
+        },
+        {
+          h: 'Related group tools',
+          list: [
+            '<a href="secret-santa-generator.html">Secret Santa Generator</a> — focused name draws with exclusions.',
+            '<a href="chore-rotation-generator.html">Chore Rotation Generator</a> — fair rotation for households.',
+            '<a href="team-generator.html">Team Generator</a> — split a group into balanced teams.',
+            '<a href="classroom-group-generator.html">Classroom Group Generator</a> — grouping with constraints.',
+            '<a href="presentation-order-generator.html">Presentation Order Generator</a> — randomised turn order.'
+          ]
+        }
+      ],
+      keywords: [
+        'gift exchange generator', 'secret santa alternative', 'white elephant rules',
+        'family gift exchange draw', 'name draw generator', 'gift swap organiser',
+        'household exclusions gift draw', 'wishlist gift exchange', 'office gift exchange',
+        'printable gift exchange slips', 'random gift assignment', 'christmas draw generator'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

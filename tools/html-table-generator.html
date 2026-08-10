@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HTML Table Generator — Accessible Tables from CSV or Grid | Manage My Batch</title>
+<meta name="description" content="Free HTML table generator. Paste CSV or build a grid, then export accessible HTML with thead, scope attributes, caption and optional CSS — plus responsive and striped styles.">
+<link rel="canonical" href="https://managemybatch.com/tools/html-table-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="HTML Table Generator — Accessible Tables from CSV or Grid">
+<meta property="og:description" content="Free HTML table generator. Paste CSV or build a grid, then export accessible HTML with thead, scope attributes, caption and optional CSS — plus responsive and striped styles.">
+<meta property="og:url" content="https://managemybatch.com/tools/html-table-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="HTML Table Generator — Accessible Tables from CSV or Grid">
+<meta name="twitter:description" content="Free HTML table generator. Paste CSV or build a grid, then export accessible HTML with thead, scope attributes, caption and optional CSS — plus responsive and striped styles.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Table Settings</div>
+
+    <div class="field">
+      <label>Data source</label>
+      <div class="seg" id="src">
+        <button type="button" class="on" data-s="paste">Paste data</button>
+        <button type="button" data-s="size">Empty grid</button>
+      </div>
+    </div>
+
+    <div class="field" id="pasteField">
+      <label for="data">Paste CSV, TSV or Excel data</label>
+      <textarea id="data" style="min-height:170px">Product,Price,Stock,Status
+Wireless Mouse,24.99,142,In stock
+Mechanical Keyboard,89.00,37,In stock
+USB-C Hub,45.50,0,Backorder
+Monitor Stand,62.00,88,In stock</textarea>
+      <div class="hint">Copy straight from Excel, Sheets or a CSV file — tabs, commas, semicolons and pipes are all detected.</div>
+    </div>
+
+    <div class="row" id="sizeField" hidden>
+      <div class="field"><label for="rows">Rows</label><input type="number" id="rows" value="4" min="1" max="200"></div>
+      <div class="field"><label for="cols">Columns</label><input type="number" id="cols" value="3" min="1" max="30"></div>
+    </div>
+
+    <div class="field">
+      <label for="delim">Delimiter</label>
+      <select id="delim">
+        <option value="auto" selected>Auto-detect</option>
+        <option value=",">Comma</option>
+        <option value="&#9;">Tab</option>
+        <option value=";">Semicolon</option>
+        <option value="|">Pipe</option>
+      </select>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label for="caption">Caption</label>
+      <input type="text" id="caption" placeholder="Product inventory, August 2026">
+      <div class="hint">A caption is the accessible name of a table. Screen-reader users hear it before the data.</div>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Structure</legend>
+      <div class="check-list">
+        <label class="check on"><input type="checkbox" id="optHeaderRow" checked><span><span class="t">First row is a header</span><span class="d">Wrapped in <code>&lt;thead&gt;</code> with <code>&lt;th scope="col"&gt;</code>.</span></span></label>
+        <label class="check"><input type="checkbox" id="optHeaderCol"><span><span class="t">First column is a header</span><span class="d">Uses <code>&lt;th scope="row"&gt;</code> — needed for two-dimensional tables.</span></span></label>
+        <label class="check"><input type="checkbox" id="optTfoot"><span><span class="t">Last row is a footer</span><span class="d">Wrapped in <code>&lt;tfoot&gt;</code>, for totals.</span></span></label>
+        <label class="check"><input type="checkbox" id="optTrim" checked><span><span class="t">Trim whitespace in cells</span></span></label>
+        <label class="check"><input type="checkbox" id="optEmpty" checked><span><span class="t">Use &amp;nbsp; for empty cells</span><span class="d">Stops borders collapsing in older browsers.</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label for="styleMode">Styling</label>
+      <select id="styleMode">
+        <option value="none" selected>Semantic HTML only</option>
+        <option value="css">HTML + CSS stylesheet</option>
+        <option value="inline">Inline styles (for email)</option>
+        <option value="bootstrap">Bootstrap 5 classes</option>
+        <option value="tailwind">Tailwind classes</option>
+      </select>
+    </div>
+
+    <fieldset class="field" id="styleOpts">
+      <legend class="label">Style options</legend>
+      <div class="check-list">
+        <label class="check"><input type="checkbox" id="optStriped"><span><span class="t">Zebra striping</span></span></label>
+        <label class="check"><input type="checkbox" id="optHover"><span><span class="t">Row hover highlight</span></span></label>
+        <label class="check"><input type="checkbox" id="optBordered" checked><span><span class="t">Cell borders</span></span></label>
+        <label class="check"><input type="checkbox" id="optResponsive"><span><span class="t">Responsive wrapper</span><span class="d">Horizontal scroll container so wide tables never break the page.</span></span></label>
+        <label class="check"><input type="checkbox" id="optAlignNum" checked><span><span class="t">Right-align numeric columns</span><span class="d">Detected automatically from the data.</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="field">
+      <label for="cssClass">Table class</label>
+      <input type="text" id="cssClass" value="data-table">
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Formatting</legend>
+      <div class="check-list">
+        <label class="check on"><input type="checkbox" id="optIndent" checked><span><span class="t">Indent the markup</span></span></label>
+        <label class="check"><input type="checkbox" id="optMinify"><span><span class="t">Minify output</span></span></label>
+      </div>
+    </fieldset>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated Table<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="file">HTML</button>
+      <button type="button" data-tab="preview">Live preview</button>
+      <button type="button" data-tab="a11y">Accessibility</button>
+    </div>
+
+    <div data-panel="file">
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">table.html</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+      <div id="warnBox"></div>
+    </div>
+
+    <div data-panel="preview" hidden>
+      <div id="preview" style="overflow-x:auto;border:1px solid var(--line);border-radius:12px;padding:16px"></div>
+    </div>
+
+    <div data-panel="a11y" hidden><div id="a11y"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoCopy:copy','icoDl:download']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var src = 'paste', grid = [];
+
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'table.html', mime: 'text/html' });
+
+  function detectDelim(text) {
+    var d = $('#delim').value;
+    if (d !== 'auto') return d;
+    var first = (text.split(/\r?\n/)[0] || '');
+    var counts = [['\t', (first.match(/\t/g) || []).length], [',', (first.match(/,/g) || []).length],
+                  [';', (first.match(/;/g) || []).length], ['|', (first.match(/\|/g) || []).length]];
+    counts.sort(function (a, b) { return b[1] - a[1]; });
+    return counts[0][1] ? counts[0][0] : ',';
+  }
+
+  /* Minimal RFC 4180-aware splitter so quoted commas survive. */
+  function parseLine(line, d) {
+    var outArr = [], cur = '', inQ = false;
+    for (var i = 0; i < line.length; i++) {
+      var c = line[i];
+      if (inQ) {
+        if (c === '"') {
+          if (line[i + 1] === '"') { cur += '"'; i++; }
+          else inQ = false;
+        } else cur += c;
+      } else if (c === '"') inQ = true;
+      else if (c === d) { outArr.push(cur); cur = ''; }
+      else cur += c;
+    }
+    outArr.push(cur);
+    return outArr;
+  }
+
+  function readGrid() {
+    if (src === 'size') {
+      var r = Math.max(1, Math.min(200, parseInt($('#rows').value, 10) || 1));
+      var c = Math.max(1, Math.min(30, parseInt($('#cols').value, 10) || 1));
+      var g = [];
+      for (var i = 0; i < r; i++) {
+        var row = [];
+        for (var j = 0; j < c; j++) {
+          row.push(i === 0 && $('#optHeaderRow').checked ? 'Header ' + (j + 1) : 'Cell ' + i + '-' + (j + 1));
+        }
+        g.push(row);
+      }
+      return g;
+    }
+    var text = $('#data').value.replace(/\r\n/g, '\n').replace(/\n+$/, '');
+    if (!text.trim()) return [];
+    var d = detectDelim(text);
+    var g2 = text.split('\n').map(function (l) { return parseLine(l, d); });
+    var width = Math.max.apply(null, g2.map(function (r2) { return r2.length; }));
+    g2.forEach(function (r3) { while (r3.length < width) r3.push(''); });
+    if ($('#optTrim').checked) g2 = g2.map(function (r4) { return r4.map(function (c2) { return c2.trim(); }); });
+    return g2;
+  }
+
+  function numericCols() {
+    if (!$('#optAlignNum').checked || !grid.length) return {};
+    var start = $('#optHeaderRow').checked ? 1 : 0;
+    var body = grid.slice(start);
+    var res = {};
+    if (!body.length) return res;
+    for (var c = 0; c < grid[0].length; c++) {
+      var vals = body.map(function (r) { return (r[c] || '').trim(); }).filter(Boolean);
+      if (!vals.length) continue;
+      res[c] = vals.every(function (v) { return /^-?[$€£]?\s?[\d,]+(\.\d+)?%?$/.test(v); });
+    }
+    return res;
+  }
+
+  var CSS = {
+    base: function (cls) {
+      var lines = ['.' + cls + ' {', '  width: 100%;', '  border-collapse: collapse;',
+        '  font-size: 0.95rem;', '  text-align: left;', '}'];
+      lines.push('.' + cls + ' caption {', '  caption-side: top;', '  text-align: left;',
+        '  font-weight: 600;', '  padding: 0 0 0.75rem;', '  color: #334155;', '}');
+      lines.push('.' + cls + ' th,', '.' + cls + ' td {', '  padding: 0.6rem 0.75rem;');
+      if ($('#optBordered').checked) lines.push('  border: 1px solid #e2e8f0;');
+      else lines.push('  border-bottom: 1px solid #e2e8f0;');
+      lines.push('}');
+      lines.push('.' + cls + ' thead th {', '  background: #f8fafc;', '  font-weight: 600;',
+        '  color: #0f172a;', '  border-bottom: 2px solid #cbd5e1;', '}');
+      if ($('#optStriped').checked) {
+        lines.push('.' + cls + ' tbody tr:nth-child(even) {', '  background: #f8fafc;', '}');
+      }
+      if ($('#optHover').checked) {
+        lines.push('.' + cls + ' tbody tr:hover {', '  background: #eff6ff;', '}');
+      }
+      lines.push('.' + cls + ' td.num,', '.' + cls + ' th.num {', '  text-align: right;',
+        '  font-variant-numeric: tabular-nums;', '}');
+      if ($('#optTfoot').checked) {
+        lines.push('.' + cls + ' tfoot td,', '.' + cls + ' tfoot th {', '  font-weight: 600;',
+          '  background: #f1f5f9;', '}');
+      }
+      if ($('#optResponsive').checked) {
+        lines.push('.table-wrap {', '  overflow-x: auto;', '  -webkit-overflow-scrolling: touch;', '}');
+      }
+      return lines.join('\n');
+    }
+  };
+
+  function attrsFor(mode, kind, isNum) {
+    var cls = [];
+    if (mode === 'bootstrap') {
+      if (kind === 'table') {
+        cls.push('table');
+        if ($('#optStriped').checked) cls.push('table-striped');
+        if ($('#optHover').checked) cls.push('table-hover');
+        if ($('#optBordered').checked) cls.push('table-bordered');
+      }
+      if (isNum) cls.push('text-end');
+    } else if (mode === 'tailwind') {
+      if (kind === 'table') cls.push('min-w-full', 'border-collapse', 'text-sm');
+      if (kind === 'th') cls.push('bg-slate-50', 'font-semibold', 'px-3', 'py-2', 'text-left', 'border', 'border-slate-200');
+      if (kind === 'td') cls.push('px-3', 'py-2', 'border', 'border-slate-200');
+      if (isNum) { cls = cls.filter(function (c) { return c !== 'text-left'; }); cls.push('text-right', 'tabular-nums'); }
+    } else {
+      if (kind === 'table') cls.push($('#cssClass').value || 'data-table');
+      if (isNum) cls.push('num');
+    }
+    return cls.length ? ' class="' + cls.join(' ') + '"' : '';
+  }
+
+  function inlineStyle(kind, isNum) {
+    if ($('#styleMode').value !== 'inline') return '';
+    var border = $('#optBordered').checked ? 'border:1px solid #e2e8f0;' : 'border-bottom:1px solid #e2e8f0;';
+    if (kind === 'table') return ' style="width:100%;border-collapse:collapse;font-family:Arial,Helvetica,sans-serif;font-size:14px"';
+    if (kind === 'th') return ' style="' + border + 'padding:10px 12px;background:#f8fafc;font-weight:600;text-align:' + (isNum ? 'right' : 'left') + '"';
+    return ' style="' + border + 'padding:10px 12px;text-align:' + (isNum ? 'right' : 'left') + '"';
+  }
+
+  function build() {
+    grid = readGrid();
+    var mode = $('#styleMode').value;
+    var nums = numericCols();
+    var nl = $('#optMinify').checked ? '' : '\n';
+    var pad = function (n) { return ($('#optIndent').checked && !$('#optMinify').checked) ? new Array(n + 1).join(' ') : ''; };
+
+    if (!grid.length) {
+      out.set('<!-- Paste some data to generate a table -->', 'table.html');
+      $('#preview').innerHTML = '<p style="color:var(--muted)">No data.</p>';
+      $('#pill').textContent = 'empty';
+      return;
+    }
+
+    var hasHeadRow = $('#optHeaderRow').checked;
+    var hasHeadCol = $('#optHeaderCol').checked;
+    var hasFoot = $('#optTfoot').checked && grid.length > (hasHeadRow ? 2 : 1);
+
+    var body = grid.slice(hasHeadRow ? 1 : 0);
+    var foot = hasFoot ? body.pop() : null;
+
+    function cell(v, tag, scope, isNum) {
+      var content = v === '' ? ($('#optEmpty').checked ? '&nbsp;' : '') : GT.esc(v);
+      var sc = scope ? ' scope="' + scope + '"' : '';
+      return '<' + tag + sc + attrsFor(mode, tag, isNum) + inlineStyle(tag, isNum) + '>' + content + '</' + tag + '>';
+    }
+
+    var L = [];
+    var wrap = $('#optResponsive').checked;
+    if (wrap) L.push('<div class="' + (mode === 'tailwind' ? 'overflow-x-auto' : mode === 'bootstrap' ? 'table-responsive' : 'table-wrap') + '">');
+
+    var p0 = wrap ? 2 : 0;
+    L.push(pad(p0) + '<table' + attrsFor(mode, 'table') + inlineStyle('table') + '>');
+
+    var cap = $('#caption').value.trim();
+    if (cap) L.push(pad(p0 + 2) + '<caption>' + GT.esc(cap) + '</caption>');
+
+    if (hasHeadRow) {
+      L.push(pad(p0 + 2) + '<thead>');
+      L.push(pad(p0 + 4) + '<tr>');
+      grid[0].forEach(function (v, i) {
+        L.push(pad(p0 + 6) + cell(v, 'th', 'col', !!nums[i]));
+      });
+      L.push(pad(p0 + 4) + '</tr>');
+      L.push(pad(p0 + 2) + '</thead>');
+    }
+
+    L.push(pad(p0 + 2) + '<tbody>');
+    body.forEach(function (row) {
+      L.push(pad(p0 + 4) + '<tr>');
+      row.forEach(function (v, i) {
+        if (i === 0 && hasHeadCol) L.push(pad(p0 + 6) + cell(v, 'th', 'row', false));
+        else L.push(pad(p0 + 6) + cell(v, 'td', null, !!nums[i]));
+      });
+      L.push(pad(p0 + 4) + '</tr>');
+    });
+    L.push(pad(p0 + 2) + '</tbody>');
+
+    if (foot) {
+      L.push(pad(p0 + 2) + '<tfoot>');
+      L.push(pad(p0 + 4) + '<tr>');
+      foot.forEach(function (v, i) {
+        if (i === 0 && hasHeadCol) L.push(pad(p0 + 6) + cell(v, 'th', 'row', false));
+        else L.push(pad(p0 + 6) + cell(v, 'td', null, !!nums[i]));
+      });
+      L.push(pad(p0 + 4) + '</tr>');
+      L.push(pad(p0 + 2) + '</tfoot>');
+    }
+
+    L.push(pad(p0) + '</table>');
+    if (wrap) L.push('</div>');
+
+    var html = L.join(nl);
+    var full = html;
+    if (mode === 'css') {
+      full = '<style>\n' + CSS.base($('#cssClass').value || 'data-table') + '\n</style>\n\n' + html;
+    }
+
+    out.set(full, 'table.html');
+    $('#preview').innerHTML = mode === 'css' ? full : '<style>' + CSS.base('__prev') + '</style>' +
+      html.replace(/class="[^"]*"/g, function (m2) {
+        return mode === 'none' || mode === 'inline' ? 'class="__prev"' : m2;
+      });
+    if (mode === 'none' || mode === 'inline') {
+      $('#preview').innerHTML = '<style>' + CSS.base('__prev') + '</style>' + html.replace('<table', '<table class="__prev"');
+    }
+
+    $('#pill').textContent = grid.length + ' rows × ' + grid[0].length + ' cols';
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+
+    renderWarn();
+    renderA11y();
+  }
+
+  function renderWarn() {
+    var w = [];
+    if (!$('#optHeaderRow').checked && !$('#optHeaderCol').checked) {
+      w.push(['err', 'No header cells. Without <code>&lt;th&gt;</code>, screen readers cannot announce which column a value belongs to — the table becomes a wall of unlabelled numbers.']);
+    }
+    if (!$('#caption').value.trim()) {
+      w.push(['warn', 'No caption. A <code>&lt;caption&gt;</code> gives the table an accessible name, which is how assistive technology users pick the right table on a busy page.']);
+    }
+    var ragged = grid.some(function (r) { return r.length !== grid[0].length; });
+    if (ragged) w.push(['warn', 'Rows have differing lengths — short rows were padded with empty cells.']);
+    if (grid[0] && grid[0].length > 8 && !$('#optResponsive').checked) {
+      w.push(['warn', grid[0].length + ' columns is wide for a phone. Enable the responsive wrapper so the table scrolls instead of breaking the layout.']);
+    }
+    if ($('#styleMode').value === 'inline') {
+      w.push(['warn', 'Inline styles are for HTML email, where stylesheets are unreliable. For a web page use a class and a stylesheet.']);
+    }
+    if (!w.length) w.push(['ok', 'Semantic structure with thead, scope attributes and a caption.']);
+    $('#warnBox').innerHTML = w.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : x[0] === 'warn' ? 'note-warn' : 'note-err') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+  }
+
+  function renderA11y() {
+    $('#a11y').innerHTML = [
+      ['Use a caption, not a heading above the table', 'A <code>&lt;caption&gt;</code> is programmatically tied to the table, so screen readers announce it when the user lands on the table. An <code>&lt;h3&gt;</code> sitting above it is not connected to anything.'],
+      ['scope is what makes headers work', '<code>&lt;th scope="col"&gt;</code> associates a header with its column, <code>scope="row"</code> with its row. Without it, a screen reader reading cell by cell announces "142" with no indication that it means Stock.'],
+      ['Both axes need headers in a matrix', 'If your first column contains labels — product names, dates, categories — mark it as a row header too. Otherwise only half the table is navigable.'],
+      ['Never use tables for layout', 'A layout table is announced as data and read cell by cell, which is baffling. Use CSS Grid or Flexbox. The one exception is HTML email, where table layout is still required.'],
+      ['Keep it a single simple table', 'Merged cells, nested tables and multi-level headers are extremely difficult to navigate non-visually. If you need <code>colspan</code> across header groups, you also need <code>id</code> and <code>headers</code> attributes to keep it usable — splitting into two tables is usually better.'],
+      ['Responsive tables should scroll, not reflow', 'Turning rows into stacked cards loses the header association. A horizontally scrolling wrapper with <code>tabindex="0"</code> and an accessible name keeps the structure intact and remains keyboard-scrollable.']
+    ].map(function (x) {
+      return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+        '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+    }).join('');
+  }
+
+  $('#src').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#src button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    src = b.getAttribute('data-s');
+    $('#pasteField').hidden = src !== 'paste';
+    $('#sizeField').hidden = src !== 'size';
+    build();
+  });
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'html-table-generator',
+    lede: 'Paste data from a spreadsheet and get accessible HTML — proper thead, scope attributes, caption and numeric alignment, with optional CSS, Bootstrap or Tailwind classes.',
+    steps: [
+      { icon: 'gear', title: 'Paste your data', text: 'CSV, TSV or a copy from Excel or Sheets — the delimiter is detected for you.' },
+      { icon: 'grid', title: 'Set the structure', text: 'Header row, header column, footer for totals, plus striping and responsive scrolling.' },
+      { icon: 'copy', title: 'Copy the markup', text: 'Semantic HTML, HTML plus a stylesheet, inline styles for email, or framework classes.' }
+    ],
+    guideTitle: 'What separates a real table from a grid of divs',
+    guide:
+      '<p style="color:var(--muted)">Tables get a bad reputation from the layout-table era, but for actual tabular data they are the correct element and nothing else comes close. A properly marked-up table lets a screen-reader user move cell by cell and hear "Stock, USB-C Hub, 0" — a grid of divs gives them "0".</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">The four things that matter</h4><ol style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><code>&lt;thead&gt;</code> with <code>&lt;th scope="col"&gt;</code> for column headers.</li><li><code>&lt;th scope="row"&gt;</code> when the first column is a label rather than data.</li><li>A <code>&lt;caption&gt;</code> so the table has an accessible name.</li><li><code>&lt;tfoot&gt;</code> for totals, so they are identified as a summary rather than another data row.</li></ol>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">Everything else is styling. These four are what make the table usable without sight.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Practical details</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><strong>Right-align numbers</strong> and use <code>font-variant-numeric: tabular-nums</code> so digits line up in columns. This tool detects numeric columns automatically.</li><li><strong>Wide tables should scroll</strong> inside their own container, never force the page to scroll horizontally.</li><li><strong>Zebra striping</strong> helps on wide tables and adds noise on narrow ones.</li><li><strong>HTML email</strong> is the one place inline styles are correct — most clients strip <code>&lt;style&gt;</code> blocks.</li></ul></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>The "responsive table" that stacks rows into cards breaks accessibility.</strong> Once each cell becomes its own block, the association between value and column header is gone unless you duplicate the label in a <code>data-label</code> attribute. A horizontally scrolling wrapper keeps the real table structure and is almost always the better answer.</span></div>',
+    related: ['markdown-table-generator', 'csv-test-data-generator', 'html-select-option-generator'],
+    faqs: [
+      { q: 'How do I make an HTML table accessible?', a: 'Use <code>&lt;thead&gt;</code> with <code>&lt;th scope="col"&gt;</code> for column headers, <code>&lt;th scope="row"&gt;</code> where the first column is a label, and add a <code>&lt;caption&gt;</code> so the table has an accessible name. This generator does all three by default.' },
+      { q: 'Can I paste data straight from Excel?', a: 'Yes. Excel and Google Sheets copy as tab-separated text, which is detected automatically. CSV, semicolon and pipe-delimited data all work too, including quoted fields containing commas.' },
+      { q: 'What does scope do?', a: 'It tells assistive technology whether a header cell labels its column or its row. Without it, a screen reader reading a cell announces the value with no context about what it measures.' },
+      { q: 'Should I use a table for page layout?', a: 'No — use CSS Grid or Flexbox. Layout tables are announced as data tables and read cell by cell, which is confusing. The single exception is HTML email, where table layout is still necessary.' },
+      { q: 'How do I make a wide table work on mobile?', a: 'Enable the responsive wrapper. It puts the table in a horizontally scrolling container so the page layout stays intact and the table structure — and its accessibility — is preserved.' },
+      { q: 'Which styling option should I choose?', a: 'Semantic HTML only if you already have table styles. HTML plus CSS for a standalone snippet. Inline styles only for HTML email. Bootstrap or Tailwind if your project already uses them.' }
+    ],
+    seo: {
+      title: 'Accessible HTML tables: thead, scope, captions and responsive behaviour',
+      lead: 'This <strong>HTML table generator</strong> turns pasted spreadsheet data into semantic markup — <code>thead</code>, <code>scope</code> attributes, a caption and numeric alignment — with optional plain CSS, Bootstrap or Tailwind classes. Below: what makes a table accessible, and how to handle a wide one on a phone.',
+      blocks: [
+        {
+          h: 'A table is a data structure, not a layout',
+          html: '<p>A <code>&lt;table&gt;</code> tells assistive technology that the content is a grid of related values with meaningful rows and columns. A screen reader announces the dimensions, lets the user move cell by cell, and — if the markup is right — reads the relevant header before each value.</p>' +
+            '<p>A grid of <code>&lt;div&gt;</code>s with CSS Grid looks identical and communicates none of that. The user hears a stream of numbers with no idea which column each belongs to.</p>' +
+            '<p>The rule is simple: if the content is tabular data, use a table. If it is page layout, use CSS Grid or Flexbox. Layout tables have been obsolete for twenty years and remain actively harmful to screen reader users.</p>'
+        },
+        {
+          h: 'What makes a table accessible',
+          steps: [
+            { t: 'Use th for headers, not styled td', d: 'A bold <code>&lt;td&gt;</code> is visually a header and semantically a value. Assistive technology reads the difference.' },
+            { t: 'Add scope to every header cell', d: '<code>scope="col"</code> on column headers, <code>scope="row"</code> on row headers. This is what associates a value with its label.' },
+            { t: 'Group with thead, tbody and tfoot', d: 'Headers repeat across printed pages, and some readers use the grouping for navigation.' },
+            { t: 'Add a caption', d: '<code>&lt;caption&gt;</code> is the table\'s accessible name — the first thing announced. It is also what tells a sighted user what they are looking at.' },
+            { t: 'Keep one header row where possible', d: 'Complex multi-level headers need <code>id</code> and <code>headers</code> attributes, which are laborious and easy to get wrong.' },
+            { t: 'Never leave the top-left corner as a th with no scope', d: 'If it labels nothing, an empty <code>&lt;td&gt;</code> is more accurate.' }
+          ]
+        },
+        {
+          h: 'What scope actually does',
+          html: '<p><code>scope</code> declares which cells a header applies to. Without it, a screen reader has to guess from position — and it guesses badly as soon as the table has both row and column headers.</p>',
+          table: {
+            head: ['Value', 'Meaning', 'Where it goes'],
+            rows: [
+              ['<code>scope="col"</code>', 'This header labels the column below it.', 'Header cells in <code>thead</code>.'],
+              ['<code>scope="row"</code>', 'This header labels the rest of its row.', 'The first cell of each body row, when it is a label.'],
+              ['<code>scope="colgroup"</code>', 'Labels a group of columns spanned by this cell.', 'A spanning header above sub-headers.'],
+              ['<code>scope="rowgroup"</code>', 'Labels a group of rows.', 'A section header inside <code>tbody</code>.']
+            ]
+          },
+          after: '<p>With <code>scope</code> set correctly, a user landing on a cell hears "Revenue, Q3, 48,200" instead of "48,200".</p>',
+          callout: { type: 'tip', text: 'A table with a row header column — product names, dates, people — is far easier to use than one that is all values. If your first column identifies the row, mark it up as <code>&lt;th scope="row"&gt;</code> rather than a plain cell.' }
+        },
+        {
+          h: 'Pasting from a spreadsheet',
+          html: '<p>Copying cells from Excel, Google Sheets or Numbers puts tab-separated text on the clipboard. Paste it in and the generator detects the delimiter, splits the columns, and treats the first row as headers.</p>' +
+            '<p>Two things to check after pasting. Numbers formatted in the spreadsheet arrive as display text — <code>£1,234.00</code>, not <code>1234</code> — so if the values feed anything other than a human eye, paste the underlying values instead. And cells containing line breaks arrive quoted, which the parser handles but which usually indicates the data wants a different shape.</p>' +
+            '<p>CSV works identically, as does a plain tab- or comma-separated block typed by hand.</p>'
+        },
+        {
+          h: 'Wide tables on small screens',
+          cards: [
+            { t: 'Horizontal scroll container', d: 'Wrap the table in a <code>div</code> with <code>overflow-x: auto</code> and a <code>tabindex="0"</code> so keyboard users can scroll it. The simplest option, and the only one that preserves the grid.' },
+            { t: 'Stacked cards', d: 'CSS turns each row into a labelled block below a breakpoint, using <code>data-label</code> attributes for the headers. Readable, but the columns are no longer comparable.' },
+            { t: 'Hide low-priority columns', d: 'Show four columns on mobile and ten on desktop. Honest only if the hidden data is genuinely secondary.' },
+            { t: 'Do not shrink the text', d: 'A table at 9px fits and cannot be read. Scrolling beats illegibility.' }
+          ],
+          after: '<p>Whichever you choose, keep a visible affordance that there is more content — a shadow, a fade, or a scrollbar. A silently clipped table looks complete and is not.</p>'
+        },
+        {
+          h: 'Choosing a styling option',
+          html: '<p>The markup is identical in each case; only the classes differ.</p>',
+          list: [
+            '<strong>Semantic HTML only</strong> — no classes at all. Right when a design system or a stylesheet already targets <code>table</code> elements.',
+            '<strong>Plain CSS</strong> — a small self-contained stylesheet with borders, zebra striping and padding. Right for a static page, an email template or a document with no framework.',
+            '<strong>Bootstrap</strong> — <code>table</code>, <code>table-striped</code>, <code>table-responsive</code>. Right if the page already loads Bootstrap.',
+            '<strong>Tailwind</strong> — utility classes on each element. Verbose in the markup, but consistent with the rest of a Tailwind project.'
+          ],
+          callout: { type: 'warn', text: '<strong>Zebra striping is decoration, not structure.</strong> It helps sighted users track a row and does nothing for anyone using a screen reader. It is never a substitute for <code>scope</code> and <code>th</code> — and with insufficient contrast between stripes it fails WCAG on its own terms.' }
+        },
+        {
+          h: 'Related markup tools',
+          list: [
+            '<a href="markdown-table-generator.html">Markdown Table Generator</a> — the same data for READMEs and docs.',
+            '<a href="csv-test-data-generator.html">CSV Test Data Generator</a> — realistic rows to populate a table.',
+            '<a href="html-select-option-generator.html">HTML Select Option Generator</a> — accessible dropdown markup.',
+            '<a href="html-datalist-generator.html">HTML Datalist Generator</a> — native autocomplete for inputs.'
+          ]
+        }
+      ],
+      keywords: [
+        'html table generator', 'accessible html table', 'table scope attribute',
+        'thead tbody tfoot', 'table caption accessibility', 'excel to html table',
+        'csv to html table', 'responsive table css', 'bootstrap table markup',
+        'tailwind table', 'semantic table html', 'screen reader table'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cleaning Schedule Generator — Daily, Weekly &amp; Monthly Plans | Manage My Batch</title>
+<meta name="description" content="Free cleaning schedule generator. Build a daily, weekly and monthly cleaning plan by room, split fairly across a household or team, with printable checklists.">
+<link rel="canonical" href="https://managemybatch.com/tools/cleaning-schedule-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Cleaning Schedule Generator — Daily, Weekly &amp; Monthly Plans">
+<meta property="og:description" content="Free cleaning schedule generator. Build a daily, weekly and monthly cleaning plan by room, split fairly across a household or team, with printable checklists.">
+<meta property="og:url" content="https://managemybatch.com/tools/cleaning-schedule-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cleaning Schedule Generator — Daily, Weekly &amp; Monthly Plans">
+<meta name="twitter:description" content="Free cleaning schedule generator. Build a daily, weekly and monthly cleaning plan by room, split fairly across a household or team, with printable checklists.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Schedule Setup</div>
+
+    <div class="field">
+      <label for="preset">Start from a template</label>
+      <select id="preset">
+        <option value="home" selected>Home</option>
+        <option value="flat">Flat / shared house</option>
+        <option value="office">Office</option>
+        <option value="custom">My own list</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="tasks">Tasks — one per line</label>
+      <textarea id="tasks" style="min-height:220px"></textarea>
+      <div class="hint">Format <code>Task | frequency | room</code>. Frequency: daily, weekly, monthly or quarterly.</div>
+      <div id="taskStats"></div>
+    </div>
+
+    <div class="field">
+      <label for="people">Share between — one per line <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
+      <textarea id="people" style="min-height:80px">Alex
+Sam
+Jo</textarea>
+      <div class="hint">Leave blank for an unassigned checklist.</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="row">
+      <div class="field"><label for="weeks">Weeks to plan</label><input type="number" id="weeks" value="4" min="1" max="26"></div>
+      <div class="field"><label for="start">Starting</label><input type="date" id="start"></div>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Options</legend>
+      <div class="check-list">
+        <label class="check on"><input type="checkbox" id="optRotate" checked>
+          <span><span class="t">Rotate who does what each week</span><span class="d">Otherwise the same person always gets the same job.</span></span></label>
+        <label class="check on"><input type="checkbox" id="optGroupRoom" checked>
+          <span><span class="t">Group by room</span><span class="d">Off groups by frequency instead.</span></span></label>
+        <label class="check on"><input type="checkbox" id="optTick" checked>
+          <span><span class="t">Tick boxes</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="field">
+      <label for="title">Schedule title</label>
+      <input type="text" id="title" value="Cleaning Schedule">
+    </div>
+
+    <div class="field">
+      <label for="seed">Seed</label>
+      <div class="row" style="grid-template-columns:minmax(0,1fr) auto;gap:8px">
+        <input type="text" id="seed" value="clean-1">
+        <button type="button" class="btn btn-soft" id="newSeed"><span id="icoReset"></span></button>
+      </div>
+    </div>
+
+    <div class="out-actions">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate Schedule</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Schedule<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="plan">Plan</button>
+      <button type="button" data-tab="weekly">Week by week</button>
+      <button type="button" data-tab="load">Workload</button>
+      <button type="button" data-tab="guide">Notes</button>
+    </div>
+
+    <div data-panel="plan">
+      <div id="plan"></div>
+      <div class="out-actions" style="margin-top:16px">
+        <button type="button" class="btn btn-primary" id="printBtn"><span id="icoFile"></span> Print checklist</button>
+        <button type="button" class="btn btn-ghost" id="csvBtn"><span id="icoDl"></span> CSV</button>
+        <button type="button" class="btn btn-soft" id="regen"><span id="icoReset2"></span> Reshuffle</button>
+      </div>
+      <div id="checks"></div>
+    </div>
+
+    <div data-panel="weekly" hidden><div id="weekly"></div></div>
+    <div data-panel="load" hidden><div id="load"></div></div>
+    <div data-panel="guide" hidden><div id="guide"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/schedule.js"></script>
+<script src="../assets/js/roster.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$, S = GTSched;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoDl:download','icoReset:reset','icoReset2:reset','icoFile:file']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  $('#start').value = GT.today();
+
+  var TEMPLATES = {
+    home: 'Wash up / load dishwasher | daily | Kitchen\nWipe kitchen surfaces | daily | Kitchen\nTidy living areas | daily | Living room\nMake beds | daily | Bedrooms\nHoover downstairs | weekly | Living room\nHoover upstairs | weekly | Bedrooms\nMop hard floors | weekly | Kitchen\nClean toilet | weekly | Bathroom\nClean shower and bath | weekly | Bathroom\nClean sinks and mirrors | weekly | Bathroom\nChange bed linen | weekly | Bedrooms\nBins and recycling out | weekly | Whole house\nDust surfaces and shelves | weekly | Living room\nClean inside microwave | monthly | Kitchen\nClean oven | monthly | Kitchen\nWipe skirting boards | monthly | Whole house\nClean windows inside | monthly | Whole house\nDescale kettle and taps | monthly | Kitchen\nWash curtains | quarterly | Whole house\nClean behind appliances | quarterly | Kitchen\nDeep clean fridge | quarterly | Kitchen',
+    flat: 'Wash up | daily | Kitchen\nWipe worktops | daily | Kitchen\nTidy shared areas | daily | Living room\nTake out bins | weekly | Whole flat\nHoover shared areas | weekly | Living room\nMop kitchen floor | weekly | Kitchen\nClean toilet | weekly | Bathroom\nClean shower | weekly | Bathroom\nClean bathroom sink and mirror | weekly | Bathroom\nWipe fridge shelves | monthly | Kitchen\nClean oven and hob | monthly | Kitchen\nDust and wipe surfaces | monthly | Living room\nWash bath mats and towels | monthly | Bathroom\nDeep clean fridge | quarterly | Kitchen',
+    office: 'Empty desk bins | daily | Whole office\nWipe kitchen counters | daily | Kitchen\nLoad and run dishwasher | daily | Kitchen\nTidy meeting rooms | daily | Meeting rooms\nRestock supplies | weekly | Kitchen\nHoover floors | weekly | Whole office\nClean toilets | weekly | Bathrooms\nWipe door handles and switches | weekly | Whole office\nClean fridge | monthly | Kitchen\nDust monitors and desks | monthly | Whole office\nClean windows | quarterly | Whole office\nDeep clean carpets | quarterly | Whole office'
+  };
+
+  var FREQ_ORDER = { daily: 0, weekly: 1, monthly: 2, quarterly: 3 };
+  var FREQ_WEEKS = { daily: 1, weekly: 1, monthly: 4, quarterly: 13 };
+
+  var tasks = [], people = [], plan = [];
+
+  function parseTasks() {
+    var out = [];
+    GT.lines($('#tasks').value).forEach(function (l) {
+      var parts = l.split('|').map(function (x) { return x.trim(); });
+      var name = parts[0];
+      if (!name) return;
+      var freq = (parts[1] || 'weekly').toLowerCase();
+      if (!(freq in FREQ_WEEKS)) freq = 'weekly';
+      out.push({ name: name, freq: freq, room: parts[2] || 'General' });
+    });
+    return out;
+  }
+
+  function build() {
+    if ($('#preset').value !== 'custom' && !$('#tasks').value.trim()) {
+      $('#tasks').value = TEMPLATES[$('#preset').value] || TEMPLATES.home;
+    }
+    tasks = parseTasks();
+    var pp = GTRoster.parseNames($('#people').value);
+    people = pp.names;
+
+    var byFreq = {};
+    tasks.forEach(function (t) { byFreq[t.freq] = (byFreq[t.freq] || 0) + 1; });
+    $('#taskStats').innerHTML = '<div class="note ' + (tasks.length ? 'note-ok' : 'note-warn') + '" style="margin-top:10px">' +
+      (tasks.length ? I.check : I.warn) + '<span>' + tasks.length + ' task' + (tasks.length === 1 ? '' : 's') + ' · ' +
+      Object.keys(byFreq).sort(function (a, b) { return FREQ_ORDER[a] - FREQ_ORDER[b]; })
+        .map(function (f) { return byFreq[f] + ' ' + f; }).join(' · ') + '</span></div>';
+
+    if (!tasks.length) {
+      $('#plan').innerHTML = '<div class="empty">Add some tasks.</div>';
+      $('#pill').textContent = '—'; $('#weekly').innerHTML = ''; $('#load').innerHTML = '';
+      return;
+    }
+
+    var weeks = Math.max(1, Math.min(26, parseInt($('#weeks').value, 10) || 1));
+    var rand = S.rng($('#seed').value);
+    var order = people.length ? rand.shuffle(people) : [];
+
+    /* Assign each task instance to a person, rotating week by week. */
+    plan = [];
+    for (var w = 0; w < weeks; w++) {
+      var due = tasks.filter(function (t) { return w % FREQ_WEEKS[t.freq] === 0; });
+      var row = due.map(function (t, i) {
+        var person = null;
+        if (order.length) {
+          var idx = $('#optRotate').checked ? (i + w) % order.length : i % order.length;
+          person = order[idx];
+        }
+        return { task: t, person: person };
+      });
+      plan.push(row);
+    }
+    window.__order = order;
+
+    renderPlan();
+    renderWeekly();
+    renderLoad(order);
+    renderChecks(weeks);
+
+    $('#pill').textContent = tasks.length + ' tasks · ' + weeks + ' weeks';
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+  }
+
+  function freqChip(f) {
+    var colours = { daily: 'background:#dbeafe;color:#1e40af', weekly: 'background:#dcfce7;color:#166534',
+      monthly: 'background:#fef3c7;color:#92400e', quarterly: 'background:#ede9fe;color:#5b21b6' };
+    return '<span style="' + colours[f] + ';border-radius:5px;padding:2px 7px;font-size:11px;font-weight:600">' + f + '</span>';
+  }
+
+  function renderPlan() {
+    var groupKey = $('#optGroupRoom').checked ? 'room' : 'freq';
+    var groups = {};
+    tasks.forEach(function (t) { (groups[t[groupKey]] = groups[t[groupKey]] || []).push(t); });
+    var keys = Object.keys(groups);
+    if (groupKey === 'freq') keys.sort(function (a, b) { return FREQ_ORDER[a] - FREQ_ORDER[b]; });
+
+    $('#plan').innerHTML = keys.map(function (k) {
+      return '<div style="margin-bottom:18px"><p class="more-label">' + GT.esc(k) + '</p><div class="more-list">' +
+        groups[k].sort(function (a, b) { return FREQ_ORDER[a.freq] - FREQ_ORDER[b.freq]; })
+          .map(function (t) {
+            return '<div class="more-row">' +
+              ($('#optTick').checked ? '<span style="width:18px;flex:none;color:var(--muted-2)">☐</span>' : '') +
+              '<span class="mval" style="font-family:var(--sans);font-size:14.5px">' + GT.esc(t.name) + '</span>' +
+              freqChip(t.freq) +
+              (groupKey === 'freq' ? '<span class="chip" style="font-family:var(--sans)">' + GT.esc(t.room) + '</span>' : '') +
+              '</div>';
+          }).join('') + '</div></div>';
+    }).join('');
+  }
+
+  function renderWeekly() {
+    var d0 = new Date($('#start').value + 'T12:00:00');
+    $('#weekly').innerHTML = plan.map(function (row, w) {
+      var d = new Date(d0.getTime() + w * 7 * 86400000);
+      return '<div style="margin-bottom:18px">' +
+        '<p class="more-label">Week ' + (w + 1) + ' <span style="font-weight:500;color:var(--muted)">· w/c ' +
+        d.toLocaleDateString(undefined, { day: 'numeric', month: 'short' }) + ' · ' + row.length + ' tasks</span></p>' +
+        '<div class="more-list">' + row.map(function (item) {
+          return '<div class="more-row">' +
+            ($('#optTick').checked ? '<span style="width:18px;flex:none;color:var(--muted-2)">☐</span>' : '') +
+            '<span class="mval" style="font-family:var(--sans);font-size:14px">' + GT.esc(item.task.name) + '</span>' +
+            (item.person ? '<span class="chip" style="font-family:var(--sans);font-weight:600">' +
+              GT.esc(item.person) + '</span>' : '') + '</div>';
+        }).join('') + '</div></div>';
+    }).join('');
+  }
+
+  function renderLoad(order) {
+    if (!order.length) {
+      $('#load').innerHTML = '<div class="empty">Add people to see how the work splits.</div>';
+      return;
+    }
+    var counts = {};
+    order.forEach(function (p) { counts[p] = 0; });
+    plan.forEach(function (row) { row.forEach(function (i) { if (i.person) counts[i.person]++; }); });
+    var vals = order.map(function (p) { return counts[p]; });
+    var min = Math.min.apply(null, vals), max = Math.max.apply(null, vals);
+
+    $('#load').innerHTML =
+      '<p style="color:var(--muted);font-size:13.5px;margin-bottom:12px">Total task instances per person across the whole plan. Daily tasks count once per week here.</p>' +
+      order.map(function (p) {
+        var pct = max ? Math.round((counts[p] / max) * 100) : 0;
+        return '<div style="margin-bottom:10px">' +
+          '<div class="kv" style="border:0;padding:4px 0"><span class="k">' + GT.esc(p) + '</span>' +
+          '<span class="v">' + counts[p] + ' tasks</span></div>' +
+          '<div style="height:6px;background:var(--line);border-radius:999px;overflow:hidden">' +
+          '<div style="height:100%;width:' + pct + '%;background:var(--blue)"></div></div></div>';
+      }).join('') +
+      '<div class="note ' + (max - min <= 1 ? 'note-ok' : 'note-warn') + '" style="margin-top:12px">' +
+      (max - min <= 1 ? I.check : I.warn) + '<span>' + (max - min <= 1
+        ? 'Workload is evenly split.'
+        : 'Spread of ' + (max - min) + ' tasks between the busiest and quietest person. Increase the number of weeks so the rotation completes more full cycles.') +
+      '</span></div>';
+  }
+
+  function renderChecks(weeks) {
+    var c = [];
+    var byFreq = {};
+    tasks.forEach(function (t) { byFreq[t.freq] = (byFreq[t.freq] || 0) + 1; });
+
+    if (!byFreq.daily) c.push(['warn', 'No daily tasks. Washing up and wiping surfaces daily is what stops the weekly clean becoming a big job.']);
+    if (!byFreq.monthly && !byFreq.quarterly) {
+      c.push(['warn', 'Everything is daily or weekly. Deep-clean jobs — oven, windows, behind appliances — get forgotten unless they are scheduled on a longer cycle.']);
+    }
+    if (byFreq.quarterly && weeks < 13) {
+      c.push(['warn', 'Quarterly tasks appear every 13 weeks, so with only ' + weeks +
+        ' weeks planned they show once at the start and not again. Extend the plan to see the full cycle.']);
+    }
+    if (!people.length) {
+      c.push(['ok', 'No people listed — this is an unassigned checklist. Add names to split the work and rotate it.']);
+    } else if ($('#optRotate').checked) {
+      c.push(['ok', 'Tasks rotate each week, so nobody is permanently stuck with the bathroom.']);
+    } else {
+      c.push(['warn', 'Rotation is off, so the same person gets the same jobs every week. That is fine if people have chosen their tasks, and a common source of resentment if they have not.']);
+    }
+    var rooms = GT.uniq(tasks.map(function (t) { return t.room; }));
+    c.push(['ok', tasks.length + ' tasks across ' + rooms.length + ' area' + (rooms.length === 1 ? '' : 's') + '.']);
+    $('#checks').innerHTML = c.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : 'note-warn') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+  }
+
+  $('#csvBtn').addEventListener('click', function () {
+    var rows = ['week,task,frequency,room,person'];
+    plan.forEach(function (row, w) {
+      row.forEach(function (i) {
+        rows.push([w + 1, '"' + i.task.name.replace(/"/g, '""') + '"', i.task.freq,
+          '"' + i.task.room.replace(/"/g, '""') + '"', '"' + (i.person || '') + '"'].join(','));
+      });
+    });
+    GT.download(rows.join('\n'), 'cleaning-schedule.csv', 'text/csv');
+  });
+
+  $('#printBtn').addEventListener('click', function () {
+    var groupKey = $('#optGroupRoom').checked ? 'room' : 'freq';
+    var groups = {};
+    tasks.forEach(function (t) { (groups[t[groupKey]] = groups[t[groupKey]] || []).push(t); });
+    var keys = Object.keys(groups);
+    if (groupKey === 'freq') keys.sort(function (a, b) { return FREQ_ORDER[a] - FREQ_ORDER[b]; });
+
+    GTRoster.printHtml($('#title').value,
+      '<h1>' + GT.esc($('#title').value) + '</h1>' +
+      '<p class="sub">' + tasks.length + ' tasks' + (people.length ? ' · ' + people.length + ' people' : '') + '</p>' +
+      '<div class="grid g2">' + keys.map(function (k) {
+        return '<div class="card"><h3>' + GT.esc(k) + '</h3><ul style="list-style:none;padding-left:0">' +
+          groups[k].sort(function (a, b) { return FREQ_ORDER[a.freq] - FREQ_ORDER[b.freq]; })
+            .map(function (t) {
+              return '<li style="margin-bottom:5px">☐ ' + GT.esc(t.name) +
+                ' <span style="color:#64748b;font-size:11px">(' + t.freq + ')</span></li>';
+            }).join('') + '</ul></div>';
+      }).join('') + '</div>');
+  });
+
+  $('#preset').addEventListener('change', function () {
+    if (TEMPLATES[this.value]) $('#tasks').value = TEMPLATES[this.value];
+    build();
+  });
+  $('#newSeed').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); });
+  $('#regen').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); GT.toast('Reshuffled'); });
+
+  $('#guide').innerHTML = [
+    ['Frequency is what makes a schedule work', 'The reason cleaning feels endless is that everything gets treated as equally urgent. Splitting tasks into daily, weekly, monthly and quarterly turns an overwhelming list into a short daily routine plus a manageable weekly one — and it means the oven actually gets cleaned occasionally rather than never.'],
+    ['Daily tasks keep the weekly clean small', 'Washing up and wiping surfaces every day is not really cleaning, it is maintenance. Skip it and the weekly clean becomes a three-hour job that people avoid, which is how schedules collapse.'],
+    ['Rotate, or expect resentment', 'Whoever gets the bathroom every week will eventually stop doing it. Rotating means every job comes round to everyone, which removes the argument entirely. The workload tab shows the split so it is demonstrable rather than asserted.'],
+    ['Group by room for actual cleaning', 'When you are in the bathroom you want everything bathroom-related in one list — it is far more efficient than moving between rooms. Group by frequency instead when you are planning rather than cleaning.'],
+    ['Put quarterly tasks in the plan anyway', 'Washing curtains and cleaning behind appliances only need doing a few times a year, which is exactly why they get forgotten. Scheduling them is the only reliable way they happen.'],
+    ['Print it and tick it', 'A printed checklist on the fridge or in the cupboard works far better than an app nobody opens. Ticking boxes is also a surprisingly effective motivator for children.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('');
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Schedule generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+
+  $('#tasks').value = TEMPLATES.home;
+  build();
+
+  GT.page({
+    slug: 'cleaning-schedule-generator',
+    lede: 'A cleaning plan split by frequency and room — daily maintenance, weekly cleans and the quarterly jobs everyone forgets — shared fairly and printable as a checklist.',
+    steps: [
+      { icon: 'gear', title: 'Start from a template', text: 'Home, shared flat or office — then edit the task list.' },
+      { icon: 'home', title: 'Share it out', text: 'Add names and tasks rotate weekly, with a workload bar to prove it is even.' },
+      { icon: 'file', title: 'Print the checklist', text: 'Grouped by room, with tick boxes.' }
+    ],
+    guideTitle: 'Why frequency-based cleaning works',
+    guide:
+      '<p style="color:var(--muted)">Cleaning feels endless mostly because everything is treated as one undifferentiated pile of jobs. Sorting tasks by how often they genuinely need doing changes the shape of the problem: a short daily routine, a manageable weekly session, and a handful of deep-clean jobs on a longer cycle.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">The four tiers</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><strong>Daily</strong> — washing up, surfaces, tidying. Maintenance, not cleaning. Ten minutes.</li><li><strong>Weekly</strong> — hoovering, bathroom, floors, bins. The real clean.</li><li><strong>Monthly</strong> — oven, windows, skirting boards, fridge shelves.</li><li><strong>Quarterly</strong> — curtains, behind appliances, carpets.</li></ul></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Daily tasks are the load-bearing tier</h4><p style="color:var(--muted);font-size:13.8px">Skipping the daily ten minutes is what turns the weekly clean into a three-hour job. Once that happens people start avoiding it, and the schedule stops being followed at all.</p>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">The quarterly tier matters for the opposite reason: those jobs are easy to postpone indefinitely because nothing visibly breaks. Scheduling them is the only thing that makes them happen.</p></div></div>' +
+      '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span><strong>Group by room when cleaning, by frequency when planning.</strong> Standing in the bathroom you want every bathroom job in one list — walking between rooms per task wastes a surprising amount of time. The toggle switches between the two views.</span></div>',
+    related: ['chore-rotation-generator', 'work-shift-rotation-generator', 'secret-santa-generator'],
+    faqs: [
+      { q: 'How often should I clean each room?', a: 'Kitchen surfaces and washing up daily; bathrooms, hoovering and floors weekly; oven, windows and fridge monthly; curtains, carpets and behind appliances quarterly. The templates here follow that pattern.' },
+      { q: 'How do I split cleaning fairly between housemates?', a: 'Add everyone\'s names and leave rotation on. Tasks move between people each week, so nobody is permanently stuck with the bathroom, and the workload tab shows the split is even.' },
+      { q: 'Why include quarterly tasks?', a: 'Because nothing visibly breaks if you skip them, so they get postponed forever. Washing curtains and cleaning behind appliances only happen if they are actually scheduled.' },
+      { q: 'Should I group by room or by frequency?', a: 'By room when you are cleaning — having every bathroom job in one list saves walking back and forth. By frequency when you are planning or splitting the work.' },
+      { q: 'Can I use this for an office?', a: 'Yes — the office template covers desks, kitchen, meeting rooms and bathrooms with sensible frequencies, and you can assign tasks across a team.' },
+      { q: 'Can I print it?', a: 'Yes, grouped by room with tick boxes. A printed checklist in the cupboard is followed far more reliably than an app nobody opens.' }
+    ],
+    seo: {
+      title: 'Cleaning schedules: planning by frequency instead of by guilt',
+      lead: 'This <strong>cleaning schedule generator</strong> splits a home or office into daily maintenance, weekly cleans and the quarterly jobs everyone forgets — shared fairly and printable as a checklist. Below: how often each room actually needs attention, and why frequency beats room-by-room planning.',
+      blocks: [
+        {
+          h: 'Why frequency-based cleaning works',
+          html: '<p>The usual approach is to clean a room until it looks done. It fails for a predictable reason: the visible jobs get done every time and the invisible ones never do. Nobody looks at a clean-looking kitchen and thinks about the extractor filter.</p>' +
+            '<p>Organising by <strong>frequency</strong> fixes this. Every task is assigned an interval — daily, weekly, monthly, quarterly — and appears on the schedule when it is due, regardless of whether the room looks like it needs it. The extractor filter gets cleaned because it is on the quarterly list, not because someone noticed.</p>' +
+            '<p>The second benefit is that daily maintenance is separated from real cleaning. Ten minutes of daily tidying means the weekly clean is actually cleaning, rather than an hour of putting things away before you can start.</p>'
+        },
+        {
+          h: 'How often each area needs attention',
+          table: {
+            head: ['Area', 'Daily', 'Weekly', 'Monthly / quarterly'],
+            rows: [
+              ['Kitchen', 'Surfaces, dishes, bin', 'Floor, hob, sink, fridge front', 'Oven, fridge interior, extractor filter, cupboard fronts'],
+              ['Bathroom', 'Wipe basin, quick toilet clean', 'Full toilet, shower, bath, floor, mirror', 'Grout, showerhead descale, extractor fan, cabinet'],
+              ['Living areas', 'Tidy, cushions', 'Vacuum, dust surfaces', 'Skirtings, behind furniture, upholstery, light fittings'],
+              ['Bedrooms', 'Bed, clothes away', 'Vacuum, dust, change bedding', 'Under bed, mattress turn, wardrobe sort'],
+              ['Whole home', '—', 'Bins out, floors', 'Windows, doors and handles, filters, defrost freezer']
+            ]
+          },
+          after: '<p>These are starting intervals, not rules. Households with pets, small children or shift workers will want some weekly items daily; a single person out all day can stretch several weekly jobs to fortnightly without noticing.</p>'
+        },
+        {
+          h: 'Why the quarterly list matters',
+          html: '<p>Quarterly tasks are the ones that cause damage when they are skipped, which is precisely why they need to be scheduled rather than remembered.</p>',
+          list: [
+            '<strong>Extractor and vent filters</strong> — a blocked filter is a fire risk in a kitchen and a damp problem in a bathroom.',
+            '<strong>Showerhead descaling</strong> — limescale reduces flow permanently if left long enough.',
+            '<strong>Behind and under appliances</strong> — where spills, dust and, eventually, pests accumulate.',
+            '<strong>Window and door seals</strong> — where mould starts, unseen, until it is a real job.',
+            '<strong>Mattress rotation</strong> — cheap maintenance that measurably extends the life of an expensive item.',
+            '<strong>Drains and traps</strong> — a five-minute job quarterly, a plumber annually if skipped.'
+          ],
+          callout: { type: 'warn', text: 'Do not put the whole quarterly list on one day. Four hours of forgotten jobs in one Saturday is how a schedule gets abandoned. Spread them across the quarter — one quarterly task per week alongside the normal weekly clean is barely noticeable.' }
+        },
+        {
+          h: 'Splitting cleaning between housemates',
+          cards: [
+            { t: 'By area, rotating', d: 'Each person owns a zone for a period, then swaps. Clear accountability, and the rotation means nobody keeps the bathroom permanently.' },
+            { t: 'By task, rotating', d: 'Each person takes specific tasks across the whole home. Better when areas are very unequal in size.' },
+            { t: 'Shared session', d: 'Everyone cleans at the same time for a fixed hour. The most effective at getting it done, the hardest to schedule.' },
+            { t: 'By hours, not by task', d: 'Everyone contributes the same time rather than the same number of jobs. Fairest where tasks differ wildly in effort.' }
+          ],
+          after: '<p>Whichever split you use, rotate it. Permanent allocations concentrate the unpleasant jobs on whoever accepted them first, and that is where resentment starts. See the <a href="chore-rotation-generator.html">chore rotation generator</a> for the rotation itself.</p>'
+        },
+        {
+          h: 'Room or frequency?',
+          html: '<p>Group the <em>schedule</em> by frequency and the <em>checklist</em> by room.</p>' +
+            '<p>Frequency is how you decide what needs doing this week. Room is how you actually do it — walking into the bathroom and completing every bathroom task is far more efficient than doing all the wiping in the house, then all the vacuuming.</p>' +
+            '<p>The generator produces both views from one plan: a frequency-based schedule that says what is due, and a room-by-room checklist for the session itself.</p>',
+          callout: { type: 'tip', text: 'Print the checklist and tick items off. It sounds trivial and it changes behaviour — a visible list makes the remaining work finite, and the ticking is what stops someone cleaning the same surface twice while the shower goes untouched.' }
+        },
+        {
+          h: 'Using it for an office',
+          html: '<p>The structure works, with three adjustments.</p>' +
+            '<p><strong>Shared surfaces go up in frequency.</strong> Door handles, kitchen taps, shared keyboards and meeting-room tables are touched by everyone, and daily attention there does more than anything else on the list.</p>' +
+            '<p><strong>Separate what staff do from what a contractor does.</strong> Most offices have a cleaning contract covering floors, bins and washrooms. The schedule should cover what falls outside it — desks, kitchen appliances, meeting rooms, and the fridge nobody owns.</p>' +
+            '<p><strong>Name an owner per task, not per area.</strong> "The kitchen" is everyone\'s responsibility and therefore nobody\'s. "Empty and wipe the fridge, Fridays, rotating" is a task with a person against it.</p>'
+        },
+        {
+          h: 'Related planning tools',
+          list: [
+            '<a href="chore-rotation-generator.html">Chore Rotation Generator</a> — rotate the tasks fairly between people.',
+            '<a href="work-shift-rotation-generator.html">Work Shift Rotation Generator</a> — staff rotas with coverage checks.',
+            '<a href="github-task-list-generator.html">GitHub Task List Generator</a> — checklists for project work.',
+            '<a href="secret-santa-generator.html">Secret Santa Generator</a> — fair random assignment for groups.',
+            '<a href="presentation-order-generator.html">Presentation Order Generator</a> — fair ordering elsewhere.'
+          ]
+        }
+      ],
+      keywords: [
+        'cleaning schedule generator', 'cleaning checklist printable', 'weekly cleaning schedule',
+        'house cleaning rota', 'deep cleaning checklist', 'quarterly cleaning tasks',
+        'housemate cleaning split', 'office cleaning schedule', 'room by room cleaning list',
+        'daily weekly monthly cleaning', 'cleaning planner', 'shared house cleaning'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

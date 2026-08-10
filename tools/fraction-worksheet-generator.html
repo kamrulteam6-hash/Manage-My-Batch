@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fraction Worksheet Generator — Printable Practice with Answer Keys | Manage My Batch</title>
+<meta name="description" content="Free fraction worksheet generator. Add, subtract, multiply and divide fractions with like or unlike denominators, simplifying, mixed numbers and automatic answer keys.">
+<link rel="canonical" href="https://managemybatch.com/tools/fraction-worksheet-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Fraction Worksheet Generator — Printable Practice with Answer Keys">
+<meta property="og:description" content="Free fraction worksheet generator. Add, subtract, multiply and divide fractions with like or unlike denominators, simplifying, mixed numbers and automatic answer keys.">
+<meta property="og:url" content="https://managemybatch.com/tools/fraction-worksheet-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Fraction Worksheet Generator — Printable Practice with Answer Keys">
+<meta name="twitter:description" content="Free fraction worksheet generator. Add, subtract, multiply and divide fractions with like or unlike denominators, simplifying, mixed numbers and automatic answer keys.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Worksheet Settings</div>
+
+    <div class="field">
+      <label for="skill">Skill</label>
+      <select id="skill">
+        <option value="add" selected>Adding fractions</option>
+        <option value="sub">Subtracting fractions</option>
+        <option value="mul">Multiplying fractions</option>
+        <option value="div">Dividing fractions</option>
+        <option value="simplify">Simplifying fractions</option>
+        <option value="equivalent">Equivalent fractions</option>
+        <option value="compare">Comparing fractions</option>
+        <option value="toMixed">Improper → mixed numbers</option>
+        <option value="toImproper">Mixed numbers → improper</option>
+      </select>
+      <div class="hint" id="skillHint"></div>
+    </div>
+
+    <div class="field" id="denomField">
+      <label for="denomMode">Denominators</label>
+      <select id="denomMode">
+        <option value="same" selected>Same (like denominators)</option>
+        <option value="related">Related — one is a multiple of the other</option>
+        <option value="unrelated">Unrelated (full common denominator needed)</option>
+      </select>
+      <div class="hint">Like → related → unrelated is the usual teaching progression.</div>
+    </div>
+
+    <div class="row">
+      <div class="field"><label for="maxDenom">Largest denominator</label>
+        <select id="maxDenom">
+          <option value="6">6</option>
+          <option value="10">10</option>
+          <option value="12" selected>12</option>
+          <option value="16">16</option>
+          <option value="20">20</option>
+        </select>
+      </div>
+      <div class="field"><label for="count">Questions</label><input type="number" id="count" value="16" min="1" max="80"></div>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Options</legend>
+      <div class="check-list">
+        <label class="check on"><input type="checkbox" id="optSimplify" checked>
+          <span><span class="t">Answers in simplest form</span><span class="d">The key shows the fully simplified result.</span></span></label>
+        <label class="check"><input type="checkbox" id="optMixed">
+          <span><span class="t">Allow mixed numbers</span><span class="d">Improper answers are shown as mixed numbers on the key.</span></span></label>
+        <label class="check"><input type="checkbox" id="optProper">
+          <span><span class="t">Proper fractions only</span><span class="d">Numerator always smaller than denominator.</span></span></label>
+        <label class="check on"><input type="checkbox" id="optKey" checked>
+          <span><span class="t">Include answer key page</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="row">
+      <div class="field">
+        <label for="title">Worksheet title</label>
+        <input type="text" id="title" value="Fractions Practice">
+      </div>
+      <div class="field">
+        <label for="columns">Print columns</label>
+        <select id="columns">
+          <option value="2">2</option>
+          <option value="3" selected>3</option>
+          <option value="4">4</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="seed">Seed</label>
+      <div class="row" style="grid-template-columns:minmax(0,1fr) auto;gap:8px">
+        <input type="text" id="seed" value="frac-1">
+        <button type="button" class="btn btn-soft" id="newSeed"><span id="icoReset"></span></button>
+      </div>
+    </div>
+
+    <div class="out-actions">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate Worksheet</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Worksheet<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="preview">Preview</button>
+      <button type="button" data-tab="key">Answer key</button>
+      <button type="button" data-tab="guide">Teaching notes</button>
+    </div>
+
+    <div data-panel="preview">
+      <div id="preview"></div>
+      <div class="out-actions" style="margin-top:16px">
+        <button type="button" class="btn btn-primary" id="printBtn"><span id="icoFile"></span> Print / PDF</button>
+        <button type="button" class="btn btn-soft" id="regen"><span id="icoReset2"></span> New questions</button>
+      </div>
+      <div id="checks"></div>
+    </div>
+
+    <div data-panel="key" hidden><div id="key"></div></div>
+    <div data-panel="guide" hidden><div id="guide"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/worksheet.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$, W = GTWorksheet;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoReset:reset','icoReset2:reset','icoFile:file']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var HINTS = {
+    add: 'Adding two fractions. Start with like denominators before moving on.',
+    sub: 'Subtracting fractions. Answers are kept non-negative.',
+    mul: 'Multiplying fractions — no common denominator needed.',
+    div: 'Dividing fractions using the reciprocal.',
+    simplify: 'Reduce each fraction to its simplest form.',
+    equivalent: 'Find the missing numerator or denominator in an equivalent pair.',
+    compare: 'Insert <, > or = between two fractions.',
+    toMixed: 'Convert improper fractions to mixed numbers.',
+    toImproper: 'Convert mixed numbers to improper fractions.'
+  };
+
+  var items = [];
+  var F = function (n, d, w) { return W.fracHtml(n, d, w); };
+
+  function fmtAnswer(n, d) {
+    if ($('#optSimplify').checked) { var s = W.simplify(n, d); n = s[0]; d = s[1]; }
+    if (d === 1) return String(n);
+    if ($('#optMixed').checked && Math.abs(n) >= d) {
+      var whole = Math.floor(Math.abs(n) / d) * (n < 0 ? -1 : 1);
+      var rem = Math.abs(n) % d;
+      if (rem === 0) return String(whole);
+      return F(rem, d, whole);
+    }
+    return F(n, d);
+  }
+
+  function pickDenoms(rand, max) {
+    var mode = $('#denomMode').value;
+    var d1 = rand.int(2, max);
+    if (mode === 'same') return [d1, d1];
+    if (mode === 'related') {
+      var mult = rand.int(2, Math.max(2, Math.floor(max / d1)));
+      var d2 = d1 * mult;
+      if (d2 > max) { d2 = d1; }
+      return rand() > 0.5 ? [d1, d2] : [d2, d1];
+    }
+    var d2b = rand.int(2, max);
+    var tries = 0;
+    while ((d2b === d1 || d2b % d1 === 0 || d1 % d2b === 0) && tries++ < 30) d2b = rand.int(2, max);
+    return [d1, d2b];
+  }
+
+  function numerFor(rand, d) {
+    return $('#optProper').checked ? rand.int(1, Math.max(1, d - 1)) : rand.int(1, d + 3);
+  }
+
+  function makeItem(rand) {
+    var skill = $('#skill').value;
+    var max = parseInt($('#maxDenom').value, 10);
+
+    if (skill === 'simplify') {
+      var s = W.simplify(rand.int(1, 8), rand.int(2, Math.max(3, Math.floor(max / 2))));
+      var f = rand.int(2, Math.max(2, Math.floor(max / s[1])) || 2);
+      var n = s[0] * f, d = s[1] * f;
+      return { html: F(n, d) + ' = ' + blank(), answer: fmtAnswer(n, d) };
+    }
+
+    if (skill === 'equivalent') {
+      var b = W.simplify(rand.int(1, 6), rand.int(2, Math.max(3, max)));
+      var k = rand.int(2, 5);
+      var hideNum = rand() > 0.5;
+      var big = [b[0] * k, b[1] * k];
+      return {
+        html: F(b[0], b[1]) + ' = ' + (hideNum
+          ? F('<span style="display:inline-block;width:22px;border:1.2px solid #94a3b8;border-radius:3px">&nbsp;</span>', big[1])
+          : F(big[0], '<span style="display:inline-block;width:22px;border:1.2px solid #94a3b8;border-radius:3px">&nbsp;</span>')),
+        answer: String(hideNum ? big[0] : big[1])
+      };
+    }
+
+    if (skill === 'compare') {
+      var ds = pickDenoms(rand, max);
+      var n1 = numerFor(rand, ds[0]), n2 = numerFor(rand, ds[1]);
+      var v1 = n1 / ds[0], v2 = n2 / ds[1];
+      var sym = Math.abs(v1 - v2) < 1e-9 ? '=' : (v1 > v2 ? '>' : '<');
+      return {
+        html: F(n1, ds[0]) + ' <span style="display:inline-block;width:26px;height:22px;border:1.5px solid #94a3b8;border-radius:3px;vertical-align:-4px"></span> ' + F(n2, ds[1]),
+        answer: sym
+      };
+    }
+
+    if (skill === 'toMixed') {
+      var d3 = rand.int(2, max);
+      var n3 = d3 * rand.int(1, 4) + rand.int(1, d3 - 1);
+      var whole = Math.floor(n3 / d3), rem = n3 % d3;
+      return { html: F(n3, d3) + ' = ' + blank(), answer: rem ? F(rem, d3, whole) : String(whole) };
+    }
+
+    if (skill === 'toImproper') {
+      var d4 = rand.int(2, max);
+      var w4 = rand.int(1, 5), r4 = rand.int(1, d4 - 1);
+      return { html: F(r4, d4, w4) + ' = ' + blank(), answer: F(w4 * d4 + r4, d4) };
+    }
+
+    /* arithmetic skills */
+    var dd = pickDenoms(rand, max);
+    var a = numerFor(rand, dd[0]), b = numerFor(rand, dd[1]);
+    var sym2, rn, rd;
+
+    if (skill === 'add') { sym2 = '+'; rn = a * dd[1] + b * dd[0]; rd = dd[0] * dd[1]; }
+    else if (skill === 'sub') {
+      sym2 = '−';
+      rn = a * dd[1] - b * dd[0]; rd = dd[0] * dd[1];
+      if (rn < 0) { /* swap operands so the answer stays non-negative */
+        var ta = a, td = dd[0];
+        a = b; dd[0] = dd[1]; b = ta; dd[1] = td;
+        rn = a * dd[1] - b * dd[0];
+      }
+    }
+    else if (skill === 'mul') { sym2 = '×'; rn = a * b; rd = dd[0] * dd[1]; }
+    else { sym2 = '÷'; rn = a * dd[1]; rd = dd[0] * b; }
+
+    return {
+      html: F(a, dd[0]) + ' <span style="margin:0 4px">' + sym2 + '</span> ' + F(b, dd[1]) + ' = ' + blank(),
+      answer: fmtAnswer(rn, rd)
+    };
+  }
+
+  function blank() {
+    return '<span style="display:inline-block;min-width:56px;border-bottom:1.5px solid #94a3b8">&nbsp;</span>';
+  }
+
+  function instructions() {
+    var s = $('#skill').value;
+    return {
+      add: 'Work out each addition. Give your answer in its simplest form.',
+      sub: 'Work out each subtraction. Give your answer in its simplest form.',
+      mul: 'Multiply the fractions. Give your answer in its simplest form.',
+      div: 'Divide the fractions. Give your answer in its simplest form.',
+      simplify: 'Write each fraction in its simplest form.',
+      equivalent: 'Fill in the missing number to make the fractions equivalent.',
+      compare: 'Write <, > or = in each box.',
+      toMixed: 'Convert each improper fraction to a mixed number.',
+      toImproper: 'Convert each mixed number to an improper fraction.'
+    }[s];
+  }
+
+  function build() {
+    var skill = $('#skill').value;
+    $('#skillHint').textContent = HINTS[skill];
+    $('#denomField').hidden = ['simplify', 'equivalent', 'toMixed', 'toImproper'].indexOf(skill) > -1;
+
+    var rand = W.rng($('#seed').value);
+    var n = Math.max(1, Math.min(80, parseInt($('#count').value, 10) || 1));
+    items = [];
+    for (var i = 0; i < n; i++) items.push(makeItem(rand));
+
+    W.preview('#preview', {
+      title: $('#title').value,
+      instructions: instructions(),
+      items: items,
+      previewColumns: parseInt($('#columns').value, 10) || 3
+    });
+    W.answerKeyPreview('#key', items);
+    renderChecks();
+
+    $('#pill').textContent = items.length + ' questions';
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+  }
+
+  function renderChecks() {
+    var c = [], skill = $('#skill').value;
+    if (skill === 'sub') c.push(['ok', 'Operands are swapped where needed so no answer is negative.']);
+    if ($('#denomMode').value === 'unrelated' && ['add', 'sub'].indexOf(skill) > -1) {
+      c.push(['warn', 'Unrelated denominators require finding a common denominator from scratch — the hardest case. Make sure students have met like and related denominators first.']);
+    }
+    if (!$('#optSimplify').checked) {
+      c.push(['warn', 'Answers are not simplified on the key. Most mark schemes expect simplest form, so leave this on unless you are deliberately teaching the intermediate step.']);
+    }
+    if ($('#optProper').checked && ['mul', 'div'].indexOf(skill) > -1) {
+      c.push(['ok', 'Proper fractions only — multiplication answers will always be smaller than both operands, which is a useful thing for students to notice.']);
+    }
+    if (!$('#optMixed').checked && ['add', 'mul', 'toMixed'].indexOf(skill) > -1) {
+      c.push(['warn', 'Improper answers stay as improper fractions. Turn on mixed numbers if your curriculum expects them.']);
+    }
+    if (parseInt($('#maxDenom').value, 10) > 12 && $('#denomMode').value === 'unrelated') {
+      c.push(['warn', 'Large unrelated denominators produce big common denominators — some answers will involve numbers well over 100 before simplifying.']);
+    }
+    if (!c.length) c.push(['ok', items.length + ' questions generated.']);
+    $('#checks').innerHTML = c.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : 'note-warn') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+  }
+
+  $('#printBtn').addEventListener('click', function () {
+    W.print({
+      title: $('#title').value,
+      instructions: instructions(),
+      items: items,
+      columns: parseInt($('#columns').value, 10) || 3,
+      answerKey: $('#optKey').checked,
+      answerColumns: 4
+    });
+  });
+  $('#newSeed').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); });
+  $('#regen').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); GT.toast('New questions'); });
+
+  $('#guide').innerHTML = [
+    ['Denominator progression is the whole difficulty curve', 'Like denominators only need the numerators added. Related denominators require converting one fraction. Unrelated denominators require finding a common denominator from scratch. These are three genuinely different skills, and mixing them before the first is secure is where most confusion starts.'],
+    ['Multiplying is easier than adding', 'It surprises students, but multiplication needs no common denominator — you multiply across. Many curricula introduce it after addition anyway, which means the harder skill is taught first. Worth knowing when you are choosing what to practise.'],
+    ['Simplifying is a separate skill', 'A student can add fractions correctly and still lose the mark for not simplifying. Practising simplification on its own — with the dedicated skill setting here — separates the two so you know which one is failing.'],
+    ['Mixed numbers are a curriculum decision', 'Whether 7/4 should be written as 1¾ depends on your mark scheme and the year group. The tool leaves it as an explicit option rather than assuming, and the answer key follows whichever you choose.'],
+    ['Subtraction never goes negative here', 'Operands are swapped when needed so the answer stays at zero or above. For primary practice that is almost always what you want; for older students working with directed numbers, it is a limitation worth knowing about.'],
+    ['Keep denominators small at first', 'A maximum of 12 keeps common denominators manageable. Pushing to 20 with unrelated denominators produces intermediate numbers in the hundreds, which turns a fractions exercise into an arithmetic slog.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('');
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Worksheet generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'fraction-worksheet-generator',
+    lede: 'Nine fraction skills from simplifying to dividing — with a denominator progression that matches how fractions are actually taught, and properly typeset fractions.',
+    steps: [
+      { icon: 'gear', title: 'Choose the skill', text: 'Arithmetic, simplifying, equivalence, comparing or converting mixed numbers.' },
+      { icon: 'divide', title: 'Set the denominators', text: 'Like, related or unrelated — the three stages of the teaching sequence.' },
+      { icon: 'file', title: 'Print with the key', text: 'Answers shown simplified, as mixed numbers if you want them.' }
+    ],
+    guideTitle: 'The denominator progression',
+    guide:
+      '<p style="color:var(--muted)">Adding fractions is not one skill, it is three, and they are usually taught weeks apart. A worksheet that mixes them without warning will look reasonable and produce confusion, because a student secure in the first stage will hit the third with no method to apply.</p>' +
+      '<div class="grid g3" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Like</h4><p style="color:var(--muted);font-size:13.8px"><code>2/5 + 1/5</code>. Add the numerators, keep the denominator. The concept only — no conversion required.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Related</h4><p style="color:var(--muted);font-size:13.8px"><code>1/3 + 1/6</code>. One denominator is a multiple of the other, so only one fraction needs converting. The natural bridge.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Unrelated</h4><p style="color:var(--muted);font-size:13.8px"><code>2/3 + 3/5</code>. Both fractions must be converted to a common denominator. The full method, and the hardest case.</p></div></div>' +
+      '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span><strong>Multiplication is easier than addition.</strong> It needs no common denominator — multiply across the top and the bottom. Students often find this counter-intuitive because it is usually taught later, so it is worth practising as its own thing rather than assuming it follows from addition.</span></div>' +
+      '<div class="note note-warn" style="margin-top:12px">' + GTI.warn + '<span>Simplifying is a separate skill from calculating, and losing marks for unsimplified answers is one of the most common causes of low scores in fractions tests. The dedicated Simplifying setting practises it in isolation so you can tell which of the two is actually failing.</span></div>',
+    related: ['math-worksheet-generator', 'number-line-worksheet-generator', 'coordinate-grid-worksheet-generator'],
+    faqs: [
+      { q: 'What is the difference between like, related and unrelated denominators?', a: 'Like means both denominators are the same. Related means one is a multiple of the other, so only one fraction needs converting. Unrelated means neither divides the other and both must be converted — the hardest case.' },
+      { q: 'Can I get answers as mixed numbers?', a: 'Yes — turn on "Allow mixed numbers" and any improper answer is shown as a mixed number on the key. Leave it off if your mark scheme expects improper fractions.' },
+      { q: 'Will subtraction give negative answers?', a: 'No. Operands are swapped where necessary so every answer is zero or greater, which is what primary practice normally needs.' },
+      { q: 'Why is multiplying fractions easier than adding them?', a: 'Because multiplication needs no common denominator — you multiply the numerators and the denominators. Addition requires converting to a shared denominator first, which is an extra step and an extra concept.' },
+      { q: 'What denominator size should I use?', a: 'Twelve or below for most practice. Larger denominators with unrelated pairs produce common denominators in the hundreds, which makes the exercise about arithmetic rather than fractions.' },
+      { q: 'Can I practise simplifying on its own?', a: 'Yes — choose the Simplifying skill. It is worth isolating, because a student can calculate correctly and still lose marks for not reducing the answer.' }
+    ],
+    seo: {
+      title: 'Fraction worksheets: the denominator progression that matches teaching',
+      lead: 'This <strong>fraction worksheet generator</strong> covers nine skills from simplifying to dividing, with a denominator progression that matches how fractions are actually taught and properly typeset fractions. Below: what like, related and unrelated denominators mean, and why multiplying is easier than adding.',
+      blocks: [
+        {
+          h: 'The denominator progression',
+          html: '<p>The difficulty of a fraction question is decided far more by the <em>relationship between the denominators</em> than by how big the numbers are. Teaching follows a progression, and a worksheet that ignores it jumps a child from trivial to impossible in one step.</p>',
+          table: {
+            head: ['Stage', 'Denominators', 'Example', 'What it requires'],
+            rows: [
+              ['Like', 'Identical', '<sup>2</sup>⁄<sub>5</sub> + <sup>1</sup>⁄<sub>5</sub>', 'Add the numerators. No conversion at all.'],
+              ['Related', 'One is a multiple of the other', '<sup>1</sup>⁄<sub>2</sub> + <sup>1</sup>⁄<sub>6</sub>', 'Convert one fraction only.'],
+              ['Unrelated', 'No common factor', '<sup>1</sup>⁄<sub>3</sub> + <sup>1</sup>⁄<sub>4</sub>', 'Find a common denominator, convert both.'],
+              ['Unrelated with a common factor', 'Share a factor but neither divides the other', '<sup>1</sup>⁄<sub>6</sub> + <sup>1</sup>⁄<sub>4</sub>', 'Lowest common multiple, not just the product.']
+            ]
+          },
+          after: '<p>That last row is the one worksheets skip. Multiplying 6 by 4 gives 24 and works; recognising that 12 is enough is a separate skill, and it is where simplifying and common multiples meet.</p>',
+          callout: { type: 'tip', text: 'Spend longer on <em>related</em> denominators than feels necessary. A child who can convert one fraction confidently finds unrelated denominators a small extension. A child moved to unrelated too early is doing two unfamiliar conversions at once and usually concludes fractions are arbitrary.' }
+        },
+        {
+          h: 'The nine skills',
+          list: [
+            '<strong>Simplifying</strong> — reducing to lowest terms. Underpins everything else, and worth practising alone.',
+            '<strong>Equivalent fractions</strong> — finding the missing numerator or denominator.',
+            '<strong>Comparing and ordering</strong> — with and without a common denominator.',
+            '<strong>Adding</strong> — across the denominator progression.',
+            '<strong>Subtracting</strong> — the same progression, with the negative-answer question below.',
+            '<strong>Multiplying</strong> — numerator by numerator, denominator by denominator.',
+            '<strong>Dividing</strong> — multiply by the reciprocal.',
+            '<strong>Mixed numbers and improper fractions</strong> — converting in both directions.',
+            '<strong>Fractions of amounts</strong> — <sup>3</sup>⁄<sub>4</sub> of 20, the form that appears most often outside a maths lesson.'
+          ]
+        },
+        {
+          h: 'Why multiplying is easier than adding',
+          html: '<p>It surprises children and it surprises adults asked to explain it. Multiplication of fractions needs no common denominator: multiply across the top, multiply across the bottom, simplify. Three steps, no decisions.</p>' +
+            '<p>Addition needs a common denominator first, which means finding a common multiple, converting both fractions, adding, and then simplifying. Five steps, two of which involve judgement.</p>' +
+            '<p>The pedagogical consequence is that "easier" and "taught first" do not match. Addition comes first because it builds on whole-number addition conceptually, not because it is procedurally simpler. Saying this to a class explicitly — "this one is actually less work than the one you already did" — helps, because a child who found addition hard expects multiplication to be worse.</p>'
+        },
+        {
+          h: 'Negative answers in subtraction',
+          html: '<p>By default, subtraction questions are constructed so the first fraction is larger and the answer is positive. That is what a primary worksheet needs, and it is what the generator does unless you say otherwise.</p>' +
+            '<p>Allowing negative answers is a deliberate option for older students who have met negative numbers. It is worth switching on eventually — a child who has only ever seen subtractions arranged to come out positive will assume that is a rule of fractions rather than a property of the worksheet.</p>',
+          callout: { type: 'warn', text: 'Do not enable negative answers for a class that has not covered negative numbers. The child does not conclude that they have met a new idea; they conclude that they have made a mistake, and then look for one that is not there.' }
+        },
+        {
+          h: 'Building a sheet',
+          steps: [
+            { t: 'Choose the skill', d: 'One skill per sheet for focused practice; mixed for consolidation and revision.' },
+            { t: 'Set the denominator relationship', d: 'Like, related or unrelated — the single most important difficulty control.' },
+            { t: 'Set the maximum denominator', d: '2–10 for early work, up to 12 for times-table alignment, larger only when simplifying is the point.' },
+            { t: 'Choose the answer form', d: 'Simplified, mixed number or improper. Be consistent within a sheet.' },
+            { t: 'Set the question count', d: '10–15 for a focused sheet; 20+ becomes an endurance exercise rather than a learning one.' },
+            { t: 'Print with the answer key', d: 'Laid out to match the question numbering for quick marking.' }
+          ]
+        },
+        {
+          h: 'Choosing a denominator size',
+          cards: [
+            { t: 'Up to 10', d: 'Early fraction work. Keeps the arithmetic within known number bonds so the fraction concept is the only new thing.' },
+            { t: 'Up to 12', d: 'Aligns with times tables, so common denominators are findable from facts the child already has.' },
+            { t: 'Up to 20', d: 'Once common multiples are secure. Simplifying becomes genuinely necessary rather than optional.' },
+            { t: 'Larger', d: 'Only when simplifying or common-factor recognition is the explicit target. Otherwise the arithmetic obscures the fractions.' }
+          ]
+        },
+        {
+          h: 'Related worksheet tools',
+          list: [
+            '<a href="math-worksheet-generator.html">Math Worksheet Generator</a> — the arithmetic underneath fraction work.',
+            '<a href="number-line-worksheet-generator.html">Number Line Worksheet Generator</a> — fractions on a number line.',
+            '<a href="coordinate-grid-worksheet-generator.html">Coordinate Grid Worksheet Generator</a> — plotting practice.',
+            '<a href="clock-reading-worksheet-generator.html">Clock Reading Worksheet Generator</a> — quarters and halves in context.',
+            '<a href="vocabulary-quiz-generator.html">Vocabulary Quiz Generator</a> — mathematical vocabulary practice.'
+          ]
+        }
+      ],
+      keywords: [
+        'fraction worksheet generator', 'adding fractions worksheet', 'simplifying fractions practice',
+        'equivalent fractions worksheet', 'unlike denominators worksheet', 'dividing fractions worksheet',
+        'mixed numbers improper fractions', 'fractions of amounts', 'printable fraction worksheets',
+        'fraction worksheet answer key', 'common denominator practice', 'ks2 fractions worksheet'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

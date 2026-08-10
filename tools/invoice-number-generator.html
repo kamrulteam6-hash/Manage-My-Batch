@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Invoice Number Generator — Free Invoice Numbering Tool | Manage My Batch</title>
+<meta name="description" content="Free invoice number generator. Create sequential, gapless invoice numbers with prefixes and date codes, plus invoice format examples and numbering rules.">
+<meta name="keywords" content="invoice number generator, invoice numbering, invoice number format, sequential invoice numbers, invoice number example, free invoice number generator, gapless invoice numbering, invoice reference generator">
+<link rel="canonical" href="https://managemybatch.com/tools/invoice-number-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Invoice Number Generator — Free Sequential Invoice Numbers">
+<meta property="og:description" content="Free invoice number generator. Create clean, sequential, audit-safe invoice numbers with prefixes, date codes and custom formats. Copy-ready, no signup.">
+<meta property="og:url" content="https://managemybatch.com/tools/invoice-number-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Invoice Number Generator — Free Sequential Invoice Numbers">
+<meta name="twitter:description" content="Free invoice number generator. Create clean, sequential, audit-safe invoice numbers with prefixes, date codes and custom formats. Copy-ready, no signup.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Generator Settings</div>
+
+    <div class="field">
+      <label for="prefix">Prefix</label>
+      <input type="text" id="prefix" value="INV" placeholder="INV">
+      <div class="hint">A short, stable prefix makes invoices instantly recognisable in bank statements and accounting exports.</div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="dateFormat">Date format</label>
+        <select id="dateFormat"></select>
+      </div>
+      <div class="field">
+        <label for="sep">Separator</label>
+        <select id="sep">
+          <option value="-" selected>Hyphen (-)</option>
+          <option value="/">Slash (/)</option>
+          <option value="_">Underscore (_)</option>
+          <option value=".">Dot (.)</option>
+          <option value="">None</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="start">Starting number</label>
+      <input type="number" id="start" value="1001" min="0">
+      <div class="hint">Continuing an existing series? Enter your next unused number so the sequence stays unbroken.</div>
+    </div>
+
+    <div class="field">
+      <label for="pad">Number length</label>
+      <select id="pad">
+        <option value="3">3 digits — 001</option>
+        <option value="4" selected>4 digits — 0001</option>
+        <option value="5">5 digits — 00001</option>
+        <option value="6">6 digits — 000001</option>
+        <option value="1">No padding</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="preview">Preview format</label>
+      <div class="seq-preview" id="preview">INV-20260809-1001</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="row">
+      <div class="field">
+        <label for="count">How many to generate</label>
+        <input type="number" id="count" value="4" min="1" max="5000">
+      </div>
+      <div class="field">
+        <label for="step">Increment by</label>
+        <input type="number" id="step" value="1" min="1">
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="date">Invoice date</label>
+      <input type="date" id="date">
+      <div class="hint">Used for any date segment in the format above.</div>
+    </div>
+
+    <details class="faq" style="box-shadow:none;margin-bottom:16px">
+      <summary style="padding:12px 14px;font-size:13.8px">Advanced format</summary>
+      <div class="body" style="padding:0 14px 14px">
+        <label for="pattern" style="margin-top:6px">Custom pattern</label>
+        <input type="text" id="pattern" placeholder="Leave blank to use the simple settings above">
+        <div class="token-help" id="tokenHelp"></div>
+        <div class="hint">Click a token to insert it. <code>{SEQ}</code> is the running number, <code>{SEP}</code> your separator.</div>
+        <label for="suffix" style="margin-top:12px">Suffix</label>
+        <input type="text" id="suffix" placeholder="e.g. a client or branch code">
+      </div>
+    </details>
+
+    <div class="out-actions">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate Invoice Numbers</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated Results<span class="spacer"></span>
+      <span class="result-pill" id="pill">4 generated</span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="results">Results</button>
+      <button type="button" data-tab="export">Export</button>
+      <button type="button" data-tab="checks">Validation</button>
+      <button type="button" data-tab="rules">Legal rules</button>
+    </div>
+
+    <div data-panel="results">
+      <div id="primary"></div>
+      <div id="more"></div>
+      <button type="button" class="btn btn-soft btn-block" id="regen" style="margin-top:18px">
+        <span id="icoReset"></span> Regenerate</button>
+      <div class="note note-info" style="margin-top:14px"><span id="icoInfo"></span>
+        <span>Invoice numbers must be <strong>unique and sequential</strong> in most tax jurisdictions. Record the last number you issue so the next batch continues from it.</span></div>
+    </div>
+
+    <div data-panel="export" hidden>
+      <div class="field">
+        <label for="exportAs">Export format</label>
+        <select id="exportAs">
+          <option value="lines">Plain list</option>
+          <option value="csvIndexed">CSV with index</option>
+          <option value="csv">CSV single column</option>
+          <option value="json">JSON array</option>
+          <option value="sql">SQL INSERT</option>
+          <option value="quoted">Quoted &amp; comma-separated</option>
+        </select>
+      </div>
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">invoice-numbers.txt</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy all</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+    </div>
+
+    <div data-panel="checks" hidden><div id="checks"></div></div>
+    <div data-panel="rules" hidden><div id="rules"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/seqid.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoCopy:copy','icoDl:download','icoReset:reset','icoInfo:info']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  $('#dateFormat').innerHTML = GTSeq.DATE_FORMATS.map(function (f) {
+    return '<option value="' + f.id + '"' + (f.id === 'YYYYMMDD' ? ' selected' : '') + '>' + f.label + '</option>';
+  }).join('');
+  $('#tokenHelp').innerHTML = GTSeq.tokenHelpHtml();
+  $('#date').value = GT.today();
+
+  var ids = [];
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'invoice-numbers.txt', mime: 'text/plain' });
+
+  function opts() {
+    return {
+      prefix: $('#prefix').value.trim(),
+      suffix: $('#suffix').value.trim(),
+      dateFormat: $('#dateFormat').value,
+      sep: $('#sep').value,
+      start: $('#start').value,
+      step: $('#step').value,
+      pad: parseInt($('#pad').value, 10),
+      count: parseInt($('#count').value, 10),
+      date: $('#date').value ? new Date($('#date').value + 'T12:00:00') : new Date(),
+      pattern: $('#pattern').value
+    };
+  }
+
+  function build() {
+    var o = opts();
+    var r = GTSeq.generate(o);
+    ids = r.ids;
+
+    $('#preview').textContent = ids[0] || '—';
+    GTSeq.renderResults({ ids: ids, primary: '#primary', more: '#more', noun: 'Invoice Number' });
+
+    $('#pill').textContent = ids.length.toLocaleString() + ' generated';
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+
+    var mode = $('#exportAs').value;
+    var ext = mode === 'json' ? 'json' : mode === 'sql' ? 'sql' : /csv/.test(mode) ? 'csv' : 'txt';
+    out.set(GTSeq.exportAs(ids, mode, { column: 'invoice_number', table: 'invoices' }), 'invoice-numbers.' + ext);
+
+    GTSeq.renderChecks('#checks', GTSeq.validate(ids, { sequential: true, humanEntry: true })
+      .concat(extraChecks(o)));
+  }
+
+  function extraChecks(o) {
+    var c = [];
+    if (!o.prefix) c.push({ s: 'warn', m: 'No prefix. A prefix such as <code>INV</code> makes the number self-describing on a bank statement or in a shared inbox.' });
+    if (o.dateFormat === 'none') c.push({ s: 'warn', m: 'No date segment. Including at least the year makes it obvious which financial period an invoice belongs to, and lets you restart the sequence cleanly each year.' });
+    if (/YYYYMMDD|YYYY-MM-DD|YYMMDD/.test(o.dateFormat) && o.count > 1) {
+      c.push({ s: 'warn', m: 'A full date in the number means the number changes daily. If you restart the sequence each day, be certain your accounting system does not require one continuous series.' });
+    }
+    if (parseInt(o.start, 10) === 1 || parseInt(o.start, 10) === 0) {
+      c.push({ s: 'warn', m: 'Starting at ' + o.start + ' tells every client this is your first invoice. Many businesses start at 1001 or higher for exactly that reason.' });
+    }
+    if (parseInt(o.step, 10) > 1) {
+      c.push({ s: 'err', m: 'An increment above 1 creates gaps in the sequence. Most tax authorities require invoice numbers to be gapless — auditors read a missing number as a deleted invoice.' });
+    }
+    return c;
+  }
+
+  $('#rules').innerHTML = [
+    ['Sequential and unique', 'Nearly every tax authority requires invoice numbers to form a unique, unbroken sequence so that no invoice can be quietly removed. The specific wording differs by country, but the intent is identical everywhere: a missing number must be explainable.'],
+    ['Gaps are a red flag', 'If you void an invoice, do not reuse or delete its number. Issue a credit note referencing it, and carry on with the next number. A gap with no paper trail is one of the first things an auditor asks about.'],
+    ['Restarting each year is normally fine', 'Formats such as <code>INV-2026-0001</code> restart annually and remain compliant because the year is part of the number, so the full identifier is still unique and still sequential within its series.'],
+    ['Do not encode sensitive data', 'Never build a client name, national tax number or bank detail into an invoice number. It will end up in emails, spreadsheets and third-party portals.'],
+    ['Keep the format stable', 'Changing your numbering scheme mid-year makes reconciliation painful. If you must change it, switch at the start of a financial period and document the changeover.'],
+    ['Required fields sit alongside the number', 'The number alone is not enough — a compliant invoice also needs issue date, supplier and customer details, a description of goods or services, tax rates and totals. This tool produces the identifier, not the document.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('') +
+  '<div class="note note-warn">' + I.warn + '<span>This is general guidance, not tax advice. Invoicing rules vary by country and by business type — confirm the requirements for your jurisdiction with your accountant.</span></div>';
+
+  GTSeq.bindCopy('#primary', function () { return ids; });
+  GTSeq.bindCopy('#more', function () { return ids; });
+  GTSeq.bindTokenHelp('#tokenHelp', '#pattern', build);
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Invoice numbers generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+  $('#regen').addEventListener('click', build);
+  $('#exportAs').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'invoice-number-generator',
+    lede: 'Generate clean, sequential invoice numbers that satisfy accounting requirements — with prefixes, date codes, custom formats and instant bulk export.',
+    steps: [
+      { icon: 'gear', title: 'Configure the format', text: 'Choose your prefix, date segment, separator and number length.' },
+      { icon: 'bolt', title: 'Generate a batch', text: 'Create as many as you need, continuing from your last used number.' },
+      { icon: 'copy', title: 'Copy and record', text: 'Copy into your invoicing system and note the last number issued.' }
+    ],
+    guideTitle: 'Choosing an invoice numbering scheme',
+    guide:
+      '<p style="color:var(--muted)">An invoice number has one job: to identify a single invoice unambiguously, forever. That sounds trivial until you are three years in, reconciling a bank statement against a spreadsheet, and discover two invoices share a number because the sequence restarted when you switched software.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Formats that work well</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><code>INV-0001</code> — simplest possible. Fine for low volume.</li><li><code>INV-2026-0001</code> — restarts each year, sorts correctly, instantly shows the period. The most common choice.</li><li><code>INV-202608-0001</code> — monthly series for higher volume.</li><li><code>INV-2026-ACME-0001</code> — client segment, useful if you invoice a handful of large accounts.</li></ul></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Formats that cause problems</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>Pure dates (<code>20260809</code>) — collides the moment you issue two invoices in a day.</li><li>Random numbers — impossible to audit and no ordering.</li><li>No padding (<code>INV-9</code>, <code>INV-10</code>) — sorts as text into the wrong order in every spreadsheet.</li><li>Client names in full — leaks who your customers are.</li></ul></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>Padding matters more than it looks.</strong> Without it, sorting a column of invoice numbers alphabetically gives you 1, 10, 100, 11, 2 — which quietly breaks reconciliation in spreadsheets and in any system that stores the number as text. Pick a width you will not outgrow and keep it.</span></div>' +
+      '<div class="note note-info" style="margin-top:12px">' + GTI.info + '<span>Everything here runs in your browser. No invoice data, client name or number is transmitted or stored anywhere.</span></div>',
+    related: ['receipt-number-generator', 'purchase-order-number-generator', 'reference-number-generator'],
+    faqs: [
+      { q: 'What is an invoice number?', a: 'A unique identifier assigned to a single invoice. It lets you, your client and your accountant refer to one specific document without ambiguity, and it is a legal requirement on a compliant invoice in most countries.' },
+      { q: 'Do invoice numbers have to be sequential?', a: 'In most tax jurisdictions, yes — they must form a unique and unbroken sequence so that no invoice can be removed without leaving evidence. Restarting annually within a dated series, such as INV-2026-0001, is normally acceptable.' },
+      { q: 'What number should I start at?', a: 'Any number you like. Many businesses begin at 1001 rather than 1 simply so early invoices do not advertise that the business is brand new. What matters is that you never go backwards.' },
+      { q: 'Can I skip or reuse an invoice number?', a: 'Never reuse one. Avoid skipping too — if you void an invoice, issue a credit note that references it rather than deleting the number. Unexplained gaps are exactly what auditors look for.' },
+      { q: 'Should I include the date in the invoice number?', a: 'Including the year is very useful: it groups invoices by financial period and lets you restart the sequence cleanly each year. A full day-level date is usually unnecessary and makes the number longer.' },
+      { q: 'Is my data saved anywhere?', a: 'No. Generation happens entirely in your browser. Nothing you type is uploaded, logged or stored, so it is safe to use with real business details.' }
+    ],
+    seo: {
+      title: 'Invoice Number Generator: formats, rules and examples',
+      lead: 'This <strong>free invoice number generator</strong> creates sequential, gapless invoice numbers in any format you need — <code>INV-0001</code>, <code>INV-2026-0042</code>, or a custom pattern with fiscal years and client codes. Below you will find invoice numbering formats that work, the compliance rules behind them, and the mistakes that cause problems at audit.',
+      blocks: [
+        {
+          h: 'What is an invoice number?',
+          html: '<p>An <strong>invoice number</strong> is a unique reference assigned to a single invoice. It is how you, your client, your accountant and a tax inspector all refer to the same document without ambiguity. In most countries it is a legally required field on a compliant invoice, alongside the issue date, supplier and customer details, a description of what was supplied, and the tax breakdown.</p>' +
+            '<p>The requirement is almost always expressed the same way: invoice numbers must form a <strong>unique, sequential series</strong>. Uniqueness stops two documents sharing an identity. Sequence means a removed invoice leaves a visible hole. Together they make it difficult to delete a sale quietly, which is the entire reason the rule exists.</p>' +
+            '<p>An invoice number is not the same as a purchase order number, a payment reference or an order number. A <a href="purchase-order-number-generator.html">purchase order number</a> is issued by the buyer before goods are ordered. A <a href="reference-number-generator.html">payment reference</a> is an operational key used to match incoming money. The invoice number belongs to you, the seller, and is bound by the strictest rules of the three.</p>'
+        },
+        {
+          h: 'Invoice number format examples',
+          html: '<p>There is no single mandated <strong>invoice number format</strong>. What matters is that the series is unique and sequential. These are the patterns that work well in practice, all of which this generator can produce.</p>',
+          table: {
+            head: ['Format', 'Example', 'Best for'],
+            rows: [
+              ['<code>INV-0001</code>', 'INV-0001, INV-0002', 'Freelancers and small businesses with low volume. Simplest possible scheme.'],
+              ['<code>INV-2026-0001</code>', 'INV-2026-0042', 'Most businesses. Restarts each year, sorts correctly, shows the financial period at a glance.'],
+              ['<code>INV-202601-0001</code>', 'INV-202601-0007', 'Higher volume. Monthly series keeps each block small and easy to reconcile.'],
+              ['<code>INV-FY27-0001</code>', 'INV-FY27-0113', 'Businesses whose financial year does not start in January.'],
+              ['<code>INV-2026-ACME-001</code>', 'INV-2026-ACME-004', 'Agencies invoicing a handful of large retained clients.'],
+              ['<code>2026-0001</code>', '2026-0044', 'Minimal style where the document already says "Invoice".']
+            ]
+          },
+          after: '<div class="seo-callout tip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span><strong>Padding is not cosmetic.</strong> Without it, sorting a column of invoice numbers alphabetically gives you 1, 10, 100, 11, 2. That silently breaks reconciliation in every spreadsheet and in any system storing the number as text. Pick a width you will not outgrow — four digits covers 9,999 invoices per series.</span></div>'
+        },
+        {
+          h: 'How to use this invoice number generator',
+          steps: [
+            { t: 'Set your prefix', d: 'Usually <code>INV</code>. A short, stable prefix makes an invoice number instantly recognisable in a bank statement, an email subject or an accounting export.' },
+            { t: 'Choose a date segment', d: 'Year only is the most common choice — it groups invoices by financial period and lets you restart the sequence cleanly each year. A full date is rarely necessary.' },
+            { t: 'Enter your next unused number', d: 'If you already issue invoices, put your next number here so the series continues unbroken. Starting at 1001 rather than 1 is common: it avoids advertising that this is your first ever invoice.' },
+            { t: 'Set the number length', d: 'Four digits suits most businesses. Use five or six if you invoice at high volume.' },
+            { t: 'Generate and record', d: 'Generate as many as you need, copy them into your invoicing system, and note the last number issued so the next batch continues from it.' }
+          ]
+        },
+        {
+          h: 'Invoice numbering rules and compliance',
+          html: '<p>Specific wording varies by country, but the underlying expectations are remarkably consistent across tax authorities.</p>',
+          cards: [
+            { t: 'Unique and sequential', d: 'Every invoice number must appear once and the series must be unbroken. This is the core requirement almost everywhere.' },
+            { t: 'Never reuse a number', d: 'Even for a corrected invoice. Reuse creates two documents with one identity, which is exactly what the rule prevents.' },
+            { t: 'Void with a credit note', d: 'Do not delete a cancelled invoice. Issue a credit note referencing it and continue the series. A gap with no paper trail is the first thing an auditor asks about.' },
+            { t: 'Annual restarts are fine', d: 'A dated series such as INV-2026-0001 restarts each year and stays compliant, because the full identifier remains unique and sequential within its series.' },
+            { t: 'Keep the format stable', d: 'Changing scheme mid-year makes reconciliation painful. Switch at the start of a financial period and document the changeover.' },
+            { t: 'No personal or sensitive data', d: 'Never encode a client tax number or bank detail. Invoice numbers travel through email, spreadsheets and third-party portals.' }
+          ],
+          after: '<div class="seo-callout warn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m21.7 18-8-14a2 2 0 0 0-3.4 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3z"/><path d="M12 9v4M12 17h.01"/></svg><span>This page is general guidance, not tax advice. Invoicing rules differ by country, business type and VAT registration status — confirm the requirements for your jurisdiction with your accountant before changing a live numbering scheme.</span></div>'
+        },
+        {
+          h: 'Common invoice numbering mistakes',
+          list: [
+            '<strong>No padding.</strong> <code>INV-9</code> then <code>INV-10</code> sorts as text into the wrong order in every spreadsheet you will ever open.',
+            '<strong>Using the date alone.</strong> <code>20260809</code> collides the moment you issue two invoices in one day.',
+            '<strong>Random numbers.</strong> Impossible to audit, no ordering, and no way to tell whether one is missing.',
+            '<strong>Deleting voided invoices.</strong> The gap remains but the explanation does not. Always issue a credit note instead.',
+            '<strong>Restarting the sequence when you switch software.</strong> This is the most common cause of genuine duplicate invoice numbers.',
+            '<strong>Client names in full.</strong> <code>INV-2026-BIGPHARMACLIENT-001</code> leaks who your customers are to anyone who sees the invoice.',
+            '<strong>Skipping numbers deliberately</strong> to look busier than you are. Auditors notice, and it undermines the integrity of the whole series.'
+          ]
+        },
+        {
+          h: 'Choosing a scheme for your business size',
+          html: '<p><strong>Sole traders and freelancers</strong> issuing a few invoices a month are well served by <code>INV-0001</code> or <code>INV-2026-001</code>. There is no benefit to complexity at this volume.</p>' +
+            '<p><strong>Small businesses</strong> invoicing weekly should use a year segment — <code>INV-2026-0001</code>. Restarting annually keeps each series short and makes year-end reconciliation straightforward.</p>' +
+            '<p><strong>Agencies with retained clients</strong> may benefit from a client code, but only if you invoice a stable set of accounts. Use short codes rather than names, and remember the code will be visible to every recipient.</p>' +
+            '<p><strong>Higher-volume businesses</strong> should move to a monthly series such as <code>INV-202601-0001</code> and increase the padding to five digits. At this point you should also be generating numbers in your accounting system rather than by hand, using this tool to design and test the format first.</p>'
+        },
+        {
+          h: 'Invoice numbers and your accounting software',
+          html: '<p>Most accounting platforms — Xero, QuickBooks, FreeAgent, Wave, Zoho — let you set a prefix and a starting number, then handle the sequence automatically. This generator is most useful in three situations:</p>',
+          list: [
+            '<strong>Designing a format before you commit.</strong> Try patterns here, check the validation warnings, then configure your software once.',
+            '<strong>Migrating between systems.</strong> Work out exactly where your old series ended so the new one continues without a duplicate or a gap.',
+            '<strong>Invoicing manually.</strong> If you produce invoices in a spreadsheet or document template, generate a block of numbers and work through them in order.'
+          ],
+          after: '<p>If you also need a separate payment reference for bank reconciliation, the <a href="reference-number-generator.html">reference number generator</a> adds a check digit so a mistyped reference is caught before the payment is misallocated — something you generally cannot add to a compliant invoice series.</p>'
+        },
+        {
+          h: 'Related business numbering tools',
+          html: '<p>Invoice numbers rarely exist alone. These generators cover the identifiers that sit alongside them in a typical finance workflow:</p>',
+          list: [
+            '<a href="purchase-order-number-generator.html">Purchase Order Number Generator</a> — the buyer-side reference that ties requisition, delivery and invoice together.',
+            '<a href="receipt-number-generator.html">Receipt Number Generator</a> — gapless receipt numbering for POS and cash handling.',
+            '<a href="order-number-generator.html">Order Number Generator</a> — customer-facing order references that are readable but not guessable.',
+            '<a href="reference-number-generator.html">Reference Number Generator</a> — payment references with Luhn or mod-97 check digits.',
+            '<a href="ticket-number-generator.html">Ticket Number Generator</a> — support and event ticket references.'
+          ]
+        }
+      ],
+      keywords: [
+        'invoice number generator', 'invoice numbering', 'invoice number format',
+        'sequential invoice numbers', 'invoice number example', 'what is an invoice number',
+        'gapless invoice numbering', 'invoice number for small business',
+        'free invoice number generator', 'invoice reference number',
+        'invoice numbering system', 'consecutive invoice numbers',
+        'invoice number rules', 'how to number invoices'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reference Number Generator — Luhn &amp; Mod-97 Check Digits | Manage My Batch</title>
+<meta name="description" content="Free reference number generator with real check digits. Build payment, remittance and correspondence references using Luhn, mod-97 (ISO 11649) or mod-11 validation.">
+<link rel="canonical" href="https://managemybatch.com/tools/reference-number-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Reference Number Generator — Luhn &amp; Mod-97 Check Digits">
+<meta property="og:description" content="Free reference number generator with real check digits. Build payment, remittance and correspondence references using Luhn, mod-97 (ISO 11649) or mod-11 validation.">
+<meta property="og:url" content="https://managemybatch.com/tools/reference-number-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Reference Number Generator — Luhn &amp; Mod-97 Check Digits">
+<meta name="twitter:description" content="Free reference number generator with real check digits. Build payment, remittance and correspondence references using Luhn, mod-97 (ISO 11649) or mod-11 validation.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Generator Settings</div>
+
+    <div class="field">
+      <label>Use case</label>
+      <div class="seg" id="preset">
+        <button type="button" class="on" data-p="payment">Payment reference</button>
+        <button type="button" data-p="case">Case / file</button>
+        <button type="button" data-p="rf">ISO 11649 RF</button>
+      </div>
+      <div class="hint" id="presetHint"></div>
+    </div>
+
+    <div class="row">
+      <div class="field"><label for="prefix">Prefix</label><input type="text" id="prefix" value="REF"></div>
+      <div class="field">
+        <label for="sep">Separator</label>
+        <select id="sep">
+          <option value="-" selected>Hyphen (-)</option>
+          <option value="">None</option>
+          <option value=" ">Space</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="dateFormat">Date segment</label>
+        <select id="dateFormat"></select>
+      </div>
+      <div class="field">
+        <label for="pad">Number length</label>
+        <select id="pad">
+          <option value="4">4 digits</option>
+          <option value="6" selected>6 digits</option>
+          <option value="8">8 digits</option>
+          <option value="10">10 digits</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field"><label for="start">Starting number</label><input type="number" id="start" value="1" min="0"></div>
+      <div class="field">
+        <label for="checkDigit">Check digit</label>
+        <select id="checkDigit"></select>
+      </div>
+    </div>
+    <div class="hint" style="margin:-8px 0 16px" id="checkHint"></div>
+
+    <div class="field">
+      <label for="preview">Preview format</label>
+      <div class="seq-preview" id="preview">REF-000001</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="row">
+      <div class="field"><label for="count">How many</label><input type="number" id="count" value="6" min="1" max="5000"></div>
+      <div class="field"><label for="date">Date</label><input type="date" id="date"></div>
+    </div>
+
+    <details class="faq" style="box-shadow:none;margin-bottom:16px">
+      <summary style="padding:12px 14px;font-size:13.8px">Advanced format</summary>
+      <div class="body" style="padding:0 14px 14px">
+        <label for="pattern" style="margin-top:6px">Custom pattern</label>
+        <input type="text" id="pattern" placeholder="e.g. {PREFIX}{SEP}{YYYY}{SEP}{SEQ:6}">
+        <div class="token-help" id="tokenHelp"></div>
+        <label for="suffix" style="margin-top:12px">Suffix</label>
+        <input type="text" id="suffix" placeholder="optional">
+      </div>
+    </details>
+
+    <div class="out-actions">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate References</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated Results<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="results">Results</button>
+      <button type="button" data-tab="verify">Verify a reference</button>
+      <button type="button" data-tab="export">Export</button>
+      <button type="button" data-tab="guide">Check digits explained</button>
+    </div>
+
+    <div data-panel="results">
+      <div id="primary"></div>
+      <div id="more"></div>
+      <button type="button" class="btn btn-soft btn-block" id="regen" style="margin-top:18px">
+        <span id="icoReset"></span> Regenerate</button>
+      <div id="checks"></div>
+    </div>
+
+    <div data-panel="verify" hidden>
+      <p style="color:var(--muted);font-size:13.8px;margin-bottom:14px">Paste a reference to test whether its check digit is valid. Useful for confirming a customer typed theirs correctly.</p>
+      <div class="field">
+        <label for="verifyInput">Reference</label>
+        <input type="text" id="verifyInput" placeholder="Paste a generated reference">
+      </div>
+      <div class="field">
+        <label for="verifyKind">Check digit scheme</label>
+        <select id="verifyKind"></select>
+      </div>
+      <div id="verifyOut"></div>
+    </div>
+
+    <div data-panel="export" hidden>
+      <div class="field">
+        <label for="exportAs">Export format</label>
+        <select id="exportAs">
+          <option value="lines">Plain list</option>
+          <option value="csvIndexed">CSV with index</option>
+          <option value="json">JSON array</option>
+          <option value="sql">SQL INSERT</option>
+        </select>
+      </div>
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">references.txt</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy all</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+    </div>
+
+    <div data-panel="guide" hidden><div id="guide"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/seqid.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoCopy:copy','icoDl:download','icoReset:reset']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  $('#dateFormat').innerHTML = GTSeq.DATE_FORMATS.map(function (f) {
+    return '<option value="' + f.id + '"' + (f.id === 'none' ? ' selected' : '') + '>' + f.label + '</option>';
+  }).join('');
+  var cdOpts = GTSeq.CHECK_DIGITS.map(function (c) { return '<option value="' + c.id + '">' + c.label + '</option>'; }).join('');
+  $('#checkDigit').innerHTML = cdOpts;
+  $('#verifyKind').innerHTML = cdOpts;
+  $('#checkDigit').value = 'luhn';
+  $('#verifyKind').value = 'luhn';
+  $('#tokenHelp').innerHTML = GTSeq.tokenHelpHtml();
+  $('#date').value = GT.today();
+
+  var HINTS = {
+    payment: 'Goes on an invoice so the customer quotes it when paying. A check digit means a mistyped reference is caught before the payment is misallocated.',
+    case: 'A durable file or case reference for correspondence. Year segment groups by period.',
+    rf: 'Structured creditor reference: an RF prefix plus two mod-97 check characters, designed for automatic reconciliation across banks.'
+  };
+  var PRESETS = {
+    payment: { prefix: 'REF', date: 'none', pad: 6, check: 'luhn', sep: '-' },
+    case: { prefix: 'CASE', date: 'YYYY', pad: 5, check: 'none', sep: '-' },
+    rf: { prefix: 'RF', date: 'none', pad: 8, check: 'mod97', sep: '' }
+  };
+
+  var ids = [];
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'references.txt', mime: 'text/plain' });
+
+  function opts() {
+    return {
+      prefix: $('#prefix').value.trim(),
+      suffix: $('#suffix').value.trim(),
+      dateFormat: $('#dateFormat').value,
+      sep: $('#sep').value,
+      start: $('#start').value,
+      pad: parseInt($('#pad').value, 10),
+      count: parseInt($('#count').value, 10),
+      checkDigit: $('#checkDigit').value,
+      date: $('#date').value ? new Date($('#date').value + 'T12:00:00') : new Date(),
+      pattern: $('#pattern').value
+    };
+  }
+
+  function build() {
+    var o = opts();
+    ids = GTSeq.generate(o).ids;
+
+    $('#preview').textContent = ids[0] || '—';
+    GTSeq.renderResults({ ids: ids, primary: '#primary', more: '#more', noun: 'Reference' });
+    $('#pill').textContent = ids.length.toLocaleString() + ' generated';
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+
+    var cd = GTSeq.CHECK_DIGITS.filter(function (c) { return c.id === o.checkDigit; })[0];
+    $('#checkHint').innerHTML = o.checkDigit === 'none'
+      ? 'No check digit — a single mistyped character produces another valid-looking reference.'
+      : 'Using <strong>' + cd.label + '</strong>. The final character(s) are computed from everything before them.';
+
+    var mode = $('#exportAs').value;
+    var ext = mode === 'json' ? 'json' : mode === 'sql' ? 'sql' : /csv/.test(mode) ? 'csv' : 'txt';
+    out.set(GTSeq.exportAs(ids, mode, { column: 'reference', table: 'payments' }), 'references.' + ext);
+
+    var extra = [];
+    if (o.checkDigit === 'none') {
+      extra.push({ s: 'warn', m: 'No check digit selected. For anything a customer types into a bank transfer, a check digit is the single highest-value addition you can make.' });
+    }
+    if (o.sep === ' ') {
+      extra.push({ s: 'warn', m: 'Spaces are often stripped or rejected by bank payment forms. Prefer no separator for payment references and format for display only.' });
+    }
+    if (/[a-z]/.test(ids[0] || '')) {
+      extra.push({ s: 'warn', m: 'Lowercase letters risk being uppercased in transit by banking systems. Keep payment references uppercase.' });
+    }
+    GTSeq.renderChecks('#checks', GTSeq.validate(ids, { checkDigit: o.checkDigit, humanEntry: true, sequential: true }).concat(extra));
+  }
+
+  /* ---------- verifier ---------- */
+  function verify() {
+    var v = $('#verifyInput').value.trim().toUpperCase().replace(/\s+/g, '');
+    var kind = $('#verifyKind').value;
+    var el = $('#verifyOut');
+    if (!v) { el.innerHTML = ''; return; }
+    if (kind === 'none') {
+      el.innerHTML = '<div class="note note-info">' + I.info + '<span>No check digit scheme selected — nothing to verify.</span></div>';
+      return;
+    }
+    var body, given, expected;
+    if (kind === 'mod97') { body = v.slice(0, -2); given = v.slice(-2); expected = GTSeq.mod97(body); }
+    else { body = v.slice(0, -1); given = v.slice(-1); expected = kind === 'luhn' ? String(GTSeq.luhn(body)) : GTSeq.mod11(body); }
+    var ok = given === expected;
+    el.innerHTML = '<div class="note ' + (ok ? 'note-ok' : 'note-err') + '">' + (ok ? I.check : I.warn) +
+      '<span><strong>' + (ok ? 'Valid' : 'Invalid') + '</strong> — body <code>' + GT.esc(body) +
+      '</code>, expected check <code>' + expected + '</code>, found <code>' + GT.esc(given) + '</code>.' +
+      (ok ? ' The reference is internally consistent.' : ' This reference contains a typo, or uses a different scheme.') +
+      '</span></div>';
+  }
+  $('#verifyInput').addEventListener('input', verify);
+  $('#verifyKind').addEventListener('change', verify);
+
+  $('#guide').innerHTML =
+    '<p style="color:var(--muted);font-size:13.8px;margin-bottom:16px">A check digit is one or two extra characters computed from the rest of the reference. Change any single character and the check no longer matches, so the error is caught the moment it is entered rather than when a payment lands in the wrong account.</p>' +
+    [['Luhn (mod 10)', 'The most widely used scheme — the same algorithm that validates card numbers. Catches every single-digit error and almost all transpositions of adjacent digits. Adds one digit. A sensible default.'],
+     ['Mod-97 (ISO 11649)', 'The RF creditor reference standard, designed for automated bank reconciliation across Europe. Adds two check characters and detects a wider class of errors than Luhn. Use it if your bank supports structured references.'],
+     ['Mod-11', 'Common in Nordic countries and utility billing. Strong error detection, with one awkward edge case: the check value can come out as 10, which different implementations represent differently.'],
+     ['What check digits do not do', 'They are not security. Anyone can compute a valid check digit — the algorithms are public. They protect against accidental typos, never against deliberate forgery. For that you need a random component and a server-side lookup.']
+    ].map(function (x) {
+      return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+        '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+    }).join('') +
+    '<div class="note note-info">' + I.info + '<span>Use the <strong>Verify</strong> tab to check any reference against a scheme. It recomputes the expected digit from the body and compares it — the same logic your payment matching should run on import.</span></div>';
+
+  $('#preset').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#preset button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    var k = b.getAttribute('data-p'), p = PRESETS[k];
+    $('#prefix').value = p.prefix; $('#dateFormat').value = p.date; $('#pad').value = p.pad;
+    $('#checkDigit').value = p.check; $('#sep').value = p.sep; $('#pattern').value = '';
+    $('#presetHint').textContent = HINTS[k];
+    build();
+  });
+  $('#presetHint').textContent = HINTS.payment;
+
+  GTSeq.bindCopy('#primary', function () { return ids; });
+  GTSeq.bindCopy('#more', function () { return ids; });
+  GTSeq.bindTokenHelp('#tokenHelp', '#pattern', build);
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('References generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+  $('#regen').addEventListener('click', build);
+  $('#exportAs').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'reference-number-generator',
+    lede: 'Generate payment and correspondence references with real check digits — Luhn, mod-97 or mod-11 — plus a verifier that catches a mistyped reference instantly.',
+    steps: [
+      { icon: 'gear', title: 'Pick a use case', text: 'Payment reference, case file, or an ISO 11649 structured creditor reference.' },
+      { icon: 'hash', title: 'Add a check digit', text: 'One extra character turns a silent typo into an immediate rejection.' },
+      { icon: 'check', title: 'Verify anything', text: 'Paste a reference into the Verify tab to test its check digit.' }
+    ],
+    guideTitle: 'The cheapest reliability upgrade you can make',
+    guide:
+      '<p style="color:var(--muted)">A payment reference exists so money arriving in your bank account can be matched to the invoice it pays. When a customer mistypes one character, the payment becomes unallocated cash — someone has to investigate it manually, the customer gets a reminder for an invoice they already paid, and both sides lose a morning.</p>' +
+      '<p style="color:var(--muted);margin-top:12px">A check digit costs one character and prevents nearly all of that. It is computed from the rest of the reference, so changing any single character makes the whole thing fail validation the moment it is entered.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Design rules for payment references</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>Uppercase only — banking systems frequently uppercase in transit.</li><li>No spaces or punctuation; many payment forms strip or reject them.</li><li>Keep it short. Some bank fields truncate at 18 characters.</li><li>Digits only if you can — they are unambiguous over the phone.</li><li>Always include a check digit.</li></ul></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Reference vs invoice number</h4><p style="color:var(--muted);font-size:13.8px">They are often the same thing for small businesses, and separating them is worthwhile once volume grows. The invoice number is a legal identifier bound by gapless-sequence rules. The payment reference is an operational key you can design freely — including adding a check digit, which you may not want to bolt onto a compliant invoice series.</p></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>Check digits are not security.</strong> The algorithms are public and anyone can compute a valid one. They catch accidental errors, never deliberate forgery — for that you need a random component and a server-side lookup.</span></div>',
+    related: ['invoice-number-generator', 'ticket-number-generator', 'purchase-order-number-generator'],
+    faqs: [
+      { q: 'What is a check digit?', a: 'One or two extra characters computed from the rest of a number. If any character is mistyped, the computed value no longer matches and the error is detected immediately rather than downstream.' },
+      { q: 'Which check digit scheme should I use?', a: 'Luhn (mod 10) is the sensible default — widely understood, one extra digit, catches virtually all single-character typos and adjacent transpositions. Use mod-97 if your bank supports ISO 11649 structured creditor references.' },
+      { q: 'What is an ISO 11649 RF reference?', a: 'A structured creditor reference beginning <code>RF</code> followed by two mod-97 check characters and your own reference. It is designed for automated reconciliation and is recognised by banks across Europe.' },
+      { q: 'Is a payment reference the same as an invoice number?', a: 'Often, but they need not be. The invoice number is a legal identifier subject to gapless-sequence rules; the payment reference is operational, so you can freely add a check digit and optimise it for bank entry.' },
+      { q: 'Do check digits make references secure?', a: 'No. The algorithms are public, so anyone can produce a valid reference. They protect against typing mistakes only. Security requires unpredictability and a server-side check.' },
+      { q: 'Why should payment references avoid spaces and lowercase?', a: 'Many banking systems strip spaces, reject punctuation or uppercase the whole field in transit. A reference that changes shape on its way to you will not match on import.' }
+    ],
+    seo: {
+      title: 'Reference numbers and check digits: Luhn, mod-97 and ISO 11649',
+      lead: 'This <strong>reference number generator</strong> creates payment and correspondence references with real check digits — Luhn, mod-97 or mod-11 — plus a verifier that catches a mistyped reference instantly. Below: how each scheme works, which to choose, and what a check digit does not do.',
+      blocks: [
+        {
+          h: 'The cheapest reliability upgrade available',
+          html: '<p>A <strong>check digit</strong> is one or two extra characters computed from the rest of the reference. Change any single digit, or swap two adjacent ones, and the arithmetic no longer works — so the error is caught at the point of entry rather than in a reconciliation report three weeks later.</p>' +
+            '<p>The two most common human errors are exactly the two that check digits target: a single wrong digit, and a transposition (<code>...45...</code> typed as <code>...54...</code>). Together they account for the large majority of manual entry mistakes.</p>' +
+            '<p>The cost is one character. The saving is every payment that would otherwise arrive unmatched and need a human to trace it — which for anything at volume is the entire justification.</p>'
+        },
+        {
+          h: 'The schemes',
+          table: {
+            head: ['Scheme', 'Check size', 'Catches', 'Used by'],
+            rows: [
+              ['<strong>Luhn (mod 10)</strong>', '1 digit', 'All single-digit errors, most transpositions (not 09↔90).', 'Payment cards, IMEI numbers, many loyalty schemes.'],
+              ['<strong>Mod 97-10 (ISO 7064)</strong>', '2 digits', 'All single-digit and all transposition errors. Strongest of the three.', 'IBAN, ISO 11649 creditor references.'],
+              ['<strong>Mod 11</strong>', '1 digit or X', 'All single and transposition errors, but can produce a check value of 10.', 'ISBN-10, some national ID and bank schemes.'],
+              ['<strong>Verhoeff / Damm</strong>', '1 digit', 'All single and transposition errors with a single digit.', 'Rare, but the mathematically neat option.']
+            ]
+          },
+          after: '<p>The awkwardness of mod-11 is that a check value of 10 needs a non-digit — ISBN-10 used <code>X</code>. If your reference must be all-numeric, that rules it out or forces you to skip those references.</p>'
+        },
+        {
+          h: 'Which one to use',
+          cards: [
+            { t: 'Payments and banking', d: 'Mod 97-10. It is what IBAN and ISO 11649 use, it catches every transposition, and banks already understand it.' },
+            { t: 'General business references', d: 'Luhn. One digit, trivially implemented in any language, and adequate for the error rates involved.' },
+            { t: 'Numeric-only legacy systems', d: 'Luhn again — mod 11 risks the <code>X</code> problem and mod 97 needs two characters.' },
+            { t: 'No check digit at all', d: 'Acceptable when the reference is scanned rather than typed, or always copied and pasted. Add one anyway if a human ever reads it aloud.' }
+          ]
+        },
+        {
+          h: 'ISO 11649 creditor references',
+          html: '<p><strong>ISO 11649</strong> defines the structured creditor reference used across European payments — the RF reference. It looks like <code>RF18 5390 0754 7034</code>: the literal <code>RF</code>, two mod-97 check digits, then up to 21 characters of your own reference.</p>' +
+            '<p>Its value is automatic reconciliation. A payment carrying an RF reference can be matched to an invoice by software with no human involvement, because the check digits guarantee the reference was not mistyped and the format guarantees it will not be confused with free-text payment notes.</p>',
+          steps: [
+            { t: 'Start with your own reference', d: 'An invoice number or customer account code, alphanumeric, up to 21 characters.' },
+            { t: 'Append RF00 and convert', d: 'Move <code>RF00</code> to the end and convert letters to numbers (A=10 … Z=35).' },
+            { t: 'Compute 98 minus the remainder mod 97', d: 'That two-digit result replaces the <code>00</code>.' },
+            { t: 'Present in groups of four', d: 'Spaces improve readability and are ignored on input.' }
+          ],
+          callout: { type: 'tip', text: 'If you invoice European business customers, printing an RF reference on the invoice measurably improves how many payments reconcile automatically. It costs nothing to generate and removes a manual matching step at both ends.' }
+        },
+        {
+          h: 'Payment reference or invoice number?',
+          html: '<p>They can be the same value and often should not be.</p>' +
+            '<p>An <strong>invoice number</strong> is an internal accounting sequence, usually strictly sequential for audit purposes, and it appears on the document. A <strong>payment reference</strong> is what the payer types into their banking app. It needs a check digit, needs to survive being read from a printed page, and may need to encode a customer account so that a part-payment or a payment on account can still be allocated.</p>' +
+            '<p>The common pattern is a payment reference derived from the invoice number plus a check digit — related enough to be traceable, distinct enough to serve its own purpose. See the <a href="invoice-number-generator.html">invoice number generator</a> for the accounting sequence itself.</p>'
+        },
+        {
+          h: 'What a check digit does not do',
+          html: '<p>It detects accidental error. It provides no security whatsoever.</p>',
+          list: [
+            '<strong>Anyone can compute a valid reference.</strong> The algorithms are public and take four lines of code. A check digit stops typos, not forgery.',
+            '<strong>It does not prevent enumeration.</strong> If your references are sequential with a Luhn digit, every valid neighbouring reference is trivially derivable.',
+            '<strong>It does not authorise anything.</strong> A valid reference must never be sufficient to view or modify a record.',
+            '<strong>It catches most errors, not all.</strong> Luhn misses the 09↔90 transposition; two compensating errors defeat any single-digit scheme.'
+          ],
+          callout: { type: 'warn', text: 'If a reference must be unguessable — a payment link, a document access code — add a random block alongside the check digit. The check digit handles typos; only entropy handles guessing.' }
+        },
+        {
+          h: 'Formatting for entry',
+          html: '<p>Uppercase, no lowercase, no spaces in the stored form. The reasons are practical: banking systems commonly uppercase input, some strip spaces and others do not, and lowercase letters introduce <code>l</code>/<code>1</code> and <code>o</code>/<code>0</code> confusion that a check digit will catch but a customer will have to retype.</p>' +
+            '<p>Display with grouping — <code>RF18 5390 0754 7034</code> — because grouped digits are transcribed far more accurately. Accept input in any form and normalise before comparing: strip whitespace and punctuation, uppercase, then validate.</p>'
+        },
+        {
+          h: 'Related reference tools',
+          list: [
+            '<a href="invoice-number-generator.html">Invoice Number Generator</a> — sequential billing references.',
+            '<a href="ticket-number-generator.html">Ticket Number Generator</a> — support and admission references.',
+            '<a href="purchase-order-number-generator.html">Purchase Order Number Generator</a> — structured procurement references.',
+            '<a href="order-number-generator.html">Order Number Generator</a> — customer-facing order references.',
+            '<a href="barcode-number-generator.html">Barcode Number Generator</a> — GTIN check digits.'
+          ]
+        }
+      ],
+      keywords: [
+        'reference number generator', 'check digit calculator', 'luhn algorithm generator',
+        'mod 97 check digit', 'iso 11649 rf reference', 'payment reference format',
+        'mod 11 check digit', 'creditor reference generator', 'validate reference number',
+        'transposition error detection', 'structured payment reference', 'unique reference number'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

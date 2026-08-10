@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Match Fixture Generator — Dated Fixture Lists with Times &amp; Venues | Manage My Batch</title>
+<meta name="description" content="Free match fixture generator. Turn a team list into a dated fixture list with kick-off times, venues, match numbers and printable fixture cards.">
+<link rel="canonical" href="https://managemybatch.com/tools/match-fixture-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Match Fixture Generator — Dated Fixture Lists with Times &amp; Venues">
+<meta property="og:description" content="Free match fixture generator. Turn a team list into a dated fixture list with kick-off times, venues, match numbers and printable fixture cards.">
+<meta property="og:url" content="https://managemybatch.com/tools/match-fixture-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Match Fixture Generator — Dated Fixture Lists with Times &amp; Venues">
+<meta name="twitter:description" content="Free match fixture generator. Turn a team list into a dated fixture list with kick-off times, venues, match numbers and printable fixture cards.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Fixture Setup</div>
+
+    <div class="field">
+      <label for="teams">Teams — one per line</label>
+      <textarea id="teams" style="min-height:150px">Riverside
+Ashford
+Kingsway
+Northgate
+Belmont
+Carlton</textarea>
+      <div id="stats"></div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="legs">Format</label>
+        <select id="legs">
+          <option value="1" selected>Single round</option>
+          <option value="2">Home and away</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="start">First match date</label>
+        <input type="date" id="start">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="every">Rounds are</label>
+        <select id="every">
+          <option value="7" selected>Weekly</option>
+          <option value="14">Fortnightly</option>
+          <option value="1">Daily</option>
+          <option value="3">Every 3 days</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="firstKO">First kick-off</label>
+        <input type="time" id="firstKO" value="10:00">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="slotMin">Minutes between kick-offs</label>
+        <input type="number" id="slotMin" value="0" min="0" max="240">
+      </div>
+      <div class="field">
+        <label for="venues">Venues / pitches</label>
+        <input type="text" id="venues" placeholder="Pitch 1, Pitch 2">
+      </div>
+    </div>
+    <div class="hint" style="margin:-8px 0 16px">Set minutes to 0 if every match in a round kicks off together.</div>
+
+    <fieldset class="field">
+      <legend class="label">Options</legend>
+      <div class="check-list">
+        <label class="check on"><input type="checkbox" id="optNumbers" checked>
+          <span><span class="t">Number every match</span></span></label>
+        <label class="check"><input type="checkbox" id="optHomeVenue">
+          <span><span class="t">Use the home team as the venue</span><span class="d">Overrides the venue list.</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="row">
+      <div class="field"><label for="title">Competition</label><input type="text" id="title" value="Club Fixtures"></div>
+      <div class="field">
+        <label for="seed">Seed</label>
+        <div class="row" style="grid-template-columns:minmax(0,1fr) auto;gap:8px">
+          <input type="text" id="seed" value="fix-1">
+          <button type="button" class="btn btn-soft" id="newSeed"><span id="icoReset"></span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="out-actions">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate Fixtures</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Fixture List<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="list">Fixtures</button>
+      <button type="button" data-tab="byteam">By team</button>
+      <button type="button" data-tab="export">Export</button>
+      <button type="button" data-tab="guide">Notes</button>
+    </div>
+
+    <div data-panel="list">
+      <div id="list"></div>
+      <div class="out-actions" style="margin-top:16px">
+        <button type="button" class="btn btn-primary" id="printBtn"><span id="icoFile"></span> Print / PDF</button>
+        <button type="button" class="btn btn-soft" id="regen"><span id="icoReset2"></span> Redraw</button>
+      </div>
+      <div id="checks"></div>
+    </div>
+
+    <div data-panel="byteam" hidden><div id="byteam"></div></div>
+
+    <div data-panel="export" hidden>
+      <div class="field">
+        <label for="exportAs">Format</label>
+        <select id="exportAs">
+          <option value="csv">CSV — for spreadsheets and calendars</option>
+          <option value="text">Readable list</option>
+          <option value="json">JSON</option>
+        </select>
+      </div>
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">fixtures.csv</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyAllBtn"><span id="icoCopy"></span> Copy all</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+    </div>
+
+    <div data-panel="guide" hidden><div id="guide"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/schedule.js"></script>
+<script src="../assets/js/roster.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$, S = GTSched;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoCopy:copy','icoDl:download','icoReset:reset','icoReset2:reset','icoFile:file']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  $('#start').value = GT.today();
+  var fixtures = [], teams = [];
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyAllBtn', downloadBtn: '#dlBtn', filename: 'fixtures.csv', mime: 'text/csv' });
+
+  function venueList() {
+    return $('#venues').value.split(',').map(function (v) { return v.trim(); }).filter(Boolean);
+  }
+  function fmtTime(mins) {
+    var h = Math.floor(mins / 60) % 24, m = mins % 60;
+    return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0');
+  }
+
+  function build() {
+    var parsed = GTRoster.parseNames($('#teams').value);
+    teams = parsed.names;
+    GTRoster.rosterStats('#stats', parsed);
+
+    if (teams.length < 2) {
+      $('#list').innerHTML = '<div class="empty">Add at least two teams.</div>';
+      $('#pill').textContent = '—'; $('#byteam').innerHTML = '';
+      return;
+    }
+
+    var rounds = S.roundRobin(teams, { doubleRound: $('#legs').value === '2' });
+    var dates = S.dateSeries($('#start').value, rounds.length, parseInt($('#every').value, 10));
+    var ko = $('#firstKO').value.split(':');
+    var baseMin = (+ko[0]) * 60 + (+ko[1]);
+    var gap = parseInt($('#slotMin').value, 10) || 0;
+    var venues = venueList();
+
+    fixtures = [];
+    var num = 1;
+    rounds.forEach(function (rd, ri) {
+      rd.forEach(function (m, mi) {
+        fixtures.push({
+          no: num++,
+          round: ri + 1,
+          date: dates[ri],
+          time: fmtTime(baseMin + gap * mi),
+          home: m.home,
+          away: m.away,
+          venue: $('#optHomeVenue').checked ? m.home
+            : (venues.length ? venues[mi % venues.length] : '')
+        });
+      });
+      if (rd.byeTeam) {
+        fixtures.push({ bye: true, round: ri + 1, date: dates[ri], team: rd.byeTeam });
+      }
+    });
+
+    renderList();
+    renderByTeam();
+    renderExport();
+    renderChecks(rounds, dates);
+
+    var real = fixtures.filter(function (f) { return !f.bye; }).length;
+    $('#pill').textContent = real + ' matches · ' + rounds.length + ' rounds';
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+  }
+
+  function renderList() {
+    var byRound = {};
+    fixtures.forEach(function (f) { (byRound[f.round] = byRound[f.round] || []).push(f); });
+    $('#list').innerHTML = Object.keys(byRound).map(function (r) {
+      var group = byRound[r];
+      var d = group[0].date;
+      return '<div style="margin-bottom:18px">' +
+        '<p class="more-label">Round ' + r + ' <span style="font-weight:500;color:var(--muted)">· ' +
+        S.fmtDate(d) + '</span></p><div class="more-list">' +
+        group.map(function (f) {
+          if (f.bye) {
+            return '<div class="more-row" style="background:var(--bg-soft)">' +
+              '<span class="mval" style="font-family:var(--sans);color:var(--muted);font-style:italic">' +
+              GT.esc(f.team) + ' — bye</span></div>';
+          }
+          return '<div class="more-row">' +
+            ($('#optNumbers').checked ? '<span style="width:28px;flex:none;font-size:12px;color:var(--muted-2)">' + f.no + '</span>' : '') +
+            '<span class="mval" style="font-family:var(--sans);font-size:14.5px;font-weight:500">' +
+            GT.esc(f.home) + ' <span style="color:var(--muted-2);font-weight:400">v</span> ' + GT.esc(f.away) + '</span>' +
+            '<span class="chip">' + f.time + (f.venue ? ' · ' + GT.esc(f.venue) : '') + '</span></div>';
+        }).join('') + '</div></div>';
+    }).join('');
+  }
+
+  function renderByTeam() {
+    $('#byteam').innerHTML = teams.map(function (t) {
+      var mine = fixtures.filter(function (f) { return !f.bye && (f.home === t || f.away === t); });
+      var byes = fixtures.filter(function (f) { return f.bye && f.team === t; });
+      return '<div style="margin-bottom:16px"><p class="more-label">' + GT.esc(t) +
+        ' <span style="font-weight:500;color:var(--muted)">· ' + mine.length + ' matches' +
+        (byes.length ? ', ' + byes.length + ' bye' : '') + '</span></p><div class="more-list">' +
+        mine.map(function (f) {
+          var home = f.home === t;
+          return '<div class="more-row">' +
+            '<span style="width:52px;flex:none;font-size:11.5px;color:var(--muted)">' + S.fmtDate(f.date) + '</span>' +
+            '<span class="mval" style="font-family:var(--sans);font-size:14px">' +
+            (home ? '<strong>H</strong>' : '<span style="color:var(--muted)">A</span>') + ' &nbsp; ' +
+            GT.esc(home ? f.away : f.home) + '</span>' +
+            '<span class="chip">' + f.time + '</span></div>';
+        }).join('') + '</div></div>';
+    }).join('');
+  }
+
+  function renderExport() {
+    var m = $('#exportAs').value, text, file = 'fixtures.csv';
+    var real = fixtures.filter(function (f) { return !f.bye; });
+    if (m === 'csv') {
+      text = 'match,round,date,time,home,away,venue\n' + real.map(function (f) {
+        return [f.no, f.round, f.date.toISOString().slice(0, 10), f.time,
+          '"' + f.home.replace(/"/g, '""') + '"', '"' + f.away.replace(/"/g, '""') + '"',
+          '"' + (f.venue || '').replace(/"/g, '""') + '"'].join(',');
+      }).join('\n');
+    } else if (m === 'json') {
+      text = JSON.stringify(real.map(function (f) {
+        return { match: f.no, round: f.round, date: f.date.toISOString().slice(0, 10),
+          time: f.time, home: f.home, away: f.away, venue: f.venue };
+      }), null, 2);
+      file = 'fixtures.json';
+    } else {
+      text = real.map(function (f) {
+        return '#' + f.no + '  ' + S.fmtDate(f.date) + '  ' + f.time + '  ' +
+          f.home + ' v ' + f.away + (f.venue ? '  (' + f.venue + ')' : '');
+      }).join('\n');
+      file = 'fixtures.txt';
+    }
+    out.set(text, file);
+  }
+
+  function renderChecks(rounds, dates) {
+    var c = [];
+    var real = fixtures.filter(function (f) { return !f.bye; }).length;
+    var last = dates[dates.length - 1];
+    c.push(['ok', real + ' matches from ' + S.fmtDate(dates[0]) + ' to ' + S.fmtDate(last) + '.']);
+
+    if (teams.length % 2 === 1) {
+      c.push(['warn', 'Odd number of teams — one team has a bye each round. Byes are listed in the fixture list so nobody turns up expecting a match.']);
+    }
+    var venues = venueList();
+    var perRound = rounds[0] ? rounds[0].length : 0;
+    if (!$('#optHomeVenue').checked && venues.length && venues.length < perRound && !parseInt($('#slotMin').value, 10)) {
+      c.push(['err', 'Only ' + venues.length + ' venue' + (venues.length === 1 ? '' : 's') + ' for ' + perRound +
+        ' simultaneous matches, and no gap between kick-offs. Add venues or stagger the kick-off times.']);
+    } else if (venues.length && !$('#optHomeVenue').checked) {
+      c.push(['ok', venues.length + ' venue' + (venues.length === 1 ? '' : 's') + ' rotating across each round.']);
+    }
+    var t = S.homeAwayTally(rounds);
+    var worst = Math.max.apply(null, Object.keys(t).map(function (k) { return Math.abs(t[k].home - t[k].away); }));
+    if (worst > 2) c.push(['warn', 'Home/away difference reaches ' + worst + '. A home-and-away format evens it out.']);
+    if (parseInt($('#every').value, 10) === 1 && rounds.length > 7) {
+      c.push(['warn', rounds.length + ' consecutive days is demanding. Consider weekly rounds or a rest gap.']);
+    }
+    $('#checks').innerHTML = c.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : x[0] === 'warn' ? 'note-warn' : 'note-err') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+  }
+
+  $('#printBtn').addEventListener('click', function () {
+    var real = fixtures.filter(function (f) { return !f.bye; });
+    GTRoster.printHtml($('#title').value,
+      '<h1>' + GT.esc($('#title').value) + '</h1>' +
+      '<p class="sub">' + real.length + ' matches · ' + teams.length + ' teams</p>' +
+      '<table><tr><th style="width:44px">#</th><th style="width:110px">Date</th><th style="width:60px">Time</th>' +
+      '<th>Fixture</th><th style="width:110px">Venue</th></tr>' +
+      real.map(function (f) {
+        return '<tr><td>' + f.no + '</td><td>' + S.fmtDate(f.date) + '</td><td>' + f.time + '</td>' +
+          '<td>' + GT.esc(f.home) + ' v ' + GT.esc(f.away) + '</td><td>' + GT.esc(f.venue || '') + '</td></tr>';
+      }).join('') + '</table>');
+  });
+  $('#newSeed').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); });
+  $('#regen').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); GT.toast('Redrawn'); });
+
+  $('#guide').innerHTML = [
+    ['List the byes explicitly', 'With an odd number of teams somebody sits out every round. If the fixture list simply omits them, that team turns up at the ground. Naming the bye team in the round is the single most useful thing a fixture list can do for an odd-sized league.'],
+    ['Venue capacity is a hard constraint', 'Six teams means three simultaneous matches. With one pitch and no staggered kick-offs, that is impossible — and it is very easy to publish a fixture list that cannot physically happen. The tool checks venue count against matches per round and flags it as an error, not a suggestion.'],
+    ['Stagger kick-offs or add venues', 'Either works. Staggering keeps everyone at one ground and stretches the day; multiple venues finish faster but split your officials and spectators.'],
+    ['Export CSV for calendars', 'The CSV includes date, time, teams and venue in separate columns, which imports cleanly into a spreadsheet and into most calendar tools after a quick column mapping.'],
+    ['A by-team view prevents complaints', 'Players care about their own fixtures, not the full list. The by-team tab shows each team\'s season at a glance with home and away marked, which is what to send to captains.'],
+    ['Fix the date pattern before publishing', 'Changing from weekly to fortnightly after publication means every subsequent date moves. Decide the rhythm first, then generate.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('');
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Fixtures generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+  $('#exportAs').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'match-fixture-generator',
+    lede: 'Turn a team list into a real fixture list — dates, kick-off times, venues and match numbers, with a check that your venues can physically host each round.',
+    steps: [
+      { icon: 'gear', title: 'Add teams and a start date', text: 'Weekly, fortnightly or daily rounds.' },
+      { icon: 'whistle', title: 'Set kick-offs and venues', text: 'Stagger times or rotate pitches — the tool checks it is possible.' },
+      { icon: 'file', title: 'Publish', text: 'Print the fixture table, or export CSV for a spreadsheet or calendar.' }
+    ],
+    guideTitle: 'The two things fixture lists get wrong',
+    guide:
+      '<p style="color:var(--muted)">A fixture list is a schedule that has to survive contact with a real venue and a real calendar. Two mistakes account for most of the trouble.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Missing byes</h4><p style="color:var(--muted);font-size:13.8px">With an odd number of teams, one sits out every round. A fixture list that only shows matches leaves that team with no entry — so they either turn up unnecessarily or assume the list is wrong. Naming the bye explicitly costs one line and prevents both.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Impossible venue loads</h4><p style="color:var(--muted);font-size:13.8px">Eight teams produce four simultaneous matches per round. On two pitches with a single kick-off time, half of them cannot happen. This is easy to miss on paper and obvious on the day — so the tool treats it as an error and tells you how many time slots you actually need.</p></div></div>' +
+      '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>Send captains the <strong>by-team view</strong> rather than the full list. Players want their own season — home and away marked, dates in order — not a grid of everyone else\'s fixtures.</span></div>',
+    related: ['league-schedule-generator', 'round-robin-schedule-generator', 'tournament-bracket-generator'],
+    faqs: [
+      { q: 'What happens with an odd number of teams?', a: 'One team has a bye each round, and the tool lists it explicitly in the fixture list so nobody turns up expecting a match. Across the full cycle every team gets exactly one bye.' },
+      { q: 'How do I handle limited pitches?', a: 'Either add a gap between kick-off times so matches run in slots, or list multiple venues to rotate through. The tool checks whether your venue count can host each round and flags it if not.' },
+      { q: 'Can I export the fixtures to a calendar?', a: 'Use the CSV export — date, time, teams and venue are separate columns, which imports cleanly into a spreadsheet and maps easily into most calendar tools.' },
+      { q: 'Can I set the home team\'s ground as the venue?', a: 'Yes — tick the home-venue option and each match is assigned to the home team rather than a rotating pitch list.' },
+      { q: 'Is home and away balanced?', a: 'Close to even in a single round, and exactly equal if you choose the home-and-away format. The tool warns you if any team is more than two fixtures out of balance.' },
+      { q: 'Can I change the dates later?', a: 'You can regenerate at any time, but every subsequent date shifts. Settle the rhythm — weekly, fortnightly — before publishing to captains.' }
+    ],
+    seo: {
+      title: 'Fixture lists: dates, venues, kick-off times and the capacity check',
+      lead: 'This <strong>match fixture generator</strong> turns a team list into a real fixture list — dates, kick-off times, venues and match numbers — with a check that your venues can physically host each round. Below: the two things fixture lists usually get wrong, and how to publish one people can actually use.',
+      blocks: [
+        {
+          h: 'The two things fixture lists get wrong',
+          html: '<p>Generating pairings is the easy part. Turning pairings into a fixture list that survives contact with a real season is where lists fail, and it fails in the same two ways almost every time.</p>',
+          cards: [
+            { t: 'More matches than pitches', d: 'A 12-team round needs 6 simultaneous matches. If the club has 3 pitches, half the round cannot be played — and this is discovered by a team turning up to a pitch that is already in use.' },
+            { t: 'No unique match reference', d: 'Without a match number, every conversation about a postponement, a result or a referee assignment has to describe the fixture. Two teams that meet twice a season are then genuinely ambiguous.' }
+          ],
+          after: '<p>Both are trivially avoidable and neither is handled by a bare pairing generator. This tool checks venue capacity per round and numbers every fixture.</p>'
+        },
+        {
+          h: 'The venue capacity check',
+          html: '<p>Each round needs <em>n</em>/2 concurrent slots. If you have fewer venues than that, the round has to be split across time slots or days.</p>',
+          table: {
+            head: ['Teams', 'Matches per round', 'With 2 venues', 'With 3 venues'],
+            rows: [
+              ['6', '3', '2 slots', '1 slot'],
+              ['8', '4', '2 slots', '2 slots'],
+              ['10', '5', '3 slots', '2 slots'],
+              ['12', '6', '3 slots', '2 slots'],
+              ['16', '8', '4 slots', '3 slots']
+            ]
+          },
+          after: '<p>The generator computes this and assigns kick-off times accordingly — so a round that needs three slots at a two-pitch venue produces fixtures at 10:00, 12:00 and 14:00 rather than three impossible simultaneous matches.</p>',
+          callout: { type: 'warn', text: '<strong>Check that no team appears twice in the same time slot.</strong> This is the failure mode when a round is split manually: two matches at 10:00 that share a team. The generator keeps each slot\'s teams disjoint — verify again if you rearrange anything by hand afterwards.' }
+        },
+        {
+          h: 'Building the list',
+          steps: [
+            { t: 'Enter teams and venues', d: 'One team per line; venues as a list with the number of simultaneous matches each supports.' },
+            { t: 'Set the start date and cadence', d: 'Weekly Saturdays, midweek evenings, or a custom pattern.' },
+            { t: 'Set the slot times', d: 'The generator fills slots in order and creates additional ones only when the round requires it.' },
+            { t: 'Set home team rules', d: 'Alternate by round, fix a home venue per team, or use a neutral venue throughout.' },
+            { t: 'Number the fixtures', d: 'Sequential match numbers across the season, so every fixture has a permanent reference.' },
+            { t: 'Export', d: 'CSV for a spreadsheet, ICS for calendars, or a printable list for the noticeboard.' }
+          ]
+        },
+        {
+          h: 'Home and away assignment',
+          html: '<p>Three approaches, suited to different competitions.</p>',
+          list: [
+            '<strong>Alternating.</strong> The default for a league. Home and away interleave so nobody has a long run either way. The <a href="league-schedule-generator.html">league schedule generator</a> reports the longest run.',
+            '<strong>Fixed home venue.</strong> Each team is assigned a ground and hosts there. Realistic for a club league, and the venue check matters most here — two teams sharing a ground cannot both host in the same round.',
+            '<strong>Neutral venue.</strong> Everything at one site, as at a tournament or a school event. "Home" then means only which team is listed first, and kit clashes rather than travel become the thing to manage.'
+          ],
+          after: '<p>For an odd number of teams, one team has a bye each round. The bye appears in the fixture list explicitly rather than as a gap, because a team with no fixture listed assumes an error and phones the secretary.</p>'
+        },
+        {
+          h: 'Calendar export',
+          html: '<p>The ICS export produces one calendar event per fixture, with the teams in the title, the venue in the location field and the match number in the description. It imports into Google Calendar, Outlook, Apple Calendar and anything else that reads the standard.</p>' +
+            '<p>Two things to know before you distribute it. Events carry a fixed date and time, so a postponement means reissuing the file — recipients who imported the old one keep the stale event. And a single file containing the whole season is easier to distribute than a subscription feed but harder to update, which is the trade every club league makes.</p>',
+          callout: { type: 'tip', text: 'Publish the match number in every communication — result submissions, postponement requests, referee appointments. "Match 47" is unambiguous in a way that "the Rovers game" is not, particularly when two teams meet twice a season.' }
+        },
+        {
+          h: 'Changing dates later',
+          html: '<p>Fixtures move. Weather, cup runs, unavailable pitches and clashing events all guarantee it.</p>' +
+            '<p>The rule that keeps a season traceable: <strong>the match number never changes</strong>. A postponed fixture keeps its number and gains a new date. A rearranged fixture is the same match, played later. Only an abandoned and completely re-staged match warrants a new reference, and even then the original should be marked rather than deleted.</p>' +
+            '<p>Regenerate the list only if you are rebuilding the season from scratch. Regenerating to fix one postponement renumbers everything, and every result already submitted against a match number becomes ambiguous.</p>'
+        },
+        {
+          h: 'Related fixture tools',
+          list: [
+            '<a href="league-schedule-generator.html">League Schedule Generator</a> — full home-and-away seasons with fairness reporting.',
+            '<a href="round-robin-schedule-generator.html">Round Robin Generator</a> — the underlying pairing rotation.',
+            '<a href="tournament-bracket-generator.html">Tournament Bracket Generator</a> — cup draws.',
+            '<a href="team-generator.html">Team Generator</a> — split players into balanced teams.',
+            '<a href="ticket-number-generator.html">Ticket Number Generator</a> — admission numbers for the matches.'
+          ]
+        }
+      ],
+      keywords: [
+        'match fixture generator', 'fixture list maker', 'sports fixture scheduling',
+        'fixture list with venues', 'kick off time scheduling', 'match number reference',
+        'limited pitches scheduling', 'fixtures ics export', 'club league fixtures',
+        'printable fixture list', 'home and away fixtures', 'rearranged fixture numbering'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

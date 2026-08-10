@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SQL Insert Data Generator — MySQL, Postgres, SQLite, MSSQL | Manage My Batch</title>
+<meta name="description" content="Free SQL INSERT generator. Produce dialect-correct seed data with proper escaping, batching, CREATE TABLE DDL and upsert variants for MySQL, PostgreSQL, SQLite and SQL Server.">
+<link rel="canonical" href="https://managemybatch.com/tools/sql-insert-data-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="SQL Insert Data Generator — MySQL, Postgres, SQLite, MSSQL">
+<meta property="og:description" content="Free SQL INSERT generator. Produce dialect-correct seed data with proper escaping, batching, CREATE TABLE DDL and upsert variants for MySQL, PostgreSQL, SQLite and SQL Server.">
+<meta property="og:url" content="https://managemybatch.com/tools/sql-insert-data-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SQL Insert Data Generator — MySQL, Postgres, SQLite, MSSQL">
+<meta name="twitter:description" content="Free SQL INSERT generator. Produce dialect-correct seed data with proper escaping, batching, CREATE TABLE DDL and upsert variants for MySQL, PostgreSQL, SQLite and SQL Server.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Generator Settings</div>
+
+    <div class="row">
+      <div class="field">
+        <label for="dialect">SQL dialect</label>
+        <select id="dialect">
+          <option value="mysql">MySQL / MariaDB</option>
+          <option value="postgres" selected>PostgreSQL</option>
+          <option value="sqlite">SQLite</option>
+          <option value="mssql">SQL Server</option>
+          <option value="oracle">Oracle</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="table">Table name</label>
+        <input type="text" id="table" value="users">
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="template">Start from a template</label>
+      <select id="template">
+        <option value="users" selected>Users</option>
+        <option value="products">Products</option>
+        <option value="orders">Orders</option>
+        <option value="posts">Posts</option>
+        <option value="empty">Empty schema</option>
+      </select>
+    </div>
+
+    <div class="row">
+      <div class="field"><label for="count">Rows</label><input type="number" id="count" value="20" min="1" max="20000"></div>
+      <div class="field">
+        <label for="seed">Seed</label>
+        <div class="row" style="grid-template-columns:minmax(0,1fr) auto;gap:8px">
+          <input type="text" id="seed" value="gentools">
+          <button type="button" class="btn btn-soft" id="newSeed"><span id="icoReset"></span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="label" style="display:flex;justify-content:space-between;align-items:center">
+        <span>Columns</span>
+        <button type="button" class="btn btn-soft btn-sm" id="addField"><span id="icoPlus"></span> Add column</button>
+      </div>
+      <div id="fields"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label for="style">Statement style</label>
+      <select id="style">
+        <option value="multi" selected>Multi-row INSERT (fastest)</option>
+        <option value="single">One INSERT per row</option>
+        <option value="upsert">Upsert / ON CONFLICT</option>
+        <option value="ignore">Insert ignoring duplicates</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="batch">Rows per statement</label>
+      <select id="batch">
+        <option value="100">100</option>
+        <option value="500" selected>500</option>
+        <option value="1000">1000</option>
+        <option value="0">All in one statement</option>
+      </select>
+      <div class="hint">Very large single statements can exceed packet or parameter limits. 500–1000 rows per batch is a safe default.</div>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Include</legend>
+      <div class="check-list">
+        <label class="check on"><input type="checkbox" id="optDdl" checked><span><span class="t">CREATE TABLE statement</span><span class="d">Column types inferred from the field types you chose.</span></span></label>
+        <label class="check"><input type="checkbox" id="optDrop"><span><span class="t">DROP TABLE IF EXISTS</span><span class="d">Makes the script re-runnable. Destructive — read before executing.</span></span></label>
+        <label class="check on"><input type="checkbox" id="optTxn" checked><span><span class="t">Wrap in a transaction</span><span class="d">All rows land, or none do.</span></span></label>
+        <label class="check"><input type="checkbox" id="optQuoteId"><span><span class="t">Quote identifiers</span><span class="d">Required if a column name collides with a reserved word.</span></span></label>
+      </div>
+    </fieldset>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated SQL<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="file">SQL</button>
+      <button type="button" data-tab="ddl">Schema</button>
+      <button type="button" data-tab="notes">Dialect notes</button>
+    </div>
+
+    <div data-panel="file">
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">seed.sql</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+      <div id="warnBox"></div>
+    </div>
+
+    <div data-panel="ddl" hidden><div id="ddl"></div></div>
+    <div data-panel="notes" hidden><div id="notes"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/fake.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoCopy:copy','icoDl:download','icoReset:reset','icoPlus:plus']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var TEMPLATES = {
+    users: [
+      { name: 'id', type: 'id' }, { name: 'name', type: 'fullName' },
+      { name: 'email', type: 'email' }, { name: 'role', type: 'role' },
+      { name: 'active', type: 'bool' }, { name: 'created_at', type: 'datetime' }
+    ],
+    products: [
+      { name: 'id', type: 'id' }, { name: 'sku', type: 'sku' },
+      { name: 'name', type: 'product' }, { name: 'price', type: 'price' },
+      { name: 'stock', type: 'int', min: 0, max: 500 }, { name: 'created_at', type: 'datetime' }
+    ],
+    orders: [
+      { name: 'id', type: 'id' }, { name: 'order_uuid', type: 'uuid' },
+      { name: 'customer_name', type: 'fullName' }, { name: 'total', type: 'price' },
+      { name: 'status', type: 'status' }, { name: 'placed_at', type: 'datetime' }
+    ],
+    posts: [
+      { name: 'id', type: 'id' }, { name: 'slug', type: 'slug' },
+      { name: 'title', type: 'sentence' }, { name: 'body', type: 'paragraph' },
+      { name: 'published_at', type: 'date' }, { name: 'views', type: 'int', min: 0, max: 90000 }
+    ],
+    empty: [{ name: 'id', type: 'id' }]
+  };
+
+  var fields = JSON.parse(JSON.stringify(TEMPLATES.users));
+  var editor = GTFake.mountFields($('#fields'), fields, build);
+
+  $('#addField').addEventListener('click', function () {
+    fields.push({ name: 'column_' + (fields.length + 1), type: 'word' }); editor.render(); build();
+  });
+  $('#template').addEventListener('change', function () {
+    fields.length = 0;
+    JSON.parse(JSON.stringify(TEMPLATES[this.value] || [])).forEach(function (f) { fields.push(f); });
+    $('#table').value = this.value === 'empty' ? 'my_table' : this.value;
+    editor.render(); build();
+  });
+  $('#newSeed').addEventListener('click', function () {
+    $('#seed').value = Math.random().toString(36).slice(2, 10); build();
+  });
+
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'seed.sql', mime: 'text/plain' });
+
+  var D = { mysql: '`', postgres: '"', sqlite: '"', mssql: ']', oracle: '"' };
+
+  function q(id) {
+    if (!$('#optQuoteId').checked) return id;
+    var d = $('#dialect').value;
+    if (d === 'mysql') return '`' + id.replace(/`/g, '``') + '`';
+    if (d === 'mssql') return '[' + id.replace(/]/g, ']]') + ']';
+    return '"' + id.replace(/"/g, '""') + '"';
+  }
+
+  function lit(v, type) {
+    var d = $('#dialect').value;
+    if (v === null || v === undefined) return 'NULL';
+    if (typeof v === 'boolean') {
+      if (d === 'postgres') return v ? 'TRUE' : 'FALSE';
+      if (d === 'mssql' || d === 'sqlite' || d === 'oracle') return v ? '1' : '0';
+      return v ? '1' : '0';
+    }
+    if (typeof v === 'number') return String(v);
+    var s = String(v).replace(/'/g, "''");
+    /* Backslashes are literal in standard SQL; MySQL treats them as escapes unless
+       NO_BACKSLASH_ESCAPES is set, so double them for safety. */
+    if (d === 'mysql') s = s.replace(/\\/g, '\\\\');
+    if (d === 'oracle' && /\n/.test(s)) return "'" + s.replace(/\n/g, "' || CHR(10) || '") + "'";
+    return "'" + s + "'";
+  }
+
+  function sqlType(f) {
+    var d = $('#dialect').value, base = GTFake.typeMeta(f.type).sql;
+    if (d === 'postgres') {
+      if (f.type === 'id') return 'SERIAL PRIMARY KEY';
+      if (base === 'BOOLEAN') return 'BOOLEAN';
+      if (base === 'TIMESTAMP') return 'TIMESTAMPTZ';
+      if (base === 'TEXT') return 'TEXT';
+      if (/^CHAR\(36\)$/.test(base) && /uuid/i.test(f.type)) return 'UUID';
+      return base;
+    }
+    if (d === 'mysql') {
+      if (f.type === 'id') return 'INT AUTO_INCREMENT PRIMARY KEY';
+      if (base === 'BOOLEAN') return 'TINYINT(1)';
+      if (base === 'TIMESTAMP') return 'DATETIME';
+      return base;
+    }
+    if (d === 'sqlite') {
+      if (f.type === 'id') return 'INTEGER PRIMARY KEY AUTOINCREMENT';
+      if (base === 'BOOLEAN') return 'INTEGER';
+      if (/^(DATE|TIMESTAMP)$/.test(base)) return 'TEXT';
+      if (/^(DECIMAL|BIGINT|INTEGER)/.test(base)) return base.indexOf('DECIMAL') === 0 ? 'REAL' : 'INTEGER';
+      return 'TEXT';
+    }
+    if (d === 'mssql') {
+      if (f.type === 'id') return 'INT IDENTITY(1,1) PRIMARY KEY';
+      if (base === 'BOOLEAN') return 'BIT';
+      if (base === 'TIMESTAMP') return 'DATETIME2';
+      if (base === 'TEXT') return 'NVARCHAR(MAX)';
+      return base.replace(/^VARCHAR/, 'NVARCHAR');
+    }
+    if (d === 'oracle') {
+      if (f.type === 'id') return 'NUMBER GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY';
+      if (base === 'BOOLEAN') return 'NUMBER(1)';
+      if (base === 'TIMESTAMP') return 'TIMESTAMP';
+      if (base === 'TEXT') return 'CLOB';
+      if (base === 'INTEGER' || base === 'BIGINT') return 'NUMBER';
+      return base.replace(/^VARCHAR/, 'VARCHAR2');
+    }
+    return base;
+  }
+
+  var rows = [], valid = [];
+
+  function ddl() {
+    var t = $('#table').value.trim() || 'my_table';
+    var d = $('#dialect').value;
+    var lines = [];
+    if ($('#optDrop').checked) {
+      lines.push(d === 'oracle' ? 'DROP TABLE ' + q(t) + ' CASCADE CONSTRAINTS;' : 'DROP TABLE IF EXISTS ' + q(t) + ';');
+    }
+    lines.push('CREATE TABLE ' + (d === 'oracle' ? '' : 'IF NOT EXISTS ') + q(t) + ' (');
+    lines.push(valid.map(function (f) {
+      return '  ' + q(f.name) + ' ' + sqlType(f) + (f.nullable ? '' : (f.type === 'id' ? '' : ' NOT NULL'));
+    }).join(',\n'));
+    lines.push(');');
+    return lines.join('\n');
+  }
+
+  function build() {
+    var n = Math.max(1, Math.min(20000, parseInt($('#count').value, 10) || 1));
+    valid = fields.filter(function (f) { return (f.name || '').trim(); });
+    rows = GTFake.rows(valid, n, $('#seed').value);
+
+    var t = $('#table').value.trim() || 'my_table';
+    var d = $('#dialect').value;
+    var cols = valid.map(function (f) { return q(f.name); }).join(', ');
+    var style = $('#style').value;
+    var batch = parseInt($('#batch').value, 10);
+    if (!batch) batch = rows.length;
+
+    var parts = [];
+    parts.push('-- Seed data for ' + t + ' — generated ' + GT.today() + ' by managemybatch.com');
+    parts.push('-- Dialect: ' + $('#dialect').selectedOptions[0].textContent + ' · ' + n + ' rows · seed "' + $('#seed').value + '"');
+    parts.push('');
+
+    if ($('#optDdl').checked) { parts.push(ddl()); parts.push(''); }
+
+    if ($('#optTxn').checked) {
+      parts.push(d === 'mssql' ? 'BEGIN TRANSACTION;' : d === 'oracle' ? '-- Oracle: implicit transaction' : 'BEGIN;');
+      parts.push('');
+    }
+
+    function valuesFor(r) {
+      return '(' + valid.map(function (f) { return lit(r[f.name], f.type); }).join(', ') + ')';
+    }
+
+    var conflictTarget = q((valid.find(function (f) { return /^(id|uuid|sku|slug|email)$/i.test(f.name); }) || valid[0]).name);
+    var updateSet = valid.filter(function (f) { return q(f.name) !== conflictTarget; })
+      .map(function (f) {
+        if (d === 'mysql') return q(f.name) + ' = VALUES(' + q(f.name) + ')';
+        return q(f.name) + ' = EXCLUDED.' + q(f.name);
+      }).join(', ');
+
+    if (style === 'single') {
+      rows.forEach(function (r) {
+        parts.push('INSERT INTO ' + q(t) + ' (' + cols + ') VALUES ' + valuesFor(r) + ';');
+      });
+    } else {
+      for (var i = 0; i < rows.length; i += batch) {
+        var chunk = rows.slice(i, i + batch);
+        var head = 'INSERT ' + (style === 'ignore' && d === 'mysql' ? 'IGNORE ' : '') +
+          'INTO ' + q(t) + ' (' + cols + ') VALUES';
+        var body = chunk.map(function (r) { return '  ' + valuesFor(r); }).join(',\n');
+        var tail = ';';
+        if (style === 'upsert') {
+          if (d === 'mysql') tail = '\nON DUPLICATE KEY UPDATE ' + updateSet + ';';
+          else if (d === 'postgres' || d === 'sqlite') tail = '\nON CONFLICT (' + conflictTarget + ') DO UPDATE SET ' + updateSet + ';';
+          else if (d === 'mssql') tail = ';\n-- SQL Server has no ON CONFLICT: use MERGE, or INSERT with a NOT EXISTS guard.';
+          else tail = ';\n-- Oracle: use MERGE INTO for upsert semantics.';
+        } else if (style === 'ignore') {
+          if (d === 'postgres') tail = '\nON CONFLICT DO NOTHING;';
+          else if (d === 'sqlite') { head = head.replace('INSERT INTO', 'INSERT OR IGNORE INTO'); }
+          else if (d === 'mssql' || d === 'oracle') tail = ';\n-- No native IGNORE: guard with NOT EXISTS or MERGE.';
+        }
+        parts.push(head + '\n' + body + tail);
+        parts.push('');
+      }
+    }
+
+    if ($('#optTxn').checked) parts.push(d === 'mssql' ? 'COMMIT TRANSACTION;' : d === 'oracle' ? 'COMMIT;' : 'COMMIT;');
+
+    var text = parts.join('\n').replace(/\n{3,}/g, '\n\n').replace(/\s+$/, '') + '\n';
+    out.set(text, 'seed.sql');
+
+    $('#pill').textContent = n.toLocaleString() + ' rows · ' + d;
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+
+    $('#ddl').innerHTML = '<h4 style="font-size:14.5px;margin-bottom:8px">CREATE TABLE</h4>' +
+      '<pre class="code">' + GT.esc(ddl()) + '</pre>' +
+      '<h4 style="font-size:14.5px;margin:18px 0 8px">Column mapping</h4>' +
+      valid.map(function (f) {
+        return '<div class="kv"><span class="k">' + GT.esc(f.name) + '<br><span style="font-size:12.5px">' +
+          GTFake.typeMeta(f.type).label + '</span></span><span class="v">' + sqlType(f) + '</span></div>';
+      }).join('');
+
+    renderWarn();
+    renderNotes();
+  }
+
+  function renderWarn() {
+    var w = [];
+    var names = valid.map(function (f) { return f.name.toLowerCase(); });
+    var dup = names.filter(function (n, i) { return names.indexOf(n) !== i; });
+    if (dup.length) w.push(['err', 'Duplicate column names: ' + GT.uniq(dup).join(', ') + '.']);
+    var RESERVED = ['order', 'user', 'group', 'table', 'select', 'from', 'where', 'index', 'key', 'default', 'check', 'desc', 'primary', 'references'];
+    var res = names.filter(function (n) { return RESERVED.indexOf(n) > -1; });
+    var tbl = ($('#table').value || '').toLowerCase();
+    if (RESERVED.indexOf(tbl) > -1) res.push(tbl);
+    if (res.length && !$('#optQuoteId').checked) {
+      w.push(['err', 'Reserved words used as identifiers: ' + GT.uniq(res).join(', ') + '. Enable “Quote identifiers” or the script will fail to parse.']);
+    }
+    if ($('#optDrop').checked) w.push(['warn', '<strong>DROP TABLE is included.</strong> Running this script deletes the existing table and every row in it. Never run it against production.']);
+    if ($('#style').value === 'multi' && rows.length > 5000 && parseInt($('#batch').value, 10) === 0) {
+      w.push(['warn', 'All rows are in a single statement. MySQL will reject this once it exceeds <code>max_allowed_packet</code> — pick a batch size instead.']);
+    }
+    if (!w.length) w.push(['ok', 'Values are escaped for ' + $('#dialect').selectedOptions[0].textContent + ' — single quotes doubled, NULLs and booleans rendered natively.']);
+    $('#warnBox').innerHTML = w.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : x[0] === 'warn' ? 'note-warn' : 'note-err') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+  }
+
+  function renderNotes() {
+    $('#notes').innerHTML = [
+      ['Escaping', 'Single quotes are escaped by doubling them — <code>O\'Brien</code> becomes <code>\'O\'\'Brien\'</code>. MySQL additionally treats backslash as an escape character unless <code>NO_BACKSLASH_ESCAPES</code> is enabled, so backslashes are doubled for that dialect.'],
+      ['Booleans', 'PostgreSQL has a real <code>BOOLEAN</code> type. MySQL stores <code>TINYINT(1)</code>, SQL Server uses <code>BIT</code>, and SQLite and Oracle store 0/1 integers. The generated literals match the dialect you selected.'],
+      ['Upserts', 'PostgreSQL and SQLite use <code>ON CONFLICT … DO UPDATE</code>. MySQL uses <code>ON DUPLICATE KEY UPDATE</code>. SQL Server and Oracle have neither and need <code>MERGE</code>, so the output notes that rather than emitting invalid SQL.'],
+      ['Batch size', 'Multi-row inserts are dramatically faster than one statement per row — often 10× or more — because each statement carries its own parse and round-trip cost. The limit is the server packet size, so 500–1000 rows per statement is the usual sweet spot.'],
+      ['Identity columns', 'The generated DDL marks the <code>id</code> column as auto-incrementing using each dialect\'s syntax. If you insert explicit id values into a SQL Server identity column you must wrap the insert in <code>SET IDENTITY_INSERT … ON</code>.'],
+      ['This is for seed data', 'Generated literals are correct for fixtures and migrations. Application code should still use parameterised queries — string interpolation is how SQL injection happens, regardless of how careful the escaping looks.']
+    ].map(function (x) {
+      return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+        '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+    }).join('');
+  }
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); });
+  ['#dialect','#table','#count','#seed','#style','#batch','#optDdl','#optDrop','#optTxn','#optQuoteId']
+    .forEach(function (s) { $(s).addEventListener('change', build); $(s).addEventListener('input', build); });
+
+  build();
+
+  GT.page({
+    slug: 'sql-insert-data-generator',
+    lede: 'Generate dialect-correct INSERT statements with real escaping, sensible batching, matching DDL and upsert variants for five database engines.',
+    steps: [
+      { icon: 'gear', title: 'Pick dialect and columns', text: 'Column types are inferred per engine — SERIAL, AUTO_INCREMENT, IDENTITY and so on.' },
+      { icon: 'db', title: 'Choose a statement style', text: 'Multi-row for speed, one-per-row for readable diffs, or an upsert for idempotent seeds.' },
+      { icon: 'copy', title: 'Run it', text: 'Download the .sql file and pipe it into your database or migration runner.' }
+    ],
+    guideTitle: 'Seed scripts that are safe to re-run',
+    guide:
+      '<p style="color:var(--muted)">The difference between a seed script you can run once and one you can run on every developer machine, every CI job and every preview environment comes down to two choices: idempotency and transactions.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Make it idempotent</h4><p style="color:var(--muted);font-size:13.8px">A plain <code>INSERT</code> fails the second time it runs if a unique constraint is hit. An upsert updates the existing row instead, and “insert ignoring duplicates” skips it. Either way the script becomes safe to run repeatedly, which is what makes it usable in CI.</p>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">Wrap it in a transaction</h4><p style="color:var(--muted);font-size:13.8px">Without one, a failure halfway through leaves the table half-populated and the next run in an ambiguous state. With one, the database either has all the seed data or none of it.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Batch for speed</h4><p style="color:var(--muted);font-size:13.8px">Twenty thousand single-row inserts means twenty thousand parses and round trips. The same rows in batches of 500 typically load an order of magnitude faster. Go too large and MySQL rejects the statement for exceeding <code>max_allowed_packet</code>, so batching — not one giant statement — is the right answer.</p>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">Keep the seed stable</h4><p style="color:var(--muted);font-size:13.8px">The seed string makes output deterministic. Commit it alongside the script and every environment gets identical data, so a failing test means a real regression rather than different fixtures.</p></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>Generated SQL is for seeding, not for application code.</strong> These literals are correctly escaped for the dialect you chose, but building queries by concatenating values is the pattern that produces SQL injection. In application code, always use parameterised queries and let the driver handle escaping.</span></div>',
+    related: ['json-test-data-generator', 'csv-test-data-generator', 'mongodb-objectid-generator'],
+    faqs: [
+      { q: 'Which SQL dialects are supported?', a: 'MySQL/MariaDB, PostgreSQL, SQLite, SQL Server and Oracle. Column types, boolean literals, identity syntax and upsert clauses all change to match the engine you select.' },
+      { q: 'How are quotes and special characters escaped?', a: 'Single quotes are doubled, which is the SQL standard. For MySQL, backslashes are also doubled because it treats them as escape characters unless <code>NO_BACKSLASH_ESCAPES</code> is enabled.' },
+      { q: 'What batch size should I use?', a: '500 to 1000 rows per statement is a good default. Larger batches keep getting faster until you hit the server packet or parameter limit, at which point the statement is rejected outright.' },
+      { q: 'Can I make the script re-runnable?', a: 'Yes — choose the upsert or ignore-duplicates style. PostgreSQL and SQLite use <code>ON CONFLICT</code>, MySQL uses <code>ON DUPLICATE KEY UPDATE</code>. SQL Server and Oracle need <code>MERGE</code>, and the output says so rather than emitting invalid SQL.' },
+      { q: 'Does it generate the CREATE TABLE too?', a: 'Yes. The DDL is inferred from your field types and rendered in the selected dialect, including the right auto-increment syntax for the id column.' },
+      { q: 'Is this safe to run against production?', a: 'Treat it as a development and testing tool. If you enable DROP TABLE, the script destroys the existing table and all its data — always read a generated script before executing it anywhere that matters.' }
+    ],
+    seo: {
+      title: 'SQL INSERT scripts: escaping, batching, upserts and re-runnable seeds',
+      lead: 'This <strong>SQL insert generator</strong> writes dialect-correct <code>INSERT</code> statements for PostgreSQL, MySQL, SQLite, SQL Server and Oracle — with real escaping, sensible batch sizes, matching DDL and upsert variants. Below: how each dialect differs, what batch size to pick, and how to make a seed script safe to run twice.',
+      blocks: [
+        {
+          h: 'Dialects are not interchangeable',
+          html: '<p>The <code>INSERT</code> keyword is standard. Almost everything around it is not, and a script that runs on MySQL will fail on Postgres for reasons that have nothing to do with your data.</p>',
+          table: {
+            head: ['Concern', 'PostgreSQL', 'MySQL', 'SQL Server', 'SQLite', 'Oracle'],
+            rows: [
+              ['Identifier quoting', '<code>"col"</code>', '<code>`col`</code>', '<code>[col]</code>', '<code>"col"</code>', '<code>"COL"</code>'],
+              ['String escape', 'Double the quote', 'Double or backslash', 'Double the quote', 'Double the quote', 'Double the quote'],
+              ['Booleans', '<code>TRUE</code>', '<code>1</code> / <code>0</code>', '<code>1</code> / <code>0</code>', '<code>1</code> / <code>0</code>', '<code>1</code> / <code>0</code>'],
+              ['Multi-row insert', 'Supported', 'Supported', 'Supported (1000 row cap)', 'Supported', 'Needs <code>INSERT ALL</code>'],
+              ['Upsert', '<code>ON CONFLICT</code>', '<code>ON DUPLICATE KEY</code>', '<code>MERGE</code>', '<code>ON CONFLICT</code>', '<code>MERGE</code>'],
+              ['Timestamps', '<code>TIMESTAMPTZ</code>', '<code>DATETIME</code>', '<code>DATETIME2</code>', '<code>TEXT</code>', '<code>TIMESTAMP</code>']
+            ]
+          },
+          after: '<p>Pick your engine before generating and the output accounts for all of it — including Oracle\'s lack of multi-row <code>VALUES</code>, which trips up anyone porting a script from Postgres.</p>'
+        },
+        {
+          h: 'Escaping, done properly',
+          html: '<p>Every string value is escaped for the target dialect. The standard rule is doubling: an apostrophe in <code>O\'Brien</code> becomes <code>O\'\'Brien</code>. MySQL additionally honours backslash escapes unless <code>NO_BACKSLASH_ESCAPES</code> is set, so a Windows path in your data needs handling that Postgres does not require.</p>' +
+            '<p>Other values that need care: <code>NULL</code> must be the bare keyword, never the quoted string <code>\'NULL\'</code>; numbers are emitted unquoted so the engine does not do an implicit cast; dates are written in an unambiguous ISO form rather than a locale format; and binary data is emitted in the dialect\'s hex literal syntax.</p>',
+          callout: { type: 'warn', text: '<strong>This generates static seed scripts you review before running — not a way to build queries in application code.</strong> String-concatenated SQL in an application is SQL injection regardless of how carefully it escapes. Use parameterised queries or an ORM there, always.' }
+        },
+        {
+          h: 'Choosing a batch size',
+          html: '<p>One <code>INSERT</code> per row is slow: every statement is a round trip and, by default, its own transaction. One <code>INSERT</code> with 100,000 rows is also bad: it may exceed a packet limit, it locks longer, and a single bad row rolls back everything.</p>',
+          cards: [
+            { t: '500–1,000 rows', d: 'The sweet spot for most engines. Fast, and a failure loses only that batch.' },
+            { t: 'SQL Server: max 1,000', d: 'A hard limit on rows per <code>VALUES</code> clause. Exceed it and the statement is rejected outright.' },
+            { t: 'MySQL: watch max_allowed_packet', d: 'Default 64 MB in recent versions, much smaller on managed hosts. Wide rows hit it sooner than you expect.' },
+            { t: 'Wrap in a transaction', d: 'Explicit <code>BEGIN</code> / <code>COMMIT</code> around the batches turns thousands of implicit commits into one, often a tenfold speedup in SQLite.' }
+          ]
+        },
+        {
+          h: 'Making a seed script re-runnable',
+          html: '<p>A seed script you can only run once is a script you will eventually run twice by accident. Idempotency is worth the extra clause.</p>',
+          steps: [
+            { t: 'Use the upsert form', d: 'PostgreSQL and SQLite: <code>ON CONFLICT (id) DO UPDATE</code> or <code>DO NOTHING</code>. MySQL: <code>ON DUPLICATE KEY UPDATE</code>. SQL Server and Oracle: <code>MERGE</code>.' },
+            { t: 'Include explicit primary keys', d: 'Deterministic IDs — from a seeded generator — are what make a conflict detectable at all. Auto-increment keys create a new row every run.' },
+            { t: 'Wrap in a transaction', d: 'So a partial failure leaves nothing behind.' },
+            { t: 'Emit the DDL alongside', d: 'A <code>CREATE TABLE</code> matching the columns, so the script bootstraps an empty database from scratch.' },
+            { t: 'Consider a truncate header', d: 'For a development database, <code>TRUNCATE</code> before insert gives a known state. Never put this in a script that could reach production.' }
+          ],
+          callout: { type: 'tip', text: 'Generate your primary keys with a fixed seed and keep the seed in the script header. The same seed produces the same IDs, which is what makes the upsert path work and what lets a colleague reproduce your local database exactly.' }
+        },
+        {
+          h: 'The generated DDL',
+          html: '<p>The tool infers a <code>CREATE TABLE</code> from your columns: types mapped to the dialect, a primary key on the ID column, and <code>NOT NULL</code> where no null values were generated.</p>' +
+            '<p>Treat it as a starting point rather than a schema. Inferred types are sized from the sample — a <code>VARCHAR(64)</code> derived from your longest generated name will reject a longer real one. Indexes, foreign keys, defaults and check constraints are yours to add, and they are the parts that matter for anything beyond a fixture.</p>'
+        },
+        {
+          h: 'Never point this at production',
+          html: '<p>The output is plain SQL, and plain SQL does exactly what it says against whichever connection is open. The realistic failure mode is not malice — it is a terminal left connected to the wrong environment.</p>',
+          list: [
+            'Read the script before running it, especially any <code>TRUNCATE</code> or <code>DELETE</code> header.',
+            'Confirm the connection target. Colour-code production terminals if your client supports it.',
+            'Run inside a transaction so a mistake can be rolled back.',
+            'Never seed a table that shares a sequence or key space with real records.',
+            'Keep seed scripts in a clearly named <code>seeds/</code> directory, separate from migrations.'
+          ]
+        },
+        {
+          h: 'Related database tools',
+          list: [
+            '<a href="json-test-data-generator.html">JSON Test Data Generator</a> — design the schema, then export as SQL.',
+            '<a href="csv-test-data-generator.html">CSV Test Data Generator</a> — for bulk loaders like <code>COPY</code> and <code>LOAD DATA</code>.',
+            '<a href="mongodb-objectid-generator.html">MongoDB ObjectId Generator</a> — the document-database equivalent.',
+            '<a href="uuid-v7-generator.html">UUID v7 Generator</a> — index-friendly, time-ordered primary keys.',
+            '<a href="json-array-generator.html">JSON Array Generator</a> — value lists for <code>IN</code> clauses.'
+          ]
+        }
+      ],
+      keywords: [
+        'sql insert generator', 'generate insert statements', 'sql seed data',
+        'bulk insert sql', 'postgres insert script', 'mysql insert generator',
+        'sql upsert on conflict', 'test data sql', 'create table generator',
+        'sql escape apostrophe', 'idempotent seed script', 'sql batch insert size'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UUID v7 Generator — Free Online UUID Generator &amp; Decoder | Manage My Batch</title>
+<meta name="description" content="Free UUID v7 generator. Create time-ordered RFC 9562 UUIDs in bulk with monotonic ordering, multiple formats and a built-in UUID timestamp decoder.">
+<meta name="keywords" content="uuid v7 generator, uuid generator, generate uuid online, uuid v4 generator, guid generator, uuid decoder, rfc 9562, time ordered uuid, sortable uuid">
+<link rel="canonical" href="https://managemybatch.com/tools/uuid-v7-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="UUID v7 Generator — Time-Ordered RFC 9562 UUIDs, Free">
+<meta property="og:description" content="Free UUID v7 generator. Create time-ordered, index-friendly RFC 9562 UUIDs in bulk, with monotonic ordering, multiple output formats and a built-in timestamp decoder.">
+<meta property="og:url" content="https://managemybatch.com/tools/uuid-v7-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="UUID v7 Generator — Time-Ordered RFC 9562 UUIDs, Free">
+<meta name="twitter:description" content="Free UUID v7 generator. Create time-ordered, index-friendly RFC 9562 UUIDs in bulk, with monotonic ordering, multiple output formats and a built-in timestamp decoder.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Generator Settings</div>
+
+    <div class="field">
+      <label for="count">How many?</label>
+      <div class="row" style="grid-template-columns:minmax(0,1fr) auto">
+        <input type="number" id="count" value="10" min="1" max="10000">
+        <button type="button" class="btn btn-ghost" id="regen"><span id="icoReset"></span> Regenerate</button>
+      </div>
+      <div class="hint">Up to 10,000 per batch. Everything is generated locally with <code>crypto.getRandomValues()</code>.</div>
+    </div>
+
+    <div class="field">
+      <label for="version">UUID version</label>
+      <select id="version">
+        <option value="7" selected>v7 — time-ordered (recommended for database keys)</option>
+        <option value="4">v4 — fully random</option>
+        <option value="nil">Nil UUID (all zeroes)</option>
+        <option value="max">Max UUID (all ones)</option>
+      </select>
+      <div class="hint" id="verHint">v7 embeds a millisecond timestamp in the first 48 bits, so IDs sort by creation time.</div>
+    </div>
+
+    <div class="field">
+      <label>Format</label>
+      <div class="seg" id="fmt">
+        <button type="button" class="on" data-f="std">Standard</button>
+        <button type="button" data-f="upper">UPPERCASE</button>
+        <button type="button" data-f="nodash">No dashes</button>
+        <button type="button" data-f="braces">{Braces}</button>
+        <button type="button" data-f="urn">URN</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="output">Output as</label>
+      <select id="output">
+        <option value="lines">Plain list (one per line)</option>
+        <option value="json">JSON array</option>
+        <option value="jsonl">JSON objects with timestamps</option>
+        <option value="csv">CSV</option>
+        <option value="sql">SQL INSERT values</option>
+        <option value="quoted">Quoted &amp; comma-separated</option>
+        <option value="ts">TypeScript const array</option>
+      </select>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Options</legend>
+      <div class="check-list">
+        <label class="check"><input type="checkbox" id="optMono" checked><span><span class="t">Monotonic within the same millisecond</span><span class="d">Increments a counter so IDs created in the same tick still sort correctly.</span></span></label>
+        <label class="check"><input type="checkbox" id="optNumbered"><span><span class="t">Number each line</span><span class="d">Adds a 1-based index prefix.</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label for="decode">Decode an existing UUID</label>
+      <input type="text" id="decode" placeholder="Paste any UUID to inspect it">
+      <div id="decodeOut" style="margin-top:12px"></div>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated UUIDs<span class="spacer"></span>
+      <span class="result-pill" id="pill">10 generated</span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="file">Output</button>
+      <button type="button" data-tab="anatomy">Anatomy</button>
+      <button type="button" data-tab="code">Code snippets</button>
+    </div>
+
+    <div data-panel="file">
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">uuids.txt</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy all</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+        <button class="btn btn-soft" id="copyOne">Copy first</button>
+      </div>
+      <div class="note note-ok"><span id="icoCheck"></span><span>Generated with the browser CSPRNG. Nothing is transmitted — you can generate production keys here safely.</span></div>
+    </div>
+
+    <div data-panel="anatomy" hidden><div id="anatomy"></div></div>
+    <div data-panel="code" hidden><div id="code"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoCopy:copy','icoDl:download','icoReset:reset','icoCheck:check']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var fmt = 'std', ids = [];
+
+  function randBytes(n) { var b = new Uint8Array(n); crypto.getRandomValues(b); return b; }
+  function hex(b) { return Array.prototype.map.call(b, function (x) { return x.toString(16).padStart(2, '0'); }).join(''); }
+
+  var lastMs = 0, seq = 0;
+
+  function uuidv7() {
+    var ms = Date.now();
+    if ($('#optMono').checked) {
+      if (ms === lastMs) { seq = (seq + 1) & 0xfff; if (seq === 0) ms = ++lastMs; }
+      else { lastMs = ms; seq = randBytes(2)[0] & 0x0ff; }
+    } else { seq = ((randBytes(2)[0] << 4) | (randBytes(1)[0] & 0xf)) & 0xfff; }
+
+    var b = new Uint8Array(16);
+    var t = BigInt(ms);
+    for (var i = 5; i >= 0; i--) { b[i] = Number(t & 0xffn); t >>= 8n; }
+    var r = randBytes(10);
+    b[6] = 0x70 | ((seq >> 8) & 0x0f);
+    b[7] = seq & 0xff;
+    for (var j = 8; j < 16; j++) b[j] = r[j - 6];
+    b[8] = 0x80 | (b[8] & 0x3f);
+    var h = hex(b);
+    return h.slice(0, 8) + '-' + h.slice(8, 12) + '-' + h.slice(12, 16) + '-' + h.slice(16, 20) + '-' + h.slice(20);
+  }
+
+  function uuidv4() {
+    var b = randBytes(16);
+    b[6] = 0x40 | (b[6] & 0x0f);
+    b[8] = 0x80 | (b[8] & 0x3f);
+    var h = hex(b);
+    return h.slice(0, 8) + '-' + h.slice(8, 12) + '-' + h.slice(12, 16) + '-' + h.slice(16, 20) + '-' + h.slice(20);
+  }
+
+  function makeOne() {
+    var v = $('#version').value;
+    if (v === 'nil') return '00000000-0000-0000-0000-000000000000';
+    if (v === 'max') return 'ffffffff-ffff-ffff-ffff-ffffffffffff';
+    return v === '4' ? uuidv4() : uuidv7();
+  }
+
+  function applyFormat(u) {
+    switch (fmt) {
+      case 'upper': return u.toUpperCase();
+      case 'nodash': return u.replace(/-/g, '');
+      case 'braces': return '{' + u + '}';
+      case 'urn': return 'urn:uuid:' + u;
+      default: return u;
+    }
+  }
+
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'uuids.txt', mime: 'text/plain' });
+
+  function tsOf(u) {
+    var h = u.replace(/[^0-9a-f]/gi, '').toLowerCase();
+    if (h.length !== 32) return null;
+    if (h[12] !== '7') return null;
+    return parseInt(h.slice(0, 12), 16);
+  }
+
+  function build() {
+    var n = Math.max(1, Math.min(10000, parseInt($('#count').value, 10) || 1));
+    ids = []; lastMs = 0; seq = 0;
+    for (var i = 0; i < n; i++) ids.push(makeOne());
+    var shown = ids.map(applyFormat);
+
+    var mode = $('#output').value, text, file = 'uuids.txt';
+    if (mode === 'json') { text = JSON.stringify(shown, null, 2); file = 'uuids.json'; }
+    else if (mode === 'jsonl') {
+      text = JSON.stringify(ids.map(function (u, i) {
+        var t = tsOf(u);
+        return { index: i + 1, uuid: applyFormat(u), createdAt: t ? new Date(t).toISOString() : null };
+      }), null, 2);
+      file = 'uuids.json';
+    }
+    else if (mode === 'csv') {
+      text = 'index,uuid,created_at\n' + ids.map(function (u, i) {
+        var t = tsOf(u);
+        return (i + 1) + ',' + applyFormat(u) + ',' + (t ? new Date(t).toISOString() : '');
+      }).join('\n');
+      file = 'uuids.csv';
+    }
+    else if (mode === 'sql') {
+      text = 'INSERT INTO records (id) VALUES\n' + shown.map(function (u) { return "  ('" + u + "')"; }).join(',\n') + ';';
+      file = 'uuids.sql';
+    }
+    else if (mode === 'quoted') text = shown.map(function (u) { return '"' + u + '"'; }).join(', ');
+    else if (mode === 'ts') {
+      text = 'export const ids = [\n' + shown.map(function (u) { return "  '" + u + "'," ; }).join('\n') + '\n] as const;';
+      file = 'uuids.ts';
+    }
+    else text = shown.map(function (u, i) { return ($('#optNumbered').checked ? (i + 1) + '. ' : '') + u; }).join('\n');
+
+    out.set(text, file);
+    $('#pill').textContent = n.toLocaleString() + ' generated';
+    renderAnatomy();
+    renderCode();
+  }
+
+  function renderAnatomy() {
+    var u = ids[0] || uuidv7();
+    var h = u.replace(/-/g, '');
+    var t = tsOf(u);
+    var v = $('#version').value;
+    var rows = v === '7' ? [
+      ['Bits 0–47', h.slice(0, 12), 'Unix time in milliseconds — this is what makes v7 sortable'],
+      ['Bits 48–51', h.slice(12, 13), 'Version nibble, always 7'],
+      ['Bits 52–63', h.slice(13, 16), 'rand_a — sub-millisecond counter when monotonic mode is on'],
+      ['Bits 64–65', h.slice(16, 17), 'Variant bits, always 8/9/a/b in the canonical form'],
+      ['Bits 66–127', h.slice(17), 'rand_b — 62 bits of cryptographic randomness']
+    ] : [
+      ['Bits 0–47', h.slice(0, 12), 'Random'],
+      ['Bits 48–51', h.slice(12, 13), 'Version nibble, always 4'],
+      ['Bits 52–63', h.slice(13, 16), 'Random'],
+      ['Bits 64–65', h.slice(16, 17), 'Variant bits'],
+      ['Bits 66–127', h.slice(17), 'Random — 122 random bits in total']
+    ];
+    $('#anatomy').innerHTML =
+      '<div class="output-box" style="margin-bottom:16px"><pre class="code">' + u + '</pre></div>' +
+      rows.map(function (r) {
+        return '<div class="kv"><span class="k"><code>' + r[1] + '</code><br><span style="font-size:12.5px">' + r[2] + '</span></span>' +
+          '<span class="v" style="white-space:nowrap">' + r[0] + '</span></div>';
+      }).join('') +
+      (t ? '<div class="note note-info" style="margin-top:14px">' + I.info + '<span>Embedded timestamp: <strong>' +
+        new Date(t).toISOString() + '</strong> (' + t + ' ms). Anyone holding the UUID can read this — do not use v7 where creation time is sensitive.</span></div>' : '');
+  }
+
+  function renderCode() {
+    $('#code').innerHTML = [
+      ['JavaScript / TypeScript (uuid package)', "import { v7 as uuidv7 } from 'uuid';\n\nconst id = uuidv7();"],
+      ['Node 20+ (built-in v4 only)', "import { randomUUID } from 'node:crypto';\n\nconst id = randomUUID(); // v4"],
+      ['Python', "# pip install uuid6\nfrom uuid6 import uuid7\n\nid = uuid7()"],
+      ['Go', '// go get github.com/google/uuid\nid, _ := uuid.NewV7()'],
+      ['PostgreSQL 18+', 'CREATE TABLE records (\n  id uuid PRIMARY KEY DEFAULT uuidv7()\n);'],
+      ['PostgreSQL (older, via pg_uuidv7)', 'CREATE EXTENSION pg_uuidv7;\nCREATE TABLE records (\n  id uuid PRIMARY KEY DEFAULT uuid_generate_v7()\n);'],
+      ['MySQL 8 (store as binary for index efficiency)', 'CREATE TABLE records (\n  id BINARY(16) PRIMARY KEY\n);\n-- insert with UUID_TO_BIN(?, 1)'],
+      ['Rust', '// uuid = { version = "1", features = ["v7"] }\nlet id = Uuid::now_v7();']
+    ].map(function (b) {
+      return '<div style="margin-bottom:18px"><h4 style="font-size:14.5px;margin-bottom:8px">' + b[0] + '</h4>' +
+        '<pre class="code">' + GT.esc(b[1]) + '</pre></div>';
+    }).join('');
+  }
+
+  /* ---------- decoder ---------- */
+  $('#decode').addEventListener('input', function () {
+    var v = this.value.trim().replace(/^urn:uuid:/i, '').replace(/[{}]/g, '');
+    var el = $('#decodeOut');
+    if (!v) { el.innerHTML = ''; return; }
+    var h = v.replace(/-/g, '').toLowerCase();
+    if (!/^[0-9a-f]{32}$/.test(h)) {
+      el.innerHTML = '<div class="note note-err">' + I.warn + '<span>Not a valid UUID — expected 32 hexadecimal characters.</span></div>';
+      return;
+    }
+    var ver = parseInt(h[12], 16);
+    var variant = parseInt(h[16], 16);
+    var rows = [
+      ['Version', 'v' + ver + (ver === 7 ? ' — time-ordered' : ver === 4 ? ' — random' : ver === 1 ? ' — MAC + time' : '')],
+      ['Variant', variant >= 8 && variant <= 11 ? 'RFC 9562 (correct)' : 'Non-standard'],
+      ['Canonical', h.slice(0, 8) + '-' + h.slice(8, 12) + '-' + h.slice(12, 16) + '-' + h.slice(16, 20) + '-' + h.slice(20)]
+    ];
+    if (ver === 7) {
+      var ms = parseInt(h.slice(0, 12), 16);
+      rows.push(['Created at', new Date(ms).toISOString()]);
+      rows.push(['Unix ms', String(ms)]);
+      rows.push(['Age', Math.round((Date.now() - ms) / 1000) + ' seconds ago']);
+    }
+    if (ver === 1) {
+      rows.push(['Note', 'v1 leaks the generating machine MAC address']);
+    }
+    el.innerHTML = rows.map(function (r) {
+      return '<div class="kv"><span class="k">' + r[0] + '</span><span class="v">' + GT.esc(r[1]) + '</span></div>';
+    }).join('');
+  });
+
+  $('#version').addEventListener('change', function () {
+    $('#verHint').textContent = this.value === '7'
+      ? 'v7 embeds a millisecond timestamp in the first 48 bits, so IDs sort by creation time.'
+      : this.value === '4' ? 'v4 is 122 bits of pure randomness — unguessable, but terrible as a clustered primary key.'
+      : 'Special constant defined by RFC 9562, useful as a sentinel value.';
+  });
+
+  $('#fmt').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#fmt button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    fmt = b.getAttribute('data-f'); build();
+  });
+  $('#copyOne').addEventListener('click', function () { GT.copy(applyFormat(ids[0] || ''), 'UUID'); });
+  $('#regen').addEventListener('click', build);
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); });
+  ['#count','#version','#output','#optMono','#optNumbered'].forEach(function (s) {
+    $(s).addEventListener('change', build); $(s).addEventListener('input', build);
+  });
+
+  build();
+
+  GT.page({
+    slug: 'uuid-v7-generator',
+    lede: 'Generate RFC 9562 UUID v7 identifiers — random enough to be unguessable, ordered enough to keep your database indexes healthy.',
+    steps: [
+      { icon: 'gear', title: 'Choose version and count', text: 'v7 for database keys, v4 when ordering must reveal nothing.' },
+      { icon: 'id', title: 'Pick your output shape', text: 'Plain list, JSON, CSV, SQL values or a typed TypeScript array.' },
+      { icon: 'copy', title: 'Copy or decode', text: 'Paste any existing UUID into the decoder to read its version and embedded timestamp.' }
+    ],
+    guideTitle: 'Why v7 replaced v4 as the default for primary keys',
+    guide:
+      '<p style="color:var(--muted)">UUID v4 is 122 random bits. That is excellent for unguessability and terrible for storage engines. Insert a million v4 keys into a B-tree and every insert lands at a random leaf: the index cannot stay compact, pages split constantly, and the working set stops fitting in memory. Teams have watched insert throughput fall by an order of magnitude for exactly this reason.</p>' +
+      '<p style="color:var(--muted);margin-top:12px">UUID v7 fixes it by putting a 48-bit millisecond timestamp at the front. New IDs are always larger than old ones, so inserts append to the right-hand edge of the index — the same access pattern as an auto-increment integer, but still globally unique and generatable client-side without a round trip.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Reach for v7 when</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>It is a primary key or a clustered index.</li><li>Rows are naturally queried or paginated by creation order.</li><li>You generate IDs on the client or across several services.</li><li>You want the creation time for free, without an extra column.</li></ul></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Stay on v4 when</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>The ID is exposed publicly and creation time is sensitive.</li><li>An attacker enumerating roughly-sequential IDs would learn something — signup volume, order counts.</li><li>It is a session token or a password-reset nonce, where any structure is a liability.</li></ul></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>v7 timestamps are readable by anyone.</strong> The first 12 hex characters are the creation time in plain sight. That is a feature for debugging and a leak if your IDs appear in public URLs and you would rather not disclose when a record was created.</span></div>' +
+      '<div class="note note-info" style="margin-top:12px">' + GTI.info + '<span>Storing UUIDs as <code>CHAR(36)</code> costs 36 bytes per row plus index overhead. Use a native <code>uuid</code> column in PostgreSQL or <code>BINARY(16)</code> in MySQL and you are down to 16 bytes — on a large table that difference alone can be gigabytes of index.</span></div>',
+    related: ['ulid-generator', 'nanoid-generator', 'mongodb-objectid-generator'],
+    faqs: [
+      { q: 'What is a UUID v7?', a: 'A 128-bit identifier defined by RFC 9562 whose first 48 bits are a Unix millisecond timestamp, followed by a version nibble, a sub-millisecond counter and 62 random bits. The result sorts chronologically while remaining globally unique.' },
+      { q: 'Is UUID v7 better than v4?', a: 'For database primary keys, yes — sequential inserts keep B-tree indexes compact and dramatically faster. For public tokens where creation time must stay private, v4 is the safer choice because it reveals nothing.' },
+      { q: 'Are these UUIDs cryptographically secure?', a: 'The random portion comes from <code>crypto.getRandomValues()</code>, the browser CSPRNG. Nothing is sent over the network. Note that v7 is not unguessable in the way a token should be — the timestamp portion is predictable by design.' },
+      { q: 'What does monotonic mode do?', a: 'When several IDs are created in the same millisecond, it increments a counter in the <code>rand_a</code> field so they still sort in creation order. Without it, IDs from the same tick sort randomly among themselves.' },
+      { q: 'Can I decode the timestamp from a UUID v7?', a: 'Yes — the first 12 hex characters are the Unix time in milliseconds. Paste any UUID into the decoder on this page and it will show the version, variant and creation time.' },
+      { q: 'Does my database support UUID v7 natively?', a: 'PostgreSQL 18 ships a built-in <code>uuidv7()</code> function; earlier versions can use the <code>pg_uuidv7</code> extension. MySQL has no native v7 function, so generate in the application and store as <code>BINARY(16)</code>. Most language SDKs already support it.' }
+    ],
+    seo: {
+      title: 'UUID v7 Generator: time-ordered UUIDs explained',
+      lead: 'This <strong>free UUID generator</strong> produces RFC 9562 <strong>UUID v7</strong> identifiers — globally unique like a v4, but time-ordered so they keep database indexes fast. It also generates UUID v4, decodes the timestamp inside any existing UUID, and exports in JSON, CSV, SQL and TypeScript.',
+      blocks: [
+        {
+          h: 'What is a UUID v7?',
+          html: '<p>A <strong>UUID</strong> (Universally Unique Identifier), sometimes called a GUID, is a 128-bit value that can be generated independently on any machine with effectively no chance of collision. <strong>UUID version 7</strong>, standardised in RFC 9562, is the newest general-purpose variant and was designed specifically to fix the performance problem that made v4 a poor database key.</p>' +
+            '<p>A v7 UUID puts a 48-bit Unix millisecond timestamp in its leading bits, followed by a version nibble, a sub-millisecond counter and 62 bits of cryptographic randomness. Because the timestamp comes first and UUIDs are compared byte by byte, <strong>newer UUIDs always sort after older ones</strong>. You get global uniqueness and chronological ordering from a single value.</p>' +
+            '<p>The canonical form is 36 characters: <code>0198c4f1-9a2e-7c31-b8d4-5f6a7b8c9d0e</code>. The <code>7</code> at the start of the third group is the version marker.</p>'
+        },
+        {
+          h: 'UUID v7 vs UUID v4: which should you use?',
+          html: '<p>This is the decision most people arrive at this page to make. The short answer: <strong>v7 for database primary keys, v4 for anything where creation time must stay private.</strong></p>',
+          table: {
+            head: ['', 'UUID v4', 'UUID v7'],
+            rows: [
+              ['<strong>Structure</strong>', '122 random bits', '48-bit timestamp + 74 bits random'],
+              ['<strong>Sortable</strong>', 'No — random order', 'Yes — chronological by construction'],
+              ['<strong>Database index</strong>', 'Poor. Random inserts fragment B-trees', 'Excellent. Appends to the right edge like auto-increment'],
+              ['<strong>Reveals creation time</strong>', 'No', 'Yes — readable by anyone holding it'],
+              ['<strong>Best for</strong>', 'Session tokens, public IDs, nonces', 'Primary keys, event logs, anything paginated by time'],
+              ['<strong>Standard</strong>', 'RFC 4122 / RFC 9562', 'RFC 9562']
+            ]
+          },
+          after: '<p>The performance difference is not theoretical. Inserting a million random v4 keys scatters writes across every leaf page of a B-tree index, so the index cannot stay compact and the working set stops fitting in memory. Teams have measured insert throughput dropping by an order of magnitude for exactly this reason. UUID v7 inserts land at the right-hand edge, which is the same access pattern as an integer sequence.</p>'
+        },
+        {
+          h: 'How to generate UUIDs with this tool',
+          steps: [
+            { t: 'Choose the version', d: 'v7 for database keys and anything you want ordered. v4 when the identifier is public and creation time is sensitive. Nil and Max UUIDs are available as sentinel values.' },
+            { t: 'Set how many you need', d: 'Up to 10,000 per batch. All generated locally using your browser\'s cryptographic random number generator.' },
+            { t: 'Keep monotonic mode on', d: 'When several UUIDs are created in the same millisecond, a counter in the rand_a field keeps them in creation order. Without it, same-tick UUIDs sort randomly among themselves.' },
+            { t: 'Pick a format', d: 'Standard hyphenated, uppercase, no dashes, braces or URN form. Then export as a plain list, JSON array, CSV with timestamps, SQL insert values or a typed TypeScript array.' },
+            { t: 'Decode an existing UUID', d: 'Paste any UUID into the decoder to read its version, variant and — for v7 — the exact moment it was created.' }
+          ]
+        },
+        {
+          h: 'UUID v7 structure explained',
+          html: '<p>Reading a v7 UUID from left to right, each section has a defined job:</p>',
+          cards: [
+            { t: 'Bits 0–47 · timestamp', d: 'Unix time in milliseconds. This is what makes v7 sortable, and what the decoder reads back.' },
+            { t: 'Bits 48–51 · version', d: 'Always <code>7</code>. Identifies the UUID variant to any parser.' },
+            { t: 'Bits 52–63 · rand_a', d: 'Sub-millisecond counter in monotonic mode, otherwise random. Orders UUIDs created in the same tick.' },
+            { t: 'Bits 64–65 · variant', d: 'RFC 9562 variant marker. Always renders as 8, 9, a or b in canonical form.' },
+            { t: 'Bits 66–127 · rand_b', d: '62 bits of cryptographic randomness. This is what makes collision effectively impossible.' }
+          ]
+        },
+        {
+          h: 'When not to use UUID v7',
+          html: '<p>UUID v7 embeds a readable timestamp, and that is sometimes a liability rather than a feature.</p>',
+          list: [
+            '<strong>Public identifiers where timing is sensitive.</strong> Anyone holding the UUID can read exactly when the record was created, to the millisecond.',
+            '<strong>Anywhere enumeration matters.</strong> Roughly sequential IDs let an observer infer signup volume, order counts or activity patterns over time.',
+            '<strong>Session tokens and password-reset nonces.</strong> These need full unpredictability. Use v4, or better, a dedicated <a href="random-byte-generator.html">random token</a>.',
+            '<strong>When you need a shorter identifier.</strong> A <a href="nanoid-generator.html">NanoID</a> is 21 characters against 36, and a <a href="ulid-generator.html">ULID</a> is 26 while still sorting chronologically.'
+          ]
+        },
+        {
+          h: 'Storing UUIDs efficiently',
+          html: '<p>How you store a UUID matters as much as which version you pick. Storing it as <code>CHAR(36)</code> costs 36 bytes per row plus index overhead — on a large table with several UUID columns, that difference alone runs to gigabytes.</p>',
+          list: [
+            '<strong>PostgreSQL</strong> — use the native <code>uuid</code> type. 16 bytes, proper indexing. Version 18 ships a built-in <code>uuidv7()</code> function; earlier versions can use the <code>pg_uuidv7</code> extension.',
+            '<strong>MySQL</strong> — store as <code>BINARY(16)</code> and convert with <code>UUID_TO_BIN(?, 1)</code>. There is no native v7 function, so generate in your application.',
+            '<strong>SQL Server</strong> — <code>UNIQUEIDENTIFIER</code> is 16 bytes, but note its unusual sort order when clustering.',
+            '<strong>SQLite</strong> — a <code>BLOB</code> of 16 bytes, or <code>TEXT</code> if simplicity matters more than size.'
+          ],
+          callout: { type: 'ok', text: '<strong>Everything on this page is generated locally.</strong> UUIDs come from <code>crypto.getRandomValues()</code>, your browser\'s cryptographic random source, and nothing is transmitted. It is safe to generate production identifiers here.' }
+        },
+        {
+          h: 'Generating UUID v7 in code',
+          html: '<p>Once you have chosen a format, most languages have a one-line implementation:</p>' +
+            '<ul>' +
+            '<li><strong>JavaScript / TypeScript</strong> — <code>import { v7 as uuidv7 } from \'uuid\'</code></li>' +
+            '<li><strong>Node built-in</strong> — <code>crypto.randomUUID()</code> gives v4 only; use the <code>uuid</code> package for v7</li>' +
+            '<li><strong>Python</strong> — <code>from uuid6 import uuid7</code></li>' +
+            '<li><strong>Go</strong> — <code>uuid.NewV7()</code> from <code>github.com/google/uuid</code></li>' +
+            '<li><strong>Rust</strong> — <code>Uuid::now_v7()</code> with the <code>v7</code> feature enabled</li>' +
+            '<li><strong>PostgreSQL 18+</strong> — <code>DEFAULT uuidv7()</code> directly in your table definition</li>' +
+            '</ul>' +
+            '<p>The Code snippets tab on this page has copy-ready examples for each of these, including the correct storage column type.</p>'
+        },
+        {
+          h: 'Related identifier tools',
+          list: [
+            '<a href="ulid-generator.html">ULID Generator</a> — 26 characters, also sortable, easier for humans to read aloud.',
+            '<a href="nanoid-generator.html">NanoID Generator</a> — short URL-safe IDs with a collision probability calculator.',
+            '<a href="mongodb-objectid-generator.html">MongoDB ObjectId Generator</a> — 12-byte BSON identifiers with a timestamp decoder.',
+            '<a href="random-hex-string-generator.html">Random Hex String Generator</a> — cryptographically secure tokens and keys.',
+            '<a href="json-test-data-generator.html">JSON Test Data Generator</a> — seeded fixtures including UUID fields.'
+          ]
+        }
+      ],
+      keywords: [
+        'uuid v7 generator', 'uuid generator', 'generate uuid online', 'uuid v4 generator',
+        'guid generator', 'uuid decoder', 'rfc 9562', 'time ordered uuid', 'sortable uuid',
+        'uuid vs guid', 'uuid v7 vs v4', 'random uuid generator', 'bulk uuid generator',
+        'uuid primary key', 'postgres uuid v7'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coordinate Grid Worksheet Generator — Printable Graph Paper Tasks | Manage My Batch</title>
+<meta name="description" content="Free coordinate grid worksheet generator. Create plotting and reading exercises on one or four quadrants, plus blank graph paper — with printable answer keys.">
+<link rel="canonical" href="https://managemybatch.com/tools/coordinate-grid-worksheet-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Coordinate Grid Worksheet Generator — Printable Graph Paper Tasks">
+<meta property="og:description" content="Free coordinate grid worksheet generator. Create plotting and reading exercises on one or four quadrants, plus blank graph paper — with printable answer keys.">
+<meta property="og:url" content="https://managemybatch.com/tools/coordinate-grid-worksheet-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Coordinate Grid Worksheet Generator — Printable Graph Paper Tasks">
+<meta name="twitter:description" content="Free coordinate grid worksheet generator. Create plotting and reading exercises on one or four quadrants, plus blank graph paper — with printable answer keys.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Worksheet Settings</div>
+
+    <div class="field">
+      <label for="mode">Exercise type</label>
+      <select id="mode">
+        <option value="read" selected>Read the coordinates of each point</option>
+        <option value="plot">Plot the given coordinates</option>
+        <option value="mixed">Mixed — some read, some plot</option>
+        <option value="blank">Blank grids (graph paper)</option>
+      </select>
+      <div class="hint" id="modeHint"></div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="quadrants">Quadrants</label>
+        <select id="quadrants">
+          <option value="1" selected>First quadrant only (positive)</option>
+          <option value="4">All four quadrants</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="range">Axis range</label>
+        <select id="range">
+          <option value="5">±5</option>
+          <option value="8">±8</option>
+          <option value="10" selected>±10</option>
+          <option value="12">±12</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="points">Points per grid</label>
+        <input type="number" id="points" value="4" min="1" max="10">
+      </div>
+      <div class="field">
+        <label for="count">Grids</label>
+        <input type="number" id="count" value="4" min="1" max="20">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="cell">Grid size</label>
+        <select id="cell">
+          <option value="14">Small</option>
+          <option value="18" selected>Medium</option>
+          <option value="24">Large</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="columns">Print columns</label>
+        <select id="columns">
+          <option value="1">1</option>
+          <option value="2" selected>2</option>
+        </select>
+      </div>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Options</legend>
+      <div class="check-list">
+        <label class="check on"><input type="checkbox" id="optNoAxis" checked>
+          <span><span class="t">Avoid points on the axes</span><span class="d">Keeps every point clearly inside a quadrant.</span></span></label>
+        <label class="check on"><input type="checkbox" id="optKey" checked>
+          <span><span class="t">Include answer key page</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="row">
+      <div class="field">
+        <label for="title">Worksheet title</label>
+        <input type="text" id="title" value="Coordinates">
+      </div>
+      <div class="field">
+        <label for="seed">Seed</label>
+        <div class="row" style="grid-template-columns:minmax(0,1fr) auto;gap:8px">
+          <input type="text" id="seed" value="grid-1">
+          <button type="button" class="btn btn-soft" id="newSeed"><span id="icoReset"></span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="out-actions">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate Worksheet</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Worksheet<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="preview">Preview</button>
+      <button type="button" data-tab="key">Answer key</button>
+      <button type="button" data-tab="guide">Teaching notes</button>
+    </div>
+
+    <div data-panel="preview">
+      <div id="preview"></div>
+      <div class="out-actions" style="margin-top:16px">
+        <button type="button" class="btn btn-primary" id="printBtn"><span id="icoFile"></span> Print / PDF</button>
+        <button type="button" class="btn btn-soft" id="regen"><span id="icoReset2"></span> New points</button>
+      </div>
+      <div id="checks"></div>
+    </div>
+
+    <div data-panel="key" hidden><div id="key"></div></div>
+    <div data-panel="guide" hidden><div id="guide"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/worksheet.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$, W = GTWorksheet;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoReset:reset','icoReset2:reset','icoFile:file']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var HINTS = {
+    read: 'Points are plotted and labelled; students write the ordered pairs.',
+    plot: 'Coordinates are listed; students mark them on an empty grid.',
+    mixed: 'Alternates between reading and plotting across the grids.',
+    blank: 'Empty grids for students to use however you direct.'
+  };
+
+  var items = [];
+
+  function build() {
+    var mode = $('#mode').value;
+    $('#modeHint').textContent = HINTS[mode];
+
+    var rand = W.rng($('#seed').value);
+    var quad = parseInt($('#quadrants').value, 10);
+    var range = parseInt($('#range').value, 10);
+    var cell = parseInt($('#cell').value, 10);
+    var nPoints = Math.max(1, Math.min(10, parseInt($('#points').value, 10) || 1));
+    var n = Math.max(1, Math.min(20, parseInt($('#count').value, 10) || 1));
+    var lo = quad === 1 ? 0 : -range;
+
+    items = [];
+
+    for (var g = 0; g < n; g++) {
+      if (mode === 'blank') {
+        items.push({
+          html: W.coordGrid(range, [], { quadrants: quad, cell: cell }),
+          answer: '—'
+        });
+        continue;
+      }
+
+      var pts = [], seen = {};
+      var guard = 0;
+      while (pts.length < nPoints && guard++ < 300) {
+        var x = rand.int(lo, range), y = rand.int(lo, range);
+        if ($('#optNoAxis').checked && (x === 0 || y === 0)) continue;
+        var k = x + ',' + y;
+        if (seen[k]) continue;
+        seen[k] = 1;
+        pts.push({ x: x, y: y, label: String.fromCharCode(65 + pts.length) });
+      }
+
+      var doPlot = mode === 'plot' || (mode === 'mixed' && g % 2 === 1);
+
+      if (doPlot) {
+        items.push({
+          html: '<div style="font-size:13.5px;margin-bottom:4px">Plot: ' +
+            pts.map(function (p) { return '<strong>' + p.label + '</strong> (' + p.x + ', ' + p.y + ')'; }).join(' &nbsp; ') + '</div>' +
+            W.coordGrid(range, [], { quadrants: quad, cell: cell }),
+          answer: pts.map(function (p) { return p.label + '(' + p.x + ', ' + p.y + ')'; }).join(' ')
+        });
+      } else {
+        items.push({
+          html: W.coordGrid(range, pts, { quadrants: quad, cell: cell }) +
+            '<div style="font-size:13.5px;margin-top:4px">' +
+            pts.map(function (p) {
+              return '<div style="margin-bottom:3px"><strong>' + p.label + '</strong> = ( ' +
+                '<span style="display:inline-block;min-width:26px;border-bottom:1.3px solid #94a3b8">&nbsp;</span> , ' +
+                '<span style="display:inline-block;min-width:26px;border-bottom:1.3px solid #94a3b8">&nbsp;</span> )</div>';
+            }).join('') + '</div>',
+          answer: pts.map(function (p) { return p.label + '(' + p.x + ', ' + p.y + ')'; }).join(' ')
+        });
+      }
+    }
+
+    W.preview('#preview', {
+      title: $('#title').value,
+      instructions: instructions(mode),
+      items: items,
+      previewColumns: parseInt($('#columns').value, 10) || 2
+    });
+    W.answerKeyPreview('#key', items);
+    renderChecks(mode, quad, range, nPoints);
+
+    $('#pill').textContent = items.length + ' grid' + (items.length === 1 ? '' : 's');
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+  }
+
+  function instructions(mode) {
+    return {
+      read: 'Write the coordinates of each labelled point as an ordered pair (x, y).',
+      plot: 'Plot and label each point on the grid.',
+      mixed: 'Read the coordinates where points are shown; plot them where they are listed.',
+      blank: 'Use the grids as directed.'
+    }[mode];
+  }
+
+  function renderChecks(mode, quad, range, nPoints) {
+    var c = [];
+    if (quad === 4) {
+      c.push(['ok', 'All four quadrants — students must handle negative coordinates in both directions.']);
+    } else {
+      c.push(['ok', 'First quadrant only — all coordinates are positive, which is the right starting point.']);
+    }
+    if ($('#optNoAxis').checked) {
+      c.push(['ok', 'Points avoid the axes, so no coordinate has a zero component.']);
+    } else {
+      c.push(['warn', 'Points may land on an axis, giving coordinates like (0, 4). Worth including deliberately once students are secure — it is a common exam trip-up.']);
+    }
+    var available = quad === 1 ? (range + 1) * (range + 1) : (2 * range + 1) * (2 * range + 1);
+    if (nPoints > available * 0.3) {
+      c.push(['warn', 'Many points on a small grid — labels may overlap. Reduce the points or increase the range.']);
+    }
+    if (parseInt($('#cell').value, 10) <= 14 && range >= 10) {
+      c.push(['warn', 'Small cells with a wide range make the printed grid tight. Check the preview before printing a class set.']);
+    }
+    if (mode === 'blank') {
+      c.push(['ok', 'Blank grids — the answer key is omitted automatically since there is nothing to check.']);
+    }
+    $('#checks').innerHTML = c.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : 'note-warn') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+  }
+
+  $('#printBtn').addEventListener('click', function () {
+    W.print({
+      title: $('#title').value,
+      instructions: instructions($('#mode').value),
+      items: items,
+      columns: parseInt($('#columns').value, 10) || 2,
+      answerKey: $('#mode').value === 'blank' ? false : $('#optKey').checked,
+      answerColumns: 2
+    });
+  });
+  $('#newSeed').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); });
+  $('#regen').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); GT.toast('New points'); });
+
+  $('#guide').innerHTML = [
+    ['Along the corridor, then up the stairs', 'The single most common coordinate error is reversing x and y. The old mnemonic works because it encodes the order: move horizontally first, then vertically. Reading exercises catch the reversal quickly, because a plotted (3, 5) read as (5, 3) is immediately wrong.'],
+    ['First quadrant before four', 'Positive coordinates only removes the sign-handling problem so students can concentrate on the ordering convention. Introduce negatives once reading and plotting are automatic — otherwise two new ideas compete.'],
+    ['Points on an axis are worth practising deliberately', 'A point at (0, 4) or (−3, 0) trips up students who have only seen points floating inside a quadrant. Turn off "avoid the axes" once the basics are secure — it is a routine exam question and an easy mark to lose.'],
+    ['Reading and plotting are different skills', 'Reading a plotted point is decoding; plotting from coordinates is encoding. Students are often noticeably better at one than the other, which is why the mixed mode alternates between them on the same sheet.'],
+    ['Blank grids save photocopying', 'The blank mode gives you printable graph paper with proper axes and labels — useful for shape transformations, straight-line graphs or any task where you want the grid but not the questions.'],
+    ['Check the density before printing a class set', 'Small cells with a wide range look fine on screen and print tight. The preview here is the same vector drawing that prints, so use it.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('');
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Worksheet generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'coordinate-grid-worksheet-generator',
+    lede: 'Coordinate plane worksheets for reading and plotting ordered pairs — one or four quadrants, plus blank printable graph paper with proper axes.',
+    steps: [
+      { icon: 'gear', title: 'Choose the exercise', text: 'Read coordinates, plot them, alternate between both, or print blank grids.' },
+      { icon: 'grid', title: 'Set the quadrants', text: 'First quadrant to start; all four once negatives are introduced.' },
+      { icon: 'file', title: 'Print with the key', text: 'Vector grids that stay crisp and survive photocopying.' }
+    ],
+    guideTitle: 'Reading and plotting are not the same skill',
+    guide:
+      '<p style="color:var(--muted)">Reading a plotted point is decoding — the information is on the page and the student translates it into a pair of numbers. Plotting from given coordinates is encoding — the student holds the convention in mind and produces the position. Students are routinely fluent at one and shaky at the other, and a worksheet that only tests reading will not reveal it.</p>' +
+      '<p style="color:var(--muted);margin-top:12px">That is what the mixed mode is for: alternating between the two on one sheet surfaces the gap immediately.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">The ordering error</h4><p style="color:var(--muted);font-size:13.8px">Reversing x and y is by far the most common mistake. "Along the corridor, then up the stairs" persists because it encodes the order rather than just naming it. Reading exercises catch the reversal fast — a point plotted at (3, 5) and read as (5, 3) is visibly wrong on the grid.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Points on the axes</h4><p style="color:var(--muted);font-size:13.8px">A point at (0, 4) or (−3, 0) sits on an axis rather than inside a quadrant, and students who have only ever seen points floating in the middle of a quadrant often stall. It is a standard exam question, so it is worth switching off "avoid the axes" deliberately once the basics are secure.</p></div></div>' +
+      '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>The blank grid mode gives you printable graph paper with properly labelled axes — useful for straight-line graphs, shape transformations or any lesson where you want the grid without the questions. The answer key is omitted automatically.</span></div>',
+    related: ['number-line-worksheet-generator', 'math-worksheet-generator', 'fraction-worksheet-generator'],
+    faqs: [
+      { q: 'Should I start with one quadrant or four?', a: 'One. Positive coordinates only lets students focus on the x-then-y ordering convention without also handling signs. Introduce all four quadrants once reading and plotting are automatic.' },
+      { q: 'What is the most common coordinate mistake?', a: 'Reversing x and y. Reading exercises expose it quickly, because a point plotted at (3, 5) but read as (5, 3) is obviously in the wrong place on the grid.' },
+      { q: 'Why avoid points on the axes?', a: 'Early on, points like (0, 4) confuse students who expect coordinates to sit inside a quadrant. Once the basics are secure, turn the option off deliberately — axis points are a routine exam question.' },
+      { q: 'Can I print blank graph paper?', a: 'Yes — choose the blank grids mode. You get properly labelled axes at your chosen range and size, with the answer key omitted automatically.' },
+      { q: 'How many points should each grid have?', a: 'Four to six is comfortable. Beyond that, labels start to crowd on smaller grids and the tool will warn you.' },
+      { q: 'Will the grids print clearly?', a: 'Yes. They are SVG vectors, so they stay sharp at any size and hold up well to photocopying.' }
+    ],
+    seo: {
+      title: 'Coordinate worksheets: reading and plotting are different skills',
+      lead: 'This <strong>coordinate grid worksheet generator</strong> builds practice for reading and plotting ordered pairs in one or four quadrants, plus blank printable graph paper with proper axes. Below: why the two directions need separate practice, and the mistake that accounts for most wrong answers.',
+      blocks: [
+        {
+          h: 'Reading and plotting are not the same skill',
+          html: '<p><strong>Reading</strong> a coordinate means looking at a marked point and writing (3, 5). The point is given; the child decodes it.</p>' +
+            '<p><strong>Plotting</strong> means being given (3, 5) and marking it. The child must count across, then up, and hold both while locating an intersection on an empty grid.</p>' +
+            '<p>Plotting is harder, and children who read confidently often plot badly. The usual cause is that reading can be done by following gridlines back to the axes — a visual trace — while plotting requires counting from the origin with nothing to follow. A worksheet of reading questions can conceal that gap entirely.</p>',
+          callout: { type: 'tip', text: 'Practise them on separate sheets before mixing. Switching direction question by question is a third skill again, and it is not the one to start with.' }
+        },
+        {
+          h: 'The mistake that accounts for most errors',
+          html: '<p>Reversing the pair. (3, 5) plotted where (5, 3) belongs, over and over.</p>' +
+            '<p>The convention is <em>x first, then y</em> — across, then up. It is arbitrary, it is universal, and nothing about the grid reminds a child which way round it goes. Mnemonics help: "along the corridor and up the stairs" is the common one, and "x comes before y in the alphabet" works for children who need a rule rather than an image.</p>' +
+            '<p>What helps more is consistent language. Always say "three across, five up" alongside "(3, 5)", so the notation and the movement are learned together rather than separately.</p>',
+          cards: [
+            { t: 'Reversed pairs', d: '(3, 5) treated as (5, 3). By far the most common error, and it persists.' },
+            { t: 'Counting from the wrong origin', d: 'Starting from the first gridline rather than zero — an off-by-one in every coordinate.' },
+            { t: 'Counting squares, not lines', d: 'Points sit at line intersections, not in the middle of squares. A confusion imported from earlier grid work.' },
+            { t: 'Negative sign dropped', d: 'In four-quadrant work, (−3, 5) plotted as (3, 5). Worth targeting deliberately.' }
+          ]
+        },
+        {
+          h: 'One quadrant or four?',
+          table: {
+            head: ['', 'One quadrant', 'Four quadrants'],
+            rows: [
+              ['Values', 'Positive only.', 'Positive and negative.'],
+              ['Origin', 'Bottom left corner.', 'Centre of the grid.'],
+              ['Prerequisite', 'Counting.', 'Negative numbers must be secure first.'],
+              ['Typical stage', 'Upper primary.', 'Lower secondary.'],
+              ['Main difficulty', 'The order of the pair.', 'The order, plus sign handling in both directions.']
+            ]
+          },
+          after: '<p>Start with one quadrant, always. Four-quadrant work introduces negative numbers <em>and</em> a moved origin at the same time as coordinates, and a child who is still uncertain about negatives will attribute their confusion to coordinates.</p>'
+        },
+        {
+          h: 'Why avoid points on the axes',
+          html: '<p>A point at (0, 4) or (5, 0) sits <em>on</em> an axis, and it is ambiguous to a child in a way it is not to an adult. Is (0, 4) "nothing across and four up", or has the counting simply not started? Points on the axes generate wrong answers that reflect the question rather than the understanding.</p>' +
+            '<p>The origin itself is worse: (0, 0) is a legitimate coordinate that looks like a child who did not answer.</p>' +
+            '<p>The generator keeps points off the axes by default. Turn them on deliberately once the convention is secure — reading intercepts from a graph is a real skill, and it needs the axis cases — but not while coordinates themselves are being learned.</p>',
+          callout: { type: 'warn', text: 'If you do include axis points, cover them explicitly in teaching first. A child meeting (0, 4) for the first time in an assessment will either guess or freeze, and neither tells you anything about whether they can plot coordinates.' }
+        },
+        {
+          h: 'Building a sheet',
+          steps: [
+            { t: 'Choose reading or plotting', d: 'Or generate one sheet of each at the same settings.' },
+            { t: 'Set the quadrants', d: 'One to start; four once negative numbers are secure.' },
+            { t: 'Set the grid size', d: '0–10 for early work, 0–20 when counting is fluent, −10 to 10 for four quadrants.' },
+            { t: 'Set points per grid', d: 'Four to six. Enough for real practice, few enough that the grid stays readable.' },
+            { t: 'Decide on axis points', d: 'Off by default. Turn on only when intercepts are the target.' },
+            { t: 'Print, with the answer key', d: 'Or print blank graph paper for the children to construct their own.' }
+          ]
+        },
+        {
+          h: 'Blank graph paper',
+          html: '<p>The generator also produces plain printable graph paper with properly drawn and labelled axes — which is surprisingly hard to find. Most free graph paper is a grid with no axes, no origin and no numbering, so a child has to construct all three before they can plot anything.</p>' +
+            '<p>Useful for shape work, line graphs, translations and reflections, and for letting students set up their own coordinate problems for each other — an activity that reveals misconceptions faster than any worksheet, because a child writing a question has to be right about the convention.</p>' +
+            '<p>Choose the quadrants and the range, and the axes are drawn, labelled and numbered to match.</p>'
+        },
+        {
+          h: 'Related worksheet tools',
+          list: [
+            '<a href="number-line-worksheet-generator.html">Number Line Worksheet Generator</a> — a single axis, where coordinates begin.',
+            '<a href="math-worksheet-generator.html">Math Worksheet Generator</a> — arithmetic practice.',
+            '<a href="fraction-worksheet-generator.html">Fraction Worksheet Generator</a> — fraction skills.',
+            '<a href="clock-reading-worksheet-generator.html">Clock Reading Worksheet Generator</a> — reading a circular scale.',
+            '<a href="coordinate-grid-worksheet-generator.html">Coordinate Grid Worksheet Generator</a> — more grid exercises.'
+          ]
+        }
+      ],
+      keywords: [
+        'coordinate grid worksheet generator', 'plotting coordinates worksheet', 'ordered pairs practice',
+        'four quadrant graph paper', 'printable graph paper with axes', 'first quadrant coordinates',
+        'coordinate plane worksheet', 'reading coordinates worksheet', 'x y coordinates practice',
+        'negative coordinates worksheet', 'coordinate worksheet answer key', 'blank coordinate grid'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

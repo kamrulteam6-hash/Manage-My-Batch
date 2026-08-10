@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Random Question Picker — Cold Call &amp; Question Spinner | Manage My Batch</title>
+<meta name="description" content="Free random question picker for teachers. Pick questions or students at random on a big projector-friendly display, with no-repeat mode, history and an optional timer.">
+<link rel="canonical" href="https://managemybatch.com/tools/random-question-picker.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Random Question Picker — Cold Call &amp; Question Spinner">
+<meta property="og:description" content="Free random question picker for teachers. Pick questions or students at random on a big projector-friendly display, with no-repeat mode, history and an optional timer.">
+<meta property="og:url" content="https://managemybatch.com/tools/random-question-picker.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Random Question Picker — Cold Call &amp; Question Spinner">
+<meta name="twitter:description" content="Free random question picker for teachers. Pick questions or students at random on a big projector-friendly display, with no-repeat mode, history and an optional timer.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+<style>
+  .pick-stage{border:1px solid var(--line);border-radius:14px;background:var(--bg-soft);padding:34px 24px;
+    min-height:220px;display:flex;align-items:center;justify-content:center;text-align:center;position:relative}
+  .pick-stage .val{font-size:clamp(22px,4.4vw,40px);font-weight:800;line-height:1.25;color:var(--ink);
+    letter-spacing:-.02em;max-width:100%;word-break:break-word}
+  .pick-stage.rolling .val{opacity:.45;filter:blur(.4px)}
+  .pick-stage .idle{color:var(--muted);font-size:16px;font-weight:500}
+  .timer-bar{height:6px;border-radius:999px;background:var(--line);overflow:hidden;margin-top:16px}
+  .timer-bar span{display:block;height:100%;background:var(--blue);transition:width .25s linear}
+  .used-chip{display:inline-block;margin:0 6px 6px 0;padding:4px 10px;border-radius:999px;font-size:12.5px;
+    background:var(--bg-soft);border:1px solid var(--line);color:var(--muted)}
+  .used-chip.done{background:var(--green-bg);border-color:transparent;color:var(--green)}
+</style>
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Setup</div>
+
+    <div class="field">
+      <label>What are you picking?</label>
+      <div class="seg" id="kind">
+        <button type="button" class="on" data-k="questions">Questions</button>
+        <button type="button" data-k="students">Students</button>
+      </div>
+      <div class="hint" id="kindHint">Paste your question bank — one per line.</div>
+    </div>
+
+    <div class="field">
+      <label for="items" id="itemsLabel">Questions — one per line</label>
+      <textarea id="items" style="min-height:200px">What is the capital of Japan?
+Name three states of matter.
+What is 7 × 8?
+Who wrote Romeo and Juliet?
+What gas do plants absorb?
+Define a prime number.
+What year did the Second World War end?
+Name the largest ocean.
+What is the chemical symbol for gold?
+Explain photosynthesis in one sentence.</textarea>
+      <div id="stats"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <fieldset class="field">
+      <legend class="label">Behaviour</legend>
+      <div class="check-list">
+        <label class="check on"><input type="checkbox" id="optNoRepeat" checked>
+          <span><span class="t">No repeats until all used</span><span class="d">Everyone gets asked before anyone gets asked twice.</span></span></label>
+        <label class="check on"><input type="checkbox" id="optAnimate" checked>
+          <span><span class="t">Shuffle animation</span><span class="d">Builds anticipation and makes the pick feel genuinely random.</span></span></label>
+        <label class="check"><input type="checkbox" id="optTimer">
+          <span><span class="t">Thinking timer</span><span class="d">Counts down after each pick.</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="field" id="timerWrap" hidden>
+      <label for="timerSec">Timer length: <strong id="timerLabel">30</strong> seconds</label>
+      <input type="range" id="timerSec" min="5" max="180" step="5" value="30" style="width:100%;accent-color:var(--blue)">
+    </div>
+
+    <div class="note note-info"><span id="icoInfo"></span>
+      <span>Press <kbd style="font-family:var(--mono);background:var(--bg-soft);border:1px solid var(--line);border-radius:4px;padding:1px 5px">Space</kbd> to pick the next one without reaching for the mouse.</span></div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Picker<span class="spacer"></span>
+      <span class="result-pill" id="pill">ready</span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="pick">Pick</button>
+      <button type="button" data-tab="history">History</button>
+      <button type="button" data-tab="guide">Teaching notes</button>
+    </div>
+
+    <div data-panel="pick">
+      <div class="pick-stage" id="stage">
+        <div class="idle">Press <strong>Pick</strong> to start</div>
+      </div>
+      <div class="timer-bar" id="timerBar" hidden><span id="timerFill" style="width:100%"></span></div>
+
+      <div class="out-actions" style="margin-top:16px">
+        <button type="button" class="btn btn-primary" id="pickBtn" style="flex:2"><span id="icoBolt"></span> Pick</button>
+        <button type="button" class="btn btn-ghost" id="fsBtn">Full screen</button>
+        <button type="button" class="btn btn-soft" id="resetBtn"><span id="icoReset"></span> Reset</button>
+      </div>
+
+      <div id="remaining" style="margin-top:16px"></div>
+    </div>
+
+    <div data-panel="history" hidden>
+      <div id="history"></div>
+      <div class="out-actions" style="margin-top:14px">
+        <button class="btn btn-ghost" id="copyBtn"><span id="icoCopy"></span> Copy history</button>
+      </div>
+    </div>
+
+    <div data-panel="guide" hidden><div id="guide"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/roster.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoCopy:copy','icoReset:reset','icoInfo:info']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var pool = [], used = [], history = [], rolling = false, timerId = null;
+
+  var SAMPLES = {
+    questions: 'What is the capital of Japan?\nName three states of matter.\nWhat is 7 × 8?\nWho wrote Romeo and Juliet?\nWhat gas do plants absorb?\nDefine a prime number.\nWhat year did the Second World War end?\nName the largest ocean.\nWhat is the chemical symbol for gold?\nExplain photosynthesis in one sentence.',
+    students: 'Amara\nBen\nChen\nDiego\nElena\nFarah\nGrace\nHugo\nInes\nJonas\nLayla\nMateo'
+  };
+
+  function items() {
+    return GTRoster.parseNames($('#items').value).names;
+  }
+
+  function refresh() {
+    var all = items();
+    var parsed = GTRoster.parseNames($('#items').value);
+    GTRoster.rosterStats('#stats', parsed);
+    /* Drop any used entries that no longer exist in the list. */
+    used = used.filter(function (u) { return all.indexOf(u) > -1; });
+    pool = all.filter(function (x) { return used.indexOf(x) === -1; });
+    renderRemaining();
+    $('#pill').textContent = all.length ? (all.length - used.length) + ' of ' + all.length + ' left' : 'empty';
+    $('#pill').style.background = pool.length ? 'var(--blue-50)' : 'var(--amber-bg)';
+    $('#pill').style.color = pool.length ? 'var(--blue)' : 'var(--amber)';
+  }
+
+  function renderRemaining() {
+    var all = items();
+    if (!all.length) { $('#remaining').innerHTML = ''; return; }
+    if (!$('#optNoRepeat').checked) {
+      $('#remaining').innerHTML = '<p style="color:var(--muted);font-size:13px">Repeats allowed — every pick draws from the full list.</p>';
+      return;
+    }
+    $('#remaining').innerHTML = '<p class="more-label">Remaining (' + pool.length + ')</p>' +
+      all.map(function (x) {
+        var done = used.indexOf(x) > -1;
+        return '<span class="used-chip' + (done ? ' done' : '') + '">' +
+          GT.esc(x.length > 34 ? x.slice(0, 32) + '…' : x) + '</span>';
+      }).join('');
+  }
+
+  function show(text, big) {
+    $('#stage').innerHTML = '<div class="val">' + GT.esc(text) + '</div>';
+  }
+
+  function pick() {
+    if (rolling) return;
+    var all = items();
+    if (!all.length) { GT.toast('Add some items first'); return; }
+
+    var source = $('#optNoRepeat').checked ? pool : all;
+    if (!source.length) {
+      $('#stage').innerHTML = '<div class="idle">Everything has been used.<br>' +
+        '<span style="font-size:14px">Press Reset to start again.</span></div>';
+      GT.toast('All items used');
+      return;
+    }
+
+    var chosen = source[Math.floor(Math.random() * source.length)];
+
+    function settle() {
+      show(chosen);
+      $('#stage').classList.remove('rolling');
+      rolling = false;
+      if ($('#optNoRepeat').checked && used.indexOf(chosen) === -1) used.push(chosen);
+      history.unshift({ text: chosen, at: new Date() });
+      pool = items().filter(function (x) { return used.indexOf(x) === -1; });
+      renderRemaining();
+      renderHistory();
+      refreshPill();
+      startTimer();
+    }
+
+    if ($('#optAnimate').checked && all.length > 1) {
+      rolling = true;
+      $('#stage').classList.add('rolling');
+      var ticks = 12, i = 0;
+      var iv = setInterval(function () {
+        show(all[Math.floor(Math.random() * all.length)]);
+        if (++i >= ticks) { clearInterval(iv); settle(); }
+      }, 55);
+    } else {
+      settle();
+    }
+  }
+
+  function refreshPill() {
+    var all = items();
+    $('#pill').textContent = $('#optNoRepeat').checked
+      ? (all.length - used.length) + ' of ' + all.length + ' left'
+      : all.length + ' items';
+    $('#pill').style.background = (!$('#optNoRepeat').checked || pool.length) ? 'var(--blue-50)' : 'var(--amber-bg)';
+    $('#pill').style.color = (!$('#optNoRepeat').checked || pool.length) ? 'var(--blue)' : 'var(--amber)';
+  }
+
+  function startTimer() {
+    clearInterval(timerId);
+    if (!$('#optTimer').checked) { $('#timerBar').hidden = true; return; }
+    var total = parseInt($('#timerSec').value, 10) || 30;
+    var left = total;
+    $('#timerBar').hidden = false;
+    $('#timerFill').style.width = '100%';
+    $('#timerFill').style.background = 'var(--blue)';
+    timerId = setInterval(function () {
+      left -= 0.25;
+      var pct = Math.max(0, (left / total) * 100);
+      $('#timerFill').style.width = pct + '%';
+      if (pct < 25) $('#timerFill').style.background = 'var(--red)';
+      else if (pct < 50) $('#timerFill').style.background = 'var(--amber)';
+      if (left <= 0) { clearInterval(timerId); GT.toast('Time up'); }
+    }, 250);
+  }
+
+  function renderHistory() {
+    $('#history').innerHTML = history.length
+      ? '<div class="more-list">' + history.slice(0, 40).map(function (h, i) {
+          return '<div class="more-row"><span style="width:26px;flex:none;color:var(--muted-2);font-size:12px">' +
+            (history.length - i) + '</span>' +
+            '<span class="mval" style="font-family:var(--sans);font-size:14px">' + GT.esc(h.text) + '</span>' +
+            '<span class="chip">' + h.at.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + '</span></div>';
+        }).join('') + '</div>'
+      : '<div class="empty">Nothing picked yet.</div>';
+  }
+
+  $('#pickBtn').addEventListener('click', pick);
+  $('#resetBtn').addEventListener('click', function () {
+    used = []; history = []; clearInterval(timerId);
+    $('#timerBar').hidden = true;
+    $('#stage').innerHTML = '<div class="idle">Press <strong>Pick</strong> to start</div>';
+    refresh(); renderHistory();
+    GT.toast('Reset');
+  });
+  $('#fsBtn').addEventListener('click', function () {
+    var el = $('#stage');
+    if (document.fullscreenElement) document.exitFullscreen();
+    else if (el.requestFullscreen) el.requestFullscreen();
+  });
+  $('#copyBtn').addEventListener('click', function () {
+    GT.copy(history.map(function (h, i) { return (history.length - i) + '. ' + h.text; }).reverse().join('\n'), 'History');
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.code !== 'Space') return;
+    var t = e.target.tagName;
+    if (t === 'TEXTAREA' || t === 'INPUT' || t === 'BUTTON' || t === 'SELECT') return;
+    e.preventDefault(); pick();
+  });
+
+  $('#kind').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#kind button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    var k = b.getAttribute('data-k');
+    $('#items').value = SAMPLES[k];
+    $('#itemsLabel').textContent = k === 'students' ? 'Student names — one per line' : 'Questions — one per line';
+    $('#kindHint').textContent = k === 'students'
+      ? 'Paste your class list to cold-call at random.'
+      : 'Paste your question bank — one per line.';
+    used = []; history = [];
+    refresh(); renderHistory();
+  });
+
+  $('#optTimer').addEventListener('change', function () { $('#timerWrap').hidden = !this.checked; });
+  $('#timerSec').addEventListener('input', function () { $('#timerLabel').textContent = this.value; });
+  $('#optNoRepeat').addEventListener('change', function () { refresh(); refreshPill(); });
+  $('#items').addEventListener('input', refresh);
+
+  $('#guide').innerHTML = [
+    ['No-repeat mode is what makes cold calling fair', 'Pure random selection means some students are asked three times before others are asked once — and they notice. Drawing without replacement guarantees everyone is asked before anyone is asked twice, which is both fairer and far better for participation.'],
+    ['Randomising removes the negotiation', 'When the teacher chooses, every selection can be read as a judgement about who is struggling or who is favoured. A visible random draw takes that away entirely — it is nobody\'s decision, so nobody argues with it.'],
+    ['Give thinking time before the name', 'The most effective sequence is: ask the question, pause, then pick. If the name comes first, everyone else stops thinking. The timer here is designed for the pause after the pick, when the chosen student is composing an answer.'],
+    ['Full screen for the projector', 'The full-screen button blows the current pick up to fill the display so it is readable from the back of the room. Space bar advances, so you can keep facing the class.'],
+    ['Keep a question bank, not just names', 'Switching to Questions mode lets you draw from a prepared bank — useful for retrieval practice starters, where the value is in the spacing rather than in who answers.'],
+    ['Check the history at the end', 'The history tab shows what was actually asked and when. It is a quick record for a lesson observation, or for spotting that you never got to the harder questions.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('');
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); pick(); });
+
+  refresh(); renderHistory();
+
+  GT.page({
+    slug: 'random-question-picker',
+    lede: 'Pick questions or students at random on a display big enough for the back row — with no-repeat mode so everyone gets asked before anyone gets asked twice.',
+    steps: [
+      { icon: 'gear', title: 'Paste your list', text: 'A question bank for retrieval practice, or your class list for cold calling.' },
+      { icon: 'help', title: 'Press Pick or Space', text: 'Full screen makes it readable from the back of the room.' },
+      { icon: 'check', title: 'Track what was used', text: 'Remaining items are shown live; the history tab records the full sequence.' }
+    ],
+    guideTitle: 'Why drawing without replacement matters',
+    guide:
+      '<p style="color:var(--muted)">If you pick a name at random from a class of 30 thirty times, the expected outcome is not that everyone is asked once. Around a third of the class will not be picked at all, and several students will be picked three or more times. That is how independent random selection behaves, and it is exactly the pattern students experience as unfair.</p>' +
+      '<p style="color:var(--muted);margin-top:12px">No-repeat mode draws <em>without replacement</em>: each name is removed from the pool once used, so the whole class is covered before anyone repeats. The chips below the picker show at a glance who is still to come, which also lets you see when you are close to the end of a round.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Question first, name second</h4><p style="color:var(--muted);font-size:13.8px">Asking the question, pausing, then drawing a name keeps the whole class thinking. Naming a student first tells everyone else they can stop. It is a small sequencing change with a large effect on how much thinking happens in the room.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">It takes the decision away from you</h4><p style="color:var(--muted);font-size:13.8px">A visible random draw cannot be read as a judgement about who is struggling or who is being picked on. That removes a whole category of classroom friction — students argue with a teacher\'s choice far more readily than with a shuffle.</p></div></div>' +
+      '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>Names and questions stay in your browser — nothing is uploaded or stored. Press <strong>Space</strong> to advance so you can keep facing the class instead of the laptop.</span></div>',
+    related: ['vocabulary-quiz-generator', 'random-student-pair-generator', 'presentation-order-generator'],
+    faqs: [
+      { q: 'How do I stop the same student being picked repeatedly?', a: 'Leave no-repeat mode on. It draws without replacement, so every name is used once before any name comes up again — with truly random picking, roughly a third of a class of 30 would not be picked at all in 30 draws.' },
+      { q: 'Can I use this for cold calling?', a: 'Yes, that is its main classroom use. Switch to Students mode and paste your class list. Ask the question first, pause, then pick — that keeps the whole class thinking rather than just the named student.' },
+      { q: 'Is there a keyboard shortcut?', a: 'Press Space to pick the next item. It works anywhere outside a text field, so you can advance without turning back to the laptop.' },
+      { q: 'Can I show it on a projector?', a: 'Press Full screen and the current pick fills the display at large size, readable from the back of a classroom.' },
+      { q: 'What is the timer for?', a: 'Thinking time after a pick. It counts down and changes colour as it runs out, giving the chosen student a visible, consistent window to compose an answer.' },
+      { q: 'Are my questions or class list saved?', a: 'No. Everything runs in your browser and nothing is transmitted or stored, so a real class register is safe to paste.' }
+    ],
+    seo: {
+      title: 'Random question and student pickers: drawing without replacement',
+      lead: 'This <strong>random picker</strong> draws questions or students on a display big enough for the back row, with a no-repeat mode so everyone is asked before anyone is asked twice. Below: why drawing without replacement matters, and how to cold-call in a way that raises participation rather than anxiety.',
+      blocks: [
+        {
+          h: 'Why drawing without replacement matters',
+          html: '<p>A picker that draws with replacement puts every name back in the hat after each draw. It is genuinely random, and over twenty draws in a class of thirty it will pick some students three times and others not at all.</p>' +
+            '<p>Students notice. Being picked repeatedly feels like being targeted, and never being picked is exactly the outcome that lets a quiet student disengage for a whole term. Neither is what the picker was for.</p>' +
+            '<p><strong>No-repeat mode</strong> removes each name once drawn and refills only when the list is empty. Everyone is asked once before anyone is asked twice — which is what "random" was meant to achieve in the first place.</p>',
+          callout: { type: 'tip', text: 'Say out loud that no-repeat is on. "Everyone will be asked once before anyone is asked again" changes how the class experiences the draw — it becomes a queue rather than a lottery, and the anxiety of being repeatedly targeted disappears.' }
+        },
+        {
+          h: 'Cold calling, carefully',
+          html: '<p>Cold calling — asking a specific student rather than taking hands — raises participation across a class, because everyone has to prepare an answer rather than relying on the same four volunteers. It also raises anxiety if handled badly.</p>',
+          list: [
+            '<strong>Ask the question, pause, then draw.</strong> Everyone thinks about the answer during the pause. Drawing first means only one person is thinking.',
+            '<strong>Give thinking time after the name.</strong> Three to five seconds of silence is longer than it feels and produces markedly better answers.',
+            '<strong>Allow a pass with a return.</strong> "I\'ll come back to you" preserves dignity and keeps the expectation.',
+            '<strong>Take a pair-share first</strong> for harder questions, so the drawn student has already rehearsed an answer with a partner.',
+            '<strong>Skip students who need it.</strong> A student who is genuinely distressed by being called on should be removed from the list, not exposed to a draw.'
+          ],
+          after: '<p>The tool supports removing names before a draw for exactly that last case.</p>'
+        },
+        {
+          h: 'Using it on a projector',
+          steps: [
+            { t: 'Switch to display mode', d: 'The result renders at a size readable from the back of the room.' },
+            { t: 'Use the keyboard', d: 'Space draws the next item, so you can stand anywhere in the room with a clicker rather than at the machine.' },
+            { t: 'Turn on the animation for suspense, off for pace', d: 'The reveal is fun for a starter and tiresome twenty draws into a lesson.' },
+            { t: 'Show the remaining count', d: 'Students can see how many names are left, which makes no-repeat mode visible rather than a claim.' },
+            { t: 'Reset between classes', d: 'A fresh list per group, so the previous class\'s draws do not carry over.' }
+          ]
+        },
+        {
+          h: 'The timer',
+          html: '<p>An optional countdown for the answer. Its value is not pressure but predictability: everyone knows how long they have, and a student thinking silently is visibly still within their time rather than apparently stuck.</p>',
+          cards: [
+            { t: '30 seconds', d: 'Recall questions with a short answer.' },
+            { t: '1–2 minutes', d: 'Explanation and reasoning questions.' },
+            { t: '3+ minutes', d: 'Worked problems and extended answers.' },
+            { t: 'No timer', d: 'For anything where a student may need to gather themselves. A visible countdown is unhelpful for an anxious student.' }
+          ],
+          callout: { type: 'warn', text: 'Use the timer for the task, not for the person. A countdown running while one student struggles in front of the class is public pressure, and it teaches the rest of the room that being drawn is a risk worth avoiding.' }
+        },
+        {
+          h: 'Question lists',
+          html: '<p>The picker draws from any list, so it works as well for questions as for names. Paste a set of review questions and draw one at a time — the class does not know what is coming, which keeps attention up, and the no-repeat mode ensures the whole set is covered.</p>' +
+            '<p>Two lists worth building once and reusing: a set of generic discussion prompts that work in any lesson ("what would happen if…", "how does this connect to…"), and a recall set per topic for retrieval practice at the start of a lesson.</p>' +
+            '<p>For structured vocabulary and spelling practice, the <a href="vocabulary-quiz-generator.html">vocabulary quiz generator</a> produces a full worksheet rather than a single draw.</p>'
+        },
+        {
+          h: 'Nothing is saved',
+          html: '<p>Everything runs in your browser. The names and questions you paste are processed on your own machine and never transmitted, stored or logged — after the page loads, the tool makes no network requests at all.</p>' +
+            '<p>The practical consequence is that closing the tab clears the list, so a class list needs re-pasting each lesson. That is the trade for a tool that never holds pupil data, and for a classroom tool it is the right way round.</p>'
+        },
+        {
+          h: 'Related classroom tools',
+          list: [
+            '<a href="vocabulary-quiz-generator.html">Vocabulary Quiz Generator</a> — printable quizzes from a word list.',
+            '<a href="random-student-pair-generator.html">Random Student Pair Generator</a> — pair before you ask.',
+            '<a href="presentation-order-generator.html">Presentation Order Generator</a> — fair speaking order.',
+            '<a href="classroom-group-generator.html">Classroom Group Generator</a> — split the class for discussion.',
+            '<a href="spelling-word-scramble-generator.html">Spelling Word Scramble Generator</a> — starter activities from the same word list.'
+          ]
+        }
+      ],
+      keywords: [
+        'random question picker', 'random name picker classroom', 'cold calling tool',
+        'no repeat name picker', 'random student selector', 'classroom picker wheel alternative',
+        'draw without replacement', 'question randomiser', 'projector name picker',
+        'retrieval practice questions', 'random picker with timer', 'pick a student fairly'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

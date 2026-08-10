@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fetch API Request Generator — async/await, Types &amp; Error Handling | Manage My Batch</title>
+<meta name="description" content="Free fetch() code generator. Build modern JavaScript or TypeScript requests with async/await, proper error handling, timeouts via AbortSignal, React hooks and Node examples.">
+<link rel="canonical" href="https://managemybatch.com/tools/fetch-api-request-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Fetch API Request Generator — async/await, Types &amp; Error Handling">
+<meta property="og:description" content="Free fetch() code generator. Build modern JavaScript or TypeScript requests with async/await, proper error handling, timeouts via AbortSignal, React hooks and Node examples.">
+<meta property="og:url" content="https://managemybatch.com/tools/fetch-api-request-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Fetch API Request Generator — async/await, Types &amp; Error Handling">
+<meta name="twitter:description" content="Free fetch() code generator. Build modern JavaScript or TypeScript requests with async/await, proper error handling, timeouts via AbortSignal, React hooks and Node examples.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Request Builder</div>
+    <div id="reqForm"></div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label for="style">Code style</label>
+      <select id="style">
+        <option value="async" selected>async/await function</option>
+        <option value="promise">Promise chain (.then)</option>
+        <option value="inline">Bare fetch call</option>
+        <option value="react">React hook (useEffect)</option>
+        <option value="reactquery">TanStack Query</option>
+        <option value="node">Node.js script</option>
+        <option value="wrapper">Reusable API client</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="lang">Language</label>
+      <div class="seg" id="lang">
+        <button type="button" class="on" data-l="js">JavaScript</button>
+        <button type="button" data-l="ts">TypeScript</button>
+      </div>
+    </div>
+
+    <fieldset class="field">
+      <legend class="label">Include</legend>
+      <div class="check-list">
+        <label class="check on"><input type="checkbox" id="optCheckOk" checked><span><span class="t">Check <code>response.ok</code></span><span class="d">fetch does not reject on 404 or 500 — without this the error is swallowed.</span></span></label>
+        <label class="check on"><input type="checkbox" id="optTryCatch" checked><span><span class="t">try / catch</span><span class="d">Catches network failures, DNS errors and aborts.</span></span></label>
+        <label class="check"><input type="checkbox" id="optTimeout"><span><span class="t">Timeout via AbortSignal</span><span class="d">fetch has no built-in timeout and will otherwise hang indefinitely.</span></span></label>
+        <label class="check"><input type="checkbox" id="optRetry"><span><span class="t">Retry with backoff</span></span></label>
+        <label class="check"><input type="checkbox" id="optErrBody"><span><span class="t">Parse the error response body</span><span class="d">Most APIs return a useful JSON message alongside a 4xx.</span></span></label>
+        <label class="check"><input type="checkbox" id="optCreds"><span><span class="t">Send cookies (credentials: include)</span></span></label>
+        <label class="check"><input type="checkbox" id="optEnv" checked><span><span class="t">Read the token from an env variable</span></span></label>
+      </div>
+    </fieldset>
+
+    <div class="row">
+      <div class="field"><label for="timeoutMs">Timeout (ms)</label><input type="number" id="timeoutMs" value="10000" min="100"></div>
+      <div class="field"><label for="fnName">Function name</label><input type="text" id="fnName" value="createUser"></div>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated Code<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="file">Code</button>
+      <button type="button" data-tab="types">Types</button>
+      <button type="button" data-tab="gotchas">fetch gotchas</button>
+    </div>
+
+    <div data-panel="file">
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">request.js</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+      <div id="warnBox"></div>
+    </div>
+
+    <div data-panel="types" hidden><div id="types"></div></div>
+    <div data-panel="gotchas" hidden><div id="gotchas"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/httpreq.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoCopy:copy','icoDl:download']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var req = GTReq.mount($('#reqForm'), build);
+  var lang = 'js';
+
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyBtn', downloadBtn: '#dlBtn', filename: 'request.js', mime: 'text/plain' });
+
+  function ts() { return lang === 'ts'; }
+  function ind(s, n) {
+    var pad = new Array(n + 1).join(' ');
+    return s.split('\n').map(function (l) { return l ? pad + l : l; }).join('\n');
+  }
+
+  function headersLiteral() {
+    var m = req.model;
+    var hs = req.allHeaders();
+    if (!hs.length) return null;
+    return '{\n' + hs.map(function (h) {
+      var v;
+      if (/^authorization$/i.test(h.k) && /^Bearer /.test(h.v) && $('#optEnv').checked) {
+        v = '`Bearer ${process.env.API_TOKEN}`';
+      } else if (m.auth === 'apikey' && h.k === (m.apiKeyName || 'X-API-Key') && $('#optEnv').checked) {
+        v = 'process.env.API_KEY';
+      } else if (h.v === 'Basic <base64 of user:pass>') {
+        v = "`Basic ${btoa(`${username}:${password}`)}`";
+      } else {
+        v = "'" + h.v.replace(/'/g, "\\'") + "'";
+      }
+      return "  '" + h.k + "': " + v + ',';
+    }).join('\n') + '\n}';
+  }
+
+  function bodyLiteral() {
+    var m = req.model;
+    if (req.noBody()) return null;
+    if (m.bodyType === 'json') {
+      var obj = m.body;
+      try { obj = JSON.stringify(JSON.parse(m.body), null, 2); } catch (e) {}
+      return 'JSON.stringify(' + obj + ')';
+    }
+    if (m.bodyType === 'text') return "'" + m.body.replace(/'/g, "\\'").replace(/\n/g, '\\n') + "'";
+    if (m.bodyType === 'form') {
+      return 'new URLSearchParams({\n' + m.form.filter(function (f) { return f.k.trim(); }).map(function (f) {
+        return "  '" + f.k.trim() + "': '" + String(f.v).replace(/'/g, "\\'") + "',";
+      }).join('\n') + '\n})';
+    }
+    if (m.bodyType === 'multipart') return 'formData';
+    return null;
+  }
+
+  function optionsObject() {
+    var m = req.model;
+    var lines = [];
+    lines.push("method: '" + m.method + "',");
+    var h = headersLiteral();
+    if (h) lines.push('headers: ' + h + ',');
+    var b = bodyLiteral();
+    if (b) lines.push('body: ' + b + ',');
+    if ($('#optCreds').checked) lines.push("credentials: 'include',");
+    if ($('#optTimeout').checked) lines.push('signal: AbortSignal.timeout(' + ($('#timeoutMs').value || 10000) + '),');
+    return '{\n' + ind(lines.join('\n'), 2) + '\n}';
+  }
+
+  function multipartPrelude() {
+    var m = req.model;
+    if (req.noBody() || m.bodyType !== 'multipart') return '';
+    return 'const formData = new FormData();\n' +
+      m.form.filter(function (f) { return f.k.trim(); }).map(function (f) {
+        return "formData.append('" + f.k.trim() + "', '" + String(f.v).replace(/'/g, "\\'") + "');";
+      }).join('\n') +
+      "\n// for a file: formData.append('file', fileInput.files[0]);\n\n";
+  }
+
+  function coreBody(resultType) {
+    var lines = [];
+    lines.push('const response = await fetch(' + JSON.stringify(req.fullUrl()) + ', ' + optionsObject() + ');');
+    lines.push('');
+    if ($('#optCheckOk').checked) {
+      if ($('#optErrBody').checked) {
+        lines.push('if (!response.ok) {');
+        lines.push('  // Most APIs return a JSON error body — surface it rather than a bare status.');
+        lines.push('  const detail = await response.text();');
+        lines.push('  throw new Error(`Request failed ${response.status} ${response.statusText}: ${detail}`);');
+        lines.push('}');
+      } else {
+        lines.push('// fetch only rejects on network failure, so status must be checked explicitly.');
+        lines.push('if (!response.ok) {');
+        lines.push('  throw new Error(`Request failed with status ${response.status}`);');
+        lines.push('}');
+      }
+      lines.push('');
+    }
+    lines.push('return ' + (ts() ? '(await response.json()) as ' + (resultType || 'ApiResponse') : 'await response.json()') + ';');
+    return lines.join('\n');
+  }
+
+  function retryWrapper(inner) {
+    if (!$('#optRetry').checked) return inner;
+    return 'let lastError' + (ts() ? ': unknown' : '') + ';\n' +
+      'for (let attempt = 0; attempt < 3; attempt++) {\n' +
+      '  try {\n' + ind(inner, 4) + '\n' +
+      '  } catch (error) {\n' +
+      '    lastError = error;\n' +
+      '    // Exponential backoff: 250ms, 500ms, 1s\n' +
+      '    await new Promise((r) => setTimeout(r, 250 * 2 ** attempt));\n' +
+      '  }\n' +
+      '}\n' +
+      'throw lastError;';
+  }
+
+  function build() {
+    var m = req.model;
+    var style = $('#style').value;
+    var fn = $('#fnName').value || 'makeRequest';
+    var retType = ts() ? 'Promise<ApiResponse>' : '';
+    var text = '';
+
+    var envLine = $('#optEnv').checked && (m.auth === 'bearer' || m.auth === 'apikey')
+      ? '// Reads the token from the environment — never hard-code a secret.\n' : '';
+
+    if (style === 'inline') {
+      text = multipartPrelude() +
+        'const response = await fetch(' + JSON.stringify(req.fullUrl()) + ', ' + optionsObject() + ');\n' +
+        'const data = await response.json();';
+    } else if (style === 'promise') {
+      text = multipartPrelude() +
+        'fetch(' + JSON.stringify(req.fullUrl()) + ', ' + optionsObject() + ')\n' +
+        '  .then((response) => {\n' +
+        '    if (!response.ok) throw new Error(`HTTP ${response.status}`);\n' +
+        '    return response.json();\n' +
+        '  })\n' +
+        '  .then((data) => console.log(data))\n' +
+        '  .catch((error) => console.error(error));';
+    } else if (style === 'react') {
+      text = (ts() ? 'interface ApiResponse { [key: string]: unknown }\n\n' : '') +
+        'function useData() {\n' +
+        '  const [data, setData] = useState' + (ts() ? '<ApiResponse | null>' : '') + '(null);\n' +
+        '  const [error, setError] = useState' + (ts() ? '<Error | null>' : '') + '(null);\n' +
+        '  const [loading, setLoading] = useState(true);\n\n' +
+        '  useEffect(() => {\n' +
+        '    // Abort on unmount so a late response cannot set state on a dead component.\n' +
+        '    const controller = new AbortController();\n\n' +
+        '    fetch(' + JSON.stringify(req.fullUrl()) + ', {\n' +
+        '      ...' + optionsObject().replace(/\n/g, '\n    ') + ',\n' +
+        '      signal: controller.signal,\n' +
+        '    })\n' +
+        '      .then((r) => {\n' +
+        '        if (!r.ok) throw new Error(`HTTP ${r.status}`);\n' +
+        '        return r.json();\n' +
+        '      })\n' +
+        '      .then(setData)\n' +
+        '      .catch((e) => {\n' +
+        "        if (e.name !== 'AbortError') setError(e);\n" +
+        '      })\n' +
+        '      .finally(() => setLoading(false));\n\n' +
+        '    return () => controller.abort();\n' +
+        '  }, []);\n\n' +
+        '  return { data, error, loading };\n' +
+        '}';
+    } else if (style === 'reactquery') {
+      text = "import { useQuery } from '@tanstack/react-query';\n\n" +
+        'export function useData() {\n' +
+        '  return useQuery({\n' +
+        "    queryKey: ['" + fn + "'],\n" +
+        '    queryFn: async () => {\n' +
+        '      const response = await fetch(' + JSON.stringify(req.fullUrl()) + ', ' + ind(optionsObject(), 6).trim() + ');\n' +
+        '      if (!response.ok) throw new Error(`HTTP ${response.status}`);\n' +
+        '      return response.json();\n' +
+        '    },\n' +
+        '    staleTime: 60_000,\n' +
+        '  });\n' +
+        '}';
+    } else if (style === 'node') {
+      text = "// Node 18+ has fetch built in — no node-fetch dependency needed.\n" +
+        envLine + multipartPrelude() +
+        'async function ' + fn + '()' + (ts() ? ': ' + retType : '') + ' {\n' +
+        ind(($('#optTryCatch').checked
+          ? 'try {\n' + ind(retryWrapper(coreBody()), 2) + '\n} catch (error) {\n' +
+            "  console.error('" + fn + " failed:', error);\n  throw error;\n}"
+          : retryWrapper(coreBody())), 2) + '\n' +
+        '}\n\n' +
+        fn + '().then(console.log).catch(() => process.exit(1));';
+    } else if (style === 'wrapper') {
+      text = (ts() ? 'type RequestOptions = RequestInit & { path: string };\n\n' : '') +
+        'const BASE_URL = ' + JSON.stringify((function () {
+          try { var u = new URL(req.fullUrl()); return u.origin; } catch (e) { return 'https://api.example.com'; }
+        })()) + ';\n\n' +
+        'async function apiRequest(path' + (ts() ? ': string' : '') + ', options' + (ts() ? ': RequestInit = {}' : ' = {}') + ')' + (ts() ? ': Promise<unknown>' : '') + ' {\n' +
+        '  const response = await fetch(`${BASE_URL}${path}`, {\n' +
+        '    ...options,\n' +
+        '    headers: {\n' +
+        "      'Content-Type': 'application/json',\n" +
+        '      ...(process.env.API_TOKEN && { Authorization: `Bearer ${process.env.API_TOKEN}` }),\n' +
+        '      ...options.headers,\n' +
+        '    },\n' +
+        '    signal: options.signal ?? AbortSignal.timeout(' + ($('#timeoutMs').value || 10000) + '),\n' +
+        '  });\n\n' +
+        '  if (!response.ok) {\n' +
+        '    const detail = await response.text();\n' +
+        '    throw new Error(`${response.status} ${response.statusText}: ${detail}`);\n' +
+        '  }\n\n' +
+        "  return response.status === 204 ? null : response.json();\n" +
+        '}\n\n' +
+        '// usage\n' +
+        'const data = await apiRequest(' + JSON.stringify((function () {
+          try { var u = new URL(req.fullUrl()); return u.pathname + u.search; } catch (e) { return '/'; }
+        })()) + ', {\n' +
+        "  method: '" + m.method + "',\n" +
+        (bodyLiteral() ? '  body: ' + ind(bodyLiteral(), 2).trim() + ',\n' : '') +
+        '});';
+    } else {
+      text = envLine + multipartPrelude() +
+        (ts() ? 'interface ApiResponse {\n  [key: string]: unknown;\n}\n\n' : '') +
+        'async function ' + fn + '()' + (ts() ? ': ' + retType : '') + ' {\n' +
+        ind(($('#optTryCatch').checked
+          ? 'try {\n' + ind(retryWrapper(coreBody()), 2) + '\n} catch (error) {\n' +
+            '  // Network failures, aborts and the errors thrown above all land here.\n' +
+            "  console.error('" + fn + " failed:', error);\n  throw error;\n}"
+          : retryWrapper(coreBody())), 2) + '\n' +
+        '}';
+    }
+
+    out.set(text, 'request.' + (ts() ? 'ts' : 'js'));
+    $('#pill').textContent = m.method + ' · ' + (ts() ? 'TypeScript' : 'JavaScript');
+    $('#pill').style.background = 'var(--blue-50)'; $('#pill').style.color = 'var(--blue)';
+
+    renderTypes();
+    renderWarn();
+    renderGotchas();
+  }
+
+  function renderTypes() {
+    var m = req.model, props = '  [key: string]: unknown;';
+    if (m.bodyType === 'json') {
+      try {
+        var o = JSON.parse(m.body);
+        props = Object.keys(o).map(function (k) {
+          var v = o[k];
+          var t = v === null ? 'null' : Array.isArray(v) ? 'unknown[]' : typeof v;
+          return '  ' + k + ': ' + t + ';';
+        }).join('\n');
+      } catch (e) {}
+    }
+    $('#types').innerHTML =
+      '<h4 style="font-size:14.5px;margin-bottom:8px">Request body type</h4>' +
+      '<pre class="code">' + GT.esc('interface RequestBody {\n' + props + '\n}') + '</pre>' +
+      '<h4 style="font-size:14.5px;margin:18px 0 8px">Typed wrapper</h4>' +
+      '<pre class="code">' + GT.esc(
+        'async function typedFetch<T>(\n' +
+        '  url: string,\n' +
+        '  options?: RequestInit,\n' +
+        '): Promise<T> {\n' +
+        '  const response = await fetch(url, options);\n' +
+        '  if (!response.ok) throw new Error(`HTTP ${response.status}`);\n' +
+        '  return response.json() as Promise<T>;\n' +
+        '}\n\n' +
+        '// TypeScript cannot verify the shape at runtime — validate if it matters:\n' +
+        '// const data = UserSchema.parse(await typedFetch<unknown>(url));') + '</pre>' +
+      '<div class="note note-warn" style="margin-top:14px">' + I.warn +
+      '<span><code>response.json()</code> returns <code>any</code>. Casting it to a type is a promise to the compiler, not a runtime check — if the API changes shape your code fails at the point of use, not at the boundary. Validate with Zod or Valibot where correctness matters.</span></div>';
+  }
+
+  function renderWarn() {
+    var w = [], m = req.model;
+    var jv = req.jsonValid();
+    if (!jv.ok) w.push(['err', 'The JSON body is invalid: ' + GT.esc(jv.msg)]);
+    if (!$('#optCheckOk').checked) {
+      w.push(['err', '<code>response.ok</code> is not checked. fetch resolves successfully on 404 and 500, so your code will try to parse an error page as data.']);
+    }
+    if (!$('#optTimeout').checked) {
+      w.push(['warn', 'No timeout. fetch waits indefinitely by default — a hung request will hold the connection until the browser or runtime gives up.']);
+    }
+    if (m.bodyType === 'multipart') {
+      w.push(['warn', 'Do not set <code>Content-Type</code> manually for FormData. The browser must add it itself so it can include the multipart boundary — remove that header if you added one.']);
+    }
+    if ($('#optCreds').checked) {
+      w.push(['warn', '<code>credentials: "include"</code> sends cookies cross-origin. The server must respond with <code>Access-Control-Allow-Credentials: true</code> and a specific origin — a wildcard is rejected.']);
+    }
+    if (!$('#optEnv').checked && (m.auth === 'bearer' || m.auth === 'apikey')) {
+      w.push(['warn', 'The token is hard-coded. In browser code any token is visible to the user regardless — proxy the request through your own backend if it must stay secret.']);
+    }
+    if (!w.length) w.push(['ok', 'Status checked, errors caught, and the request is correctly shaped.']);
+    $('#warnBox').innerHTML = w.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : x[0] === 'warn' ? 'note-warn' : 'note-err') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+  }
+
+  function renderGotchas() {
+    $('#gotchas').innerHTML = [
+      ['fetch does not reject on HTTP errors', 'A 404 or a 500 is a successful transfer as far as fetch is concerned. The promise only rejects on network failure, DNS problems or an abort. You must check <code>response.ok</code> yourself — this is the single most common fetch bug.'],
+      ['There is no default timeout', 'A request can hang forever. Use <code>AbortSignal.timeout(ms)</code>, which is supported in modern browsers and Node 18+, or an <code>AbortController</code> with your own <code>setTimeout</code>.'],
+      ['The body can only be read once', 'Calling <code>response.json()</code> after <code>response.text()</code> throws. If you need the raw text for an error message and the parsed body on success, read it once as text and parse it yourself, or clone the response first.'],
+      ['Do not set Content-Type for FormData', 'The browser generates a multipart boundary and puts it in the header. Setting the header manually omits the boundary and the server cannot parse the body.'],
+      ['204 has no body', 'Calling <code>.json()</code> on a 204 No Content response throws a parse error. Check the status before parsing — the reusable client style above handles this.'],
+      ['CORS is enforced by the browser, not fetch', 'A blocked cross-origin request rejects with an opaque "Failed to fetch" and no status. The fix is always on the server: correct <code>Access-Control-Allow-Origin</code> headers and a working preflight response.'],
+      ['Node 18+ has fetch built in', 'The <code>node-fetch</code> dependency is no longer needed. The global implementation is undici and behaves like the browser API, including the lack of a default timeout.']
+    ].map(function (x) {
+      return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+        '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+    }).join('');
+  }
+
+  $('#lang').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#lang button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    lang = b.getAttribute('data-l'); build();
+  });
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'fetch-api-request-generator',
+    lede: 'Generate fetch() code that handles the things fetch does not do for you — status checks, timeouts, error bodies and aborts — in JavaScript or TypeScript.',
+    steps: [
+      { icon: 'gear', title: 'Describe the request', text: 'Method, URL, headers, auth and body — shared with the cURL and Axios generators.' },
+      { icon: 'send', title: 'Pick a code style', text: 'Plain async function, React hook, TanStack Query, Node script or a reusable client.' },
+      { icon: 'copy', title: 'Copy production-ready code', text: 'Status checking and error handling are on by default, because fetch omits both.' }
+    ],
+    guideTitle: 'What fetch leaves for you to do',
+    guide:
+      '<p style="color:var(--muted)">fetch is deliberately minimal. It gives you a promise over an HTTP transfer and nothing else — no status handling, no timeout, no retries, no automatic JSON. Every one of those has to be written by hand, and skipping them is why so much fetch code fails quietly in production.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">The three you cannot skip</h4><ol style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><strong>Check <code>response.ok</code>.</strong> A 500 resolves successfully. Without this check you parse an HTML error page as JSON and get a confusing syntax error far from the real problem.</li><li><strong>Set a timeout.</strong> <code>AbortSignal.timeout()</code> is one line and prevents a hung request from holding a connection indefinitely.</li><li><strong>Abort on unmount.</strong> In React, a response that arrives after the component is gone sets state on nothing and can leak. Every hook style above wires up an <code>AbortController</code>.</li></ol></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">fetch or a library?</h4><p style="color:var(--muted);font-size:13.8px">fetch is built in everywhere, adds no bundle weight, and works identically in browsers, Node 18+, Deno, Bun and edge runtimes. That makes it the right default.</p>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">Reach for <a href="axios-request-generator.html">Axios</a> when you want interceptors, upload progress, or automatic JSON handling without writing a wrapper. Reach for TanStack Query when the hard part is caching, refetching and request deduplication rather than the HTTP call itself.</p>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">The middle path — a small <code>apiRequest</code> wrapper like the one generated above — usually beats both for an internal API.</p></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>Any token in browser code is public.</strong> Environment variables in a frontend bundle are inlined at build time and readable in DevTools. If a credential must stay secret, the request has to be proxied through a server you control.</span></div>',
+    related: ['axios-request-generator', 'curl-command-generator', 'json-test-data-generator'],
+    faqs: [
+      { q: 'Why does fetch not throw on a 404?', a: 'By design — the promise reflects whether the HTTP transfer completed, not whether the server was happy. A 404 is a successful transfer of an error response, so you must check <code>response.ok</code> or <code>response.status</code> yourself.' },
+      { q: 'How do I add a timeout to fetch?', a: 'Pass <code>signal: AbortSignal.timeout(10000)</code> in the options. It is supported in modern browsers and Node 18+. For older targets, create an <code>AbortController</code> and call <code>abort()</code> from a <code>setTimeout</code>.' },
+      { q: 'Why is my FormData upload failing?', a: 'Almost always because <code>Content-Type</code> was set manually. The browser must set it itself so it can include the multipart boundary — delete that header and the upload works.' },
+      { q: 'Do I still need node-fetch?', a: 'No. Node 18 and later ship a global fetch based on undici. Remove the dependency; the API is the same, including the absence of a default timeout.' },
+      { q: 'fetch or Axios?', a: 'fetch for most cases — zero dependencies and available in every modern runtime. Axios when you want interceptors, upload progress events, automatic JSON parsing and errors that throw on 4xx without extra code.' },
+      { q: 'How do I send cookies with fetch?', a: 'Set <code>credentials: "include"</code> for cross-origin requests. The server must reply with <code>Access-Control-Allow-Credentials: true</code> and a specific origin — a wildcard origin is rejected when credentials are involved.' }
+    ],
+    seo: {
+      title: 'The Fetch API: status checks, timeouts, aborts and error bodies',
+      lead: 'This <strong>fetch generator</strong> writes JavaScript or TypeScript that handles everything <code>fetch()</code> leaves to you — <code>res.ok</code> checks, timeouts, readable error bodies and aborts. Below: why a 404 does not throw, how to add a timeout properly, and the FormData mistake that breaks uploads.',
+      blocks: [
+        {
+          h: 'What fetch leaves for you to do',
+          html: '<p><code>fetch()</code> is built into every modern browser and into Node since version 18. It is deliberately low-level: it gives you a response and gets out of the way. Four things it does not do, which almost every application needs:</p>',
+          list: [
+            '<strong>It does not throw on HTTP errors.</strong> A 500 is a successful fetch — the network worked.',
+            '<strong>It has no timeout.</strong> A hung request stays pending until the browser or OS gives up, which can be minutes.',
+            '<strong>It does not parse JSON.</strong> You call <code>await res.json()</code>, and it throws on an empty body.',
+            '<strong>It does not send cookies cross-origin</strong> unless you ask with <code>credentials: \'include\'</code>.'
+          ],
+          after: '<p>None of these are bugs; they are the cost of a primitive rather than a framework. The generated code adds each one explicitly so nothing is implicit.</p>'
+        },
+        {
+          h: 'Why fetch does not throw on a 404',
+          html: '<p>The promise returned by <code>fetch()</code> rejects only when the request itself fails — DNS failure, connection refused, CORS block, abort. An HTTP error response is a completed request, so the promise resolves normally with <code>res.ok === false</code>.</p>' +
+            '<p>This means the naive pattern is silently broken:</p>' +
+            '<p><code>const data = await fetch(url).then(r =&gt; r.json());</code></p>' +
+            '<p>On a 500 returning an HTML error page, <code>r.json()</code> throws a parse error and you get "Unexpected token &lt;" instead of the actual status. The fix is one check:</p>' +
+            '<p><code>if (!res.ok) throw new Error(`HTTP ${res.status}`);</code></p>',
+          callout: { type: 'warn', text: '<strong>Read the error body before throwing.</strong> APIs put the useful part of a failure in the response body — which field was invalid, which limit was hit. Throwing on <code>!res.ok</code> without first reading <code>await res.text()</code> discards the only information that would have told you what went wrong.' }
+        },
+        {
+          h: 'Adding a timeout',
+          steps: [
+            { t: 'Use AbortSignal.timeout()', d: '<code>fetch(url, { signal: AbortSignal.timeout(5000) })</code>. One line, supported in current browsers and Node 18+.' },
+            { t: 'Fall back to AbortController', d: 'For older targets: create a controller, <code>setTimeout(() =&gt; controller.abort(), 5000)</code>, pass <code>controller.signal</code>.' },
+            { t: 'Always clear the timer', d: 'In a <code>finally</code> block. A leftover timer fires after a fast response and can abort a subsequent request sharing the controller.' },
+            { t: 'Distinguish a timeout from a failure', d: 'A timeout rejects with an <code>AbortError</code>. Check <code>err.name === \'TimeoutError\'</code> or <code>\'AbortError\'</code> and report it as a timeout rather than a generic network error.' },
+            { t: 'Combine signals if you need both', d: '<code>AbortSignal.any([controller.signal, AbortSignal.timeout(5000)])</code> handles user cancellation and a deadline together.' }
+          ]
+        },
+        {
+          h: 'Sending bodies',
+          table: {
+            head: ['Body type', 'How to send', 'Content-Type'],
+            rows: [
+              ['JSON', '<code>body: JSON.stringify(obj)</code>', 'Set it yourself: <code>application/json</code>.'],
+              ['Form fields', '<code>body: new URLSearchParams(obj)</code>', 'Set automatically to <code>x-www-form-urlencoded</code>.'],
+              ['File upload', '<code>body: formData</code>', '<strong>Do not set it</strong> — the browser adds the multipart boundary.'],
+              ['Plain text', '<code>body: str</code>', '<code>text/plain</code> by default.'],
+              ['Binary', '<code>body: blob</code> or an <code>ArrayBuffer</code>', 'Taken from the Blob\'s type, or set it manually.']
+            ]
+          },
+          callout: { type: 'warn', text: '<strong>Never set <code>Content-Type: multipart/form-data</code> manually.</strong> The header must include a generated boundary parameter; setting it by hand omits the boundary and the server cannot parse a single field. Omit the header entirely and let the browser write it. This is the most common cause of a FormData upload failing with no useful error.' }
+        },
+        {
+          h: 'Cookies and credentials',
+          html: '<p>The <code>credentials</code> option controls whether cookies and HTTP auth travel with the request:</p>',
+          cards: [
+            { t: 'same-origin', d: 'The default. Cookies are sent to your own origin, and never cross-origin.' },
+            { t: 'include', d: 'Cookies are sent cross-origin too. Required for a session-cookie API on a different subdomain.' },
+            { t: 'omit', d: 'No cookies at all. Appropriate for a purely token-authenticated public API.' }
+          ],
+          after: '<p>Using <code>include</code> requires the server to cooperate: it must return <code>Access-Control-Allow-Credentials: true</code> and an explicit origin — a wildcard <code>*</code> is rejected by the browser when credentials are involved. Modern browsers also require <code>SameSite=None; Secure</code> on the cookie itself for cross-site sending.</p>'
+        },
+        {
+          h: 'fetch in Node',
+          html: '<p>Since Node 18, <code>fetch</code> is global and no import is needed. <code>node-fetch</code> is only necessary on Node 16 or older, and if you are still on 16 the more pressing issue is that it is out of support.</p>' +
+            '<p>Two differences from the browser worth knowing. There is no same-origin policy in Node, so CORS is irrelevant — a request that fails in the browser with a CORS error will succeed from a server. And there is no cookie jar: <code>credentials: \'include\'</code> does nothing, so you manage <code>Cookie</code> headers yourself.</p>',
+          callout: { type: 'tip', text: 'Wrap fetch once in your own <code>request()</code> helper — status check, timeout, JSON parse, typed error — and call that everywhere. The alternative is the same six lines of boilerplate at forty call sites, five of which will be missing the <code>res.ok</code> check. If your helper starts growing interceptors and retries, <a href="axios-request-generator.html">Axios</a> already implements them.' }
+        },
+        {
+          h: 'Related HTTP tools',
+          list: [
+            '<a href="axios-request-generator.html">Axios Request Generator</a> — instances, interceptors and automatic JSON.',
+            '<a href="curl-command-generator.html">curl Command Generator</a> — the same request from a terminal.',
+            '<a href="json-test-data-generator.html">JSON Test Data Generator</a> — mock responses and request bodies.',
+            '<a href="dummy-api-key-generator.html">Dummy API Key Generator</a> — placeholder credentials for examples.'
+          ]
+        }
+      ],
+      keywords: [
+        'fetch api generator', 'javascript fetch post json', 'fetch timeout',
+        'fetch error handling', 'fetch res.ok', 'fetch abortcontroller',
+        'fetch formdata upload', 'fetch credentials include', 'fetch vs axios',
+        'node fetch 18', 'fetch typescript', 'fetch cors error'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

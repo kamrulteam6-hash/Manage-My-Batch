@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Presentation Order Generator — Random Order with Timed Schedule | Manage My Batch</title>
+<meta name="description" content="Free presentation order generator. Randomise speaking order and build a timed schedule across lessons or days, with slot times, breaks and printable running order.">
+<link rel="canonical" href="https://managemybatch.com/tools/presentation-order-generator.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Presentation Order Generator — Random Order with Timed Schedule">
+<meta property="og:description" content="Free presentation order generator. Randomise speaking order and build a timed schedule across lessons or days, with slot times, breaks and printable running order.">
+<meta property="og:url" content="https://managemybatch.com/tools/presentation-order-generator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Presentation Order Generator — Random Order with Timed Schedule">
+<meta name="twitter:description" content="Free presentation order generator. Randomise speaking order and build a timed schedule across lessons or days, with slot times, breaks and printable running order.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3Cpath d='m16 6 6 6-6 6'/%3E%3C/svg%3E">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Setup</div>
+
+    <div class="field">
+      <label for="names">Presenters — one per line</label>
+      <textarea id="names" style="min-height:180px">Amara
+Ben
+Chen
+Diego
+Elena
+Farah
+Grace
+Hugo
+Ines
+Jonas</textarea>
+      <div class="hint">Group presentations? Enter the group name on one line.</div>
+      <div id="rosterStats"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label>Schedule</label>
+      <div class="seg" id="mode">
+        <button type="button" class="on" data-m="order">Order only</button>
+        <button type="button" data-m="timed">Timed slots</button>
+        <button type="button" data-m="sessions">Across sessions</button>
+      </div>
+      <div class="hint" id="modeHint">Just the running order, no times.</div>
+    </div>
+
+    <div id="timedFields" hidden>
+      <div class="row">
+        <div class="field"><label for="startTime">Start time</label><input type="time" id="startTime" value="09:00"></div>
+        <div class="field"><label for="slotMin">Minutes each</label><input type="number" id="slotMin" value="5" min="1" max="120"></div>
+      </div>
+      <div class="row">
+        <div class="field"><label for="gapMin">Changeover (min)</label><input type="number" id="gapMin" value="1" min="0" max="30"></div>
+        <div class="field"><label for="breakEvery">Break after every</label><input type="number" id="breakEvery" value="0" min="0" max="50"></div>
+      </div>
+      <div class="field" id="breakLenField" hidden>
+        <label for="breakMin">Break length (min)</label>
+        <input type="number" id="breakMin" value="10" min="1" max="60">
+      </div>
+    </div>
+
+    <div id="sessionFields" hidden>
+      <div class="row">
+        <div class="field"><label for="sessions">Number of sessions</label><input type="number" id="sessions" value="3" min="1" max="30"></div>
+        <div class="field"><label for="sessionLabel">Session word</label>
+          <select id="sessionLabel">
+            <option value="Lesson" selected>Lesson</option>
+            <option value="Day">Day</option>
+            <option value="Session">Session</option>
+            <option value="Week">Week</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="seed">Seed</label>
+      <div class="row" style="grid-template-columns:minmax(0,1fr) auto;gap:8px">
+        <input type="text" id="seed" value="term-1">
+        <button type="button" class="btn btn-soft" id="newSeed"><span id="icoReset"></span></button>
+      </div>
+    </div>
+
+    <div class="out-actions">
+      <button type="submit" class="btn btn-primary btn-block"><span id="icoBolt"></span> Generate Order</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Running Order<span class="spacer"></span>
+      <span class="result-pill" id="pill"></span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="results">Order</button>
+      <button type="button" data-tab="export">Export</button>
+      <button type="button" data-tab="guide">Teaching notes</button>
+    </div>
+
+    <div data-panel="results">
+      <div id="order"></div>
+      <div class="out-actions" style="margin-top:18px">
+        <button type="button" class="btn btn-primary" id="printBtn"><span id="icoFile"></span> Print / PDF</button>
+        <button type="button" class="btn btn-ghost" id="copyBtn"><span id="icoCopy"></span> Copy</button>
+        <button type="button" class="btn btn-soft" id="regen"><span id="icoReset2"></span> Reshuffle</button>
+      </div>
+      <div id="checks"></div>
+    </div>
+
+    <div data-panel="export" hidden>
+      <div class="field">
+        <label for="exportAs">Export format</label>
+        <select id="exportAs">
+          <option value="text">Readable list</option>
+          <option value="csv">CSV</option>
+          <option value="json">JSON</option>
+        </select>
+      </div>
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="fname">presentation-order.txt</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyAllBtn"><span id="icoCopy2"></span> Copy all</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+    </div>
+
+    <div data-panel="guide" hidden><div id="guide"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/roster.js"></script>
+<script>
+(function () {
+  var I = GTI, $ = GT.$, $$ = GT.$$;
+  ['icoGear:gear','icoSpark:spark','icoBolt:bolt','icoCopy:copy','icoCopy2:copy','icoDl:download','icoReset:reset','icoReset2:reset','icoFile:file']
+    .forEach(function (p) { var a = p.split(':'); document.getElementById(a[0]).innerHTML = I[a[1]]; });
+
+  var mode = 'order', slots = [], names = [];
+  var out = GT.mountOutput({ pre: '#out', fileLabel: '#fname', meta: '#meta',
+    copyBtn: '#copyAllBtn', downloadBtn: '#dlBtn', filename: 'presentation-order.txt', mime: 'text/plain' });
+
+  function fmtTime(mins) {
+    var h = Math.floor(mins / 60) % 24, m = mins % 60;
+    return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0');
+  }
+
+  function build() {
+    var parsed = GTRoster.parseNames($('#names').value);
+    names = parsed.names;
+    GTRoster.rosterStats('#rosterStats', parsed);
+
+    if (!names.length) {
+      $('#order').innerHTML = '<div class="empty">Add at least one presenter.</div>';
+      $('#pill').textContent = '—';
+      return;
+    }
+
+    var rand = GTRoster.rng($('#seed').value);
+    var shuffled = GTRoster.shuffle(names, rand);
+    slots = [];
+
+    if (mode === 'timed') {
+      var t = $('#startTime').value.split(':');
+      var cur = (+t[0]) * 60 + (+t[1]);
+      var len = Math.max(1, parseInt($('#slotMin').value, 10) || 5);
+      var gap = Math.max(0, parseInt($('#gapMin').value, 10) || 0);
+      var every = Math.max(0, parseInt($('#breakEvery').value, 10) || 0);
+      var brk = Math.max(1, parseInt($('#breakMin').value, 10) || 10);
+
+      shuffled.forEach(function (n, i) {
+        slots.push({ type: 'slot', n: i + 1, name: n, start: cur, end: cur + len });
+        cur += len + gap;
+        if (every && (i + 1) % every === 0 && i + 1 < shuffled.length) {
+          slots.push({ type: 'break', start: cur, end: cur + brk });
+          cur += brk;
+        }
+      });
+    } else if (mode === 'sessions') {
+      var sc = Math.max(1, Math.min(30, parseInt($('#sessions').value, 10) || 1));
+      var word = $('#sessionLabel').value;
+      var per = Math.ceil(shuffled.length / sc);
+      for (var s = 0; s < sc; s++) {
+        var chunk = shuffled.slice(s * per, (s + 1) * per);
+        if (!chunk.length) continue;
+        slots.push({ type: 'header', label: word + ' ' + (s + 1) });
+        chunk.forEach(function (n, i) {
+          slots.push({ type: 'slot', n: s * per + i + 1, name: n });
+        });
+      }
+    } else {
+      shuffled.forEach(function (n, i) { slots.push({ type: 'slot', n: i + 1, name: n }); });
+    }
+
+    renderOrder();
+    renderExport();
+    renderChecks();
+
+    var count = slots.filter(function (s) { return s.type === 'slot'; }).length;
+    $('#pill').textContent = count + ' presenter' + (count === 1 ? '' : 's');
+    $('#pill').style.background = 'var(--green-bg)'; $('#pill').style.color = 'var(--green)';
+  }
+
+  function renderOrder() {
+    var html = '', open = false;
+    slots.forEach(function (s) {
+      if (s.type === 'header') {
+        if (open) { html += '</div>'; open = false; }
+        html += '<p class="more-label" style="margin-top:18px">' + GT.esc(s.label) + '</p>';
+      }
+      if (!open) { html += '<div class="more-list">'; open = true; }
+      if (s.type === 'break') {
+        html += '<div class="more-row" style="background:var(--bg-soft)">' +
+          '<span style="width:22px;flex:none"></span>' +
+          '<span class="mval" style="font-family:var(--sans);color:var(--muted);font-style:italic">Break</span>' +
+          '<span class="chip">' + fmtTime(s.start) + '–' + fmtTime(s.end) + '</span></div>';
+      } else if (s.type === 'slot') {
+        html += '<div class="more-row">' +
+          '<span style="font-size:12.5px;color:var(--muted-2);width:22px;flex:none;font-weight:600">' + s.n + '</span>' +
+          '<span class="mval" style="font-family:var(--sans);font-size:14.5px;font-weight:500">' + GT.esc(s.name) + '</span>' +
+          (s.start != null ? '<span class="chip">' + fmtTime(s.start) + '–' + fmtTime(s.end) + '</span>' : '') +
+          '</div>';
+      }
+    });
+    if (open) html += '</div>';
+    $('#order').innerHTML = html;
+  }
+
+  function renderExport() {
+    var m = $('#exportAs').value, text, file = 'presentation-order.txt';
+    var real = slots.filter(function (s) { return s.type === 'slot'; });
+    if (m === 'csv') {
+      text = 'position,presenter' + (mode === 'timed' ? ',start,end' : '') + '\n' +
+        real.map(function (s) {
+          return s.n + ',"' + s.name.replace(/"/g, '""') + '"' +
+            (mode === 'timed' ? ',' + fmtTime(s.start) + ',' + fmtTime(s.end) : '');
+        }).join('\n');
+      file = 'presentation-order.csv';
+    } else if (m === 'json') {
+      text = JSON.stringify(real.map(function (s) {
+        var o = { position: s.n, presenter: s.name };
+        if (s.start != null) { o.start = fmtTime(s.start); o.end = fmtTime(s.end); }
+        return o;
+      }), null, 2);
+      file = 'presentation-order.json';
+    } else {
+      text = slots.map(function (s) {
+        if (s.type === 'header') return '\n' + s.label;
+        if (s.type === 'break') return '   — break ' + fmtTime(s.start) + '–' + fmtTime(s.end) + ' —';
+        return s.n + '. ' + s.name + (s.start != null ? '   ' + fmtTime(s.start) + '–' + fmtTime(s.end) : '');
+      }).join('\n').trim();
+    }
+    out.set(text, file);
+  }
+
+  function renderChecks() {
+    var c = [];
+    var real = slots.filter(function (s) { return s.type === 'slot'; });
+    if (mode === 'timed' && real.length) {
+      var first = real[0], last = real[real.length - 1];
+      var total = last.end - first.start;
+      c.push(['ok', 'Runs ' + fmtTime(first.start) + ' to ' + fmtTime(last.end) +
+        ' — ' + Math.floor(total / 60) + 'h ' + (total % 60) + 'm in total.']);
+      if (total > 120 && !parseInt($('#breakEvery').value, 10)) {
+        c.push(['warn', 'Over two hours with no break scheduled. Attention drops sharply after about 45 minutes of back-to-back presentations — consider a break every 8–10 slots.']);
+      }
+      if (last.end >= 24 * 60) c.push(['warn', 'The schedule runs past midnight. Check the start time and slot length.']);
+    }
+    if (mode === 'sessions') {
+      var sc = Math.max(1, parseInt($('#sessions').value, 10) || 1);
+      c.push(['ok', 'Split across ' + sc + ' ' + $('#sessionLabel').value.toLowerCase() + 's, ' +
+        Math.ceil(names.length / sc) + ' presenters each.']);
+    }
+    c.push(['warn', 'Presenting first and last are not equivalent — later presenters have more preparation time but a tireder audience. If the order is assessed, reshuffle between assignments so the same students do not always draw the same slot.']);
+    $('#checks').innerHTML = c.map(function (x) {
+      return '<div class="note ' + (x[0] === 'ok' ? 'note-ok' : 'note-warn') + '">' +
+        (x[0] === 'ok' ? I.check : I.warn) + '<span>' + x[1] + '</span></div>';
+    }).join('');
+  }
+
+  $('#copyBtn').addEventListener('click', function () {
+    GT.copy(slots.filter(function (s) { return s.type === 'slot'; })
+      .map(function (s) { return s.n + '. ' + s.name; }).join('\n'), 'Order');
+  });
+
+  $('#printBtn').addEventListener('click', function () {
+    var rows = slots.map(function (s) {
+      if (s.type === 'header') return '<tr><td colspan="3" style="background:#f1f5f9;font-weight:600">' + GT.esc(s.label) + '</td></tr>';
+      if (s.type === 'break') return '<tr><td></td><td><em>Break</em></td><td>' + fmtTime(s.start) + '–' + fmtTime(s.end) + '</td></tr>';
+      return '<tr><td style="width:40px">' + s.n + '</td><td>' + GT.esc(s.name) + '</td><td style="width:120px">' +
+        (s.start != null ? fmtTime(s.start) + '–' + fmtTime(s.end) : '') + '</td></tr>';
+    }).join('');
+    GTRoster.printHtml('Presentation Order',
+      '<h1>Presentation Order</h1><p class="sub">' + names.length + ' presenters · ' +
+      new Date().toLocaleDateString() + '</p><table>' + rows + '</table>');
+  });
+
+  $('#mode').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#mode button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    mode = b.getAttribute('data-m');
+    $('#timedFields').hidden = mode !== 'timed';
+    $('#sessionFields').hidden = mode !== 'sessions';
+    $('#modeHint').textContent = mode === 'timed'
+      ? 'Assign a start time to every presenter, with changeovers and optional breaks.'
+      : mode === 'sessions' ? 'Spread presenters evenly across several lessons or days.'
+      : 'Just the running order, no times.';
+    build();
+  });
+  $('#breakEvery').addEventListener('input', function () {
+    $('#breakLenField').hidden = !(parseInt(this.value, 10) > 0);
+  });
+  $('#newSeed').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); });
+  $('#regen').addEventListener('click', function () { $('#seed').value = Math.random().toString(36).slice(2, 8); build(); });
+
+  $('#guide').innerHTML = [
+    ['Order affects marks, so randomise it visibly', 'Going first means less preparation time and an audience with no benchmark; going last means a tired room. Neither is fair, which is exactly why drawing the order at random in front of the class removes any suggestion of favouritism.'],
+    ['Build in changeover time', 'A minute between slots for plugging in a laptop and finding a file sounds trivial, but across twenty presentations it is twenty minutes. Schedules that ignore it always overrun.'],
+    ['Breaks are not optional beyond an hour', 'Attention drops sharply after roughly 45 minutes of consecutive presentations, and the students presenting late get a materially worse audience. A break every 8–10 slots protects both.'],
+    ['Spread across sessions for long lists', 'Thirty presentations do not fit in a lesson. Session mode splits the list evenly and labels each block, so students know which day they are on well in advance.'],
+    ['Reshuffle between assignments', 'If you keep the same seed, the same students keep drawing the same positions across the term. Change the seed each time so the advantage and disadvantage rotate.'],
+    ['Print it and put it on the wall', 'A visible running order stops the repeated "when am I on?" question and lets students prepare mentally for their slot.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:16px"><h4 style="font-size:14.5px;margin-bottom:6px">' + x[0] + '</h4>' +
+      '<p style="color:var(--muted);font-size:13.8px">' + x[1] + '</p></div>';
+  }).join('');
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Order generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+  $('#exportAs').addEventListener('change', build);
+
+  build();
+
+  GT.page({
+    slug: 'presentation-order-generator',
+    lede: 'Randomise presentation order and turn it into a real schedule — slot times, changeovers, breaks, or split evenly across several lessons.',
+    steps: [
+      { icon: 'gear', title: 'Paste presenters', text: 'Individual students or group names, one per line.' },
+      { icon: 'order', title: 'Choose a schedule', text: 'Order only, timed slots with breaks, or spread across sessions.' },
+      { icon: 'file', title: 'Print the running order', text: 'Put it on the wall and stop answering “when am I on?”' }
+    ],
+    guideTitle: 'Presentation order is not neutral',
+    guide:
+      '<p style="color:var(--muted)">Where a student lands in a running order changes their experience and, in assessed work, often their mark. Early presenters have had less time to prepare and face an audience with nothing to compare against. Late presenters have watched everyone else and can adjust — but they present to a room that has been sitting still for an hour.</p>' +
+      '<p style="color:var(--muted);margin-top:12px">You cannot remove that unfairness, but you can make it visibly arbitrary. Drawing the order at random in front of the class settles the question of favouritism before it is asked, and changing the seed between assignments means the same students do not repeatedly draw the same disadvantage.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Schedules that survive contact with reality</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>Add a changeover minute per slot — laptops, files, nerves.</li><li>Break every 8–10 presentations, or every 45 minutes.</li><li>Assume at least one overrun; do not schedule to the final bell.</li><li>For 20+ presenters, split across sessions rather than one marathon.</li></ul></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">The changeover maths</h4><p style="color:var(--muted);font-size:13.8px">Twenty five-minute presentations is not 100 minutes. With one minute of changeover each it is 119, and with a ten-minute break in the middle it is 129 — over two hours. Schedules that ignore transitions are the reason presentation days routinely run into the next lesson.</p>' +
+      '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">The timed mode accounts for all of it and shows the true finish time.</p></div></div>',
+    related: ['random-student-pair-generator', 'classroom-group-generator', 'student-roll-number-generator'],
+    faqs: [
+      { q: 'Why randomise presentation order?', a: 'Because order affects the experience and often the mark — early presenters have less preparation time, late ones face a tired audience. Drawing it randomly in front of the class removes any perception of favouritism.' },
+      { q: 'Can I schedule presentations across several lessons?', a: 'Yes. Session mode splits the list evenly across as many lessons, days or weeks as you need, and labels each block so students know when they are on.' },
+      { q: 'Does the schedule account for changeover time?', a: 'Yes. Set a changeover in minutes and it is added between every slot. Twenty presentations with one minute each adds nearly twenty minutes, which is why schedules without it overrun.' },
+      { q: 'How often should I schedule breaks?', a: 'Every 8–10 presentations, or roughly every 45 minutes. Beyond that, audience attention drops sharply and the students presenting last get a materially worse experience.' },
+      { q: 'Can I use this for group presentations?', a: 'Yes — enter each group name on its own line instead of individual students, and set the slot length to suit a group.' },
+      { q: 'Will the same student always go first?', a: 'Only if you keep the same seed. Change it, or press Reshuffle, between assignments so the advantage rotates across the class.' }
+    ],
+    seo: {
+      title: 'Presentation order: why the running order is not neutral',
+      lead: 'This <strong>presentation order generator</strong> randomises the running order and turns it into a real schedule — slot times, changeovers, breaks, or split evenly across several lessons. Below: the position effects that make order matter, and how to build a timetable that does not overrun.',
+      blocks: [
+        {
+          h: 'Presentation order is not neutral',
+          html: '<p>Where you appear in a running order affects how you are received, and the effects are well documented in assessment research. Two work against each other.</p>',
+          cards: [
+            { t: 'Primacy', d: 'Early presenters are remembered more clearly and set the reference point. They are also marked before the assessor has calibrated, which can go either way.' },
+            { t: 'Recency', d: 'The last presentations are freshest in mind at the moment marks are finalised — an advantage when everything is judged at the end.' },
+            { t: 'The middle', d: 'The genuinely disadvantaged position. Neither memorable by novelty nor by recency, and it is where attention is lowest.' },
+            { t: 'Fatigue', d: 'By the twelfth presentation of the afternoon, everyone in the room is less attentive. This is usually larger than any of the above.' }
+          ],
+          after: '<p>None of this can be eliminated. What a random order does is ensure that nobody was <em>placed</em> in a disadvantageous slot — the position was assigned by a process, not by a person, which is both fairer and defensible.</p>'
+        },
+        {
+          h: 'Why randomise rather than use the register',
+          html: '<p>Alphabetical order is the default in most classrooms, and it is quietly unfair in a way that compounds.</p>' +
+            '<p>The same students go first every single time. Over a school career, a student whose surname begins with A presents first in dozens of assessed activities, and a student whose surname begins with W presents last — every time, in every subject. Whatever the position effect is, they receive it repeatedly.</p>' +
+            '<p>A random order distributes it. Generating it in front of the class also removes the suspicion that the order reflects your expectations of who will do well, which is the other reason a visible draw is worth the thirty seconds.</p>',
+          callout: { type: 'tip', text: 'Draw the order in front of the class and print it. A running order on the wall stops the "when am I on" question repeating for the rest of the lesson, and it gives people who need to prepare a known position.' }
+        },
+        {
+          h: 'Building the schedule',
+          steps: [
+            { t: 'Paste the names or group titles', d: 'One per line — individuals or teams.' },
+            { t: 'Set the presentation length', d: 'The nominal time each slot allows.' },
+            { t: 'Add changeover time', d: 'One to two minutes per slot. This is the setting people forget and it is why schedules overrun.' },
+            { t: 'Set the start time and session length', d: 'The tool fills the session and tells you what does not fit.' },
+            { t: 'Add breaks', d: 'Every 45 to 60 minutes, or after a set number of presentations.' },
+            { t: 'Split across sessions if needed', d: 'The schedule divides evenly across lessons rather than cramming the first one full.' }
+          ]
+        },
+        {
+          h: 'Changeover time is the thing that breaks schedules',
+          html: '<p>A five-minute presentation does not take five minutes. It takes five minutes plus getting to the front, plus connecting a laptop or finding a file, plus questions, plus settling.</p>',
+          table: {
+            head: ['Presentation length', 'Realistic changeover', 'Actual slot'],
+            rows: [
+              ['3 minutes', '1–2 minutes', '4–5 minutes'],
+              ['5 minutes', '2 minutes', '7 minutes'],
+              ['10 minutes', '2–3 minutes', '12–13 minutes'],
+              ['10 minutes + questions', '2–3 minutes plus 3 for questions', '15–16 minutes']
+            ]
+          },
+          after: '<p>Twenty five-minute presentations in a 60-minute lesson is arithmetically impossible once changeover is counted — it needs 140 minutes. The schedule shows the real total, which is usually the moment a plan gets revised.</p>',
+          callout: { type: 'warn', text: '<strong>Never schedule the last presentation to end exactly when the session does.</strong> One overrun early pushes everything back, and the student in the final slot is the one who loses their time. Leave a slot\'s worth of slack at the end.' }
+        },
+        {
+          h: 'Breaks',
+          html: '<p>Every 45 to 60 minutes for adults, more often for younger students. A five-minute break costs one presentation slot and recovers the attention of everyone in the room for the ones that follow.</p>' +
+            '<p>Place breaks between presentations rather than at a fixed clock time, so nobody is interrupted mid-delivery. And use them as natural session boundaries when splitting across several lessons — a break is a better division point than an arbitrary count.</p>' +
+            '<p>Where the schedule runs a full day, a longer break in the middle is worth more than several short ones. Presentations immediately after lunch are the worst slot in any running order, which is a good reason to schedule something else there.</p>'
+        },
+        {
+          h: 'Across several lessons',
+          html: '<p>Splitting a class of thirty across three lessons raises a fairness question that a single running order does not: students presenting in a later session have had extra preparation time.</p>' +
+            '<p>Two honest ways to handle it. Set the deadline at the start of the first session for everyone, so preparation time is equal regardless of position. Or accept the difference and randomise the session allocation as well, so it was not assigned to anyone deliberately.</p>' +
+            '<p>The generator does the second by default: it distributes evenly across the sessions you specify, in the randomised order, so both position and session are drawn rather than chosen.</p>'
+        },
+        {
+          h: 'Related classroom tools',
+          list: [
+            '<a href="random-student-pair-generator.html">Random Student Pair Generator</a> — pair students for the work behind the presentation.',
+            '<a href="classroom-group-generator.html">Classroom Group Generator</a> — form the presenting groups.',
+            '<a href="student-roll-number-generator.html">Student Roll Number Generator</a> — number the register.',
+            '<a href="random-question-picker.html">Random Question Picker</a> — draw questions for the Q&amp;A.',
+            '<a href="classroom-seating-chart-generator.html">Classroom Seating Chart Generator</a> — arrange the room for an audience.'
+          ]
+        }
+      ],
+      keywords: [
+        'presentation order generator', 'random speaking order', 'presentation schedule maker',
+        'randomise presentation order', 'class presentation timetable', 'changeover time scheduling',
+        'presentation running order', 'fair presentation order', 'split presentations across lessons',
+        'timed presentation slots', 'order of speakers randomiser', 'classroom presentation planner'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>
