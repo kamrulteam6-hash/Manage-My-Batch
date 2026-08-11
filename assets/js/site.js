@@ -140,6 +140,16 @@
       cat: 'Security & Business', icon: 'shield', tone: 'ic-amber',
       kw: 'csp content security policy header nonce strict-dynamic script-src xss frame-ancestors report-only' },
 
+    { slug: 'permissions-policy-generator', name: 'Permissions-Policy Generator', short: 'Permissions-Policy',
+      desc: 'Switch off camera, microphone, location and 24 more browser features per origin.',
+      cat: 'Security & Business', icon: 'lock', tone: 'ic-amber',
+      kw: 'permissions policy feature policy header camera microphone geolocation sensors iframe allow' },
+
+    { slug: 'referrer-policy-generator', name: 'Referrer Policy Generator', short: 'Referrer-Policy',
+      desc: 'Compare all eight values side by side and see exactly what each one leaks.',
+      cat: 'Security & Business', icon: 'link', tone: 'ic-amber',
+      kw: 'referrer policy header referer privacy strict-origin-when-cross-origin no-referrer meta tag' },
+
     /* ---- IDs & Random ---- */
     { slug: 'uuid-v7-generator', name: 'UUID v7 Generator', short: 'UUID v7',
       desc: 'Generate RFC 9562 time-ordered UUID v7 identifiers, with a built-in timestamp decoder.',

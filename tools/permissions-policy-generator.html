@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CX2WHCM8XP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CX2WHCM8XP');
+</script>
+<title>Permissions-Policy Generator — Disable Camera, Geolocation &amp; Sensors | Manage My Batch</title>
+<meta name="description" content="Free Permissions-Policy header generator. Switch off camera, microphone, geolocation and 20+ browser features per origin, with correct allowlist quoting and iframe allow attributes.">
+<meta name="keywords" content="permissions policy generator, permissions-policy header, feature policy, disable geolocation header, camera microphone policy, iframe allow attribute">
+<link rel="canonical" href="https://managemybatch.com/tools/permissions-policy-generator">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Permissions-Policy Generator — Disable Camera, Geolocation &amp; Sensors">
+<meta property="og:description" content="Free Permissions-Policy header generator. Switch off camera, microphone, geolocation and 20+ browser features per origin, with correct allowlist quoting and iframe allow attributes.">
+<meta property="og:url" content="https://managemybatch.com/tools/permissions-policy-generator">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Permissions-Policy Generator — Disable Camera, Geolocation &amp; Sensors">
+<meta name="twitter:description" content="Free Permissions-Policy header generator. Switch off camera, microphone, geolocation and 20+ browser features per origin, with correct allowlist quoting and iframe allow attributes.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="/assets/favicon/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/favicon/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Generator Settings</div>
+
+    <div class="field">
+      <label for="preset">Preset</label>
+      <select id="preset">
+        <option value="lockdown">Lock down everything not in use</option>
+        <option value="typical">Typical website</option>
+        <option value="media">Media / video site</option>
+        <option value="payments">Ecommerce with payments</option>
+        <option value="custom">Custom — set each feature</option>
+      </select>
+      <div class="hint" id="presetHint"></div>
+    </div>
+
+    <div class="field">
+      <label for="origins">Trusted origins</label>
+      <input type="text" id="origins" placeholder="https://embed.example.com https://player.vimeo.com">
+      <div class="hint">Space-separated. Used by any feature set to “Self + trusted”. Origins are quoted automatically — a common source of silent failure.</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <div class="label">Features</div>
+      <div class="hint" style="margin:0 0 10px">Anything you do not use should be <strong>blocked</strong>. A feature you never call costs nothing to switch off and removes it from every embedded frame too.</div>
+      <div id="features"></div>
+    </div>
+
+    <div class="out-actions">
+      <button class="btn btn-primary" type="submit"><span id="icoBolt"></span> Generate</button>
+      <button class="btn btn-ghost" type="button" id="resetBtn"><span id="icoReset"></span> Reset</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated Header<span class="spacer"></span>
+      <span class="result-pill" id="pill">ready</span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="header">Header</button>
+      <button type="button" data-tab="config">Server config</button>
+      <button type="button" data-tab="iframe">iframe allow</button>
+      <button type="button" data-tab="checks">Checks</button>
+      <button type="button" data-tab="ref">Syntax reference</button>
+    </div>
+
+    <div data-panel="header">
+      <div class="output-box">
+        <div class="output-bar"><span class="fname">Permissions-Policy</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+      <div class="note note-info"><span id="icoInfo"></span><span>Unrecognised feature names are <strong>ignored silently</strong> by browsers. That is deliberate forward-compatibility, but it also means a typo does nothing and looks exactly like a working policy.</span></div>
+    </div>
+
+    <div data-panel="config" hidden>
+      <div class="field">
+        <label for="platform">Platform</label>
+        <select id="platform">
+          <option value="nginx">Nginx</option>
+          <option value="apache">Apache / .htaccess</option>
+          <option value="express">Express</option>
+          <option value="vercel">Vercel — vercel.json</option>
+          <option value="netlify">Netlify — _headers</option>
+          <option value="cloudflare">Cloudflare Worker</option>
+        </select>
+      </div>
+      <div class="output-box"><div class="output-bar"><span class="fname" id="cfname">nginx.conf</span></div>
+        <pre class="code" id="cfgOut"></pre></div>
+      <div class="out-actions"><button class="btn btn-ghost" id="copyCfg">Copy config</button></div>
+    </div>
+
+    <div data-panel="iframe" hidden>
+      <div class="output-box"><div class="output-bar"><span class="fname">iframe allow attribute</span></div>
+        <pre class="code" id="ifOut"></pre></div>
+      <div class="note note-warn" style="margin-top:10px"><span id="icoWarn2"></span><span>An iframe can only be <em>granted</em> what the parent page already has. The <code>allow</code> attribute delegates permission downwards — it can never widen beyond your own header, so blocking a feature at the top level blocks it everywhere below.</span></div>
+    </div>
+
+    <div data-panel="checks" hidden><div id="checks"></div></div>
+    <div data-panel="ref" hidden><div id="ref"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var $ = GT.$, $$ = GT.$$, I = GTI;
+
+  ['icoGear:gear', 'icoSpark:spark', 'icoBolt:bolt', 'icoReset:reset',
+   'icoCopy:copy', 'icoDl:download', 'icoInfo:info', 'icoWarn2:warn'].forEach(function (p) {
+    var b = p.split(':'), el = $('#' + b[0]); if (el) el.innerHTML = I[b[1]];
+  });
+
+  var PRESETH = {
+    lockdown: 'Blocks every powerful feature. The right starting point for a content site, blog or brochure site — none of these are used.',
+    typical:  'Blocks sensors and capture devices, leaves fullscreen and picture-in-picture available.',
+    media:    'Allows autoplay, fullscreen and picture-in-picture for your own origin and any trusted players.',
+    payments: 'Allows the payment request API and WebAuthn on your own origin, blocks everything else.',
+    custom:   'Set each feature yourself. Anything left as “Blocked” is denied to your pages and to every frame you embed.'
+  };
+
+  /* value: none | self | trusted | all */
+  var FEATURES = [
+    { g: 'Capture devices', k: 'camera', n: 'Camera', d: 'getUserMedia video.' },
+    { g: 'Capture devices', k: 'microphone', n: 'Microphone', d: 'getUserMedia audio.' },
+    { g: 'Capture devices', k: 'display-capture', n: 'Screen capture', d: 'Screen and window sharing.' },
+    { g: 'Location & sensors', k: 'geolocation', n: 'Geolocation', d: 'Precise location.' },
+    { g: 'Location & sensors', k: 'accelerometer', n: 'Accelerometer', d: 'Motion sensor.' },
+    { g: 'Location & sensors', k: 'gyroscope', n: 'Gyroscope', d: 'Orientation sensor.' },
+    { g: 'Location & sensors', k: 'magnetometer', n: 'Magnetometer', d: 'Compass sensor.' },
+    { g: 'Location & sensors', k: 'ambient-light-sensor', n: 'Ambient light', d: 'Light level sensor.' },
+    { g: 'Media', k: 'autoplay', n: 'Autoplay', d: 'Media playing without a gesture.' },
+    { g: 'Media', k: 'fullscreen', n: 'Fullscreen', d: 'requestFullscreen().' },
+    { g: 'Media', k: 'picture-in-picture', n: 'Picture-in-picture', d: 'Floating video window.' },
+    { g: 'Media', k: 'encrypted-media', n: 'Encrypted media', d: 'DRM playback (EME).' },
+    { g: 'Payments & identity', k: 'payment', n: 'Payment Request', d: 'Browser payment sheet.' },
+    { g: 'Payments & identity', k: 'publickey-credentials-get', n: 'WebAuthn', d: 'Passkeys and security keys.' },
+    { g: 'Payments & identity', k: 'identity-credentials-get', n: 'Federated identity', d: 'FedCM sign-in.' },
+    { g: 'Hardware', k: 'usb', n: 'WebUSB', d: 'Direct USB device access.' },
+    { g: 'Hardware', k: 'serial', n: 'Web Serial', d: 'Serial port access.' },
+    { g: 'Hardware', k: 'hid', n: 'WebHID', d: 'Human interface devices.' },
+    { g: 'Hardware', k: 'midi', n: 'Web MIDI', d: 'MIDI instruments.' },
+    { g: 'Hardware', k: 'bluetooth', n: 'Web Bluetooth', d: 'Bluetooth devices.' },
+    { g: 'Other', k: 'screen-wake-lock', n: 'Screen wake lock', d: 'Keeps the display on.' },
+    { g: 'Other', k: 'web-share', n: 'Web Share', d: 'Native share sheet.' },
+    { g: 'Other', k: 'clipboard-read', n: 'Clipboard read', d: 'Reading the clipboard.' },
+    { g: 'Other', k: 'idle-detection', n: 'Idle detection', d: 'Detects user inactivity.' },
+    { g: 'Other', k: 'local-fonts', n: 'Local fonts', d: 'Enumerating installed fonts.' },
+    { g: 'Other', k: 'xr-spatial-tracking', n: 'WebXR', d: 'AR and VR tracking.' },
+    { g: 'Other', k: 'browsing-topics', n: 'Topics API', d: 'Interest-based ad topics.' }
+  ];
+
+  var PRESETS = {
+    lockdown: {},
+    typical: { fullscreen: 'self', 'picture-in-picture': 'self', 'web-share': 'self' },
+    media: { autoplay: 'trusted', fullscreen: 'trusted', 'picture-in-picture': 'trusted', 'encrypted-media': 'trusted', 'screen-wake-lock': 'self' },
+    payments: { payment: 'self', 'publickey-credentials-get': 'self', 'identity-credentials-get': 'self', fullscreen: 'self' }
+  };
+
+  var state = {};
+  function applyPreset(p) {
+    state = {};
+    FEATURES.forEach(function (f) { state[f.k] = 'none'; });
+    var over = PRESETS[p] || {};
+    Object.keys(over).forEach(function (k) { state[k] = over[k]; });
+    renderFeatures();
+  }
+
+  function renderFeatures() {
+    var groups = {};
+    FEATURES.forEach(function (f) { (groups[f.g] = groups[f.g] || []).push(f); });
+    $('#features').innerHTML = Object.keys(groups).map(function (g) {
+      return '<div style="margin-bottom:14px"><h4 style="font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-bottom:8px">' + g + '</h4>' +
+        groups[g].map(function (f) {
+          return '<div class="row" style="grid-template-columns:1fr auto;align-items:center;gap:10px;margin-bottom:7px">' +
+            '<div><div style="font-size:14px;font-weight:600">' + f.n + '</div>' +
+            '<div style="font-size:12.5px;color:var(--muted)">' + f.d + '</div></div>' +
+            '<select data-feat="' + f.k + '" style="max-width:150px">' +
+            ['none:Blocked', 'self:Self only', 'trusted:Self + trusted', 'all:Everyone'].map(function (o) {
+              var v = o.split(':')[0];
+              return '<option value="' + v + '"' + (state[f.k] === v ? ' selected' : '') + '>' + o.split(':')[1] + '</option>';
+            }).join('') + '</select></div>';
+        }).join('') + '</div>';
+    }).join('');
+  }
+
+  function originList() {
+    return $('#origins').value.trim().split(/\s+/).filter(Boolean);
+  }
+
+  function allowlistFor(v) {
+    if (v === 'none') return '()';
+    if (v === 'all') return '*';
+    if (v === 'self') return '(self)';
+    var o = originList().map(function (x) { return '"' + x.replace(/\/$/, '') + '"'; });
+    return '(self' + (o.length ? ' ' + o.join(' ') : '') + ')';
+  }
+
+  function build() {
+    $$('[data-feat]').forEach(function (s) { state[s.getAttribute('data-feat')] = s.value; });
+
+    var parts = FEATURES.map(function (f) {
+      return f.k + '=' + allowlistFor(state[f.k] || 'none');
+    });
+    var header = parts.join(', ');
+
+    $('#out').textContent = header;
+    var blocked = FEATURES.filter(function (f) { return (state[f.k] || 'none') === 'none'; }).length;
+    $('#meta').textContent = FEATURES.length + ' features';
+    $('#pill').textContent = blocked + ' blocked';
+    window.__header = header;
+
+    /* iframe allow attribute uses a different syntax: semicolons, no parens */
+    var allowed = FEATURES.filter(function (f) { return (state[f.k] || 'none') !== 'none'; });
+    $('#ifOut').textContent = allowed.length
+      ? '<iframe src="https://embed.example.com"\n        allow="' +
+        allowed.map(function (f) {
+          var v = state[f.k];
+          if (v === 'all') return f.k + ' *';
+          if (v === 'self') return f.k + ' \'self\'';
+          var o = originList();
+          return f.k + ' \'self\'' + (o.length ? ' ' + o.join(' ') : '');
+        }).join('; ') + '"\n        title="Embedded content"></iframe>'
+      : '<!-- Every feature is blocked at the top level, so there is nothing to delegate.\n     An iframe cannot be granted a permission the parent does not hold. -->';
+
+    buildConfig();
+    runChecks(header);
+  }
+
+  function buildConfig() {
+    var p = $('#platform').value, h = window.__header || '', t = '', f = '';
+    if (p === 'nginx') { f = 'nginx.conf'; t = 'add_header Permissions-Policy "' + h + '" always;'; }
+    else if (p === 'apache') { f = '.htaccess'; t = '<IfModule mod_headers.c>\n  Header always set Permissions-Policy "' + h + '"\n</IfModule>'; }
+    else if (p === 'express') { f = 'app.js'; t = "app.use((req, res, next) => {\n  res.setHeader('Permissions-Policy', '" + h + "');\n  next();\n});"; }
+    else if (p === 'vercel') { f = 'vercel.json'; t = JSON.stringify({ headers: [{ source: '/(.*)', headers: [{ key: 'Permissions-Policy', value: h }] }] }, null, 2); }
+    else if (p === 'netlify') { f = '_headers'; t = '/*\n  Permissions-Policy: ' + h; }
+    else { f = 'worker.js'; t = "export default {\n  async fetch(request) {\n    const res = await fetch(request);\n    const out = new Response(res.body, res);\n    out.headers.set('Permissions-Policy', '" + h + "');\n    return out;\n  }\n};"; }
+    $('#cfname').textContent = f;
+    $('#cfgOut').textContent = t;
+  }
+
+  function runChecks(header) {
+    var out = [], o = originList();
+    var openFeatures = FEATURES.filter(function (f) { return state[f.k] === 'all'; });
+    var sensitive = ['camera', 'microphone', 'geolocation', 'display-capture', 'usb', 'serial', 'hid', 'bluetooth'];
+    var openSensitive = openFeatures.filter(function (f) { return sensitive.indexOf(f.k) > -1; });
+
+    if (openSensitive.length)
+      out.push({ s: 'err', m: '<strong>Granted to every origin:</strong> ' + GT.esc(openSensitive.map(function (f) { return f.n; }).join(', ')) + '. A wildcard hands this capability to every third-party frame on the page, including ad and analytics iframes. Use “Self only” unless you have a specific embed that needs it.' });
+    else if (openFeatures.length)
+      out.push({ s: 'warn', m: GT.esc(openFeatures.map(function (f) { return f.n; }).join(', ')) + ' is allowed for every origin. Harmless for most media features, but narrow it if you can.' });
+
+    var bad = o.filter(function (x) { return !/^https?:\/\//.test(x); });
+    if (bad.length)
+      out.push({ s: 'err', m: '<strong>Invalid origin:</strong> ' + GT.esc(bad.join(', ')) + '. Each entry must be a full origin including the scheme, such as <code>https://player.vimeo.com</code>. A bare hostname is not valid and the whole allowlist may be discarded.' });
+
+    var usingTrusted = FEATURES.some(function (f) { return state[f.k] === 'trusted'; });
+    if (usingTrusted && !o.length)
+      out.push({ s: 'warn', m: 'Some features are set to “Self + trusted” but no trusted origins are listed, so they behave exactly like “Self only”.' });
+
+    if (/"/.test(header))
+      out.push({ s: 'ok', m: 'Origins are wrapped in double quotes and <code>self</code> is not — that asymmetry is required by the grammar and is the single most common syntax error in a hand-written policy.' });
+
+    out.push({ s: 'ok', m: 'Every feature is listed explicitly. Anything omitted from the header falls back to the browser default, which for most features is <code>self</code> rather than blocked — so naming them all is what makes a lockdown actually lock down.' });
+    out.push({ s: 'warn', m: '<strong>This header is not <code>Feature-Policy</code>.</strong> The old header used a different grammar (<code>geolocation \'self\'; camera \'none\'</code>, semicolon separated). If you still serve it, remove it — mixing the two causes confusion, not extra safety.' });
+    out.push({ s: 'ok', m: 'Header length: <strong>' + header.length + ' bytes</strong>. Blocking every feature is verbose but costs a few hundred bytes once per response, and it compresses well.' });
+
+    $('#checks').innerHTML = out.map(function (x) {
+      return '<div class="note ' + (x.s === 'ok' ? 'note-ok' : x.s === 'warn' ? 'note-warn' : 'note-err') + '" style="margin-top:8px">' +
+        (x.s === 'ok' ? I.check : I.warn) + '<span>' + x.m + '</span></div>';
+    }).join('');
+  }
+
+  $('#ref').innerHTML = [
+    ['<code>feature=()</code>', 'Empty allowlist — blocked everywhere, including in your own pages and every embedded frame. This is the “off” switch.'],
+    ['<code>feature=(self)</code>', 'Your own origin only. Embedded third-party frames are denied. <code>self</code> is a keyword and must <strong>not</strong> be quoted.'],
+    ['<code>feature=*</code>', 'Every origin, including every iframe. Rarely what you want for a capture device or location.'],
+    ['<code>feature=(self "https://a.com")</code>', 'Your origin plus named origins. Origins <strong>must</strong> be double-quoted; omitting the quotes invalidates the entry.'],
+    ['Separator', 'Features are separated by <strong>commas</strong> in <code>Permissions-Policy</code>. The older <code>Feature-Policy</code> header used semicolons — copying an old example produces a header the browser ignores.'],
+    ['<code>allow</code> on an iframe', 'Uses yet another grammar: semicolon-separated, no parentheses, quoted <code>\'self\'</code>. Delegates a permission the parent already holds; it can never widen it.'],
+    ['Unknown features', 'Silently ignored, by design, so new features can ship without breaking old headers. The cost is that a misspelled feature name fails invisibly.'],
+    ['Defaults', 'A feature you do not mention uses the browser default — usually <code>self</code>, not blocked. To lock a feature down you have to name it.'],
+    ['<code>Permissions-Policy-Report-Only</code>', 'Reports violations without enforcing. Support is still limited compared with the CSP equivalent, so verify in your target browsers before relying on it.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:18px"><h4 style="font-size:14.5px;margin-bottom:8px">' + x[0] + '</h4>' +
+      '<div style="color:var(--muted);font-size:13.8px">' + x[1] + '</div></div>';
+  }).join('');
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#preset').addEventListener('change', function () {
+    $('#presetHint').textContent = PRESETH[$('#preset').value];
+    if ($('#preset').value !== 'custom') applyPreset($('#preset').value);
+    build();
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Header generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+  $('#platform').addEventListener('change', buildConfig);
+  $('#copyBtn').addEventListener('click', function () { GT.copy($('#out').textContent, 'Header'); });
+  $('#copyCfg').addEventListener('click', function () { GT.copy($('#cfgOut').textContent, 'Config'); });
+  $('#dlBtn').addEventListener('click', function () { GT.download($('#out').textContent, 'permissions-policy.txt', 'text/plain'); });
+  $('#resetBtn').addEventListener('click', function () { setTimeout(function () { $('#preset').value = 'lockdown'; applyPreset('lockdown'); build(); }, 0); });
+
+  $('#presetHint').textContent = PRESETH.lockdown;
+  applyPreset('lockdown');
+  build();
+
+  GT.page({
+    slug: 'permissions-policy-generator',
+    lede: 'Switch off the browser features your site never uses — camera, microphone, location, sensors and more — across your pages and every frame you embed.',
+    steps: [
+      { icon: 'gear', title: 'Choose a preset', text: 'Lockdown for a content site, or set each of the 27 features yourself.' },
+      { icon: 'shield', title: 'Name trusted origins', text: 'Quoting is handled for you — the usual reason a hand-written policy fails.' },
+      { icon: 'copy', title: 'Ship the header', text: 'Server config for six platforms, plus the matching iframe allow attribute.' }
+    ],
+    guideTitle: 'What this header is actually for',
+    guide:
+      '<p style="color:var(--muted)"><code>Permissions-Policy</code> does not ask the user anything. It decides which powerful browser APIs are <em>available at all</em> on your pages — and, crucially, inside every iframe you embed. A feature switched off here cannot be requested, so the permission prompt never appears.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">The third-party frame problem</h4><p style="color:var(--muted);font-size:13.8px">Without this header, an embedded advert, chat widget or analytics frame inherits the ability to ask for the camera, the microphone or precise location. The prompt says <em>your</em> domain. Users blame you, and you may never know it happened. Blocking unused features removes the possibility entirely.</p>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">Defaults are not “off”</h4><p style="color:var(--muted);font-size:13.8px">A feature you omit is not blocked — it falls back to the browser default, which for most features is <code>self</code>. Locking something down requires naming it explicitly, which is why the generated header lists all 27.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Three grammars, one concept</h4><p style="color:var(--muted);font-size:13.8px">The current header separates features with <strong>commas</strong> and wraps allowlists in parentheses. The obsolete <code>Feature-Policy</code> used <strong>semicolons</strong> and quoted keywords. The iframe <code>allow</code> attribute uses semicolons and no parentheses. Examples found online are frequently in the wrong grammar for the header they are pasted into.</p>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">Quoting is not optional</h4><p style="color:var(--muted);font-size:13.8px"><code>self</code> is a bare keyword; origins are double-quoted. <code>(self "https://a.com")</code> is correct, <code>(self https://a.com)</code> is not — and the invalid form can invalidate the whole entry.</p></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span>Browsers <strong>silently ignore</strong> feature names they do not recognise. That keeps old headers working as the spec grows, but it also means a typo produces no error, no console warning and no effect — a policy that looks correct and does nothing.</span></div>',
+    related: ['content-security-policy-generator', 'security-txt-generator', 'x-robots-tag-generator'],
+    faqs: [
+      { q: 'What is the Permissions-Policy header?', a: 'A response header that controls which browser features — camera, microphone, geolocation, sensors, payment and more — may be used by your pages and by any frames they embed. It replaced the older <code>Feature-Policy</code> header, which used a different syntax.' },
+      { q: 'Does it replace the permission prompt?', a: 'It comes before it. If a feature is blocked by policy the API is unavailable, so the prompt never appears. If a feature is allowed, the browser still asks the user in the normal way — the header grants the possibility, not the permission.' },
+      { q: 'Why is my policy being ignored?', a: 'Usually one of three things: unquoted origins in the allowlist, semicolons instead of commas (that is <code>Feature-Policy</code> syntax), or a misspelled feature name. Browsers ignore unknown features silently, so a typo looks identical to a working policy.' },
+      { q: 'Do I need to list features I do not use?', a: 'Yes, if you want them blocked. An unlisted feature falls back to the browser default, which for most features is <code>self</code> rather than off. Naming them all is the point of a lockdown policy.' },
+      { q: 'What is the difference from the iframe allow attribute?', a: 'The header sets what your own document may do. The <code>allow</code> attribute delegates some of that downwards to a specific frame. An iframe can never receive a permission the parent page does not itself hold.' },
+      { q: 'Should I still send Feature-Policy?', a: 'No. Every current browser supports <code>Permissions-Policy</code>, and serving both creates two sources of truth with different grammars. Remove the old header.' }
+    ],
+    seo: {
+      title: 'Permissions-Policy: switching off browser features you never use',
+      lead: 'This <strong>Permissions-Policy generator</strong> builds the header that disables camera, microphone, geolocation, sensors and 20+ other browser features — across your own pages and every iframe you embed. Below: the syntax that trips people up, and why an unlisted feature is not a blocked one.',
+      blocks: [
+        {
+          h: 'What the header does',
+          html: '<p><strong>Permissions-Policy</strong> declares which powerful browser APIs are available in a document. It is not a permission prompt and it does not ask the user anything — it decides whether the question can be asked at all.</p>' +
+            '<p>The reason it matters more than it first appears is <em>iframes</em>. By default, an embedded third-party frame inherits your document\'s ability to request the camera, the microphone or precise location. The resulting prompt names your domain, because permissions are granted per top-level site. An advert or chat widget can therefore trigger a permission request that users will attribute to you.</p>' +
+            '<p>Switching off features you never use removes that possibility completely, at the cost of one header.</p>'
+        },
+        {
+          h: 'The syntax, and the three ways to get it wrong',
+          table: {
+            head: ['Form', 'Meaning', 'Correct?'],
+            rows: [
+              ['<code>camera=()</code>', 'Blocked everywhere.', 'Yes'],
+              ['<code>camera=(self)</code>', 'Your origin only.', 'Yes — <code>self</code> is unquoted'],
+              ['<code>camera=*</code>', 'Every origin, including all frames.', 'Yes, but rarely wise'],
+              ['<code>camera=(self "https://a.com")</code>', 'Your origin plus a named one.', 'Yes — origins <em>are</em> quoted'],
+              ['<code>camera=(self https://a.com)</code>', 'Unquoted origin.', '<strong>No</strong> — invalid'],
+              ['<code>camera \'none\'; mic \'none\'</code>', 'Old <code>Feature-Policy</code> grammar.', '<strong>No</strong> — wrong header'],
+              ['<code>camera=(), mic=()</code>', 'Comma-separated features.', 'Yes — commas, not semicolons']
+            ]
+          },
+          callout: { type: 'warn', text: '<strong>The quoting asymmetry catches nearly everyone.</strong> <code>self</code> is a bare keyword and must not be quoted; origins are strings and must be. Get it backwards and the entry is invalid — with no error message anywhere.' }
+        },
+        {
+          h: 'An unlisted feature is not blocked',
+          html: '<p>This is the misconception that makes a policy weaker than intended. Omitting a feature does not disable it; it falls back to the browser default, and for most features that default is <code>self</code> — allowed on your own origin.</p>' +
+            '<p>So a header naming three features has locked down three features and left the other two dozen at their defaults. If the goal is "this site never uses hardware APIs", every one of them has to be named. That is why the generated header is long: completeness is the entire point.</p>' +
+            '<p>The compensating detail is that browsers ignore feature names they do not recognise. Listing a feature your target browser has never heard of is harmless — which makes an exhaustive list safe to ship.</p>',
+          callout: { type: 'warn', text: 'The same forgiving behaviour hides mistakes. A misspelled feature is ignored exactly as silently as an unsupported one: no console warning, no error, no effect. Copy names from a reference rather than typing them.' }
+        },
+        {
+          h: 'What to block on an ordinary site',
+          cards: [
+            { t: 'Always block', d: 'Camera, microphone, screen capture, geolocation, USB, serial, HID, Bluetooth, MIDI, idle detection. A blog or brochure site uses none of them, and each is a meaningful capability.' },
+            { t: 'Usually block', d: 'Accelerometer, gyroscope, magnetometer, ambient light, local fonts, Topics API. Sensors are a fingerprinting surface as much as a feature.' },
+            { t: 'Often keep', d: 'Fullscreen and picture-in-picture, for video. Web Share, for mobile sharing. Autoplay, if you host video.' },
+            { t: 'Keep if relevant', d: 'Payment Request and WebAuthn on a checkout or login flow — restricted to <code>self</code>, never <code>*</code>.' }
+          ]
+        },
+        {
+          h: 'Delegating to an iframe',
+          html: '<p>Blocking at the top level blocks everywhere. To let one specific embed use a feature, allow it in the header and then delegate it to that frame with the <code>allow</code> attribute:</p>' +
+            '<p><code>&lt;iframe src="https://player.example.com" allow="fullscreen; picture-in-picture"&gt;</code></p>' +
+            '<p>Two rules govern this and both are absolute. A frame can never be granted more than the parent document holds — delegation narrows, it never widens. And the attribute uses its own grammar: semicolon-separated, no parentheses, with <code>\'self\'</code> quoted, unlike in the header.</p>',
+          callout: { type: 'tip', text: 'Delegate the minimum. A video embed needs <code>fullscreen</code> and perhaps <code>picture-in-picture</code>; it does not need <code>camera</code>. The <code>allow</code> attribute is the right place to be specific, because it applies to exactly one frame rather than the whole document.' }
+        },
+        {
+          h: 'Feature-Policy is obsolete',
+          html: '<p><code>Feature-Policy</code> was the original header and used a different grammar entirely: semicolon-separated, with quoted keywords such as <code>geolocation \'self\'</code>. It has been superseded by <code>Permissions-Policy</code>, which every current browser supports.</p>' +
+            '<p>Do not send both. Two headers expressing overlapping rules in incompatible grammars is a reliable source of confusion during an incident, and the old one buys you nothing on any browser still receiving security updates.</p>' +
+            '<p>Most stale examples online are in the old syntax. If a snippet uses semicolons between features and quotes around <code>self</code>, it is for the wrong header.</p>'
+        },
+        {
+          h: 'Related security headers',
+          list: [
+            '<a href="/tools/content-security-policy-generator">Content Security Policy Generator</a> — the header that stops XSS.',
+            '<a href="/tools/referrer-policy-generator">Referrer Policy Generator</a> — control what leaks in the Referer header.',
+            '<a href="/tools/security-txt-generator">security.txt Generator</a> — publish a disclosure contact.',
+            '<a href="/tools/x-robots-tag-generator">X-Robots-Tag Generator</a> — indexing headers for files.',
+            '<a href="/tools/nginx-redirect-generator">Nginx Redirect Generator</a> — server config for the same stack.'
+          ]
+        }
+      ],
+      keywords: [
+        'permissions policy generator', 'permissions-policy header', 'feature policy header',
+        'disable geolocation browser', 'block camera microphone header', 'iframe allow attribute',
+        'permissions policy syntax', 'permissions policy example', 'browser feature lockdown',
+        'permissions policy self origin', 'security headers generator', 'permissions policy report-only'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

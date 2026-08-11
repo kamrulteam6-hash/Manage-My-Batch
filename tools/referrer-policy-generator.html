@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CX2WHCM8XP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CX2WHCM8XP');
+</script>
+<title>Referrer-Policy Generator — Compare All 8 Values Side by Side | Manage My Batch</title>
+<meta name="description" content="Free Referrer-Policy header generator. See exactly what each of the 8 policy values leaks to third parties, with a live matrix, server config and per-element overrides.">
+<meta name="keywords" content="referrer policy generator, referrer-policy header, strict-origin-when-cross-origin, no-referrer, referrer policy meta tag, referer header privacy">
+<link rel="canonical" href="https://managemybatch.com/tools/referrer-policy-generator">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Referrer-Policy Generator — Compare All 8 Values Side by Side">
+<meta property="og:description" content="Free Referrer-Policy header generator. See exactly what each of the 8 policy values leaks to third parties, with a live matrix, server config and per-element overrides.">
+<meta property="og:url" content="https://managemybatch.com/tools/referrer-policy-generator">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Referrer-Policy Generator — Compare All 8 Values Side by Side">
+<meta name="twitter:description" content="Free Referrer-Policy header generator. See exactly what each of the 8 policy values leaks to third parties, with a live matrix, server config and per-element overrides.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="/assets/favicon/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/favicon/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Generator Settings</div>
+
+    <div class="field">
+      <label for="policy">Referrer policy</label>
+      <select id="policy">
+        <option value="no-referrer">no-referrer</option>
+        <option value="no-referrer-when-downgrade">no-referrer-when-downgrade</option>
+        <option value="origin">origin</option>
+        <option value="origin-when-cross-origin">origin-when-cross-origin</option>
+        <option value="same-origin">same-origin</option>
+        <option value="strict-origin">strict-origin</option>
+        <option value="strict-origin-when-cross-origin" selected>strict-origin-when-cross-origin</option>
+        <option value="unsafe-url">unsafe-url</option>
+      </select>
+      <div class="hint" id="polHint"></div>
+    </div>
+
+    <div class="field">
+      <label for="sample">Sample page URL</label>
+      <input type="text" id="sample" value="https://example.com/account/orders?id=48213&amp;token=s3cr3t">
+      <div class="hint">Used to show exactly what each destination would receive. Note how much a full URL can carry.</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <div class="label">Options</div>
+      <div class="checks">
+        <label class="check"><input type="checkbox" id="optFallback" checked><span><span class="t">Include a fallback value</span><span class="d">Two comma-separated values; browsers use the last one they understand.</span></span></label>
+        <label class="check"><input type="checkbox" id="optMeta"><span><span class="t">Show meta tag form</span><span class="d">For when you cannot set headers.</span></span></label>
+      </div>
+    </div>
+
+    <div class="out-actions">
+      <button class="btn btn-primary" type="submit"><span id="icoBolt"></span> Generate</button>
+      <button class="btn btn-ghost" type="button" id="resetBtn"><span id="icoReset"></span> Reset</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated Header<span class="spacer"></span>
+      <span class="result-pill" id="pill">ready</span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="header">Header</button>
+      <button type="button" data-tab="matrix">What leaks</button>
+      <button type="button" data-tab="config">Server config</button>
+      <button type="button" data-tab="checks">Checks</button>
+      <button type="button" data-tab="ref">Per-element overrides</button>
+    </div>
+
+    <div data-panel="header">
+      <div class="output-box">
+        <div class="output-bar"><span class="fname">Referrer-Policy</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+      <div id="metaOut"></div>
+    </div>
+
+    <div data-panel="matrix" hidden>
+      <div id="matrix"></div>
+      <div class="note note-info" style="margin-top:12px"><span id="icoInfo"></span><span>The HTTP header is spelled <code>Referer</code> — a typo in the original 1996 specification that was never corrected. The policy directive that controls it is spelled correctly. Both spellings are right, in their own place.</span></div>
+    </div>
+
+    <div data-panel="config" hidden>
+      <div class="field">
+        <label for="platform">Platform</label>
+        <select id="platform">
+          <option value="nginx">Nginx</option>
+          <option value="apache">Apache / .htaccess</option>
+          <option value="express">Express</option>
+          <option value="vercel">Vercel — vercel.json</option>
+          <option value="netlify">Netlify — _headers</option>
+          <option value="cloudflare">Cloudflare Worker</option>
+        </select>
+      </div>
+      <div class="output-box"><div class="output-bar"><span class="fname" id="cfname">nginx.conf</span></div>
+        <pre class="code" id="cfgOut"></pre></div>
+      <div class="out-actions"><button class="btn btn-ghost" id="copyCfg">Copy config</button></div>
+    </div>
+
+    <div data-panel="checks" hidden><div id="checks"></div></div>
+    <div data-panel="ref" hidden><div id="ref"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var $ = GT.$, $$ = GT.$$, I = GTI;
+
+  ['icoGear:gear', 'icoSpark:spark', 'icoBolt:bolt', 'icoReset:reset',
+   'icoCopy:copy', 'icoDl:download', 'icoInfo:info'].forEach(function (p) {
+    var b = p.split(':'), el = $('#' + b[0]); if (el) el.innerHTML = I[b[1]];
+  });
+
+  var POL = {
+    'no-referrer':                       { h: 'Never sends a referrer at all. Maximum privacy; breaks every referral report and any partner attribution.' },
+    'no-referrer-when-downgrade':        { h: 'The old browser default. Sends the full URL everywhere except HTTPS→HTTP. Leaks paths and query strings to every third party.' },
+    'origin':                            { h: 'Always sends just the origin, including on a downgrade to HTTP. Simple, but it does leak your hostname over plaintext.' },
+    'origin-when-cross-origin':          { h: 'Full URL within your own site, origin only to others — including on a downgrade.' },
+    'same-origin':                       { h: 'Full URL within your own site, nothing at all to anyone else. Strong privacy, and it removes referral data from partners entirely.' },
+    'strict-origin':                     { h: 'Origin only, and nothing on a downgrade to HTTP. A good choice if you never need path-level referrers.' },
+    'strict-origin-when-cross-origin':   { h: 'The modern browser default. Full URL internally, origin to third parties, nothing on a downgrade. The right answer for most sites.' },
+    'unsafe-url':                        { h: 'Always sends the full URL, including over plaintext HTTP. Named “unsafe” for good reason — avoid.' }
+  };
+
+  /* returns what the destination receives */
+  function leak(policy, kind, url) {
+    var u; try { u = new URL(url); } catch (e) { return '—'; }
+    var full = u.href, origin = u.origin + '/';
+    var same = kind === 'same';
+    var downgrade = kind === 'downgrade';
+    switch (policy) {
+      case 'no-referrer': return null;
+      case 'unsafe-url': return full;
+      case 'same-origin': return same ? full : null;
+      case 'origin': return origin;
+      case 'origin-when-cross-origin': return same ? full : origin;
+      case 'strict-origin': return downgrade ? null : origin;
+      case 'no-referrer-when-downgrade': return downgrade ? null : full;
+      case 'strict-origin-when-cross-origin':
+        if (downgrade) return null;
+        return same ? full : origin;
+    }
+    return null;
+  }
+
+  var SCENARIOS = [
+    { k: 'same', n: 'Same-origin link', d: 'example.com → example.com' },
+    { k: 'cross', n: 'Cross-origin link (HTTPS)', d: 'example.com → partner.com' },
+    { k: 'downgrade', n: 'Downgrade to HTTP', d: 'https:// → http://' },
+    { k: 'cross', n: 'Third-party subresource', d: 'analytics, fonts, ad pixels' }
+  ];
+
+  var FALLBACK = 'strict-origin-when-cross-origin';
+  function value() {
+    var p = $('#policy').value;
+    /* A fallback only helps when it differs from the chosen value; repeating
+       the same token twice is valid but pointless noise. */
+    return $('#optFallback').checked && p !== 'no-referrer' && p !== FALLBACK
+      ? FALLBACK + ', ' + p
+      : p;
+  }
+
+  function build() {
+    var p = $('#policy').value, v = value(), url = $('#sample').value.trim();
+    $('#polHint').textContent = POL[p].h;
+    $('#out').textContent = v;
+    $('#meta').textContent = p;
+    $('#pill').textContent = p === 'unsafe-url' ? 'unsafe' : (p === 'no-referrer' || p === 'same-origin' ? 'private' : 'balanced');
+    window.__v = v;
+
+    $('#metaOut').innerHTML = $('#optMeta').checked
+      ? '<div class="output-box" style="margin-top:12px"><div class="output-bar"><span class="fname">meta tag</span></div>' +
+        '<pre class="code">' + GT.esc('<meta name="referrer" content="' + p + '">') + '</pre></div>' +
+        '<div class="note note-warn" style="margin-top:8px">' + I.warn + '<span>The meta tag applies only from the point it is parsed, so requests made earlier in the document are unaffected. It also cannot express a fallback list. Prefer the header.</span></div>'
+      : '';
+
+    /* leak matrix */
+    var rows = SCENARIOS.map(function (s) {
+      var r = leak(p, s.k, url);
+      var cell = r === null
+        ? '<span style="color:var(--ok,#15803d);font-weight:600">nothing sent</span>'
+        : '<code style="word-break:break-all">' + GT.esc(r) + '</code>';
+      return '<tr><td><strong>' + s.n + '</strong><br><span style="color:var(--muted);font-size:12.5px">' + s.d + '</span></td><td>' + cell + '</td></tr>';
+    }).join('');
+    $('#matrix').innerHTML =
+      '<div class="seo-table-wrap"><table class="seo-table"><thead><tr><th>Scenario</th><th>What the destination receives</th></tr></thead><tbody>' +
+      rows + '</tbody></table></div>' +
+      '<div style="margin-top:14px"><h4 style="font-size:14px;margin-bottom:8px">All eight values, same page</h4>' +
+      '<div class="seo-table-wrap"><table class="seo-table"><thead><tr><th>Policy</th><th>Same-origin</th><th>Cross-origin</th><th>Downgrade</th></tr></thead><tbody>' +
+      Object.keys(POL).map(function (k) {
+        var f = function (kind) {
+          var r = leak(k, kind, url);
+          return r === null ? 'nothing' : (r.indexOf('?') > -1 ? 'full URL' : (r.split('/').length > 4 ? 'full URL' : 'origin'));
+        };
+        return '<tr' + (k === p ? ' style="background:rgba(37,99,235,.07)"' : '') + '><td><code>' + k + '</code></td><td>' +
+          f('same') + '</td><td>' + f('cross') + '</td><td>' + f('downgrade') + '</td></tr>';
+      }).join('') + '</tbody></table></div></div>';
+
+    buildConfig();
+    runChecks(p);
+  }
+
+  function buildConfig() {
+    var pl = $('#platform').value, v = window.__v || '', t = '', f = '';
+    if (pl === 'nginx') { f = 'nginx.conf'; t = 'add_header Referrer-Policy "' + v + '" always;'; }
+    else if (pl === 'apache') { f = '.htaccess'; t = '<IfModule mod_headers.c>\n  Header always set Referrer-Policy "' + v + '"\n</IfModule>'; }
+    else if (pl === 'express') { f = 'app.js'; t = "app.use((req, res, next) => {\n  res.setHeader('Referrer-Policy', '" + v + "');\n  next();\n});"; }
+    else if (pl === 'vercel') { f = 'vercel.json'; t = JSON.stringify({ headers: [{ source: '/(.*)', headers: [{ key: 'Referrer-Policy', value: v }] }] }, null, 2); }
+    else if (pl === 'netlify') { f = '_headers'; t = '/*\n  Referrer-Policy: ' + v; }
+    else { f = 'worker.js'; t = "export default {\n  async fetch(request) {\n    const res = await fetch(request);\n    const out = new Response(res.body, res);\n    out.headers.set('Referrer-Policy', '" + v + "');\n    return out;\n  }\n};"; }
+    $('#cfname').textContent = f;
+    $('#cfgOut').textContent = t;
+  }
+
+  function runChecks(p) {
+    var out = [], url = $('#sample').value;
+    var hasQuery = /\?/.test(url);
+
+    if (p === 'unsafe-url')
+      out.push({ s: 'err', m: '<strong><code>unsafe-url</code> sends the full URL everywhere</strong>, including over plaintext HTTP. Paths and query strings frequently contain session tokens, password-reset links, invoice IDs and search terms. There is almost no situation where this is the right choice.' });
+    if (p === 'no-referrer-when-downgrade')
+      out.push({ s: 'warn', m: 'This was the old browser default and it leaks the <strong>full URL</strong> to every third-party origin over HTTPS — including analytics, fonts and ad pixels. Modern browsers moved away from it for exactly that reason.' });
+    if (p === 'origin' || p === 'origin-when-cross-origin')
+      out.push({ s: 'warn', m: 'Non-strict variants still send the origin on an <strong>HTTPS→HTTP downgrade</strong>, revealing your hostname over plaintext. The <code>strict-</code> equivalent is the same policy without that hole.' });
+    if (p === 'no-referrer' || p === 'same-origin')
+      out.push({ s: 'warn', m: '<strong>Referral analytics will go dark.</strong> Traffic you send to partners appears as “direct”, affiliate tracking that relies on the referrer breaks, and your own inbound reporting is unaffected but theirs is not. Deliberate is fine; accidental is not.' });
+    if (p === 'strict-origin-when-cross-origin')
+      out.push({ s: 'ok', m: 'This is the default in current browsers. Setting it explicitly is still worth doing — it makes the behaviour intentional and consistent across older clients.' });
+
+    if (hasQuery)
+      out.push({ s: (p === 'unsafe-url' || p === 'no-referrer-when-downgrade') ? 'err' : 'ok',
+        m: 'Your sample URL contains a query string. Under this policy a third party would receive <strong>' +
+          (leak(p, 'cross', url) === null ? 'nothing' : (String(leak(p, 'cross', url)).indexOf('?') > -1 ? 'the full URL including that query string' : 'the origin only')) +
+          '</strong>. Anything sensitive in a URL is only ever one policy mistake away from a third-party log.' });
+
+    if ($('#optFallback').checked && p !== 'no-referrer')
+      out.push({ s: 'ok', m: 'A fallback list is sent. Browsers take the <em>last</em> value they understand, so an old client that does not know your chosen value falls back to <code>strict-origin-when-cross-origin</code> rather than to no policy at all.' });
+
+    out.push({ s: 'ok', m: 'This header controls navigation, subresource requests and prefetches alike. It does not affect what your own server logs about requests to itself.' });
+    out.push({ s: 'warn', m: '<strong>A referrer is a hint, not a guarantee.</strong> Clients can omit or forge it, privacy tooling strips it, and no security decision should ever depend on it. Use it for analytics, never for access control or CSRF defence.' });
+
+    $('#checks').innerHTML = out.map(function (x) {
+      return '<div class="note ' + (x.s === 'ok' ? 'note-ok' : x.s === 'warn' ? 'note-warn' : 'note-err') + '" style="margin-top:8px">' +
+        (x.s === 'ok' ? I.check : I.warn) + '<span>' + x.m + '</span></div>';
+    }).join('');
+  }
+
+  $('#ref').innerHTML = [
+    ['<code>&lt;a referrerpolicy="no-referrer"&gt;</code>', 'Overrides the document policy for one link. Useful for outbound links to sites you do not want to hand a full URL to.'],
+    ['<code>&lt;a rel="noreferrer"&gt;</code>', 'Older shorthand that also implies <code>noopener</code>. Still widely used and worth keeping on untrusted outbound links.'],
+    ['<code>&lt;img referrerpolicy="…"&gt;</code>', 'Applies to that image request. Also supported on <code>&lt;script&gt;</code>, <code>&lt;link&gt;</code> and <code>&lt;iframe&gt;</code>.'],
+    ['<code>fetch(url, { referrerPolicy: "…" })</code>', 'Per-request control in JavaScript, including <code>referrer</code> to set an explicit value.'],
+    ['<code>&lt;meta name="referrer"&gt;</code>', 'Document-wide, but only from the point it is parsed and with no fallback list. The header is better wherever you control it.'],
+    ['Precedence', 'Per-element beats per-document, and per-document beats the header. The narrowest declaration wins.'],
+    ['Empty value', 'An empty or unrecognised header value means the browser falls back to its own default — currently <code>strict-origin-when-cross-origin</code> in every major engine.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:18px"><h4 style="font-size:14.5px;margin-bottom:8px">' + x[0] + '</h4>' +
+      '<div style="color:var(--muted);font-size:13.8px">' + x[1] + '</div></div>';
+  }).join('');
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Header generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+  $('#platform').addEventListener('change', buildConfig);
+  $('#copyBtn').addEventListener('click', function () { GT.copy($('#out').textContent, 'Header'); });
+  $('#copyCfg').addEventListener('click', function () { GT.copy($('#cfgOut').textContent, 'Config'); });
+  $('#dlBtn').addEventListener('click', function () { GT.download($('#out').textContent, 'referrer-policy.txt', 'text/plain'); });
+  $('#resetBtn').addEventListener('click', function () { setTimeout(build, 0); });
+
+  build();
+
+  GT.page({
+    slug: 'referrer-policy-generator',
+    lede: 'See exactly what each of the eight Referrer-Policy values hands to third parties — then ship the one you meant, with server config for six platforms.',
+    steps: [
+      { icon: 'gear', title: 'Pick a policy', text: 'Eight values, each with a plain-English consequence.' },
+      { icon: 'shield', title: 'Check what leaks', text: 'A live matrix shows what your sample URL exposes in four scenarios.' },
+      { icon: 'copy', title: 'Ship the header', text: 'With an optional fallback value for older browsers.' }
+    ],
+    guideTitle: 'What the Referer header gives away',
+    guide:
+      '<p style="color:var(--muted)">When a browser follows a link or loads a subresource, it may tell the destination which page the request came from. That is the <code>Referer</code> header — misspelled in the 1996 specification and never corrected. Under a permissive policy it carries the <strong>entire URL</strong>, path and query string included.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">URLs contain more than you think</h4><p style="color:var(--muted);font-size:13.8px">Password reset links, invoice numbers, internal search terms, document IDs, and session tokens in legacy systems all live in URLs. Under <code>unsafe-url</code> every one of those is handed to every third-party font, script and tracking pixel the page loads. Nobody intends this; it is simply the default behaviour of a policy nobody set.</p>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">Strict means “not over plaintext”</h4><p style="color:var(--muted);font-size:13.8px">The <code>strict-</code> prefix means the referrer is withheld when moving from HTTPS to HTTP. Without it, your hostname — and sometimes the full path — travels in cleartext where anyone on the network can read it.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">The analytics trade-off is real</h4><p style="color:var(--muted);font-size:13.8px"><code>no-referrer</code> and <code>same-origin</code> are excellent for privacy and they make your outbound traffic invisible to partners. Affiliate links that rely on a referrer stop attributing, and sites you send traffic to will record it as direct. That may be exactly what you want — but decide it deliberately.</p>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">The sane default</h4><p style="color:var(--muted);font-size:13.8px"><code>strict-origin-when-cross-origin</code> is what current browsers already do: full URLs stay inside your site, third parties learn only your origin, and nothing leaks over plaintext. Set it explicitly anyway, so behaviour does not depend on the browser version.</p></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span>Never make a security decision based on the referrer. It can be omitted, altered or forged by the client, and privacy tooling strips it routinely. It is an analytics signal, not an authentication one — CSRF defences built on it have been broken for two decades.</span></div>',
+    related: ['content-security-policy-generator', 'permissions-policy-generator', 'security-txt-generator'],
+    faqs: [
+      { q: 'What is the best Referrer-Policy?', a: '<code>strict-origin-when-cross-origin</code> for most sites. Full URLs within your own origin, only the origin to third parties, and nothing at all on an HTTPS→HTTP downgrade. It is also the current browser default, so setting it explicitly changes nothing except making the behaviour intentional.' },
+      { q: 'What is the difference between origin and strict-origin?', a: 'Only the downgrade case. <code>origin</code> sends your origin even when the destination is plain HTTP; <code>strict-origin</code> sends nothing in that situation. There is rarely a reason to prefer the non-strict variant.' },
+      { q: 'Will this break my analytics?', a: 'It depends which value you choose. Origin-level policies keep referral source reporting but lose the landing path. <code>no-referrer</code> and <code>same-origin</code> remove referral data from third parties entirely, so partners will record your traffic as direct.' },
+      { q: 'Why is Referer spelled wrong?', a: 'A misspelling in the original HTTP specification from 1996 that was too widely implemented to fix. The header is <code>Referer</code>; the policy directive and the DOM property are spelled <code>referrer</code> correctly. Both spellings are correct in their own context.' },
+      { q: 'Can I set a different policy for one link?', a: 'Yes. Use <code>referrerpolicy</code> on an individual <code>&lt;a&gt;</code>, <code>&lt;img&gt;</code>, <code>&lt;script&gt;</code> or <code>&lt;iframe&gt;</code>, or <code>rel="noreferrer"</code> on a link. Per-element settings override the document policy.' },
+      { q: 'Should I use the header or the meta tag?', a: 'The header, wherever you control the server. A meta tag only applies from the point the parser reaches it, so earlier requests use the default, and it cannot express a fallback list.' }
+    ],
+    seo: {
+      title: 'Referrer-Policy: what each of the eight values actually leaks',
+      lead: 'This <strong>Referrer-Policy generator</strong> shows exactly what every policy value hands to a third party, using your own sample URL, then produces the header with server config for six platforms. Below: what the Referer header carries, which value to choose, and why it must never be trusted.',
+      blocks: [
+        {
+          h: 'What the header carries',
+          html: '<p>When a browser follows a link, loads an image, or fetches a script, it may include a <code>Referer</code> header naming the page that triggered the request. Depending on policy, that is either nothing, your origin, or the complete URL.</p>' +
+            '<p>The complete URL is the problem. Consider <code>https://example.com/account/orders?id=48213&amp;token=s3cr3t</code>. Under a permissive policy, every third-party resource on that page — the font CDN, the analytics beacon, the ad pixel, the embedded map — receives that entire string, token included, in their access logs.</p>' +
+            '<p>This is not hypothetical. Password reset links, document-sharing URLs, internal search queries and invoice identifiers have all leaked to third parties this way, and the sites involved rarely realised until much later.</p>'
+        },
+        {
+          h: 'The eight values',
+          table: {
+            head: ['Value', 'Same-origin', 'Cross-origin', 'HTTPS→HTTP'],
+            rows: [
+              ['<code>no-referrer</code>', 'nothing', 'nothing', 'nothing'],
+              ['<code>no-referrer-when-downgrade</code>', 'full URL', 'full URL', 'nothing'],
+              ['<code>origin</code>', 'origin', 'origin', 'origin'],
+              ['<code>origin-when-cross-origin</code>', 'full URL', 'origin', 'origin'],
+              ['<code>same-origin</code>', 'full URL', 'nothing', 'nothing'],
+              ['<code>strict-origin</code>', 'origin', 'origin', 'nothing'],
+              ['<code>strict-origin-when-cross-origin</code>', 'full URL', 'origin', 'nothing'],
+              ['<code>unsafe-url</code>', 'full URL', 'full URL', 'full URL']
+            ]
+          },
+          after: '<p>Two patterns explain the whole table. <strong><code>strict-</code></strong> means "send nothing on a downgrade to HTTP". <strong><code>-when-cross-origin</code></strong> means "full URL internally, less to outsiders".</p>',
+          callout: { type: 'warn', text: '<code>unsafe-url</code> is the only value the specification names as unsafe, and it earns it: the full URL travels to every destination including over plaintext HTTP. There is essentially no legitimate reason to choose it.' }
+        },
+        {
+          h: 'Which to choose',
+          cards: [
+            { t: 'strict-origin-when-cross-origin', d: 'The default in every current browser and the right answer for most sites. Keeps full URLs internal, gives third parties only your origin, leaks nothing over plaintext.' },
+            { t: 'strict-origin', d: 'When even your own pages do not need path-level referrers. Slightly tighter, at the cost of internal analytics detail.' },
+            { t: 'same-origin', d: 'When no third party should learn anything at all. Strong privacy; removes your traffic from partners\' referral reports entirely.' },
+            { t: 'no-referrer', d: 'Maximum privacy. Appropriate for health, legal, financial and internal tools where even your hostname is sensitive.' }
+          ],
+          after: '<p>The three non-strict legacy values — <code>origin</code>, <code>origin-when-cross-origin</code>, <code>no-referrer-when-downgrade</code> — differ from better alternatives only by leaking on a downgrade. Prefer the <code>strict-</code> version in each case.</p>'
+        },
+        {
+          h: 'The analytics trade-off',
+          html: '<p>Tightening this header has a measurable cost, and it lands on other people as much as on you.</p>',
+          list: [
+            '<strong>Origin-level policies</strong> keep the referring <em>site</em> visible but lose the referring <em>page</em>. Most analytics tools handle this fine — it is what they already receive from most traffic.',
+            '<strong><code>same-origin</code> and <code>no-referrer</code></strong> mean partners see your traffic as direct. Affiliate programmes that attribute by referrer will not credit you.',
+            '<strong>Your own inbound reporting is unaffected.</strong> This header governs what <em>you</em> send outward, not what other sites send to you.',
+            '<strong>Internal funnels stay intact</strong> under any <code>-when-cross-origin</code> value, since same-origin navigation still carries the full URL.'
+          ],
+          callout: { type: 'tip', text: 'If you need tight privacy globally but referral credit on specific outbound links, keep a strict document policy and relax it per link with <code>referrerpolicy</code> on that anchor. Narrow exceptions beat a loose default.' }
+        },
+        {
+          h: 'Per-element overrides',
+          html: '<p>The header sets a document-wide default. Individual elements can be tightened or loosened, and the narrowest declaration wins:</p>',
+          steps: [
+            { t: 'On a link', d: '<code>&lt;a href="…" referrerpolicy="no-referrer"&gt;</code> for outbound links to sites you would rather not inform.' },
+            { t: 'With rel', d: '<code>rel="noreferrer"</code> is the older shorthand and also implies <code>noopener</code>, which is worth having on untrusted links anyway.' },
+            { t: 'On subresources', d: '<code>referrerpolicy</code> works on <code>&lt;img&gt;</code>, <code>&lt;script&gt;</code>, <code>&lt;link&gt;</code> and <code>&lt;iframe&gt;</code>.' },
+            { t: 'In JavaScript', d: '<code>fetch(url, { referrerPolicy: "origin" })</code> controls a single request.' },
+            { t: 'Precedence', d: 'Element beats document meta, which beats the header.' }
+          ]
+        },
+        {
+          h: 'Never trust a referrer',
+          html: '<p>The value arrives from the client, which means it is a claim rather than a fact. It can be omitted entirely, set to anything by a non-browser client, stripped by privacy tooling or a corporate proxy, and suppressed by the sending site\'s own policy.</p>' +
+            '<p>Any control that depends on it is broken by construction. That includes referrer-based CSRF defence, hotlink protection treated as security rather than as bandwidth management, and "you must have come from page X" gating. Use tokens for CSRF, authentication for access control, and treat the referrer purely as an analytics signal.</p>',
+          callout: { type: 'warn', text: 'A missing referrer is normal, not suspicious. Between strict policies, privacy browsers and direct navigation, a large share of legitimate traffic arrives with no referrer at all. Systems that treat its absence as an anomaly generate constant false positives.' }
+        },
+        {
+          h: 'Related security headers',
+          list: [
+            '<a href="/tools/content-security-policy-generator">Content Security Policy Generator</a> — the header that stops XSS.',
+            '<a href="/tools/permissions-policy-generator">Permissions-Policy Generator</a> — disable camera, location and sensors.',
+            '<a href="/tools/security-txt-generator">security.txt Generator</a> — publish a disclosure contact.',
+            '<a href="/tools/x-robots-tag-generator">X-Robots-Tag Generator</a> — indexing headers for files.',
+            '<a href="/tools/htaccess-redirect-generator">.htaccess Redirect Generator</a> — Apache header and redirect config.'
+          ]
+        }
+      ],
+      keywords: [
+        'referrer policy generator', 'referrer-policy header', 'strict-origin-when-cross-origin',
+        'no-referrer', 'referrer policy meta tag', 'referer header privacy',
+        'referrerpolicy attribute', 'rel noreferrer', 'referrer policy analytics',
+        'best referrer policy', 'referrer policy values', 'http referer spelling'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>
