@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CX2WHCM8XP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CX2WHCM8XP');
+</script>
+<title>.htaccess Redirect Generator — Apache 301 Rules with Loop Detection | Manage My Batch</title>
+<meta name="description" content="Free .htaccess redirect generator. Build Apache 301/302 rules for URL lists, HTTPS, www, domain moves and regex rewrites — with prefix-match warnings and loop detection.">
+<meta name="keywords" content="htaccess redirect generator, apache 301 redirect, rewriterule generator, redirect 301 htaccess, force https htaccess, www redirect htaccess, htaccess regex redirect">
+<link rel="canonical" href="https://managemybatch.com/tools/htaccess-redirect-generator">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content=".htaccess Redirect Generator — Apache 301 Rules with Loop Detection">
+<meta property="og:description" content="Free .htaccess redirect generator. Build Apache 301/302 rules for URL lists, HTTPS, www, domain moves and regex rewrites — with prefix-match warnings and loop detection.">
+<meta property="og:url" content="https://managemybatch.com/tools/htaccess-redirect-generator">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content=".htaccess Redirect Generator — Apache 301 Rules with Loop Detection">
+<meta name="twitter:description" content="Free .htaccess redirect generator. Build Apache 301/302 rules for URL lists, HTTPS, www, domain moves and regex rewrites — with prefix-match warnings and loop detection.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="/assets/favicon/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/favicon/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Generator Settings</div>
+
+    <div class="field">
+      <label for="scenario">Scenario</label>
+      <select id="scenario">
+        <option value="list">URL list → new URLs</option>
+        <option value="https">Force HTTPS</option>
+        <option value="www">www ↔ non-www</option>
+        <option value="domain">Whole domain migration</option>
+        <option value="slash">Trailing slash normalization</option>
+        <option value="pattern">Pattern / regex rewrite</option>
+        <option value="wildcard">Directory → directory</option>
+      </select>
+      <div class="hint" id="scHint"></div>
+    </div>
+
+    <div class="field" id="listField">
+      <label for="pairs">Old URL → new URL</label>
+      <textarea id="pairs" style="min-height:170px" placeholder="/old-page, /new-page&#10;/blog/2019/post, /blog/post">/old-page, /new-page
+/products/legacy-widget, /shop/widget
+/about-us.html, /about
+/blog/2019/announcement, https://example.com/news/announcement</textarea>
+      <div class="hint">One pair per line, separated by a comma, tab or pipe. Old paths may be absolute URLs — only the path is used for matching.</div>
+    </div>
+
+    <div class="row" id="domainField" hidden>
+      <div class="field"><label for="oldDomain">Old domain</label><input type="text" id="oldDomain" value="old-example.com"></div>
+      <div class="field"><label for="newDomain">New domain</label><input type="text" id="newDomain" value="example.com"></div>
+    </div>
+
+    <div class="field" id="hostField">
+      <label for="host">Canonical host</label>
+      <input type="text" id="host" value="example.com" placeholder="example.com">
+      <div class="hint">Used for absolute targets and for the www rule.</div>
+    </div>
+
+    <div class="row" id="patternField" hidden>
+      <div class="field"><label for="rxFrom">Match (regex)</label><input type="text" id="rxFrom" value="^blog/([0-9]{4})/(.*)$"></div>
+      <div class="field"><label for="rxTo">Replace with</label><input type="text" id="rxTo" value="/news/$2"></div>
+    </div>
+
+    <div class="row" id="dirField" hidden>
+      <div class="field"><label for="oldDir">Old directory</label><input type="text" id="oldDir" value="/old-section"></div>
+      <div class="field"><label for="newDir">New directory</label><input type="text" id="newDir" value="/new-section"></div>
+    </div>
+
+    <div class="field" id="wwwField" hidden>
+      <label>Preferred host form</label>
+      <div class="seg" id="wwwDir">
+        <button type="button" class="on" data-w="non">Strip www</button>
+        <button type="button" data-w="www">Force www</button>
+      </div>
+    </div>
+
+    <div class="field" id="slashField" hidden>
+      <label>Trailing slash</label>
+      <div class="seg" id="slashDir">
+        <button type="button" class="on" data-s="remove">Remove trailing slash</button>
+        <button type="button" data-s="add">Add trailing slash</button>
+      </div>
+      <div class="hint">Real directories are excluded either way, otherwise Apache's own <code>DirectorySlash</code> fights the rule.</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label for="code">Status code</label>
+      <select id="code">
+        <option value="301">301 — Moved Permanently</option>
+        <option value="302">302 — Found (temporary)</option>
+        <option value="308">308 — Permanent, method preserved</option>
+        <option value="307">307 — Temporary, method preserved</option>
+        <option value="410">410 — Gone (no target)</option>
+      </select>
+      <div class="hint" id="codeHint"></div>
+    </div>
+
+    <div class="field">
+      <label for="method">Directive style</label>
+      <select id="method">
+        <option value="auto">Recommended for this scenario</option>
+        <option value="rewrite">mod_rewrite — RewriteRule</option>
+        <option value="alias">mod_alias — Redirect / RedirectMatch</option>
+      </select>
+      <div class="hint" id="methodHint"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <div class="label">Options</div>
+      <div class="checks">
+        <label class="check"><input type="checkbox" id="optQuery" checked><span><span class="t">Preserve query string</span><span class="d">Adds the <code>QSA</code> flag so UTM tags survive the hop.</span></span></label>
+        <label class="check"><input type="checkbox" id="optAbs" checked><span><span class="t">Absolute redirect targets</span><span class="d">Prefix relative targets with <code>https://host</code>.</span></span></label>
+        <label class="check"><input type="checkbox" id="optNC"><span><span class="t">Case-insensitive matching</span><span class="d">Adds <code>NC</code>. Useful after a move from Windows hosting.</span></span></label>
+        <label class="check"><input type="checkbox" id="optProxy"><span><span class="t">Behind a proxy or load balancer</span><span class="d">Tests <code>X-Forwarded-Proto</code> instead of <code>%{HTTPS}</code>.</span></span></label>
+        <label class="check"><input type="checkbox" id="optGuard" checked><span><span class="t">Include IfModule guard</span><span class="d">Wraps rules so a missing module cannot 500 the site.</span></span></label>
+        <label class="check"><input type="checkbox" id="optComments" checked><span><span class="t">Comments</span><span class="d">Label each block so future edits are safe.</span></span></label>
+      </div>
+    </div>
+
+    <div class="out-actions">
+      <button class="btn btn-primary" type="submit"><span id="icoBolt"></span> Generate</button>
+      <button class="btn btn-ghost" type="button" id="resetBtn"><span id="icoReset"></span> Reset</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated Config<span class="spacer"></span>
+      <span class="result-pill" id="pill">ready</span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="file">.htaccess</button>
+      <button type="button" data-tab="test">Rule tester</button>
+      <button type="button" data-tab="checks">Checks</button>
+      <button type="button" data-tab="ref">Flags reference</button>
+    </div>
+
+    <div data-panel="file">
+      <div class="output-box">
+        <div class="output-bar"><span class="fname">.htaccess</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+      <div class="note note-info"><span id="icoInfo"></span><span>Rules run <strong>in order</strong>, top to bottom, and the file is re-read on every request. Put host-level rules (HTTPS, www) above page-level ones, and move the whole block into your vhost config once it is stable.</span></div>
+    </div>
+
+    <div data-panel="test" hidden>
+      <div class="field">
+        <label for="testUrl">Test a URL against these rules</label>
+        <input type="text" id="testUrl" value="/old-page" placeholder="/some/path?a=1">
+      </div>
+      <div id="test"></div>
+    </div>
+
+    <div data-panel="checks" hidden><div id="checks"></div></div>
+    <div data-panel="ref" hidden><div id="ref"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var $ = GT.$, $$ = GT.$$, I = GTI;
+
+  ['icoGear:gear', 'icoSpark:spark', 'icoBolt:bolt', 'icoReset:reset',
+   'icoCopy:copy', 'icoDl:download', 'icoInfo:info'].forEach(function (p) {
+    var b = p.split(':'), el = $('#' + b[0]); if (el) el.innerHTML = I[b[1]];
+  });
+
+  var SCEN = {
+    list:    'Explicit one-to-one redirects. The most common case after a site rebuild or a CMS migration.',
+    https:   'Send every plain HTTP request to the HTTPS equivalent, preserving path and query.',
+    www:     'Pick one canonical host form. Serving both splits your ranking signals between two sites.',
+    domain:  'Move an entire domain, keeping every path intact. Combine with a canonical host rule on the new domain.',
+    slash:   'Settle whether URLs end in a slash. Both forms resolving is duplicate content.',
+    pattern: 'A regex rewrite for structural changes — dated blog URLs to flat ones, for example.',
+    wildcard:'Move a whole directory and everything under it to a new prefix.'
+  };
+  var CODEH = {
+    '301': 'Cached hard by browsers. The right default for a permanent move — but test with 302 first, because a wrong 301 is sticky.',
+    '302': 'Temporary. Search engines keep indexing the original URL. Use for maintenance and A/B tests.',
+    '308': 'Permanent and preserves the request method and body. The correct choice for API endpoints and anything receiving POST.',
+    '307': 'Temporary and preserves the method. Use where a 302 would wrongly turn a POST into a GET.',
+    '410': 'Tells crawlers the resource is gone for good. No target needed — it removes pages faster than a 404.'
+  };
+  var METHH = {
+    auto:    'Picks mod_rewrite where the rule needs conditions or captures, and mod_alias where a plain prefix match is enough.',
+    rewrite: 'Flexible: regex, conditions, flags. Required for HTTPS, host and query-string logic.',
+    alias:   'Simpler and slightly faster, but Redirect matches a path PREFIX — see the checks tab.'
+  };
+
+  var wwwMode = 'non', slashMode = 'remove';
+
+  function esc(s) { return String(s).replace(/[&<>]/g, function (c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]; }); }
+  function rxEsc(s) { return String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+  function pathOf(u) {
+    u = String(u || '').trim();
+    if (!u) return '';
+    var m = u.match(/^https?:\/\/[^/]+(\/.*)?$/i);
+    if (m) u = m[1] || '/';
+    if (u.charAt(0) !== '/') u = '/' + u;
+    return u;
+  }
+
+  function pairs() {
+    return $('#pairs').value.split('\n').map(function (l) {
+      var t = l.trim(); if (!t || t.charAt(0) === '#') return null;
+      var p = t.split(/\s*[,|\t]\s*/);
+      if (p.length < 2) return null;
+      return { from: pathOf(p[0]), to: String(p[1]).trim() };
+    }).filter(Boolean);
+  }
+
+  function cfg() {
+    return {
+      scenario: $('#scenario').value,
+      code: $('#code').value,
+      method: $('#method').value,
+      host: $('#host').value.trim() || 'example.com',
+      query: $('#optQuery').checked,
+      abs: $('#optAbs').checked,
+      nc: $('#optNC').checked,
+      proxy: $('#optProxy').checked,
+      guard: $('#optGuard').checked,
+      comments: $('#optComments').checked
+    };
+  }
+
+  function flags(c, extra) {
+    var f = [];
+    if (c.code === '410') f.push('G');
+    else f.push('R=' + c.code);
+    if (c.nc) f.push('NC');
+    if (c.query && c.code !== '410') f.push('QSA');
+    (extra || []).forEach(function (x) { f.push(x); });
+    f.push('L');
+    return '[' + f.join(',') + ']';
+  }
+
+  function targetOf(to, c) {
+    if (c.code === '410') return '-';
+    if (/^https?:\/\//i.test(to)) return to;
+    if (c.abs) return 'https://' + c.host + (to.charAt(0) === '/' ? to : '/' + to);
+    return to;
+  }
+
+  function build() {
+    var c = cfg(), L = [], rules = [];
+
+    if (c.comments) {
+      L.push('# Generated by Manage My Batch — .htaccess redirect generator');
+      L.push('# Rules are evaluated top to bottom; the first match with [L] wins.');
+      L.push('');
+    }
+
+    var useRewrite = c.method === 'rewrite' ||
+      (c.method === 'auto' && c.scenario !== 'list' && c.scenario !== 'wildcard');
+
+    if (c.scenario === 'list' && c.method === 'auto') useRewrite = false;
+    if (c.scenario === 'wildcard' && c.method === 'auto') useRewrite = false;
+    if (c.code === '410') useRewrite = c.method === 'rewrite';
+
+    var body = [];
+
+    if (useRewrite) {
+      body.push('RewriteEngine On');
+      if (c.comments) body.push('# RewriteBase is only needed if this file is not at the document root.');
+      body.push('# RewriteBase /');
+      body.push('');
+    }
+
+    if (c.scenario === 'https') {
+      if (c.comments) body.push('# Force HTTPS');
+      if (c.proxy) {
+        body.push('RewriteCond %{HTTP:X-Forwarded-Proto} !https');
+      } else {
+        body.push('RewriteCond %{HTTPS} off');
+      }
+      body.push('RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 ' + flags(c));
+      rules.push({ re: '^(.*)$', to: 'https://%{HTTP_HOST}/$1', kind: 'https' });
+
+    } else if (c.scenario === 'www') {
+      if (c.comments) body.push(wwwMode === 'non' ? '# Strip www' : '# Force www');
+      if (wwwMode === 'non') {
+        body.push('RewriteCond %{HTTP_HOST} ^www\\.(.+)$ [NC]');
+        body.push('RewriteRule ^(.*)$ https://%1/$1 ' + flags(c));
+      } else {
+        body.push('RewriteCond %{HTTP_HOST} !^www\\. [NC]');
+        body.push('RewriteRule ^(.*)$ https://www.%{HTTP_HOST}/$1 ' + flags(c));
+      }
+      rules.push({ re: '^(.*)$', to: 'host change', kind: 'www' });
+
+    } else if (c.scenario === 'domain') {
+      var od = $('#oldDomain').value.trim(), nd = $('#newDomain').value.trim();
+      if (c.comments) body.push('# Whole-domain move: ' + od + ' -> ' + nd);
+      body.push('RewriteCond %{HTTP_HOST} ^(www\\.)?' + rxEsc(od) + '$ [NC]');
+      body.push('RewriteRule ^(.*)$ https://' + nd + '/$1 ' + flags(c));
+      rules.push({ re: '^(.*)$', to: 'https://' + nd + '/$1', kind: 'domain' });
+
+    } else if (c.scenario === 'slash') {
+      if (c.comments) body.push(slashMode === 'remove' ? '# Remove trailing slash (real directories excluded)' : '# Add trailing slash (real files excluded)');
+      body.push('RewriteCond %{REQUEST_FILENAME} !-d');
+      if (slashMode === 'remove') {
+        body.push('RewriteRule ^(.+)/$ /$1 ' + flags(c));
+        rules.push({ re: '^(.+)/$', to: '/$1', kind: 'slash' });
+      } else {
+        body.push('RewriteCond %{REQUEST_FILENAME} !-f');
+        body.push('RewriteRule ^(.*[^/])$ /$1/ ' + flags(c));
+        rules.push({ re: '^(.*[^/])$', to: '/$1/', kind: 'slash' });
+      }
+
+    } else if (c.scenario === 'pattern') {
+      var rf = $('#rxFrom').value.trim(), rt = $('#rxTo').value.trim();
+      if (c.comments) body.push('# Pattern rewrite');
+      body.push('RewriteRule ' + rf + ' ' + targetOf(rt, c) + ' ' + flags(c));
+      rules.push({ re: rf, to: rt, kind: 'pattern' });
+
+    } else if (c.scenario === 'wildcard') {
+      var od2 = pathOf($('#oldDir').value), nd2 = pathOf($('#newDir').value);
+      if (useRewrite) {
+        if (c.comments) body.push('# Directory move');
+        body.push('RewriteRule ^' + od2.replace(/^\//, '').replace(/\/$/, '') + '/(.*)$ ' + targetOf(nd2 + '/$1', c) + ' ' + flags(c));
+      } else {
+        if (c.comments) body.push('# Directory move (mod_alias matches this prefix and everything under it)');
+        body.push('RedirectMatch ' + c.code + ' ^' + rxEsc(od2) + '/(.*)$ ' + targetOf(nd2 + '/$1', c).replace('$1', '$1'));
+      }
+      rules.push({ re: '^' + rxEsc(od2) + '/(.*)$', to: nd2 + '/$1', kind: 'dir' });
+
+    } else {
+      var ps = pairs();
+      if (c.comments) body.push('# One-to-one redirects (' + ps.length + ')');
+      ps.forEach(function (p) {
+        if (c.code === '410') {
+          body.push(useRewrite ? 'RewriteRule ^' + rxEsc(p.from.replace(/^\//, '')) + '$ - ' + flags(c)
+                               : 'Redirect gone ' + p.from);
+        } else if (useRewrite) {
+          body.push('RewriteRule ^' + rxEsc(p.from.replace(/^\//, '')) + '$ ' + targetOf(p.to, c) + ' ' + flags(c));
+        } else {
+          body.push('RedirectMatch ' + c.code + ' ^' + rxEsc(p.from) + '$ ' + targetOf(p.to, c));
+        }
+        rules.push({ re: '^' + rxEsc(p.from) + '$', to: p.to, kind: 'exact', from: p.from });
+      });
+    }
+
+    var inner = body.join('\n');
+    if (c.guard) {
+      var mod = useRewrite ? 'mod_rewrite.c' : 'mod_alias.c';
+      inner = '<IfModule ' + mod + '>\n' +
+        inner.split('\n').map(function (l) { return l ? '  ' + l : l; }).join('\n') +
+        '\n</IfModule>';
+    }
+    L.push(inner);
+
+    var text = L.join('\n');
+    $('#out').textContent = text;
+    $('#meta').textContent = rules.length + (rules.length === 1 ? ' rule' : ' rules');
+    $('#pill').textContent = rules.length + ' generated';
+    window.__rules = rules;
+    window.__cfg = c;
+    window.__useRewrite = useRewrite;
+    runChecks(rules, c, useRewrite);
+    runTest();
+    return text;
+  }
+
+  /* ---------------- diagnostics ---------------- */
+  function runChecks(rules, c, useRewrite) {
+    var out = [];
+    var seen = {}, dupes = [], loops = [], chains = [], unescaped = [];
+
+    rules.forEach(function (r) {
+      if (r.kind !== 'exact') return;
+      if (seen[r.from]) dupes.push(r.from); else seen[r.from] = r.to;
+    });
+    rules.forEach(function (r) {
+      if (r.kind !== 'exact') return;
+      var toPath = pathOf(r.to);
+      if (toPath === r.from) loops.push(r.from);
+      else if (seen[toPath]) chains.push(r.from + ' → ' + toPath + ' → ' + seen[toPath]);
+    });
+    rules.forEach(function (r) {
+      if (r.kind === 'pattern' && /[^\\]\./.test(r.re)) unescaped.push(r.re);
+    });
+
+    if (loops.length) out.push({ s: 'err', m: '<strong>Redirect loop:</strong> ' + esc(loops.join(', ')) + ' points at itself. The browser will fail with ERR_TOO_MANY_REDIRECTS.' });
+    if (dupes.length) out.push({ s: 'err', m: '<strong>Duplicate source:</strong> ' + esc(dupes.join(', ')) + ' appears more than once. Only the first rule can ever match.' });
+    if (chains.length) out.push({ s: 'warn', m: '<strong>Redirect chain:</strong> ' + esc(chains.join('; ')) + '. Collapse it to a single hop — each extra hop costs latency and dilutes ranking signals.' });
+    if (unescaped.length) out.push({ s: 'warn', m: '<strong>Unescaped dot in a regex:</strong> <code>' + esc(unescaped.join(', ')) + '</code>. A bare <code>.</code> matches any character. Write <code>\\.</code> for a literal dot.' });
+
+    if (!useRewrite && c.method === 'alias' && rules.some(function (r) { return r.kind === 'exact'; })) {
+      out.push({ s: 'warn', m: '<strong><code>Redirect</code> matches a path prefix.</strong> <code>Redirect /about /new</code> also catches <code>/about-us</code> and <code>/about/team</code>. This generator emits <code>RedirectMatch</code> with anchors instead, which matches exactly.' });
+    }
+    if (useRewrite && c.query === false) {
+      out.push({ s: 'warn', m: 'Query strings are dropped. Without <code>QSA</code>, <code>/old?utm_source=x</code> loses its parameters and campaign attribution breaks.' });
+    }
+    if (c.scenario === 'https' && !c.proxy) {
+      out.push({ s: 'warn', m: 'Behind Cloudflare, a load balancer or most managed hosts, <code>%{HTTPS}</code> reads <em>off</em> on the internal hop and this rule loops forever. Tick “Behind a proxy” to test <code>X-Forwarded-Proto</code> instead.' });
+    }
+    if (c.code === '301') {
+      out.push({ s: 'warn', m: '<strong>301s are cached by the browser, often permanently.</strong> Deploy with 302 first, confirm the target is right, then switch to 301. Undoing a wrong 301 means asking every visitor to clear their cache.' });
+    }
+    if (c.scenario === 'slash') {
+      out.push({ s: 'ok', m: 'Real directories are excluded with <code>!-d</code>, so Apache’s own <code>DirectorySlash</code> will not fight this rule and create a loop.' });
+    }
+    if (c.guard) {
+      out.push({ s: 'ok', m: 'Wrapped in <code>&lt;IfModule&gt;</code>: if the module is missing the rules are skipped rather than returning a 500 on every request.' });
+    }
+    out.push({ s: 'ok', m: '<code>.htaccess</code> is read and parsed on <em>every request</em>, for every directory in the path. Once these rules are stable, move them into your vhost config and set <code>AllowOverride None</code> — it is measurably faster.' });
+
+    $('#checks').innerHTML = out.map(function (x) {
+      return '<div class="note ' + (x.s === 'ok' ? 'note-ok' : x.s === 'warn' ? 'note-warn' : 'note-err') + '" style="margin-top:8px">' +
+        (x.s === 'ok' ? I.check : I.warn) + '<span>' + x.m + '</span></div>';
+    }).join('');
+  }
+
+  /* ---------------- rule tester ---------------- */
+  function runTest() {
+    var rules = window.__rules || [], c = window.__cfg || cfg();
+    var raw = $('#testUrl').value.trim();
+    if (!raw) { $('#test').innerHTML = ''; return; }
+    var q = '', p = raw;
+    var qi = raw.indexOf('?');
+    if (qi > -1) { q = raw.slice(qi + 1); p = raw.slice(0, qi); }
+    p = pathOf(p);
+
+    var hit = null, idx = -1;
+    for (var i = 0; i < rules.length; i++) {
+      var r = rules[i];
+      var subject = (r.kind === 'exact' || r.kind === 'dir') ? p : p.replace(/^\//, '');
+      var re;
+      try { re = new RegExp(r.re, c.nc ? 'i' : ''); } catch (e) { continue; }
+      if (re.test(subject)) { hit = r; idx = i; break; }
+    }
+
+    var html;
+    if (!hit) {
+      html = '<div class="note note-warn" style="margin-top:10px">' + I.warn +
+        '<span>No rule matches <code>' + esc(p) + '</code>. The request would be served normally.</span></div>';
+    } else {
+      var dest = hit.to;
+      if (hit.kind === 'exact') dest = targetOf(hit.to, c);
+      if (c.query && q && !/\?/.test(dest)) dest += '?' + q;
+      html = '<div class="note note-ok" style="margin-top:10px">' + I.check +
+        '<span>Rule ' + (idx + 1) + ' matches. <code>' + esc(p) + (q ? '?' + q : '') + '</code> → <strong>' + esc(dest) + '</strong> with status <code>' + c.code + '</code>.</span></div>' +
+        '<div style="margin-top:10px;color:var(--muted);font-size:13.5px">Matched pattern: <code>' + esc(hit.re) + '</code></div>';
+    }
+    $('#test').innerHTML = html +
+      '<div class="note note-info" style="margin-top:12px">' + I.info +
+      '<span>Verify on the live server with <code>curl -I https://' + esc(c.host) + esc(p) + '</code> — check the status line and the <code>Location</code> header. Test in a private window; your browser has probably cached earlier 301s.</span></div>';
+  }
+
+  /* ---------------- flags reference ---------------- */
+  $('#ref').innerHTML = [
+    ['<code>R=301</code> — redirect', 'Sends the status code to the browser. Without <code>R</code>, a RewriteRule rewrites internally and the URL bar never changes.'],
+    ['<code>L</code> — last', 'Stop processing further rules on a match. Almost always required; leaving it off lets a later rule rewrite the result again.'],
+    ['<code>QSA</code> — query string append', 'Keeps the incoming query string and merges it with any in the target. Without it, <code>?utm_source=…</code> is discarded.'],
+    ['<code>QSD</code> — query string discard', 'Explicitly drops the incoming query. Use when a legacy parameter must not reach the new URL.'],
+    ['<code>NC</code> — no case', 'Case-insensitive match. Worth adding after migrating from Windows or IIS hosting, where URLs were effectively case-insensitive.'],
+    ['<code>NE</code> — no escape', 'Stops Apache percent-encoding special characters in the target. Required when the destination contains a <code>#</code> fragment or a literal <code>?</code>.'],
+    ['<code>G</code> — gone', 'Returns 410 with no destination. Faster removal from search results than a 404.'],
+    ['<code>RewriteCond</code>', 'A test applied to the rule immediately after it. Multiple conditions are ANDed by default; add <code>[OR]</code> to change that.'],
+    ['<code>%{HTTP_HOST}</code> vs <code>%1</code>', '<code>%N</code> refers to a capture from the last <code>RewriteCond</code>; <code>$N</code> refers to a capture from the <code>RewriteRule</code> pattern. Mixing them up is the most common cause of a broken host rule.'],
+    ['Leading slash', 'In <code>.htaccess</code> the path is matched <em>without</em> its leading slash, so patterns start <code>^blog/</code>, not <code>^/blog/</code>. In vhost config the slash is present. This trips up copied examples constantly.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:18px"><h4 style="font-size:14.5px;margin-bottom:8px">' + x[0] + '</h4>' +
+      '<div style="color:var(--muted);font-size:13.8px">' + x[1] + '</div></div>';
+  }).join('');
+
+  /* ---------------- wiring ---------------- */
+  function sync() {
+    var s = $('#scenario').value;
+    $('#scHint').textContent = SCEN[s];
+    $('#codeHint').textContent = CODEH[$('#code').value];
+    $('#methodHint').innerHTML = METHH[$('#method').value];
+    $('#listField').hidden = s !== 'list';
+    $('#domainField').hidden = s !== 'domain';
+    $('#patternField').hidden = s !== 'pattern';
+    $('#dirField').hidden = s !== 'wildcard';
+    $('#wwwField').hidden = s !== 'www';
+    $('#slashField').hidden = s !== 'slash';
+    $('#hostField').hidden = (s === 'www' || s === 'domain' || s === 'https');
+  }
+
+  $('#wwwDir').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#wwwDir button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    wwwMode = b.getAttribute('data-w'); build();
+  });
+  $('#slashDir').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#slashDir button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    slashMode = b.getAttribute('data-s'); build();
+  });
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('.htaccess generated'); });
+  $('#cfg').addEventListener('input', function () { sync(); build(); });
+  $('#cfg').addEventListener('change', function () { sync(); build(); });
+  $('#testUrl').addEventListener('input', runTest);
+  $('#copyBtn').addEventListener('click', function () { GT.copy($('#out').textContent); });
+  $('#dlBtn').addEventListener('click', function () { GT.download($('#out').textContent, 'htaccess.txt', 'text/plain'); });
+  $('#resetBtn').addEventListener('click', function () { setTimeout(function () { sync(); build(); }, 0); });
+
+  sync(); build();
+
+  GT.page({
+    slug: 'htaccess-redirect-generator',
+    lede: 'Build Apache redirect rules that survive contact with a real server — prefix-match warnings, loop and chain detection, and a tester that shows which rule actually wins.',
+    steps: [
+      { icon: 'gear', title: 'Pick the scenario', text: 'A URL list, HTTPS, www, a domain move, trailing slashes or a regex rewrite.' },
+      { icon: 'server', title: 'Check the diagnostics', text: 'Loops, duplicate sources, chains and the proxy trap are all flagged before you deploy.' },
+      { icon: 'copy', title: 'Test, then upload', text: 'Try a URL in the tester, deploy with 302, confirm, then switch to 301.' }
+    ],
+    guideTitle: 'mod_rewrite or mod_alias — and why order matters',
+    guide:
+      '<p style="color:var(--muted)">Apache offers two independent redirect mechanisms and they do not cooperate. <code>mod_alias</code> gives you <code>Redirect</code> and <code>RedirectMatch</code>: simple, fast, no conditions. <code>mod_rewrite</code> gives you <code>RewriteRule</code>: regex, conditions, flags, and everything host- or query-related.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Never mix them on the same path</h4><p style="color:var(--muted);font-size:13.8px">The two modules run in different phases, and <code>mod_alias</code> wins regardless of file order. A <code>RewriteRule</code> sitting above a <code>Redirect</code> for the same URL simply never fires — which looks like the rule being ignored for no reason. Pick one module per path.</p>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">The leading slash</h4><p style="color:var(--muted);font-size:13.8px">Inside <code>.htaccess</code>, <code>RewriteRule</code> matches the path with the leading slash <em>stripped</em>: write <code>^blog/(.*)$</code>, not <code>^/blog/(.*)$</code>. In vhost config the slash is there. Copying an example from the wrong context is the single most common reason a rule silently never matches.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Order and specificity</h4><p style="color:var(--muted);font-size:13.8px">Unlike Nginx, Apache evaluates rules strictly top to bottom and the first match with <code>[L]</code> stops processing. So host-level rules — HTTPS, www — belong at the top, and specific page redirects below them. Put a catch-all first and nothing after it will ever run.</p>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">Every request pays for this file</h4><p style="color:var(--muted);font-size:13.8px">Apache re-reads <code>.htaccess</code> on every request, in every directory along the path. That is the price of not needing a restart. Once the rules are settled, move them into the vhost and set <code>AllowOverride None</code>.</p></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><code>Redirect /about /new</code> matches a <strong>prefix</strong>, not a page. It also catches <code>/about-us</code>, <code>/about/team</code> and <code>/about.html</code>. This generator emits anchored <code>RedirectMatch</code> patterns instead, so a rule means what it looks like it means.</span></div>',
+    related: ['nginx-redirect-generator', 'canonical-tag-generator', 'x-robots-tag-generator'],
+    faqs: [
+      { q: 'How do I redirect a single page in .htaccess?', a: 'Use an anchored <code>RedirectMatch 301 ^/old-page$ https://example.com/new-page</code>. Avoid plain <code>Redirect</code> for this — it matches the path as a prefix, so <code>/old-page-2</code> would be caught as well.' },
+      { q: 'Why is my .htaccess redirect not working?', a: 'Most often one of four things: <code>AllowOverride</code> is not enabled so the file is ignored entirely; the pattern starts with a slash (inside .htaccess the leading slash is stripped); an earlier rule with <code>[L]</code> matched first; or your browser cached a previous 301. Test in a private window with <code>curl -I</code>.' },
+      { q: 'What is the difference between Redirect and RewriteRule?', a: '<code>Redirect</code> comes from mod_alias — simple prefix matching, no conditions. <code>RewriteRule</code> comes from mod_rewrite — full regex, conditions and flags. Anything involving HTTPS, the hostname or the query string needs mod_rewrite. Never use both for the same path, because mod_alias wins whatever the order.' },
+      { q: 'How do I force HTTPS in .htaccess?', a: '<code>RewriteCond %{HTTPS} off</code> followed by <code>RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]</code>. Behind Cloudflare or a load balancer this loops forever, because the internal hop is plain HTTP — test <code>%{HTTP:X-Forwarded-Proto}</code> instead.' },
+      { q: 'Does a redirect keep the query string?', a: 'With mod_rewrite, only if you add the <code>QSA</code> flag; without it the incoming query is dropped. With mod_alias, <code>Redirect</code> preserves the query automatically. Dropping it silently breaks UTM campaign attribution.' },
+      { q: 'Should I use 301 or 302?', a: '301 for permanent moves, 302 while you are still testing. Browsers cache 301s aggressively and often indefinitely, so a wrong 301 is very hard to undo — deploy with 302, confirm the destination, then promote it.' }
+    ],
+    seo: {
+      title: '.htaccess redirects: rules, flags and the mistakes that break them',
+      lead: 'This <strong>.htaccess redirect generator</strong> writes Apache 301 and 302 rules for URL lists, HTTPS, www, domain moves and regex rewrites — with anchored patterns, loop detection and a tester that shows which rule wins. Below: how the two redirect modules differ, what each flag does, and why a rule that looks right does nothing.',
+      blocks: [
+        {
+          h: 'What .htaccess actually is',
+          html: '<p><strong>.htaccess</strong> is a per-directory Apache configuration file. Apache reads it on every request, for every directory along the requested path, and applies whatever it finds — no restart needed.</p>' +
+            '<p>That convenience is also its cost. Server-level config is parsed once at startup; <code>.htaccess</code> is parsed on every single hit. On a busy site the difference is measurable, which is why the standard advice is to develop rules in <code>.htaccess</code> and then move them into the vhost with <code>AllowOverride None</code>.</p>' +
+            '<p>It only works if the server permits it. If <code>AllowOverride</code> is set to <code>None</code> for your directory, the file is ignored completely and silently — no error, no log entry, just a redirect that never happens.</p>'
+        },
+        {
+          h: 'mod_alias and mod_rewrite',
+          html: '<p>Apache has two redirect systems. Knowing which you are using is most of the battle.</p>',
+          table: {
+            head: ['', 'mod_alias', 'mod_rewrite'],
+            rows: [
+              ['Directives', '<code>Redirect</code>, <code>RedirectMatch</code>', '<code>RewriteRule</code>, <code>RewriteCond</code>'],
+              ['Matching', 'Path prefix, or regex with <code>RedirectMatch</code>', 'Full regex'],
+              ['Conditions', 'None', '<code>RewriteCond</code> on host, protocol, query, headers'],
+              ['Query string', 'Preserved automatically', 'Only with the <code>QSA</code> flag'],
+              ['Leading slash', 'Present', 'Stripped in .htaccess, present in vhost'],
+              ['Speed', 'Slightly faster', 'Negligibly slower'],
+              ['Use for', 'Simple one-to-one moves', 'HTTPS, www, domains, anything conditional']
+            ]
+          },
+          callout: { type: 'warn', text: '<strong>Never use both for the same URL.</strong> The modules run in different phases and <code>mod_alias</code> is applied first regardless of where the directives sit in the file. A <code>RewriteRule</code> above a <code>Redirect</code> for the same path will never fire, which reads as "Apache is ignoring my rule".' }
+        },
+        {
+          h: 'Redirect matches a prefix, not a page',
+          html: '<p>This is the single most damaging misunderstanding in Apache redirects, because the broken behaviour looks correct in testing.</p>' +
+            '<p><code>Redirect 301 /about /new-about</code> does not redirect the page <code>/about</code>. It redirects <em>everything beginning with</em> <code>/about</code>:</p>',
+          list: [
+            '<code>/about</code> → <code>/new-about</code> — as intended.',
+            '<code>/about-us</code> → <code>/new-about-us</code> — not intended.',
+            '<code>/about/team</code> → <code>/new-about/team</code> — not intended.',
+            '<code>/about.html</code> → <code>/new-about.html</code> — usually a 404.'
+          ],
+          after: '<p>You test <code>/about</code>, it works, you ship it, and three unrelated pages break. The fix is an anchored <code>RedirectMatch</code>: <code>RedirectMatch 301 ^/about$ /new-about</code>. The <code>^</code> and <code>$</code> make the match exact, and this generator always emits them.</p>'
+        },
+        {
+          h: 'The flags that matter',
+          table: {
+            head: ['Flag', 'Effect', 'When you need it'],
+            rows: [
+              ['<code>R=301</code>', 'Send an external redirect with this status.', 'Always, for a redirect. Without <code>R</code> the rewrite is internal and the URL bar never changes.'],
+              ['<code>L</code>', 'Stop processing further rules.', 'Almost always. Omitting it lets later rules rewrite your result again.'],
+              ['<code>QSA</code>', 'Append the incoming query string.', 'Whenever campaign or tracking parameters must survive.'],
+              ['<code>QSD</code>', 'Discard the incoming query string.', 'When a legacy parameter must not reach the new URL.'],
+              ['<code>NC</code>', 'Case-insensitive matching.', 'After migrating from Windows or IIS hosting.'],
+              ['<code>NE</code>', 'Do not escape special characters in the target.', 'When the destination contains <code>#</code> or a literal <code>?</code>.'],
+              ['<code>G</code>', 'Return 410 Gone.', 'Removing a page permanently, faster than waiting on 404s.']
+            ]
+          },
+          callout: { type: 'tip', text: '<code>$N</code> and <code>%N</code> are not the same. <code>$1</code> is a capture from the <code>RewriteRule</code> pattern; <code>%1</code> is a capture from the preceding <code>RewriteCond</code>. Host-based rules need <code>%1</code>, and using <code>$1</code> there is why so many copied www rules redirect to the wrong place.' }
+        },
+        {
+          h: 'Forcing HTTPS behind a proxy',
+          html: '<p>The textbook rule is <code>RewriteCond %{HTTPS} off</code> then <code>RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]</code>. On a plain server it is correct.</p>' +
+            '<p>Behind Cloudflare, a load balancer, or most managed and cloud hosting, it produces an infinite loop. TLS terminates at the proxy, so Apache sees plain HTTP on the internal hop, redirects to HTTPS, the proxy forwards HTTP again, and the browser gives up with <code>ERR_TOO_MANY_REDIRECTS</code>.</p>' +
+            '<p>The fix is to test the header the proxy sets instead:</p>',
+          list: [
+            '<code>RewriteCond %{HTTP:X-Forwarded-Proto} !https</code> — the common convention.',
+            'On some hosts, <code>%{HTTP:CF-Visitor}</code> or a provider-specific variable.',
+            'Best of all, terminate the redirect at the proxy or CDN so the request never reaches Apache.'
+          ],
+          after: '<p>Tick “Behind a proxy or load balancer” and the generator emits the header form.</p>'
+        },
+        {
+          h: 'Why a rule silently does nothing',
+          html: '<p>In rough order of how often each is the culprit:</p>',
+          ol: [
+            '<strong><code>AllowOverride</code> is None.</strong> The whole file is ignored. Nothing is logged. Check the vhost, not the file.',
+            '<strong>A leading slash in the pattern.</strong> In <code>.htaccess</code> the path is matched without it, so <code>^/blog/</code> can never match. Examples copied from vhost config always have this.',
+            '<strong>An earlier rule matched with <code>[L]</code>.</strong> Processing stopped before reaching yours. Order matters absolutely.',
+            '<strong>The browser cached an old 301.</strong> Your rule is fine; you are not reaching the server. Test in a private window or with <code>curl -I</code>.',
+            '<strong>mod_alias is shadowing it.</strong> A <code>Redirect</code> anywhere in the file beats every <code>RewriteRule</code> for the same path.',
+            '<strong>An unescaped dot.</strong> <code>.</code> matches any character, so <code>^page.html$</code> also matches <code>pageXhtml</code> — and more importantly your intended literal may be matched by an earlier, broader rule.',
+            '<strong>The file has Windows line endings or a BOM.</strong> Apache can reject the first directive outright, sometimes with a 500.'
+          ],
+          callout: { type: 'warn', text: 'A syntax error in <code>.htaccess</code> takes down the entire directory with a 500 — every page, immediately. Always keep a known-good copy, and wrap rules in <code>&lt;IfModule&gt;</code> so a missing module degrades to “no redirect” rather than “site offline”.' }
+        },
+        {
+          h: 'Choosing the status code',
+          cards: [
+            { t: '301 Moved Permanently', d: 'The default for a real move. Cached hard by browsers, sometimes forever — which is why you deploy with 302 first and promote it once confirmed.' },
+            { t: '302 Found', d: 'Temporary. Search engines keep the original indexed. Correct for maintenance pages, tests and geolocation.' },
+            { t: '308 / 307', d: 'Permanent and temporary equivalents that preserve the request method and body. Use these for API endpoints and anything receiving POST.' },
+            { t: '410 Gone', d: 'No destination — the resource is deliberately removed. Search engines drop it faster than a 404.' }
+          ]
+        },
+        {
+          h: 'Related server and SEO tools',
+          list: [
+            '<a href="/tools/nginx-redirect-generator">Nginx Redirect Generator</a> — the same migration expressed as Nginx rules and maps.',
+            '<a href="/tools/canonical-tag-generator">Canonical Tag Generator</a> — consolidate duplicates you cannot redirect.',
+            '<a href="/tools/x-robots-tag-generator">X-Robots-Tag Generator</a> — indexing headers for files and directories.',
+            '<a href="/tools/meta-robots-tag-generator">Meta Robots Tag Generator</a> — per-page indexing control.',
+            '<a href="/tools/sitemap-index-generator">Sitemap Index Generator</a> — resubmit clean URLs after a migration.'
+          ]
+        }
+      ],
+      keywords: [
+        'htaccess redirect generator', 'apache 301 redirect', 'htaccess 301 redirect',
+        'rewriterule generator', 'force https htaccess', 'htaccess www redirect',
+        'redirectmatch vs redirect', 'htaccess redirect not working', 'mod_rewrite flags',
+        'htaccess trailing slash', 'apache redirect query string', 'htaccess domain migration'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

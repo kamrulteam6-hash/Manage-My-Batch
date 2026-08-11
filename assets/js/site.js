@@ -130,6 +130,11 @@
       cat: 'Developer', icon: 'server', tone: 'ic-red',
       kw: 'nginx redirect 301 302 rewrite map return migration server block' },
 
+    { slug: 'htaccess-redirect-generator', name: '.htaccess Redirect Generator', short: '.htaccess Redirects',
+      desc: 'Apache 301/302 rules with anchored patterns, loop detection and a rule tester.',
+      cat: 'Developer', icon: 'server', tone: 'ic-red',
+      kw: 'htaccess apache redirect 301 302 rewriterule redirectmatch mod_rewrite https www' },
+
     /* ---- IDs & Random ---- */
     { slug: 'uuid-v7-generator', name: 'UUID v7 Generator', short: 'UUID v7',
       desc: 'Generate RFC 9562 time-ordered UUID v7 identifiers, with a built-in timestamp decoder.',
