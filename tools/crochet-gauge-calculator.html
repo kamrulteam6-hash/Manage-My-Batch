@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CX2WHCM8XP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CX2WHCM8XP');
+</script>
+<title>Crochet Gauge Calculator — Fix Your Swatch &amp; Resize Patterns | Manage My Batch</title>
+<meta name="description" content="Free crochet gauge calculator. Compare your swatch to the pattern, get a hook size recommendation, and convert any stitch count to your own gauge.">
+<meta name="keywords" content="crochet gauge calculator, gauge swatch crochet, stitches per inch crochet, resize crochet pattern, crochet tension calculator, hook size for gauge">
+<link rel="canonical" href="https://managemybatch.com/tools/crochet-gauge-calculator">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Crochet Gauge Calculator — Fix Your Swatch &amp; Resize Patterns">
+<meta property="og:description" content="Free crochet gauge calculator. Compare your swatch to the pattern, get a hook size recommendation, and convert any stitch count to your own gauge.">
+<meta property="og:url" content="https://managemybatch.com/tools/crochet-gauge-calculator">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Crochet Gauge Calculator — Fix Your Swatch &amp; Resize Patterns">
+<meta name="twitter:description" content="Free crochet gauge calculator. Compare your swatch to the pattern, get a hook size recommendation, and convert any stitch count to your own gauge.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="/assets/favicon/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/favicon/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Your Swatch</div>
+
+    <div class="field">
+      <label>Units</label>
+      <div class="seg" id="unitSeg">
+        <button type="button" class="on" data-u="in">Inches (4 in)</button>
+        <button type="button" data-u="cm">Centimetres (10 cm)</button>
+      </div>
+      <div class="hint" id="unitHint">Gauge is quoted over 4 inches in US patterns and 10 cm in UK and European ones. They are close but not identical — 10 cm is 3.94 in.</div>
+    </div>
+
+    <div class="field">
+      <div class="label">Pattern gauge</div>
+      <div class="row">
+        <div class="field"><label for="pSts">Stitches per <span class="uLbl">4 in</span></label>
+          <input type="number" id="pSts" value="14" min="1" step="0.5"></div>
+        <div class="field"><label for="pRows">Rows per <span class="uLbl">4 in</span></label>
+          <input type="number" id="pRows" value="16" min="1" step="0.5"></div>
+      </div>
+      <div class="hint">Copy these from the pattern exactly, including the stitch it specifies.</div>
+    </div>
+
+    <div class="field">
+      <div class="label">Your gauge</div>
+      <div class="row">
+        <div class="field"><label for="ySts">Stitches per <span class="uLbl">4 in</span></label>
+          <input type="number" id="ySts" value="16" min="1" step="0.5"></div>
+        <div class="field"><label for="yRows">Rows per <span class="uLbl">4 in</span></label>
+          <input type="number" id="yRows" value="18" min="1" step="0.5"></div>
+      </div>
+      <div class="hint">Measure across the middle of a swatch at least 6 in / 15 cm square. Never measure the edges.</div>
+    </div>
+
+    <div class="field">
+      <label for="hook">Hook you used</label>
+      <select id="hook"></select>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label for="target">Convert a measurement or stitch count</label>
+      <div class="row">
+        <div class="field"><input type="number" id="target" value="180" min="1" step="1"></div>
+        <div class="field"><select id="targetKind">
+          <option value="sts">stitches in the pattern</option>
+          <option value="width">inches of finished width</option>
+        </select></div>
+      </div>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Result<span class="spacer"></span>
+      <span class="result-pill" id="pill">—</span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="fix">Match the gauge</button>
+      <button type="button" data-tab="convert">Work to your gauge</button>
+      <button type="button" data-tab="checks">Checks</button>
+      <button type="button" data-tab="how">How to swatch</button>
+    </div>
+
+    <div data-panel="fix"><div id="fix"></div></div>
+    <div data-panel="convert" hidden><div id="convert"></div></div>
+    <div data-panel="checks" hidden><div id="checks"></div></div>
+    <div data-panel="how" hidden><div id="how"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var $ = GT.$, $$ = GT.$$, I = GTI;
+  ['icoGear:gear', 'icoSpark:spark'].forEach(function (p) {
+    var b = p.split(':'), el = $('#' + b[0]); if (el) el.innerHTML = I[b[1]];
+  });
+
+  var HOOKS = [2.25, 2.5, 2.75, 3.0, 3.25, 3.5, 3.75, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0, 8.0, 9.0, 10.0, 12.0, 15.0];
+  var US = { 2.25: 'B-1', 2.75: 'C-2', 3.25: 'D-3', 3.5: 'E-4', 3.75: 'F-5', 4: 'G-6', 4.5: '7', 5: 'H-8',
+             5.5: 'I-9', 6: 'J-10', 6.5: 'K-10½', 8: 'L-11', 9: 'M/N-13', 10: 'N/P-15', 15: 'P/Q' };
+  $('#hook').innerHTML = HOOKS.map(function (h) {
+    return '<option value="' + h + '"' + (h === 5 ? ' selected' : '') + '>' + h + ' mm' + (US[h] ? ' — US ' + US[h] : '') + '</option>';
+  }).join('');
+
+  var unit = 'in';
+  function span() { return unit === 'in' ? 4 : 10; }        // gauge is quoted over this
+  function uName() { return unit === 'in' ? 'in' : 'cm'; }
+
+  function num(id) { var v = parseFloat($(id).value); return isFinite(v) && v > 0 ? v : 0; }
+
+  function calc() {
+    var pS = num('#pSts'), pR = num('#pRows'), yS = num('#ySts'), yR = num('#yRows');
+    if (!pS || !yS) return null;
+    return {
+      pS: pS, pR: pR, yS: yS, yR: yR,
+      pSpi: pS / span(), ySpi: yS / span(),          // stitches per unit
+      pRpi: pR / span(), yRpi: yR / span(),
+      stRatio: yS / pS,                               // >1 means yours is tighter
+      rowRatio: pR ? yR / pR : 1,
+      hook: parseFloat($('#hook').value)
+    };
+  }
+
+  function suggestHook(g) {
+    /* Rough but honest: about one stitch per 4 in per half-millimetre on
+       worsted-weight yarn. Finer yarn moves less per step, so this is a
+       starting point, not a promise. */
+    var diffPer4 = (g.yS - g.pS) * (4 / span()) * (span() / 4); // in the same 4-in/10-cm span
+    var steps = Math.round((g.yS - g.pS) / 1);
+    if (!steps) return null;
+    var idx = HOOKS.indexOf(g.hook);
+    if (idx === -1) return null;
+    var target = Math.min(HOOKS.length - 1, Math.max(0, idx + steps));
+    return { steps: steps, from: g.hook, to: HOOKS[target], tighter: steps > 0 };
+  }
+
+  function fmt(n, d) { return (Math.round(n * Math.pow(10, d || 1)) / Math.pow(10, d || 1)); }
+
+  function render() {
+    var g = calc();
+    if (!g) { $('#fix').innerHTML = '<div class="note note-warn">' + I.warn + '<span>Enter both gauges to compare.</span></div>'; return; }
+
+    var offPct = (g.stRatio - 1) * 100;
+    var exact = Math.abs(offPct) < 1.5;
+    $('#pill').textContent = exact ? 'gauge matches' : (offPct > 0 ? fmt(Math.abs(offPct)) + '% too tight' : fmt(Math.abs(offPct)) + '% too loose');
+
+    var s = suggestHook(g);
+    var html = '';
+
+    if (exact) {
+      html += '<div class="note note-ok" style="margin-top:10px">' + I.check +
+        '<span><strong>Your gauge matches.</strong> Work the pattern exactly as written with your ' + g.hook + ' mm hook.</span></div>';
+    } else {
+      html += '<div class="note ' + (Math.abs(offPct) > 10 ? 'note-err' : 'note-warn') + '" style="margin-top:10px">' +
+        I.warn + '<span>Your stitches are <strong>' + fmt(Math.abs(offPct)) + '% ' + (offPct > 0 ? 'smaller' : 'larger') +
+        '</strong> than the pattern. You get ' + fmt(g.yS) + ' stitches per ' + span() + ' ' + uName() +
+        ' where the pattern gets ' + fmt(g.pS) + '.</span></div>';
+
+      if (s) {
+        html += '<div class="note note-info" style="margin-top:8px">' + I.info +
+          '<span><strong>Try a ' + s.to + ' mm hook</strong>' + (US[s.to] ? ' (US ' + US[s.to] + ')' : '') +
+          ' — ' + (s.tighter ? 'larger' : 'smaller') + ' than your ' + s.from + ' mm. ' +
+          'Your stitches are too ' + (s.tighter ? 'small, so go up' : 'big, so go down') +
+          '. Roughly one stitch per ' + span() + ' ' + uName() + ' per half-millimetre, then swatch again.</span></div>';
+      }
+    }
+
+    /* what happens if you ignore it */
+    var tgt = num('#target') || 0;
+    if (tgt) {
+      var patternWidth = tgt / g.pSpi;
+      var yourWidth = tgt / g.ySpi;
+      var drift = yourWidth - patternWidth;
+      html += '<div style="margin-top:16px"><h4 style="font-size:14.5px;margin-bottom:8px">If you work ' + tgt + ' stitches anyway</h4>' +
+        '<div class="seo-table-wrap"><table class="seo-table"><tbody>' +
+        '<tr><td>Pattern intends</td><td><strong>' + fmt(patternWidth) + ' ' + uName() + '</strong></td></tr>' +
+        '<tr><td>You would get</td><td><strong>' + fmt(yourWidth) + ' ' + uName() + '</strong></td></tr>' +
+        '<tr><td>Difference</td><td><strong style="color:' + (Math.abs(drift) > span() / 2 ? '#b91c1c' : 'inherit') + '">' +
+        (drift > 0 ? '+' : '') + fmt(drift) + ' ' + uName() + '</strong></td></tr>' +
+        '</tbody></table></div></div>';
+    }
+    $('#fix').innerHTML = html;
+
+    /* convert tab */
+    var kind = $('#targetKind').value, out = '';
+    if (kind === 'sts') {
+      var w = tgt / g.pSpi;
+      var need = Math.round(w * g.ySpi);
+      out = '<div class="note note-ok" style="margin-top:10px">' + I.check +
+        '<span>The pattern\'s <strong>' + tgt + ' stitches</strong> make <strong>' + fmt(w) + ' ' + uName() +
+        '</strong>. At your gauge you need <strong>' + need + ' stitches</strong> for the same width.</span></div>';
+      var rowsNote = g.pR && g.yR ? '<div class="note note-info" style="margin-top:8px">' + I.info +
+        '<span>Rows work the same way. Wherever the pattern says a number of rows, multiply by <strong>' + fmt(g.rowRatio, 2) +
+        '</strong> to keep the same length.</span></div>' : '';
+      out += rowsNote;
+    } else {
+      var sts = Math.round(tgt * g.ySpi);
+      var pSts2 = Math.round(tgt * g.pSpi);
+      out = '<div class="note note-ok" style="margin-top:10px">' + I.check +
+        '<span>For <strong>' + tgt + ' ' + uName() + '</strong> of width you need <strong>' + sts + ' stitches</strong> at your gauge' +
+        ' (the pattern would use ' + pSts2 + ').</span></div>';
+    }
+    out += '<div class="note note-warn" style="margin-top:8px">' + I.warn +
+      '<span>Round to whatever stitch multiple your pattern repeat needs, plus any turning chain. A shell pattern over a multiple of 6 + 1 cannot use an arbitrary number.</span></div>';
+    $('#convert').innerHTML = out;
+
+    /* checks */
+    var c = [];
+    if (Math.abs(offPct) > 10)
+      c.push({ s: 'err', m: 'More than 10% out. On a 60 in blanket that is over 6 inches — change hook size rather than trying to adjust your tension by hand.' });
+    if (g.pR && g.yR) {
+      var rowOff = (g.rowRatio - 1) * 100;
+      if (Math.abs(rowOff) > 8 && Math.abs(offPct) < 3)
+        c.push({ s: 'warn', m: 'Your stitch gauge matches but your <strong>row gauge is ' + fmt(Math.abs(rowOff)) + '% out</strong>. This is common and usually fine for blankets and scarves, where you just work to a measurement. It matters for garments with shaping worked over a set number of rows.' });
+    }
+    if (g.yS < g.pS)
+      c.push({ s: 'warn', m: 'Fewer stitches than the pattern means your fabric is looser and will use <strong>more yarn per row but fewer rows</strong>. Net yarn use usually rises slightly. Check your yardage before committing.' });
+    c.push({ s: 'ok', m: 'Swatch in the stitch pattern the gauge specifies. Single crochet, double crochet and a textured stitch give completely different gauge from the same hook and yarn.' });
+    c.push({ s: 'warn', m: '<strong>Block your swatch the way you will block the finished piece.</strong> Cotton and superwash wool in particular can grow noticeably when wet. A gauge measured dry on yarn you intend to wash is not the gauge you will end up with.' });
+    c.push({ s: 'ok', m: 'Measure across the middle of the swatch, not the edges. Edge stitches distort, which is why a swatch needs to be bigger than the area you measure.' });
+    $('#checks').innerHTML = c.map(function (x) {
+      return '<div class="note ' + (x.s === 'ok' ? 'note-ok' : x.s === 'warn' ? 'note-warn' : 'note-err') + '" style="margin-top:8px">' +
+        (x.s === 'ok' ? I.check : I.warn) + '<span>' + x.m + '</span></div>';
+    }).join('');
+  }
+
+  $('#how').innerHTML = [
+    ['Make it bigger than you think', 'Work at least 6 in / 15 cm square, then measure the middle 4 in / 10 cm. Edge stitches always distort, so a swatch the same size as the measurement is a swatch you cannot measure honestly.'],
+    ['Use the stitch the pattern names', 'Gauge is specific to the stitch pattern. A double crochet swatch tells you nothing about a project worked in half double, and a textured or colourwork stitch behaves differently again.'],
+    ['Count carefully, including partials', 'If four inches covers 15 and a half stitches, record 15.5. Rounding to whole stitches at the swatch stage is where a 3% error becomes a 7% one.'],
+    ['Block it first', 'Wash and dry the swatch exactly as you will treat the finished item. Cotton, bamboo and superwash wool commonly relax and grow; some yarns tighten. This step is skipped constantly and is the usual reason a blocked garment ends up the wrong size.'],
+    ['Do not stretch it to measure', 'Lay it flat and unstretched on a hard surface. Measuring on your lap or a soft sofa lets the fabric spread and reads a looser gauge than you actually have.'],
+    ['Change the hook, not your hands', 'If the gauge is off, change hook size. Trying to crochet deliberately tighter or looser works for about twenty minutes and then drifts back, leaving a piece that changes width partway up.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:18px"><h4 style="font-size:14.5px;margin-bottom:8px">' + x[0] + '</h4>' +
+      '<div style="color:var(--muted);font-size:13.8px">' + x[1] + '</div></div>';
+  }).join('');
+
+  $('#unitSeg').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#unitSeg button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    unit = b.getAttribute('data-u');
+    $$('.uLbl').forEach(function (el) { el.textContent = span() + ' ' + uName(); });
+    render();
+  });
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('input', render);
+  $('#cfg').addEventListener('change', render);
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); render(); });
+
+  render();
+
+  GT.page({
+    slug: 'crochet-gauge-calculator',
+    lede: 'Compare your swatch to the pattern, get a hook size to try next, and convert any stitch count or measurement to your own gauge.',
+    steps: [
+      { icon: 'gear', title: 'Swatch and measure', text: 'At least 6 in square, measured across the middle, blocked as you will block the finished piece.' },
+      { icon: 'chart', title: 'Compare', text: 'See how far off you are and which hook to try next.' },
+      { icon: 'check', title: 'Or work to your own gauge', text: 'Convert the pattern\'s stitch counts instead of chasing theirs.' }
+    ],
+    guideTitle: 'Why a small gauge error becomes a big problem',
+    guide:
+      '<p style="color:var(--muted)">Gauge is stitches and rows per unit of fabric. It sounds fussy on a swatch and it is decisive on a project, because the error <strong>multiplies by every stitch you work</strong>.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">The arithmetic</h4><p style="color:var(--muted);font-size:13.8px">Suppose the pattern gets 14 stitches to 4 inches and you get 15 — one stitch out, which looks like nothing. That is a 7% difference. On a 200-stitch blanket row the pattern makes 57 inches and you make 53. Over the length as well, you have lost most of a foot in each direction and the blanket no longer covers the bed it was for.</p>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">And it changes the yarn you need</h4><p style="color:var(--muted);font-size:13.8px">Tighter gauge packs more stitches into the same area, so a denser fabric eats more yarn than the pattern allows for. Running out with two rows to go is very often a gauge problem rather than a yarn-shortage one.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Stitch gauge matters more than row gauge</h4><p style="color:var(--muted);font-size:13.8px">For most projects you can work rows to a measurement rather than a count, so being off on rows is survivable. Width has to come out right at the start, because you commit to it with the foundation chain. Fix stitch gauge first; treat row gauge as important mainly for garments with shaping worked over a set number of rows.</p>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">Or ignore the pattern\'s gauge entirely</h4><p style="color:var(--muted);font-size:13.8px">For a blanket, scarf or anything without fitted shaping, matching gauge is optional. Work out how many stitches <em>your</em> gauge needs for the width you want and start there. The Work to your gauge tab does that conversion.</p></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span>Block the swatch before you measure it. Cotton, bamboo and superwash wool routinely relax and grow when washed — sometimes by 5% or more. A gauge measured on an unwashed swatch is a prediction about a fabric that will not exist once the finished item has been through the machine.</span></div>',
+    related: ['crochet-hook-size-converter', 'crochet-yarn-yardage-calculator', 'crochet-blanket-stitch-calculator'],
+    faqs: [
+      { q: 'How do I measure crochet gauge?', a: 'Work a swatch at least 6 in / 15 cm square in the stitch the pattern specifies, block it the way you will block the finished piece, lay it flat unstretched, then count the stitches and rows across the middle 4 in / 10 cm. Count partial stitches as halves rather than rounding.' },
+      { q: 'My gauge is too tight. What do I change?', a: 'Go up a hook size. Too many stitches per inch means your stitches are too small, so you need a bigger hook. As a rough guide, half a millimetre changes gauge by about one stitch per 4 inches on worsted weight — then swatch again to confirm.' },
+      { q: 'Does row gauge matter?', a: 'Less than stitch gauge for most projects, because you can usually work to a length rather than a row count. It matters for garments where shaping is worked over a set number of rows, and for anything with a motif that must line up.' },
+      { q: 'Can I just ignore gauge?', a: 'For blankets, scarves and cowls, yes — as long as you calculate your own starting chain from your own gauge rather than using the pattern\'s number. For anything fitted, no. The Work to your gauge tab converts the counts for you.' },
+      { q: 'Why does my gauge change partway through?', a: 'Usually tension drift — people tighten when concentrating or tired, and loosen once a pattern becomes familiar. It also happens when you switch between hook brands or materials mid-project. Swatching at the start of a session and comparing is a good way to catch it.' },
+      { q: 'Should I block my swatch?', a: 'Yes, always, and the same way you will treat the finished item. This is the most commonly skipped step and the most common reason a carefully swatched garment comes out the wrong size after its first wash.' }
+    ],
+    seo: {
+      title: 'Crochet gauge: measuring it, fixing it, or working around it',
+      lead: 'This <strong>crochet gauge calculator</strong> compares your swatch to the pattern, suggests which hook to try next, and converts stitch counts to your own gauge. Below: how to swatch honestly, why small errors compound, and when gauge genuinely does not matter.',
+      blocks: [
+        {
+          h: 'What gauge is',
+          html: '<p><strong>Gauge</strong> (tension, in UK patterns) is how many stitches and rows you get across a set distance — conventionally 4 inches in US patterns and 10 cm in UK and European ones. Those are not quite the same span: 10 cm is 3.94 inches, close enough for most purposes but worth knowing when a pattern quotes both.</p>' +
+            '<p>It is the bridge between a pattern\'s stitch counts and real measurements. The designer worked out that a jumper front needs 96 stitches <em>because at their gauge</em> 96 stitches is 20 inches. Change the gauge and 96 stitches becomes some other width, while the instructions still say 96.</p>' +
+            '<p>Gauge is not a property of the yarn or the hook alone. It is the product of yarn, hook size, hook material, stitch pattern and your own hands.</p>'
+        },
+        {
+          h: 'Why one stitch matters',
+          table: {
+            head: ['Gauge difference', 'On a 200-stitch row', 'On a 60 in blanket'],
+            rows: [
+              ['Exact match', '57 in', 'as designed'],
+              ['½ stitch per 4 in', '~55 in', '2 in narrower'],
+              ['1 stitch per 4 in', '53 in', '4 in narrower'],
+              ['2 stitches per 4 in', '50 in', '7 in narrower']
+            ]
+          },
+          after: '<p>A single stitch per four inches is roughly a 7% error. It is invisible on a swatch and it is four inches on a blanket — and the same error applies to the length, so the finished area is out by about 14%.</p>',
+          callout: { type: 'warn', text: 'The same arithmetic applies to yarn. A fabric 7% denser in both directions uses noticeably more yarn than the pattern estimates, which is why "I ran out with one row to go" is so often a gauge problem rather than a bad estimate.' }
+        },
+        {
+          h: 'How to swatch so the number is true',
+          steps: [
+            { t: 'Work bigger than you measure', d: 'At least 6 in / 15 cm square. Edge stitches distort, so you must have fabric to spare around the measured area.' },
+            { t: 'Use the specified stitch', d: 'Gauge is stitch-specific. A double crochet gauge tells you nothing about a project in half double or a textured pattern.' },
+            { t: 'Block it', d: 'Wash and dry exactly as you will treat the finished piece. This is the step people skip and the one that changes the answer most.' },
+            { t: 'Lay it flat, unstretched', d: 'On a table, not your lap. Soft surfaces let the fabric spread and read looser than it is.' },
+            { t: 'Measure the middle', d: 'Count across the central 4 in / 10 cm, including partial stitches as halves.' },
+            { t: 'Do it twice, in both directions', d: 'Stitches across and rows down. Measuring in two places and averaging catches an unevenly worked swatch.' }
+          ]
+        },
+        {
+          h: 'Fixing gauge',
+          html: '<p>There is really only one lever worth pulling, and one that is not.</p>',
+          cards: [
+            { t: 'Change hook size — do this', d: 'Too many stitches per inch means the stitches are too small: go up. Too few means go down. Roughly half a millimetre per stitch per 4 in on worsted, less on fine yarn.' },
+            { t: 'Change your tension — do not', d: 'Deliberately crocheting tighter or looser holds for perhaps twenty minutes before drifting back, leaving a piece that visibly changes width partway up.' },
+            { t: 'Change the yarn', d: 'Sometimes the honest answer. If you are three hook sizes from the pattern gauge, the yarn is not really the weight the pattern wants.' },
+            { t: 'Change the stitch count instead', d: 'For unfitted projects, keep your gauge and recalculate the numbers. Often the most sensible option.' }
+          ]
+        },
+        {
+          h: 'When gauge does not matter',
+          html: '<p>Gauge matters in proportion to how much the finished size matters. It is not a universal law and treating it as one puts people off patterns they could happily make.</p>',
+          list: [
+            '<strong>Blankets, scarves, cowls:</strong> gauge is optional. Work out your own starting chain from your own gauge and any size is fine.',
+            '<strong>Bags and baskets:</strong> mostly forgiving, though a loose gauge makes a floppy basket regardless of size.',
+            '<strong>Amigurumi:</strong> gauge affects the finished size but the critical thing is a <em>tight</em> fabric with no gaps for stuffing to show through. Most patterns tell you to use a smaller hook than the ball band suggests for exactly this reason.',
+            '<strong>Hats:</strong> gauge matters — a hat has to fit a head, and circumference errors are unforgiving.',
+            '<strong>Garments:</strong> gauge is everything. Both stitch and row gauge, because shaping is worked over counted rows.'
+          ],
+          callout: { type: 'tip', text: 'Even where gauge does not need to <em>match</em>, measuring it is worth ten minutes. You cannot calculate a starting chain, estimate yarn, or predict a finished size without knowing your own numbers.' }
+        },
+        {
+          h: 'Stitch gauge versus row gauge',
+          html: '<p>They are not equally important, and knowing which to prioritise saves a lot of frustration.</p>' +
+            '<p><strong>Stitch gauge</strong> sets the width, and width is committed at the foundation chain. Getting it wrong means starting over, so it has to be right before you begin.</p>' +
+            '<p><strong>Row gauge</strong> sets the length, and length can usually be adjusted as you go — work until the piece measures what you want rather than counting rows. That flexibility is why most crocheters can safely tolerate a row gauge that is a few percent out.</p>' +
+            '<p>The exceptions are garments with shaping instructions like "decrease every 4th row until 30 stitches remain", where row gauge determines the angle of the shaping, and anything with a repeating motif that must land in a particular place.</p>'
+        },
+        {
+          h: 'Related crochet tools',
+          list: [
+            '<a href="/tools/crochet-hook-size-converter">Crochet Hook Size Converter</a> — find the hook you need in any system.',
+            '<a href="/tools/crochet-yarn-yardage-calculator">Crochet Yarn Yardage Calculator</a> — estimate yarn from your own gauge.'
+          ]
+        }
+      ],
+      keywords: [
+        'crochet gauge calculator', 'how to measure crochet gauge', 'crochet tension swatch',
+        'stitches per inch crochet', 'crochet gauge too tight', 'resize crochet pattern',
+        'crochet swatch blocking', 'row gauge crochet', 'crochet gauge conversion',
+        'does gauge matter crochet', 'hook size to fix gauge', 'crochet gauge 4 inches'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

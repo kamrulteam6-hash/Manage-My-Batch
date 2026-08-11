@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CX2WHCM8XP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CX2WHCM8XP');
+</script>
+<title>Crochet Hook Size Converter — US, UK &amp; Metric Chart | Manage My Batch</title>
+<meta name="description" content="Free crochet hook size converter. Convert between US letter, UK and metric mm sizes, including steel thread hooks, with yarn weight recommendations and a printable chart.">
+<meta name="keywords" content="crochet hook size converter, crochet hook chart, us to uk crochet hook, mm hook size, steel crochet hook sizes, crochet hook conversion chart">
+<link rel="canonical" href="https://managemybatch.com/tools/crochet-hook-size-converter">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Crochet Hook Size Converter — US, UK &amp; Metric Chart">
+<meta property="og:description" content="Free crochet hook size converter. Convert between US letter, UK and metric mm sizes, including steel thread hooks, with yarn weight recommendations and a printable chart.">
+<meta property="og:url" content="https://managemybatch.com/tools/crochet-hook-size-converter">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Crochet Hook Size Converter — US, UK &amp; Metric Chart">
+<meta name="twitter:description" content="Free crochet hook size converter. Convert between US letter, UK and metric mm sizes, including steel thread hooks, with yarn weight recommendations and a printable chart.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="/assets/favicon/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/favicon/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Convert a Hook Size</div>
+
+    <div class="field">
+      <label>Hook type</label>
+      <div class="seg" id="typeSeg">
+        <button type="button" class="on" data-t="yarn">Yarn hooks</button>
+        <button type="button" data-t="steel">Steel / thread hooks</button>
+      </div>
+      <div class="hint" id="typeHint"></div>
+    </div>
+
+    <div class="field">
+      <label for="from">I have this size</label>
+      <select id="from"></select>
+    </div>
+
+    <div id="result"></div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label for="weight">Or start from a yarn weight</label>
+      <select id="weight">
+        <option value="">— choose a yarn weight —</option>
+        <option value="0">0 — Lace / thread</option>
+        <option value="1">1 — Super fine (fingering, sock)</option>
+        <option value="2">2 — Fine (sport, baby)</option>
+        <option value="3">3 — Light (DK, light worsted)</option>
+        <option value="4" selected>4 — Medium (worsted, aran)</option>
+        <option value="5">5 — Bulky (chunky)</option>
+        <option value="6">6 — Super bulky</option>
+        <option value="7">7 — Jumbo</option>
+      </select>
+      <div id="weightOut"></div>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Conversion Chart<span class="spacer"></span>
+      <span class="result-pill" id="pill">yarn hooks</span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="chart">Full chart</button>
+      <button type="button" data-tab="weights">Yarn weights</button>
+      <button type="button" data-tab="notes">Read this first</button>
+    </div>
+
+    <div data-panel="chart">
+      <div id="chart"></div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy as text</button>
+        <button class="btn btn-ghost" id="printBtn">Print chart</button>
+      </div>
+    </div>
+
+    <div data-panel="weights" hidden><div id="weights"></div></div>
+    <div data-panel="notes" hidden><div id="notes"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var $ = GT.$, $$ = GT.$$, I = GTI;
+
+  ['icoGear:gear', 'icoSpark:spark', 'icoCopy:copy'].forEach(function (p) {
+    var b = p.split(':'), el = $('#' + b[0]); if (el) el.innerHTML = I[b[1]];
+  });
+
+  /* Metric is the authoritative axis. US letters and UK numbers are
+     conventions that map onto it, imperfectly and not always uniquely. */
+  var YARN = [
+    { mm: 2.25, us: 'B-1',    uk: '13' },
+    { mm: 2.5,  us: '—',      uk: '12' },
+    { mm: 2.75, us: 'C-2',    uk: '—'  },
+    { mm: 3.0,  us: '—',      uk: '11' },
+    { mm: 3.125,us: 'D',      uk: '—'  },
+    { mm: 3.25, us: 'D-3',    uk: '10' },
+    { mm: 3.5,  us: 'E-4',    uk: '9'  },
+    { mm: 3.75, us: 'F-5',    uk: '—'  },
+    { mm: 4.0,  us: 'G-6',    uk: '8'  },
+    { mm: 4.25, us: 'G',      uk: '—'  },
+    { mm: 4.5,  us: '7',      uk: '7'  },
+    { mm: 5.0,  us: 'H-8',    uk: '6'  },
+    { mm: 5.5,  us: 'I-9',    uk: '5'  },
+    { mm: 6.0,  us: 'J-10',   uk: '4'  },
+    { mm: 6.5,  us: 'K-10½',  uk: '3'  },
+    { mm: 7.0,  us: '—',      uk: '2'  },
+    { mm: 8.0,  us: 'L-11',   uk: '0'  },
+    { mm: 9.0,  us: 'M/N-13', uk: '00' },
+    { mm: 10.0, us: 'N/P-15', uk: '000'},
+    { mm: 11.5, us: 'P-16',   uk: '—'  },
+    { mm: 15.0, us: 'P/Q',    uk: '—'  },
+    { mm: 16.0, us: 'Q',      uk: '—'  },
+    { mm: 19.0, us: 'S',      uk: '—'  }
+  ];
+
+  /* Steel hooks run the opposite way: the bigger the number, the smaller the hook. */
+  var STEEL = [
+    { mm: 3.5,  us: '00', uk: '—' },
+    { mm: 3.25, us: '0',  uk: '—' },
+    { mm: 2.75, us: '1',  uk: '—' },
+    { mm: 2.25, us: '2',  uk: '—' },
+    { mm: 2.1,  us: '3',  uk: '—' },
+    { mm: 2.0,  us: '4',  uk: '—' },
+    { mm: 1.9,  us: '5',  uk: '—' },
+    { mm: 1.8,  us: '6',  uk: '—' },
+    { mm: 1.65, us: '7',  uk: '—' },
+    { mm: 1.5,  us: '8',  uk: '—' },
+    { mm: 1.25, us: '9',  uk: '—' },
+    { mm: 1.15, us: '10', uk: '—' },
+    { mm: 1.1,  us: '11', uk: '—' },
+    { mm: 1.0,  us: '12', uk: '—' },
+    { mm: 0.85, us: '13', uk: '—' },
+    { mm: 0.75, us: '14', uk: '—' }
+  ];
+
+  var WEIGHTS = [
+    { n: 0, name: 'Lace / thread', yarn: '10-count thread, cobweb, 2-ply', mm: '1.5–2.25', us: 'Steel 6 to B-1', gauge: '32–42 dc per 4 in' },
+    { n: 1, name: 'Super fine',    yarn: 'Fingering, sock, 4-ply',        mm: '2.25–3.5', us: 'B-1 to E-4',    gauge: '21–32 sc per 4 in' },
+    { n: 2, name: 'Fine',          yarn: 'Sport, baby',                    mm: '3.5–4.5',  us: 'E-4 to 7',      gauge: '16–20 sc per 4 in' },
+    { n: 3, name: 'Light',         yarn: 'DK, light worsted',              mm: '4.5–5.5',  us: '7 to I-9',      gauge: '12–17 sc per 4 in' },
+    { n: 4, name: 'Medium',        yarn: 'Worsted, aran, afghan',          mm: '5.5–6.5',  us: 'I-9 to K-10½',  gauge: '11–14 sc per 4 in' },
+    { n: 5, name: 'Bulky',         yarn: 'Chunky, craft, rug',             mm: '6.5–9',    us: 'K-10½ to M/N-13', gauge: '8–11 sc per 4 in' },
+    { n: 6, name: 'Super bulky',   yarn: 'Roving, super chunky',           mm: '9–15',     us: 'M/N-13 to Q',   gauge: '6–9 sc per 4 in' },
+    { n: 7, name: 'Jumbo',         yarn: 'Arm-knitting weight',            mm: '15+',      us: 'Q and larger',  gauge: '5 sc or fewer per 4 in' }
+  ];
+
+  var type = 'yarn';
+  function table() { return type === 'yarn' ? YARN : STEEL; }
+
+  function fillSelect() {
+    $('#from').innerHTML = table().map(function (r, i) {
+      var label = r.mm.toFixed(2).replace(/\.00$/, '') + ' mm' +
+        (r.us !== '—' ? '  ·  US ' + r.us : '') +
+        (r.uk !== '—' ? '  ·  UK ' + r.uk : '');
+      return '<option value="' + i + '"' + (r.mm === 5.0 && type === 'yarn' ? ' selected' : '') + '>' + label + '</option>';
+    }).join('');
+  }
+
+  function show() {
+    var r = table()[+$('#from').value];
+    if (!r) { $('#result').innerHTML = ''; return; }
+    var cell = function (label, v) {
+      return '<div style="flex:1;min-width:104px;text-align:center;padding:12px 8px;border:1px solid var(--line,#e5e7eb);border-radius:10px">' +
+        '<div style="font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)">' + label + '</div>' +
+        '<div style="font-size:21px;font-weight:700;margin-top:3px">' + v + '</div></div>';
+    };
+    var near = '';
+    if (type === 'yarn') {
+      var half = YARN.filter(function (x) { return Math.abs(x.mm - r.mm) > 0.001 && Math.abs(x.mm - r.mm) <= 0.55; });
+      if (half.length) near = '<div class="hint" style="margin-top:10px">Nearest alternatives: ' +
+        half.map(function (x) { return '<strong>' + x.mm + ' mm</strong>'; }).join(', ') +
+        ' — a half-millimetre either way is the usual lever for fixing gauge.</div>';
+    }
+    $('#result').innerHTML =
+      '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">' +
+      cell('Metric', r.mm + ' mm') + cell('US', r.us) + cell('UK', r.uk) + '</div>' + near;
+  }
+
+  function weightOut() {
+    var v = $('#weight').value;
+    if (v === '') { $('#weightOut').innerHTML = ''; return; }
+    var w = WEIGHTS[+v];
+    $('#weightOut').innerHTML = '<div class="note note-info" style="margin-top:10px">' + I.info +
+      '<span><strong>' + w.name + '</strong> (' + w.yarn + ') is usually worked on <strong>' + w.mm + ' mm</strong> — US ' + w.us +
+      '.<br>Typical gauge: ' + w.gauge + '. This is a starting point only; always swatch, because your tension decides the hook, not the label.</span></div>';
+  }
+
+  function renderChart() {
+    var t = table();
+    $('#chart').innerHTML = '<div class="seo-table-wrap"><table class="seo-table"><thead><tr>' +
+      '<th>Metric</th><th>US</th><th>UK</th></tr></thead><tbody>' +
+      t.map(function (r) {
+        var sel = (+$('#from').value === t.indexOf(r));
+        return '<tr' + (sel ? ' style="background:rgba(37,99,235,.07)"' : '') + '><td><strong>' + r.mm + ' mm</strong></td><td>' + r.us + '</td><td>' + r.uk + '</td></tr>';
+      }).join('') + '</tbody></table></div>';
+  }
+
+  $('#weights').innerHTML = '<div class="seo-table-wrap"><table class="seo-table"><thead><tr>' +
+    '<th>Weight</th><th>Also called</th><th>Hook</th><th>US</th></tr></thead><tbody>' +
+    WEIGHTS.map(function (w) {
+      return '<tr><td><strong>' + w.n + ' — ' + w.name + '</strong></td><td>' + w.yarn + '</td><td>' + w.mm + ' mm</td><td>' + w.us + '</td></tr>';
+    }).join('') + '</tbody></table></div>' +
+    '<div class="note note-info" style="margin-top:12px">' + I.info +
+    '<span>These are the Craft Yarn Council standard ranges. Individual yarns vary within a weight, and every ball band carries its own recommendation — trust the band over the category.</span></div>';
+
+  $('#notes').innerHTML = [
+    ['Metric is the only reliable size', 'Millimetres measure the actual shaft diameter, which is the thing that decides your stitch size. US letters and UK numbers are naming conventions layered on top. When a pattern gives both and they disagree, follow the millimetres.'],
+    ['UK numbers run backwards', 'In the UK system a <strong>larger number is a smaller hook</strong>. UK 14 is 2 mm; UK 000 is 10 mm. It is the opposite of the US letter sequence, and it is the single most common source of a wrongly sized project when working from a vintage or British pattern.'],
+    ['Steel hooks run backwards too', 'Steel or thread hooks use their own numbering where higher again means smaller — US 14 steel is 0.75 mm. Worse, the same numbers appear in both systems: a "size 2" steel hook is 2.25 mm, while a "size 2" UK yarn hook is 7 mm. Always check which scale a pattern means.'],
+    ['US letters are not standardised', 'Manufacturers have historically disagreed. An H from one brand may be 5 mm and 5.25 mm from another, and some sizes carry a letter, a number or both (K-10½). Two hooks stamped with the same letter can genuinely produce different gauge.'],
+    ['The gap between 3.75 and 4 mm matters', 'Sizes are closely spaced at the fine end because a quarter of a millimetre changes gauge noticeably on thin yarn. On a jumbo hook a whole millimetre matters less. This is why half sizes exist mostly below 7 mm.'],
+    ['Hook material changes your tension', 'Aluminium is slick and tends to produce looser, faster stitches; bamboo and wood grip the yarn and often tighten it. Swapping brands at the same nominal size can shift gauge by half a hook size, which is why the swatch is the authority and the label is a suggestion.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:18px"><h4 style="font-size:14.5px;margin-bottom:8px">' + x[0] + '</h4>' +
+      '<div style="color:var(--muted);font-size:13.8px">' + x[1] + '</div></div>';
+  }).join('');
+
+  $('#typeSeg').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#typeSeg button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    type = b.getAttribute('data-t');
+    $('#typeHint').textContent = type === 'yarn'
+      ? 'Standard hooks for yarn, from 2.25 mm upwards.'
+      : 'Fine hooks for crochet thread and lace. Numbering runs in reverse: higher number, smaller hook.';
+    $('#pill').textContent = type === 'yarn' ? 'yarn hooks' : 'steel hooks';
+    fillSelect(); show(); renderChart();
+  });
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#from').addEventListener('change', function () { show(); renderChart(); });
+  $('#weight').addEventListener('change', weightOut);
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); });
+  $('#copyBtn').addEventListener('click', function () {
+    var t = table();
+    GT.copy('Metric\tUS\tUK\n' + t.map(function (r) { return r.mm + ' mm\t' + r.us + '\t' + r.uk; }).join('\n'), 'Chart');
+  });
+  $('#printBtn').addEventListener('click', function () { window.print(); });
+
+  $('#typeHint').textContent = 'Standard hooks for yarn, from 2.25 mm upwards.';
+  fillSelect(); show(); renderChart(); weightOut();
+
+  GT.page({
+    slug: 'crochet-hook-size-converter',
+    lede: 'Convert between US, UK and metric crochet hook sizes — including steel thread hooks, where the numbering runs backwards and the same number means two different things.',
+    steps: [
+      { icon: 'gear', title: 'Pick your hook', text: 'Choose yarn or steel, then the size you already have.' },
+      { icon: 'chart', title: 'Read across', text: 'Metric, US and UK equivalents side by side, with nearest alternatives.' },
+      { icon: 'file', title: 'Print the chart', text: 'A full conversion table for the project bag.' }
+    ],
+    guideTitle: 'Why hook sizes disagree with each other',
+    guide:
+      '<p style="color:var(--muted)">There is no single international standard for naming crochet hooks, only for measuring them. Millimetres describe the shaft diameter — the thing that actually forms your stitch. Everything else is a label, and the labels were invented independently on either side of the Atlantic.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">The UK system counts down</h4><p style="color:var(--muted);font-size:13.8px">UK numbers get <strong>smaller as the hook gets bigger</strong>: UK 14 is 2 mm, UK 8 is 4 mm, UK 000 is 10 mm. Someone reading "a size 4 hook" in a British pattern needs 6 mm; the same phrase in a US pattern means 6.5 mm (K-10½) or a 2 mm steel hook, depending on context. This is the classic way a blanket comes out a foot too wide.</p>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">Steel hooks overlap confusingly</h4><p style="color:var(--muted);font-size:13.8px">Thread hooks use a third scale that also counts down, and it reuses the same small numbers. A steel size 2 is 2.25 mm — a fine lace hook. A UK size 2 is 7 mm — thick enough for chunky yarn. Nothing in the number tells you which is meant.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Even US letters vary by brand</h4><p style="color:var(--muted);font-size:13.8px">The letter scale was never formally standardised. Different manufacturers have shipped H hooks at 5 mm and 5.25 mm, and some sizes carry a letter and a number that do not always travel together. Two hooks stamped H can genuinely give you different gauge.</p>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">So use the millimetres</h4><p style="color:var(--muted);font-size:13.8px">Whenever a pattern offers both, follow the metric size. When it offers only a letter or a number, convert it here and check the millimetres against the hook in your hand — most modern hooks are stamped with both.</p></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span>No conversion replaces a gauge swatch. Hook size is only one of the things setting your stitch size — yarn, tension, hook material and even mood all move it. The hook the pattern names is the designer\'s starting point, not yours. See the <a href="/tools/crochet-gauge-calculator">gauge calculator</a> for what to change when your swatch is off.</span></div>',
+    related: ['crochet-gauge-calculator', 'crochet-yarn-yardage-calculator', 'crochet-blanket-stitch-calculator'],
+    faqs: [
+      { q: 'What is a 5 mm crochet hook in US size?', a: 'H-8. In the UK system it is a size 6. 5 mm is the most common hook for worsted or aran weight yarn, which is why it appears in so many patterns.' },
+      { q: 'Why do UK crochet hook numbers go backwards?', a: 'The UK scale was built around wire gauge numbering, where a higher number means a thinner wire. So UK 14 is 2 mm and UK 000 is 10 mm — the opposite direction to US letters. It is worth double-checking any pattern that gives only a number.' },
+      { q: 'What is the difference between steel and regular crochet hooks?', a: 'Steel hooks are much finer, made for crochet thread and lace, and run from about 0.75 mm to 3.5 mm. They have their own numbering that also counts downwards, and it overlaps with other scales — a steel size 2 is 2.25 mm, nothing like a UK size 2 at 7 mm.' },
+      { q: 'Can I substitute a hook half a size up or down?', a: 'Usually yes, and that is exactly how you fix gauge. Going up a half size loosens your stitches and makes the piece bigger; going down tightens it. Change the hook rather than your tension — trying to crochet looser or tighter on purpose is very hard to sustain over a whole project.' },
+      { q: 'Does hook material change the size?', a: 'Not the measurement, but it does change your result. Aluminium is slippery and tends to give looser stitches; bamboo and wood grip and often tighten them. Swapping brands at the same nominal size can shift your gauge by roughly half a hook size.' },
+      { q: 'Which size should I use for my yarn?', a: 'Start from the ball band — it is specific to that yarn. As a general guide, DK takes 4–5.5 mm, worsted 5.5–6.5 mm and chunky 6.5–9 mm. Then swatch, because your tension has the final say.' }
+    ],
+    seo: {
+      title: 'Crochet hook sizes: US, UK and metric, and why they disagree',
+      lead: 'This <strong>crochet hook size converter</strong> translates between US letters, UK numbers and metric millimetres, covering both yarn hooks and steel thread hooks. Below: the full chart, why two of the three systems count backwards, and why the hook on the pattern is only ever a suggestion.',
+      blocks: [
+        {
+          h: 'Millimetres are the real size',
+          html: '<p>A crochet hook\'s size is the diameter of its <strong>shaft</strong> — the straight section behind the head, which is what the loop sits on and what therefore determines stitch size. That measurement is given in millimetres, and it is the only figure that means the same thing everywhere.</p>' +
+            '<p>US letters and UK numbers are naming conventions that grew up separately and map onto the millimetre scale imperfectly. Most modern hooks are stamped with both a letter and a metric size for exactly this reason.</p>' +
+            '<p>When a pattern gives a letter and a millimetre size that do not match your chart, follow the millimetres.</p>'
+        },
+        {
+          h: 'The full conversion chart',
+          table: {
+            head: ['Metric', 'US', 'UK'],
+            rows: [
+              ['2.25 mm', 'B-1', '13'], ['2.5 mm', '—', '12'], ['2.75 mm', 'C-2', '—'],
+              ['3.25 mm', 'D-3', '10'], ['3.5 mm', 'E-4', '9'], ['3.75 mm', 'F-5', '—'],
+              ['4 mm', 'G-6', '8'], ['4.5 mm', '7', '7'], ['5 mm', 'H-8', '6'],
+              ['5.5 mm', 'I-9', '5'], ['6 mm', 'J-10', '4'], ['6.5 mm', 'K-10½', '3'],
+              ['8 mm', 'L-11', '0'], ['9 mm', 'M/N-13', '00'], ['10 mm', 'N/P-15', '000'],
+              ['15 mm', 'P/Q', '—'], ['19 mm', 'S', '—']
+            ]
+          },
+          after: '<p>Gaps in the table are real: some metric sizes have no traditional equivalent in one system or the other. 2.75 mm has no UK number, and UK 11 (3 mm) has no US letter.</p>'
+        },
+        {
+          h: 'Two systems that count backwards',
+          html: '<p>This is where projects go wrong, and it is worth being blunt about it.</p>',
+          list: [
+            '<strong>UK yarn hooks:</strong> higher number = smaller hook. UK 14 is 2 mm, UK 8 is 4 mm, UK 000 is 10 mm.',
+            '<strong>US steel hooks:</strong> higher number = smaller hook. Steel 14 is 0.75 mm, steel 00 is 3.5 mm.',
+            '<strong>US letters:</strong> later letter = bigger hook. B is 2.25 mm, K is 6.5 mm, S is 19 mm. This one runs the way you expect.'
+          ],
+          callout: { type: 'warn', text: '<strong>The same number means different hooks in different systems.</strong> "Size 2" is 2.25 mm as a steel hook and 7 mm as a UK yarn hook — a difference of three times the diameter. A vintage or British pattern giving a bare number, with no millimetre size, is genuinely ambiguous. Check the yarn weight to work out which scale is meant.' }
+        },
+        {
+          h: 'Steel hooks and thread',
+          html: '<p>Steel hooks are for crochet <em>thread</em> rather than yarn — doilies, lace edgings, fine motifs and thread amigurumi. They run from roughly 0.75 mm up to 3.5 mm, far finer than the smallest yarn hook.</p>' +
+            '<p>They are made of steel because aluminium at that diameter would bend. The heads are also shaped differently, with a sharper, more defined throat that can split fine thread if you work carelessly.</p>' +
+            '<p>Thread itself is sized by number in the opposite direction again: size 10 thread is the thickest in common use, size 100 is gossamer. A size 10 thread with a 1.5–1.75 mm hook is the usual doily combination.</p>'
+        },
+        {
+          h: 'Which hook for which yarn',
+          table: {
+            head: ['Yarn weight', 'Also called', 'Hook range'],
+            rows: [
+              ['0 — Lace', 'Cobweb, 2-ply, thread', '1.5–2.25 mm'],
+              ['1 — Super fine', 'Fingering, sock, 4-ply', '2.25–3.5 mm'],
+              ['2 — Fine', 'Sport, baby', '3.5–4.5 mm'],
+              ['3 — Light', 'DK, light worsted', '4.5–5.5 mm'],
+              ['4 — Medium', 'Worsted, aran, afghan', '5.5–6.5 mm'],
+              ['5 — Bulky', 'Chunky, craft, rug', '6.5–9 mm'],
+              ['6 — Super bulky', 'Roving, super chunky', '9–15 mm'],
+              ['7 — Jumbo', 'Arm-knitting weight', '15 mm and up']
+            ]
+          },
+          after: '<p>These are the Craft Yarn Council ranges and they are broad on purpose. The ball band on your specific yarn is more precise, and your swatch is more precise still.</p>',
+          callout: { type: 'tip', text: 'Crocheters commonly go up a hook size from the ball band recommendation, because those numbers are often set for knitting, which produces a denser fabric at the same hook diameter. If your crochet fabric feels stiff at the recommended size, that is usually why.' }
+        },
+        {
+          h: 'The hook is not the whole story',
+          html: '<p>Hook size is one input into gauge, not the definition of it. Four things move your stitch size:</p>',
+          steps: [
+            { t: 'Hook diameter', d: 'The obvious one, and the easiest to change deliberately.' },
+            { t: 'Your tension', d: 'How tightly you hold the yarn. It varies between people, and within one person across a project — many crocheters tighten when tired or stressed.' },
+            { t: 'Hook material', d: 'Aluminium is slick and loosens; bamboo and wood grip and tighten. Half a hook size of difference is normal.' },
+            { t: 'The yarn itself', d: 'Fibre, ply and twist all affect how a stitch sits. Two "worsted" yarns can behave quite differently.' }
+          ],
+          after: '<p>Which is why every pattern says to swatch, and why the answer to "my piece is too big" is almost always to change hook size rather than to try crocheting differently. Work out the adjustment with the <a href="/tools/crochet-gauge-calculator">gauge calculator</a>.</p>'
+        },
+        {
+          h: 'Related crochet tools',
+          list: [
+            '<a href="/tools/crochet-gauge-calculator">Crochet Gauge Calculator</a> — match a pattern\'s gauge or adjust the stitch count to yours.',
+            '<a href="/tools/crochet-yarn-yardage-calculator">Crochet Yarn Yardage Calculator</a> — how much yarn a project needs.'
+          ]
+        }
+      ],
+      keywords: [
+        'crochet hook size converter', 'crochet hook conversion chart', 'us to uk crochet hook sizes',
+        'crochet hook sizes in mm', '5mm crochet hook us size', 'steel crochet hook sizes',
+        'crochet hook chart printable', 'what size hook for dk yarn', 'crochet hook letter sizes',
+        'uk crochet hook numbers', 'thread crochet hook size', 'yarn weight hook size chart'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

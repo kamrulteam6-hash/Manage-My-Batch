@@ -45,6 +45,7 @@
     leaf: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg>',
     db: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/></svg>',
     dice: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="3"/><circle cx="8.5" cy="8.5" r="1.1"/><circle cx="15.5" cy="15.5" r="1.1"/><circle cx="12" cy="12" r="1.1"/></svg>',
+    yarn: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="12" r="8"/><path d="M4.5 8.5c3.5 1.2 8 4 10.5 8.2"/><path d="M6.6 5.4C9.4 7.7 13.6 12 15.9 17.6"/><path d="M14.6 4.6c-1 3.2-1.4 8 .4 12.6"/><path d="m18.6 17.2 2.6 3.4"/></svg>',
     key: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="4"/><path d="m10.5 12.5 8-8M17 6l2 2M14.5 8.5l2 2"/></svg>',
     braces: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5a2 2 0 0 0 2 2h1"/><path d="M16 3h1a2 2 0 0 1 2 2v5a2 2 0 0 0 2 2 2 2 0 0 0-2 2v5a2 2 0 0 1-2 2h-1"/></svg>',
     grid: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg>',
@@ -154,6 +155,22 @@
       desc: 'Access-Control headers with preflight handling and a request simulator.',
       cat: 'API & HTTP', icon: 'send', tone: 'ic-amber',
       kw: 'cors access-control-allow-origin preflight options credentials vary origin api headers' },
+
+    /* ---- Crochet & Yarn ---- */
+    { slug: 'crochet-hook-size-converter', name: 'Crochet Hook Size Converter', short: 'Hook Sizes',
+      desc: 'US, UK and metric hook sizes, including steel thread hooks and yarn weight guides.',
+      cat: 'Crochet & Yarn', icon: 'yarn', tone: 'ic-purple',
+      kw: 'crochet hook size converter chart us uk metric mm steel thread yarn weight conversion' },
+
+    { slug: 'crochet-gauge-calculator', name: 'Crochet Gauge Calculator', short: 'Gauge',
+      desc: 'Compare your swatch to the pattern, get a hook to try, or resize to your own gauge.',
+      cat: 'Crochet & Yarn', icon: 'yarn', tone: 'ic-purple',
+      kw: 'crochet gauge calculator tension swatch stitches per inch resize pattern hook size' },
+
+    { slug: 'crochet-yarn-yardage-calculator', name: 'Crochet Yarn Yardage Calculator', short: 'Yarn Yardage',
+      desc: 'How much yarn a project needs, from a weighed swatch or a quick estimate.',
+      cat: 'Crochet & Yarn', icon: 'yarn', tone: 'ic-purple',
+      kw: 'crochet yarn calculator yardage how much yarn blanket skeins dye lot substitute' },
 
     /* ---- IDs & Random ---- */
     { slug: 'uuid-v7-generator', name: 'UUID v7 Generator', short: 'UUID v7',
@@ -433,7 +450,8 @@
     { name: 'Education', desc: 'Classroom tools', icon: 'users', tone: 'ic-blue', match: 'Education' },
     { name: 'Puzzles & Games', desc: 'Bingo & word search', icon: 'puzzle', tone: 'ic-purple', match: 'Puzzles & Games' },
     { name: 'Sports & Teams', desc: 'Brackets & fixtures', icon: 'trophy', tone: 'ic-amber', match: 'Sports & Teams' },
-    { name: 'Rotations & Events', desc: 'Rotas & gift draws', icon: 'repeat', tone: 'ic-green', match: 'Rotations & Events' }
+    { name: 'Rotations & Events', desc: 'Rotas & gift draws', icon: 'repeat', tone: 'ic-green', match: 'Rotations & Events' },
+    { name: 'Crochet & Yarn', desc: 'Gauge, yardage & patterns', icon: 'yarn', tone: 'ic-purple', match: 'Crochet & Yarn' }
   ];
   window.GT_CATS = CATS;
 

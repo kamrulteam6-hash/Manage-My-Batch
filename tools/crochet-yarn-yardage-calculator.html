@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CX2WHCM8XP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CX2WHCM8XP');
+</script>
+<title>Crochet Yarn Yardage Calculator — How Much Yarn Do I Need? | Manage My Batch</title>
+<meta name="description" content="Free crochet yarn calculator. Work out yards, metres and skeins for any project — from a weighed swatch for real accuracy, or from project size and yarn weight for a quick estimate.">
+<meta name="keywords" content="crochet yarn calculator, how much yarn do i need, yarn yardage calculator, skeins for a blanket, yarn estimate crochet, yards per square inch">
+<link rel="canonical" href="https://managemybatch.com/tools/crochet-yarn-yardage-calculator">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Crochet Yarn Yardage Calculator — How Much Yarn Do I Need?">
+<meta property="og:description" content="Free crochet yarn calculator. Work out yards, metres and skeins for any project — from a weighed swatch for real accuracy, or from project size and yarn weight for a quick estimate.">
+<meta property="og:url" content="https://managemybatch.com/tools/crochet-yarn-yardage-calculator">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Crochet Yarn Yardage Calculator — How Much Yarn Do I Need?">
+<meta name="twitter:description" content="Free crochet yarn calculator. Work out yards, metres and skeins for any project — from a weighed swatch for real accuracy, or from project size and yarn weight for a quick estimate.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="/assets/favicon/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/favicon/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Project &amp; Yarn</div>
+
+    <div class="field">
+      <label>Method</label>
+      <div class="seg" id="modeSeg">
+        <button type="button" class="on" data-m="swatch">From a weighed swatch</button>
+        <button type="button" data-m="estimate">Quick estimate</button>
+      </div>
+      <div class="hint" id="modeHint"></div>
+    </div>
+
+    <div class="field">
+      <label for="preset">Project</label>
+      <select id="preset"></select>
+    </div>
+
+    <div class="row">
+      <div class="field"><label for="w">Width (in)</label><input type="number" id="w" value="50" min="1" step="0.5"></div>
+      <div class="field"><label for="h">Length (in)</label><input type="number" id="h" value="60" min="1" step="0.5"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div id="swatchFields">
+      <div class="field">
+        <div class="label">Your swatch</div>
+        <div class="row">
+          <div class="field"><label for="sw">Width (in)</label><input type="number" id="sw" value="6" min="1" step="0.5"></div>
+          <div class="field"><label for="sh">Height (in)</label><input type="number" id="sh" value="6" min="1" step="0.5"></div>
+        </div>
+        <div class="field"><label for="sg">Weight (grams)</label><input type="number" id="sg" value="11" min="0.1" step="0.1"></div>
+        <div class="hint">Weigh the blocked swatch on a kitchen scale. Anything that reads to 1 g is accurate enough; 0.1 g is better.</div>
+      </div>
+    </div>
+
+    <div id="estFields" hidden>
+      <div class="field">
+        <label for="weight">Yarn weight</label>
+        <select id="weight">
+          <option value="0">0 — Lace</option>
+          <option value="1">1 — Super fine (fingering)</option>
+          <option value="2">2 — Fine (sport)</option>
+          <option value="3">3 — Light (DK)</option>
+          <option value="4" selected>4 — Medium (worsted, aran)</option>
+          <option value="5">5 — Bulky (chunky)</option>
+          <option value="6">6 — Super bulky</option>
+          <option value="7">7 — Jumbo</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="stitch">Main stitch</label>
+        <select id="stitch">
+          <option value="1.5">Single crochet — dense</option>
+          <option value="1.25">Half double crochet</option>
+          <option value="1" selected>Double crochet</option>
+          <option value="0.85">Treble crochet</option>
+          <option value="0.7">Granny / mesh — open</option>
+        </select>
+        <div class="hint">Denser stitches use dramatically more yarn for the same area. Single crochet can take half as much again as double.</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <div class="label">Your yarn</div>
+      <div class="row">
+        <div class="field"><label for="skY">Yards per skein</label><input type="number" id="skY" value="220" min="1" step="1"></div>
+        <div class="field"><label for="skG">Grams per skein</label><input type="number" id="skG" value="100" min="1" step="1"></div>
+      </div>
+      <div class="hint">Both numbers are on the ball band. Yardage matters more than weight when substituting yarn.</div>
+    </div>
+
+    <div class="field">
+      <label for="buffer">Safety margin</label>
+      <select id="buffer">
+        <option value="0">None — I like living dangerously</option>
+        <option value="10">10% — same dye lot in hand</option>
+        <option value="15" selected>15% — recommended</option>
+        <option value="25">25% — edging, fringe or colourwork</option>
+      </select>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Yarn Needed<span class="spacer"></span>
+      <span class="result-pill" id="pill">—</span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="result">Result</button>
+      <button type="button" data-tab="checks">Checks</button>
+      <button type="button" data-tab="table">Typical projects</button>
+      <button type="button" data-tab="notes">Buying notes</button>
+    </div>
+
+    <div data-panel="result"><div id="result"></div></div>
+    <div data-panel="checks" hidden><div id="checks"></div></div>
+    <div data-panel="table" hidden><div id="table"></div></div>
+    <div data-panel="notes" hidden><div id="notes"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var $ = GT.$, $$ = GT.$$, I = GTI;
+  ['icoGear:gear', 'icoSpark:spark'].forEach(function (p) {
+    var b = p.split(':'), el = $('#' + b[0]); if (el) el.innerHTML = I[b[1]];
+  });
+
+  var PRESETS = [
+    { n: 'Custom', w: 0, h: 0 },
+    { n: 'Dishcloth', w: 8, h: 8 },
+    { n: 'Scarf', w: 8, h: 60 },
+    { n: 'Baby blanket', w: 30, h: 36 },
+    { n: 'Lapghan / small throw', w: 36, h: 48 },
+    { n: 'Throw', w: 50, h: 60 },
+    { n: 'Twin bedspread', w: 66, h: 90 },
+    { n: 'Double bedspread', w: 80, h: 90 },
+    { n: 'Queen bedspread', w: 90, h: 100 },
+    { n: 'King bedspread', w: 108, h: 100 },
+    { n: 'Shawl (triangle, half area)', w: 60, h: 30 },
+    { n: 'Cushion cover (both sides)', w: 18, h: 36 }
+  ];
+  $('#preset').innerHTML = PRESETS.map(function (p, i) {
+    return '<option value="' + i + '"' + (p.n === 'Throw' ? ' selected' : '') + '>' + p.n +
+      (p.w ? ' — ' + p.w + ' × ' + p.h + ' in' : '') + '</option>';
+  }).join('');
+
+  /* Yards of yarn per square inch of double-crochet fabric, by CYC weight.
+     Derived from typical finished-project yardages; a starting point only. */
+  var YPSI = [2.2, 1.6, 1.2, 0.9, 0.67, 0.45, 0.3, 0.18];
+  var WNAME = ['Lace', 'Super fine', 'Fine', 'Light (DK)', 'Medium (worsted)', 'Bulky', 'Super bulky', 'Jumbo'];
+
+  var mode = 'swatch';
+  function num(id) { var v = parseFloat($(id).value); return isFinite(v) && v > 0 ? v : 0; }
+
+  function compute() {
+    var W = num('#w'), H = num('#h');
+    if (!W || !H) return null;
+    var area = W * H;
+    var skY = num('#skY'), skG = num('#skG');
+    var buffer = parseFloat($('#buffer').value) || 0;
+    var yards, grams, basis;
+
+    if (mode === 'swatch') {
+      var sw = num('#sw'), sh = num('#sh'), sg = num('#sg');
+      if (!sw || !sh || !sg) return null;
+      var sArea = sw * sh;
+      grams = sg * (area / sArea);
+      yards = skG ? grams * (skY / skG) : 0;
+      basis = 'your swatch (' + (Math.round(sg / sArea * 100) / 100) + ' g per square inch)';
+    } else {
+      var wIdx = parseInt($('#weight').value, 10);
+      var stMul = parseFloat($('#stitch').value);
+      yards = area * YPSI[wIdx] * stMul;
+      grams = skY ? yards * (skG / skY) : 0;
+      basis = WNAME[wIdx] + ' yarn, estimated';
+    }
+
+    var yTotal = yards * (1 + buffer / 100);
+    var gTotal = grams * (1 + buffer / 100);
+    return {
+      area: area, yards: yards, grams: grams,
+      yTotal: yTotal, gTotal: gTotal, buffer: buffer, basis: basis,
+      skeins: skY ? Math.ceil(yTotal / skY) : 0,
+      skeinsExact: skY ? yTotal / skY : 0,
+      metres: yTotal * 0.9144
+    };
+  }
+
+  function render() {
+    var r = compute();
+    if (!r) { $('#result').innerHTML = '<div class="note note-warn">' + I.warn + '<span>Fill in the project size and swatch details.</span></div>'; $('#pill').textContent = '—'; return; }
+
+    $('#pill').textContent = r.skeins + (r.skeins === 1 ? ' skein' : ' skeins');
+
+    var cell = function (label, v, sub) {
+      return '<div style="flex:1;min-width:120px;text-align:center;padding:14px 8px;border:1px solid var(--line,#e5e7eb);border-radius:10px">' +
+        '<div style="font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)">' + label + '</div>' +
+        '<div style="font-size:23px;font-weight:700;margin-top:3px">' + v + '</div>' +
+        (sub ? '<div style="font-size:12px;color:var(--muted);margin-top:2px">' + sub + '</div>' : '') + '</div>';
+    };
+
+    $('#result').innerHTML =
+      '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">' +
+        cell('Yards', Math.ceil(r.yTotal).toLocaleString(), Math.ceil(r.metres).toLocaleString() + ' m') +
+        cell('Grams', Math.ceil(r.gTotal).toLocaleString(), (Math.ceil(r.gTotal / 28.35 * 10) / 10) + ' oz') +
+        cell('Skeins', r.skeins, 'buy this many') +
+      '</div>' +
+      '<div class="seo-table-wrap" style="margin-top:14px"><table class="seo-table"><tbody>' +
+        '<tr><td>Project area</td><td>' + r.area.toLocaleString() + ' sq in</td></tr>' +
+        '<tr><td>Based on</td><td>' + r.basis + '</td></tr>' +
+        '<tr><td>Bare requirement</td><td>' + Math.ceil(r.yards).toLocaleString() + ' yd</td></tr>' +
+        '<tr><td>With ' + r.buffer + '% margin</td><td><strong>' + Math.ceil(r.yTotal).toLocaleString() + ' yd</strong></td></tr>' +
+        '<tr><td>Exact skeins</td><td>' + (Math.round(r.skeinsExact * 100) / 100) + ' — rounded up to ' + r.skeins + '</td></tr>' +
+      '</tbody></table></div>';
+
+    /* checks */
+    var c = [];
+    if (mode === 'estimate')
+      c.push({ s: 'warn', m: '<strong>This is an estimate, not a measurement.</strong> It assumes average tension and a plain fabric. Your actual use can differ by 20% either way. For anything where running out would be painful — a large blanket, a discontinued yarn — weigh a swatch and use the other mode.' });
+    else
+      c.push({ s: 'ok', m: '<strong>The swatch method is the accurate one.</strong> It measures your real tension, your real stitch and your real yarn, so the only significant error left is how carefully you weighed it.' });
+
+    var leftover = r.skeins * num('#skY') - r.yTotal;
+    if (r.skeinsExact > 0 && (r.skeins - r.skeinsExact) < 0.15)
+      c.push({ s: 'err', m: '<strong>You are within 15% of a skein boundary.</strong> Needing ' + (Math.round(r.skeinsExact * 100) / 100) + ' skeins means almost nothing spare. Buy one more — the alternative is hunting a matching dye lot when you are two rows short.' });
+    else if (leftover > num('#skY') * 0.8)
+      c.push({ s: 'warn', m: 'This leaves nearly a full skein spare. If the yarn is expensive, consider trimming the project size slightly or accepting a smaller margin.' });
+
+    if (r.buffer === 0)
+      c.push({ s: 'err', m: 'No safety margin. Gauge drift, a miscount, a knot in the skein or a change of mind about the border all eat yarn. 15% is the sensible default.' });
+
+    if (mode === 'estimate' && parseFloat($('#stitch').value) >= 1.5)
+      c.push({ s: 'warn', m: 'Single crochet is dense and yarn-hungry — roughly 50% more than double crochet for the same area. Blanket patterns in single crochet routinely surprise people at the till.' });
+
+    c.push({ s: 'warn', m: '<strong>Buy it all at once, in one dye lot.</strong> The dye lot number on the band identifies a single batch. Two balls of the same colour from different lots can differ enough to show as a stripe across a finished blanket, and shops rarely hold a lot for long.' });
+    c.push({ s: 'ok', m: 'When substituting yarn, match on <strong>yardage</strong>, not on grams. A 100 g skein of one worsted may hold 200 yards and another 230 — buying by weight can leave you 15% short.' });
+
+    $('#checks').innerHTML = c.map(function (x) {
+      return '<div class="note ' + (x.s === 'ok' ? 'note-ok' : x.s === 'warn' ? 'note-warn' : 'note-err') + '" style="margin-top:8px">' +
+        (x.s === 'ok' ? I.check : I.warn) + '<span>' + x.m + '</span></div>';
+    }).join('');
+  }
+
+  /* typical project table, in worsted double crochet */
+  $('#table').innerHTML = '<div class="seo-table-wrap"><table class="seo-table"><thead><tr>' +
+    '<th>Project</th><th>Size</th><th>Worsted, dc</th><th>DK, dc</th><th>Chunky, dc</th></tr></thead><tbody>' +
+    PRESETS.filter(function (p) { return p.w; }).map(function (p) {
+      var a = p.w * p.h;
+      var f = function (i) { return Math.round(a * YPSI[i] / 25) * 25; };
+      return '<tr><td><strong>' + p.n + '</strong></td><td>' + p.w + ' × ' + p.h + ' in</td>' +
+        '<td>' + f(4).toLocaleString() + ' yd</td><td>' + f(3).toLocaleString() + ' yd</td><td>' + f(5).toLocaleString() + ' yd</td></tr>';
+    }).join('') + '</tbody></table></div>' +
+    '<div class="note note-info" style="margin-top:12px">' + I.info +
+    '<span>Double crochet, average tension, no border or fringe. Single crochet adds roughly half again; a granny or mesh pattern takes about 30% less. Treat these as a shopping guide, not a promise.</span></div>';
+
+  $('#notes').innerHTML = [
+    ['Weigh, do not guess', 'A kitchen scale turns this from an estimate into arithmetic. Weigh the blocked swatch, divide by its area, multiply by the project area. Every part of your own tension is already baked into that number.'],
+    ['Buy the whole project at once', 'Dye lots are batches. Two skeins of the same shade from different lots can be visibly different in daylight, and the difference usually shows as a band across the finished piece rather than as an interesting variation.'],
+    ['Substitute on yardage, never weight', 'Yarn is sold by weight and used by length. A 100 g skein might be 200 or 230 yards depending on fibre and ply. Matching grams while ignoring yards is how people end up 15% short.'],
+    ['Borders and fringe are not free', 'A wide border can add 10–15% to a blanket, and fringe can add more than people expect. If either is planned, use the 25% margin rather than 15%.'],
+    ['Keep the ball band', 'It carries the dye lot, the fibre content and the washing instructions. If you need one more skein in three weeks, the lot number is the only way to ask for a match.'],
+    ['Leftovers are not waste', 'Consistently over-buying by one skein produces a stash that becomes granny squares, amigurumi or stripes. Running short produces a half-finished blanket and a discontinued colour.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:18px"><h4 style="font-size:14.5px;margin-bottom:8px">' + x[0] + '</h4>' +
+      '<div style="color:var(--muted);font-size:13.8px">' + x[1] + '</div></div>';
+  }).join('');
+
+  $('#modeSeg').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#modeSeg button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    mode = b.getAttribute('data-m');
+    $('#swatchFields').hidden = mode !== 'swatch';
+    $('#estFields').hidden = mode !== 'estimate';
+    $('#modeHint').textContent = mode === 'swatch'
+      ? 'Accurate. Weigh a blocked swatch and the maths does the rest — your tension is already included.'
+      : 'Quick. Uses average yardage per square inch for the yarn weight and stitch. Expect ±20%.';
+    render();
+  });
+  $('#preset').addEventListener('change', function () {
+    var p = PRESETS[+$('#preset').value];
+    if (p && p.w) { $('#w').value = p.w; $('#h').value = p.h; }
+    render();
+  });
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('input', render);
+  $('#cfg').addEventListener('change', render);
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); render(); });
+
+  $('#modeHint').textContent = 'Accurate. Weigh a blocked swatch and the maths does the rest — your tension is already included.';
+  render();
+
+  GT.page({
+    slug: 'crochet-yarn-yardage-calculator',
+    lede: 'Work out how much yarn a project actually needs — accurately, from a weighed swatch, or quickly from the project size and yarn weight.',
+    steps: [
+      { icon: 'gear', title: 'Weigh a swatch', text: 'A blocked square and a kitchen scale beat any lookup table.' },
+      { icon: 'chart', title: 'Set the project size', text: 'Twelve presets from dishcloth to king bedspread, or your own dimensions.' },
+      { icon: 'money', title: 'Buy in one dye lot', text: 'With a margin, because running short is far worse than a spare skein.' }
+    ],
+    guideTitle: 'The swatch method, and why tables get it wrong',
+    guide:
+      '<p style="color:var(--muted)">Every "how much yarn for a blanket" chart makes the same assumption: that you crochet like the person who wrote it. Tension varies enormously between people — two crocheters with the same yarn, hook and pattern can differ by 20% in yarn use — so a table can only ever be a starting point.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Weighing removes the guesswork</h4><p style="color:var(--muted);font-size:13.8px">Yarn use scales with <strong>area</strong>. Work a swatch, block it, weigh it, and you know how many grams one square inch of <em>your</em> fabric costs. Multiply by the project area and the answer already accounts for your tension, your hook, your stitch and that specific yarn. The only error left is the scale.</p>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">Grams convert to yards</h4><p style="color:var(--muted);font-size:13.8px">The ball band gives both yards and grams per skein, so grams needed converts straight into yards and then into skeins. Weighing is easier and more reliable than trying to measure length.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Stitch choice matters more than people expect</h4><p style="color:var(--muted);font-size:13.8px">Single crochet packs far more yarn into the same area than double crochet — roughly half as much again. A granny or mesh pattern uses perhaps 30% less. Changing your mind about the stitch after buying yarn is a common way to end up short.</p>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">The dye lot problem</h4><p style="color:var(--muted);font-size:13.8px">Yarn is dyed in batches, and batches differ. The mismatch is often invisible in the shop and obvious in daylight across a finished blanket. Buying the whole project at once, in one lot, with a margin, is the only reliable protection.</p></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span>When substituting yarn, match <strong>yardage</strong> rather than weight. Yarn is sold by weight and consumed by length, and two 100 g skeins of worsted can hold 200 and 230 yards. Buying the same number of grams can leave you 15% short without any obvious warning.</span></div>',
+    related: ['crochet-gauge-calculator', 'crochet-hook-size-converter', 'crochet-blanket-yarn-calculator'],
+    faqs: [
+      { q: 'How much yarn do I need for a blanket?', a: 'For a 50 × 60 in throw in worsted-weight double crochet, roughly 2,000 yards — about 9 or 10 standard 220-yard skeins including a margin. Single crochet pushes that towards 3,000. The accurate way is to weigh a blocked swatch and scale by area, which this calculator does.' },
+      { q: 'How do I calculate yarn from a swatch?', a: 'Weigh the blocked swatch and divide by its area to get grams per square inch. Multiply by your project area for grams needed, then convert using the yards-per-gram figure from the ball band. It accounts for your tension automatically.' },
+      { q: 'Why does single crochet use so much more yarn?', a: 'It is a much denser fabric. Single crochet stitches are short, so you work far more of them to cover the same area, and each one still consumes yarn for the pull-through. Expect around 50% more than double crochet for the same finished size.' },
+      { q: 'Should I buy extra yarn?', a: 'Yes — 15% is a sensible default, more if you are adding a border or fringe. Gauge drift, miscounts and knots in the skein all eat into the estimate, and matching a dye lot later is often impossible.' },
+      { q: 'What is a dye lot and does it matter?', a: 'A dye lot is one batch of yarn dyed together, identified by a number on the ball band. Different lots of the same colour can differ subtly, and the difference usually shows as a band across a finished piece. Buy the whole project in one lot.' },
+      { q: 'Can I substitute a different yarn?', a: 'Yes, but match on yardage rather than grams, and swatch again — a different fibre at the same nominal weight can crochet to a different gauge and change both the size and the yarn requirement.' }
+    ],
+    seo: {
+      title: 'How much yarn do I need? The swatch method, and why charts mislead',
+      lead: 'This <strong>crochet yarn calculator</strong> works out yards, metres, grams and skeins for any project — accurately from a weighed swatch, or quickly from project size and yarn weight. Below: the arithmetic, the stitch and fibre factors that move it, and how to buy without running short.',
+      blocks: [
+        {
+          h: 'Yarn use scales with area',
+          html: '<p>The useful insight is that yarn consumption is proportional to <strong>area</strong>, not to length or width alone. Double the width of a blanket and you double the yarn; double both dimensions and you need four times as much.</p>' +
+            '<p>People consistently underestimate this. Going from a 40 × 50 in lapghan to a 50 × 60 in throw sounds like a modest change — ten inches each way. It is 2,000 square inches becoming 3,000: a 50% increase in yarn, and in time.</p>',
+          callout: { type: 'tip', text: 'Before scaling a pattern up, multiply the two dimensions and compare the areas. A "slightly bigger" blanket is very often half as much work again, and the yarn bill moves with it.' }
+        },
+        {
+          h: 'The swatch method, step by step',
+          steps: [
+            { t: 'Work a swatch', d: 'At least 6 × 6 in, in the stitch and yarn you will use for the project.' },
+            { t: 'Block it', d: 'Wash and dry as you will treat the finished piece. Blocking changes area, and area is the whole basis of the calculation.' },
+            { t: 'Measure and weigh', d: 'Record the blocked dimensions and the weight in grams. A 0.1 g scale is ideal; a 1 g kitchen scale is fine for anything blanket-sized.' },
+            { t: 'Divide', d: 'Weight ÷ area = grams per square inch of your fabric.' },
+            { t: 'Multiply', d: 'Grams per square inch × project area = grams needed.' },
+            { t: 'Convert', d: 'Grams needed × (yards per skein ÷ grams per skein) = yards. Divide by yards per skein and round up.' }
+          ],
+          after: '<p>Every variable that normally makes estimates unreliable — your tension, the hook, the specific yarn, the stitch — is already inside that grams-per-square-inch figure. That is why it beats any table.</p>'
+        },
+        {
+          h: 'Typical yardage, worsted weight',
+          table: {
+            head: ['Project', 'Size', 'Double crochet', 'Single crochet'],
+            rows: [
+              ['Dishcloth', '8 × 8 in', '~45 yd', '~65 yd'],
+              ['Scarf', '8 × 60 in', '~325 yd', '~490 yd'],
+              ['Baby blanket', '30 × 36 in', '~725 yd', '~1,090 yd'],
+              ['Lapghan', '36 × 48 in', '~1,160 yd', '~1,740 yd'],
+              ['Throw', '50 × 60 in', '~2,010 yd', '~3,015 yd'],
+              ['Twin bedspread', '66 × 90 in', '~3,980 yd', '~5,970 yd'],
+              ['Queen bedspread', '90 × 100 in', '~6,030 yd', '~9,045 yd']
+            ]
+          },
+          after: '<p>Before any border, fringe or margin. These assume average tension in a plain fabric — treat them as a shopping guide and weigh a swatch for anything expensive.</p>'
+        },
+        {
+          h: 'What moves the number',
+          cards: [
+            { t: 'Stitch height', d: 'The biggest factor after size. Single crochet uses roughly 50% more than double for the same area; treble uses about 15% less. Granny and mesh patterns are the most economical because they are mostly holes.' },
+            { t: 'Your tension', d: 'Tight crocheters use more yarn per square inch than loose ones — the same area, more densely packed. This alone can account for 20% between two people.' },
+            { t: 'Yarn weight', d: 'Thicker yarn covers area faster in length terms, so a chunky blanket needs far fewer yards than a DK one — though not fewer grams.' },
+            { t: 'Fibre', d: 'Cotton is denser and heavier than wool or acrylic, so the same yardage weighs more. This matters when you calculate in grams and buy by yardage.' },
+            { t: 'Borders and fringe', d: 'A wide border can add 10–15% to a blanket. Fringe adds more than people expect, because each strand is folded and doubled.' },
+            { t: 'Colour changes', d: 'Every change leaves tails to weave in. Across a striped blanket that is real yardage, and it is never in the estimate.' }
+          ]
+        },
+        {
+          h: 'Buying: dye lots and margins',
+          html: '<p>Yarn is dyed in batches. Every ball band carries a <strong>dye lot number</strong> identifying its batch, and two balls of the same shade from different lots can differ enough to show.</p>' +
+            '<p>The cruelty is that the difference is often invisible under shop lighting and obvious in daylight on a finished blanket, where it appears as a band rather than as a gradual variation. By then the work is done.</p>',
+          list: [
+            '<strong>Buy the whole project at once</strong>, in one lot. This is the only reliable protection.',
+            '<strong>Add 15%</strong> as a default margin — 25% if you are planning a border or fringe.',
+            '<strong>Keep one ball band</strong> for the lot number, fibre content and washing instructions.',
+            '<strong>Check the lot numbers match</strong> at the till, not at home. Shops do mix them on the shelf.',
+            '<strong>If you must mix lots</strong>, alternate rows between them every couple of rows so the transition is gradual rather than a hard line.'
+          ],
+          callout: { type: 'warn', text: 'Running short is far more expensive than over-buying. A spare skein becomes granny squares or amigurumi; a missing skein in a discontinued colour can mean unravelling a finished blanket. When the two errors cost that differently, round up.' }
+        },
+        {
+          h: 'Substituting yarn',
+          html: '<p>Yarn is sold by weight and used by length, which is the trap. A 100 g skein of worsted acrylic might hold 230 yards; 100 g of worsted cotton might hold 180, because cotton is denser. Buying the same number of grams leaves you more than 20% short.</p>' +
+            '<p>So substitute on <strong>total yardage</strong>. Work out the yards you need, then divide by the yards per skein of the yarn you are actually buying — not by the skein count in the original pattern.</p>' +
+            '<p>Then swatch again. A different fibre at the same nominal weight often crochets to a different gauge, which changes both the finished size and, through density, the yardage. Cotton has little give and tends to produce a firmer, larger fabric than wool at the same hook.</p>'
+        },
+        {
+          h: 'Related crochet tools',
+          list: [
+            '<a href="/tools/crochet-gauge-calculator">Crochet Gauge Calculator</a> — measure and match gauge before estimating yarn.',
+            '<a href="/tools/crochet-hook-size-converter">Crochet Hook Size Converter</a> — US, UK and metric hook sizes.',
+          ]
+        }
+      ],
+      keywords: [
+        'crochet yarn calculator', 'how much yarn do i need', 'yarn yardage calculator',
+        'how much yarn for a blanket', 'skeins needed calculator', 'yarn estimate by weight',
+        'crochet yarn per square inch', 'yarn substitution calculator', 'dye lot yarn',
+        'how many skeins for a throw', 'single crochet yarn usage', 'yards to metres yarn'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>
