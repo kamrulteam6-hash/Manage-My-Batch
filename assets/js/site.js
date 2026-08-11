@@ -135,6 +135,11 @@
       cat: 'Developer', icon: 'server', tone: 'ic-red',
       kw: 'htaccess apache redirect 301 302 rewriterule redirectmatch mod_rewrite https www' },
 
+    { slug: 'content-security-policy-generator', name: 'Content Security Policy Generator', short: 'CSP Header',
+      desc: 'Build a strict CSP with nonces and strict-dynamic, with analysis and server config.',
+      cat: 'Security & Business', icon: 'shield', tone: 'ic-amber',
+      kw: 'csp content security policy header nonce strict-dynamic script-src xss frame-ancestors report-only' },
+
     /* ---- IDs & Random ---- */
     { slug: 'uuid-v7-generator', name: 'UUID v7 Generator', short: 'UUID v7',
       desc: 'Generate RFC 9562 time-ordered UUID v7 identifiers, with a built-in timestamp decoder.',

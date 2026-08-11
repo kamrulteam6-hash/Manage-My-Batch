@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CX2WHCM8XP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CX2WHCM8XP');
+</script>
+<title>Content Security Policy Generator — Strict CSP with Nonces &amp; Reporting | Manage My Batch</title>
+<meta name="description" content="Free Content Security Policy generator. Build a strict CSP with nonces and strict-dynamic, or a host allowlist, with third-party presets and a checker that catches policies that do nothing.">
+<meta name="keywords" content="content security policy generator, csp generator, csp header, strict-dynamic nonce, csp report-only, script-src, frame-ancestors, csp examples">
+<link rel="canonical" href="https://managemybatch.com/tools/content-security-policy-generator">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Content Security Policy Generator — Strict CSP with Nonces &amp; Reporting">
+<meta property="og:description" content="Free Content Security Policy generator. Build a strict CSP with nonces and strict-dynamic, or a host allowlist, with third-party presets and a checker that catches policies that do nothing.">
+<meta property="og:url" content="https://managemybatch.com/tools/content-security-policy-generator">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Content Security Policy Generator — Strict CSP with Nonces &amp; Reporting">
+<meta name="twitter:description" content="Free Content Security Policy generator. Build a strict CSP with nonces and strict-dynamic, or a host allowlist, with third-party presets and a checker that catches policies that do nothing.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="/assets/favicon/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/favicon/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Generator Settings</div>
+
+    <div class="field">
+      <label for="mode">Policy strategy</label>
+      <select id="mode">
+        <option value="strict">Strict — nonce + strict-dynamic (recommended)</option>
+        <option value="allowlist">Host allowlist — name every origin</option>
+        <option value="starter">Report-only starter — observe first, enforce later</option>
+        <option value="lockdown">Lockdown — self only, no third parties</option>
+      </select>
+      <div class="hint" id="modeHint"></div>
+    </div>
+
+    <div class="field">
+      <label for="host">Your origin</label>
+      <input type="text" id="host" value="https://example.com" placeholder="https://example.com">
+      <div class="hint">Used for report endpoints and absolute examples. <code>'self'</code> covers your own origin in the policy itself.</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <div class="label">Third-party services you use</div>
+      <div class="hint" style="margin:0 0 10px">Each one adds the exact origins that service needs — nothing wider.</div>
+      <div class="checks" id="integrations"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field" id="customWrap">
+      <label for="custom">Additional origins</label>
+      <textarea id="custom" style="min-height:80px" placeholder="script-src https://cdn.example.com&#10;img-src https://images.example.com"></textarea>
+      <div class="hint">One per line as <code>directive origin</code>. Anything you add here is merged into that directive.</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <div class="label">Hardening</div>
+      <div class="checks">
+        <label class="check"><input type="checkbox" id="optObject" checked><span><span class="t">object-src 'none'</span><span class="d">Blocks Flash and legacy plugin vectors. No modern site needs it.</span></span></label>
+        <label class="check"><input type="checkbox" id="optBase" checked><span><span class="t">base-uri 'none'</span><span class="d">Stops an injected <code>&lt;base&gt;</code> tag re-pointing every relative URL.</span></span></label>
+        <label class="check"><input type="checkbox" id="optFrameAnc" checked><span><span class="t">frame-ancestors 'none'</span><span class="d">Clickjacking protection. Replaces <code>X-Frame-Options</code>.</span></span></label>
+        <label class="check"><input type="checkbox" id="optForm" checked><span><span class="t">form-action 'self'</span><span class="d">Stops an injected form posting your data elsewhere.</span></span></label>
+        <label class="check"><input type="checkbox" id="optUpgrade"><span><span class="t">upgrade-insecure-requests</span><span class="d">Rewrites http:// subresources to https:// automatically.</span></span></label>
+        <label class="check"><input type="checkbox" id="optInlineStyle" checked><span><span class="t">Allow inline styles</span><span class="d">Most frameworks need this. Far lower risk than inline scripts.</span></span></label>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <div class="label">Deployment</div>
+      <div class="checks">
+        <label class="check"><input type="checkbox" id="optReportOnly" checked><span><span class="t">Report-Only mode</span><span class="d">Nothing is blocked; violations are reported. Always start here.</span></span></label>
+        <label class="check"><input type="checkbox" id="optReport" checked><span><span class="t">Include reporting endpoint</span><span class="d">Adds <code>report-to</code> plus the legacy <code>report-uri</code>.</span></span></label>
+      </div>
+    </div>
+
+    <div class="field" id="reportWrap">
+      <label for="reportUrl">Report endpoint</label>
+      <input type="text" id="reportUrl" value="/csp-report" placeholder="/csp-report">
+    </div>
+
+    <div class="out-actions">
+      <button class="btn btn-primary" type="submit"><span id="icoBolt"></span> Generate</button>
+      <button class="btn btn-ghost" type="button" id="resetBtn"><span id="icoReset"></span> Reset</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated Policy<span class="spacer"></span>
+      <span class="result-pill" id="pill">ready</span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="header">Header</button>
+      <button type="button" data-tab="config">Server config</button>
+      <button type="button" data-tab="checks">Analysis</button>
+      <button type="button" data-tab="ref">Directive reference</button>
+    </div>
+
+    <div data-panel="header">
+      <div class="output-box">
+        <div class="output-bar"><span class="fname" id="hname">Content-Security-Policy-Report-Only</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+      <div id="nonceNote"></div>
+    </div>
+
+    <div data-panel="config" hidden>
+      <div class="field">
+        <label for="platform">Platform</label>
+        <select id="platform">
+          <option value="nginx">Nginx</option>
+          <option value="apache">Apache / .htaccess</option>
+          <option value="express">Express (helmet)</option>
+          <option value="vercel">Vercel — vercel.json</option>
+          <option value="netlify">Netlify — _headers</option>
+          <option value="cloudflare">Cloudflare Worker</option>
+          <option value="meta">HTML meta tag</option>
+        </select>
+      </div>
+      <div class="output-box"><div class="output-bar"><span class="fname" id="cfname">nginx.conf</span></div>
+        <pre class="code" id="cfgOut"></pre></div>
+      <div class="out-actions"><button class="btn btn-ghost" id="copyCfg">Copy config</button></div>
+      <div id="platNote"></div>
+    </div>
+
+    <div data-panel="checks" hidden><div id="checks"></div></div>
+    <div data-panel="ref" hidden><div id="ref"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var $ = GT.$, $$ = GT.$$, I = GTI;
+
+  ['icoGear:gear', 'icoSpark:spark', 'icoBolt:bolt', 'icoReset:reset',
+   'icoCopy:copy', 'icoDl:download'].forEach(function (p) {
+    var b = p.split(':'), el = $('#' + b[0]); if (el) el.innerHTML = I[b[1]];
+  });
+
+  var MODEH = {
+    strict: 'A nonce on every inline script, plus strict-dynamic so scripts your code loads are trusted automatically. Host allowlists become unnecessary — and unbypassable.',
+    allowlist: 'Name every origin explicitly. Easier to retrofit onto an existing site, but a single JSONP endpoint on an allowed CDN can defeat it.',
+    starter: 'A deliberately permissive Report-Only policy. Collect real violation reports for a week, then tighten with evidence instead of guesses.',
+    lockdown: 'Your origin only. Correct for admin panels, internal dashboards and anything with no third-party embeds.'
+  };
+
+  /* origin sets per integration — deliberately narrow */
+  var INTEGRATIONS = [
+    { id: 'ga4', name: 'Google Analytics 4', d: 'gtag.js and the collect endpoint.',
+      src: { 'script-src': ['https://www.googletagmanager.com'],
+             'connect-src': ['https://*.google-analytics.com', 'https://*.analytics.google.com', 'https://*.googletagmanager.com'],
+             'img-src': ['https://*.google-analytics.com', 'https://*.googletagmanager.com'] } },
+    { id: 'gtm', name: 'Google Tag Manager', d: 'Container script. Note the caveat in Analysis.',
+      src: { 'script-src': ['https://www.googletagmanager.com'], 'connect-src': ['https://www.googletagmanager.com'] } },
+    { id: 'gfonts', name: 'Google Fonts', d: 'Stylesheet host plus the font files.',
+      src: { 'style-src': ['https://fonts.googleapis.com'], 'font-src': ['https://fonts.gstatic.com'] } },
+    { id: 'youtube', name: 'YouTube embeds', d: 'Uses the no-cookie domain where possible.',
+      src: { 'frame-src': ['https://www.youtube-nocookie.com', 'https://www.youtube.com'], 'img-src': ['https://i.ytimg.com'] } },
+    { id: 'stripe', name: 'Stripe', d: 'Checkout and Elements.',
+      src: { 'script-src': ['https://js.stripe.com'], 'frame-src': ['https://js.stripe.com', 'https://hooks.stripe.com'], 'connect-src': ['https://api.stripe.com'] } },
+    { id: 'gmaps', name: 'Google Maps', d: 'Embedded map frames and tiles.',
+      src: { 'script-src': ['https://maps.googleapis.com'], 'img-src': ['https://maps.gstatic.com', 'https://*.googleapis.com'], 'frame-src': ['https://www.google.com'] } },
+    { id: 'cfi', name: 'Cloudflare Web Analytics', d: 'Beacon script and endpoint.',
+      src: { 'script-src': ['https://static.cloudflareinsights.com'], 'connect-src': ['https://cloudflareinsights.com'] } }
+  ];
+
+  $('#integrations').innerHTML = INTEGRATIONS.map(function (x) {
+    return '<label class="check"><input type="checkbox" data-int="' + x.id + '">' +
+      '<span><span class="t">' + x.name + '</span><span class="d">' + x.d + '</span></span></label>';
+  }).join('');
+
+  var ORDER = ['default-src', 'script-src', 'style-src', 'img-src', 'font-src', 'connect-src',
+    'frame-src', 'media-src', 'worker-src', 'manifest-src', 'object-src', 'base-uri',
+    'form-action', 'frame-ancestors', 'upgrade-insecure-requests', 'report-uri', 'report-to'];
+
+  function uniq(a) { var s = {}, o = []; a.forEach(function (x) { if (!s[x]) { s[x] = 1; o.push(x); } }); return o; }
+
+  function chosen() {
+    return INTEGRATIONS.filter(function (x) {
+      var el = document.querySelector('[data-int="' + x.id + '"]');
+      return el && el.checked;
+    });
+  }
+
+  function buildPolicy() {
+    var mode = $('#mode').value;
+    var d = {};
+    var add = function (k, vals) { d[k] = uniq((d[k] || []).concat(vals)); };
+
+    if (mode === 'strict') {
+      add('default-src', ["'self'"]);
+      add('script-src', ["'nonce-{NONCE}'", "'strict-dynamic'", 'https:', "'unsafe-inline'"]);
+    } else if (mode === 'allowlist') {
+      add('default-src', ["'self'"]);
+      add('script-src', ["'self'"]);
+    } else if (mode === 'starter') {
+      add('default-src', ["'self'", 'https:', "'unsafe-inline'"]);
+      add('script-src', ["'self'", 'https:', "'unsafe-inline'"]);
+    } else {
+      add('default-src', ["'self'"]);
+      add('script-src', ["'self'"]);
+    }
+
+    add('style-src', ["'self'"]);
+    if ($('#optInlineStyle').checked) add('style-src', ["'unsafe-inline'"]);
+    add('img-src', ["'self'", 'data:']);
+    add('font-src', ["'self'"]);
+    add('connect-src', ["'self'"]);
+
+    if (mode !== 'lockdown') {
+      chosen().forEach(function (x) {
+        Object.keys(x.src).forEach(function (k) { add(k, x.src[k]); });
+      });
+    }
+
+    $('#custom').value.split('\n').forEach(function (l) {
+      var t = l.trim(); if (!t) return;
+      var p = t.split(/\s+/);
+      if (p.length >= 2 && ORDER.indexOf(p[0]) > -1) add(p[0], p.slice(1));
+    });
+
+    if ($('#optObject').checked) d['object-src'] = ["'none'"];
+    if ($('#optBase').checked) d['base-uri'] = ["'none'"];
+    if ($('#optFrameAnc').checked) d['frame-ancestors'] = ["'none'"];
+    if ($('#optForm').checked) d['form-action'] = ["'self'"];
+    if ($('#optUpgrade').checked) d['upgrade-insecure-requests'] = [];
+
+    if ($('#optReport').checked) {
+      var r = $('#reportUrl').value.trim() || '/csp-report';
+      d['report-uri'] = [r];
+      d['report-to'] = ['csp-endpoint'];
+    }
+
+    /* strict-dynamic makes host allowlists in script-src inert — drop them and say so */
+    var dropped = [];
+    if (mode === 'strict' && d['script-src']) {
+      d['script-src'] = d['script-src'].filter(function (v) {
+        if (/^https:\/\//.test(v)) { dropped.push(v); return false; }
+        return true;
+      });
+    }
+    window.__dropped = dropped;
+    return d;
+  }
+
+  function serialize(d) {
+    return ORDER.filter(function (k) { return d[k]; })
+      .map(function (k) { return d[k].length ? k + ' ' + d[k].join(' ') : k; })
+      .join('; ');
+  }
+
+  function headerName() {
+    return $('#optReportOnly').checked ? 'Content-Security-Policy-Report-Only' : 'Content-Security-Policy';
+  }
+
+  function build() {
+    var d = buildPolicy();
+    var policy = serialize(d);
+    var name = headerName();
+    $('#out').textContent = policy;
+    $('#hname').textContent = name;
+    var n = Object.keys(d).length;
+    $('#meta').textContent = n + ' directives';
+    $('#pill').textContent = $('#optReportOnly').checked ? 'report-only' : 'enforcing';
+    window.__policy = policy; window.__dirs = d;
+
+    $('#nonceNote').innerHTML = /\{NONCE\}/.test(policy)
+      ? '<div class="note note-warn" style="margin-top:10px">' + I.warn +
+        '<span><code>{NONCE}</code> is a placeholder. Your server must replace it with a fresh, cryptographically random value <strong>on every single request</strong>, and print the same value in the <code>nonce</code> attribute of each inline script. A hard-coded nonce provides no protection whatsoever.</span></div>'
+      : '';
+
+    buildConfig();
+    runChecks(d, policy);
+  }
+
+  function buildConfig() {
+    var p = $('#platform').value, policy = window.__policy || '', name = headerName();
+    var reportTo = '{"group":"csp-endpoint","max_age":10886400,"endpoints":[{"url":"' + ($('#reportUrl').value.trim() || '/csp-report') + '"}]}';
+    var t = '', f = '';
+    if (p === 'nginx') {
+      f = 'nginx.conf';
+      t = 'add_header ' + name + ' "' + policy + '" always;\n' +
+          'add_header Reporting-Endpoints "csp-endpoint=\\"' + ($('#reportUrl').value.trim() || '/csp-report') + '\\"" always;';
+    } else if (p === 'apache') {
+      f = '.htaccess';
+      t = '<IfModule mod_headers.c>\n  Header always set ' + name + ' "' + policy.replace(/"/g, '\\"') + '"\n</IfModule>';
+    } else if (p === 'express') {
+      f = 'app.js';
+      t = "const crypto = require('crypto');\n\n" +
+          "app.use((req, res, next) => {\n" +
+          "  res.locals.nonce = crypto.randomBytes(16).toString('base64');\n" +
+          "  res.setHeader(\n    '" + name + "',\n    `" + policy.replace(/\{NONCE\}/, '${res.locals.nonce}') + "`\n  );\n" +
+          "  next();\n});";
+    } else if (p === 'vercel') {
+      f = 'vercel.json';
+      t = JSON.stringify({ headers: [{ source: '/(.*)', headers: [{ key: name, value: policy }] }] }, null, 2);
+    } else if (p === 'netlify') {
+      f = '_headers';
+      t = '/*\n  ' + name + ': ' + policy;
+    } else if (p === 'cloudflare') {
+      f = 'worker.js';
+      t = "export default {\n  async fetch(request, env, ctx) {\n" +
+          "    const res = await fetch(request);\n" +
+          "    const out = new Response(res.body, res);\n" +
+          "    out.headers.set('" + name + "', '" + policy.replace(/'/g, "\\'") + "');\n" +
+          "    return out;\n  }\n};";
+    } else {
+      f = 'index.html';
+      t = '<meta http-equiv="Content-Security-Policy" content="' + policy.replace(/"/g, '&quot;') + '">';
+    }
+    $('#cfname').textContent = f;
+    $('#cfgOut').textContent = t;
+
+    var note = '';
+    if (p === 'meta') {
+      note = '<div class="note note-err" style="margin-top:10px">' + I.warn +
+        '<span>A meta tag <strong>cannot</strong> express <code>frame-ancestors</code>, <code>report-uri</code>, <code>report-to</code> or <code>sandbox</code> — browsers ignore them there. It also applies only after parsing begins, so anything above it in the document is unprotected. Use a real header wherever you can.</span></div>';
+    } else if (p === 'nginx') {
+      note = '<div class="note note-info" style="margin-top:10px">' + I.info +
+        '<span><code>always</code> matters: without it the header is omitted from error responses. Also note that an <code>add_header</code> in a nested block discards every header inherited from its parent.</span></div>';
+    } else if (p === 'express') {
+      note = '<div class="note note-info" style="margin-top:10px">' + I.info +
+        '<span>Pass <code>res.locals.nonce</code> into your template and render it as <code>&lt;script nonce="…"&gt;</code>. Helmet can do this for you via <code>helmet.contentSecurityPolicy()</code>.</span></div>';
+    }
+    $('#platNote').innerHTML = note;
+  }
+
+  function runChecks(d, policy) {
+    var out = [], ss = (d['script-src'] || []).join(' '), mode = $('#mode').value;
+
+    if (/'unsafe-eval'/.test(ss)) out.push({ s: 'err', m: "<strong><code>'unsafe-eval'</code> is present.</strong> It permits <code>eval()</code> and <code>new Function()</code>, which is exactly the primitive most XSS payloads need. Find the library that requires it and replace it." });
+    if (/'unsafe-inline'/.test(ss) && !/nonce-/.test(ss) && !/'strict-dynamic'/.test(ss))
+      out.push({ s: 'err', m: "<strong><code>'unsafe-inline'</code> in <code>script-src</code> with no nonce.</strong> This allows any injected <code>&lt;script&gt;</code> to run, so the policy provides essentially no XSS protection. Use a nonce instead." });
+    if (/\shttps:(\s|$)/.test(ss) && !/'strict-dynamic'/.test(ss))
+      out.push({ s: 'warn', m: '<strong>A bare <code>https:</code> in <code>script-src</code></strong> trusts every HTTPS origin on the internet. It stops <code>http:</code> injection and very little else.' });
+    if (/\*/.test(ss)) out.push({ s: 'warn', m: 'A wildcard in <code>script-src</code> widens the policy considerably. Prefer explicit hosts, or move to a nonce.' });
+
+    if (mode === 'strict' && /nonce-/.test(ss) && /'unsafe-inline'/.test(ss))
+      out.push({ s: 'ok', m: "<code>'unsafe-inline'</code> alongside a nonce is intentional. Modern browsers ignore it when a nonce is present; older ones that do not understand nonces fall back to it. It is a compatibility shim, not a hole." });
+    if ((window.__dropped || []).length)
+      out.push({ s: 'ok', m: 'Removed redundant host allowlist from <code>script-src</code> (' + GT.esc(window.__dropped.join(', ')) + '). With <code>strict-dynamic</code>, browsers ignore host lists entirely — scripts loaded by an already-trusted script are trusted automatically.' });
+
+    if (!d['object-src']) out.push({ s: 'warn', m: '<code>object-src</code> is unset. <code>default-src</code> does cover it, but setting <code>object-src \'none\'</code> explicitly is standard hardening and costs nothing.' });
+    if (!d['base-uri']) out.push({ s: 'warn', m: "<code>base-uri</code> is unset and <strong><code>default-src</code> does not cover it</strong>. Without it, an injected <code>&lt;base href&gt;</code> can silently re-point every relative URL on the page." });
+    if (!d['frame-ancestors']) out.push({ s: 'warn', m: "<code>frame-ancestors</code> is unset and <strong>is not covered by <code>default-src</code></strong>. Your pages can be framed for clickjacking." });
+    else out.push({ s: 'ok', m: '<code>frame-ancestors</code> supersedes <code>X-Frame-Options</code> in every modern browser. You can drop the old header once this is enforcing.' });
+    if (!d['form-action']) out.push({ s: 'warn', m: "<code>form-action</code> is unset and is <strong>not</strong> covered by <code>default-src</code>. An injected form could post credentials to an attacker's server." });
+
+    if ($('#optReportOnly').checked)
+      out.push({ s: 'ok', m: '<strong>Report-Only: nothing is blocked.</strong> This is the correct way to start. Collect reports for one to two weeks, fix what they surface, then switch the header name to <code>Content-Security-Policy</code>.' });
+    else
+      out.push({ s: 'warn', m: '<strong>This policy is enforcing.</strong> Anything not permitted will be blocked outright, including scripts your marketing team adds later. Confirm you have run it in Report-Only first.' });
+
+    var gtm = document.querySelector('[data-int="gtm"]');
+    if (gtm && gtm.checked && mode !== 'strict')
+      out.push({ s: 'warn', m: "<strong>Tag Manager and strict CSP conflict by design.</strong> GTM exists to inject arbitrary tags, so containers using custom HTML tags need <code>'unsafe-inline'</code> — which defeats the policy. Use GTM's built-in nonce support with the strict strategy, or restrict the container to native tag templates." });
+
+    if (!d['report-uri'] && !d['report-to'])
+      out.push({ s: 'warn', m: 'No reporting endpoint. Without one you will never learn what the policy is blocking for real users — you only find out when someone complains.' });
+    else
+      out.push({ s: 'ok', m: '<code>report-uri</code> is deprecated but still the only thing Safari and older browsers understand; <code>report-to</code> is the modern replacement. Sending both is deliberate. Remember to serve the matching <code>Reporting-Endpoints</code> header.' });
+
+    var len = policy.length;
+    out.push({ s: len > 3000 ? 'warn' : 'ok', m: 'Policy length: <strong>' + len + ' bytes</strong>' + (len > 3000 ? ' — some proxies cap header size around 4–8 KB. Consider trimming.' : '. Comfortably within header size limits.') });
+
+    $('#checks').innerHTML = out.map(function (x) {
+      return '<div class="note ' + (x.s === 'ok' ? 'note-ok' : x.s === 'warn' ? 'note-warn' : 'note-err') + '" style="margin-top:8px">' +
+        (x.s === 'ok' ? I.check : I.warn) + '<span>' + x.m + '</span></div>';
+    }).join('');
+  }
+
+  $('#ref').innerHTML = [
+    ["<code>default-src</code>", "The fallback for most fetch directives — but <strong>not</strong> for <code>base-uri</code>, <code>form-action</code>, <code>frame-ancestors</code>, <code>report-uri</code> or <code>sandbox</code>. Those must be set explicitly, which is the most common gap in a hand-written policy."],
+    ["<code>'self'</code>", "The exact scheme, host and port of the document. Does not include subdomains."],
+    ["<code>'none'</code>", "Blocks everything for that directive. Must be the only value."],
+    ["<code>'nonce-…'</code>", "A random token, regenerated per request, matching a <code>nonce</code> attribute on the tag. The backbone of a strict policy."],
+    ["<code>'strict-dynamic'</code>", "Trust propagates: any script loaded by an already-trusted script is trusted too. Makes host allowlists unnecessary — and browsers ignore them once it is present."],
+    ["<code>'unsafe-inline'</code>", "Permits inline scripts and handlers. Ignored when a nonce or hash is also present, which is what makes the compatibility fallback safe."],
+    ["<code>'unsafe-eval'</code>", "Permits <code>eval()</code> and friends. Avoid — a handful of older libraries still require it."],
+    ["<code>'sha256-…'</code>", "Allow one specific inline block by hash. Good for a single static snippet; painful for anything that changes."],
+    ["<code>frame-ancestors</code>", "Who may frame you. The modern replacement for <code>X-Frame-Options</code>, and it accepts a list rather than a single value."],
+    ["<code>upgrade-insecure-requests</code>", "Rewrites <code>http://</code> subresource URLs to <code>https://</code> before fetching. Useful during a migration; not a substitute for fixing the links."],
+    ["<code>report-uri</code> / <code>report-to</code>", "Where violation reports are POSTed. <code>report-uri</code> is deprecated but has the wider support; send both."]
+  ].map(function (x) {
+    return '<div style="margin-bottom:18px"><h4 style="font-size:14.5px;margin-bottom:8px">' + x[0] + '</h4>' +
+      '<div style="color:var(--muted);font-size:13.8px">' + x[1] + '</div></div>';
+  }).join('');
+
+  function sync() {
+    $('#modeHint').textContent = MODEH[$('#mode').value];
+    $('#reportWrap').hidden = !$('#optReport').checked;
+  }
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Policy generated'); });
+  $('#cfg').addEventListener('input', function () { sync(); build(); });
+  $('#cfg').addEventListener('change', function () { sync(); build(); });
+  $('#platform').addEventListener('change', buildConfig);
+  $('#copyBtn').addEventListener('click', function () { GT.copy($('#out').textContent, 'Policy'); });
+  $('#copyCfg').addEventListener('click', function () { GT.copy($('#cfgOut').textContent, 'Config'); });
+  $('#dlBtn').addEventListener('click', function () { GT.download($('#out').textContent, 'csp.txt', 'text/plain'); });
+  $('#resetBtn').addEventListener('click', function () { setTimeout(function () { sync(); build(); }, 0); });
+
+  sync(); build();
+
+  GT.page({
+    slug: 'content-security-policy-generator',
+    lede: 'Build a Content Security Policy that actually stops XSS — nonces and strict-dynamic rather than an allowlist you can bypass, with an analysis pass that flags the directives a policy usually forgets.',
+    steps: [
+      { icon: 'gear', title: 'Pick a strategy', text: 'Strict nonce-based, a host allowlist, or a permissive report-only starter.' },
+      { icon: 'shield', title: 'Add your third parties', text: 'Each service contributes only the origins it genuinely needs.' },
+      { icon: 'copy', title: 'Ship Report-Only first', text: 'Collect real violations for a week or two, then flip to enforcing.' }
+    ],
+    guideTitle: 'Why allowlists fail and nonces do not',
+    guide:
+      '<p style="color:var(--muted)">The intuitive way to write a CSP is to list the origins you trust: <code>script-src \'self\' https://cdn.example.com</code>. Research on real-world policies found the overwhelming majority of allowlist-based policies were trivially bypassable, and the reason is uncomfortable: you are not trusting an origin, you are trusting <em>every file on it</em>.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">The JSONP problem</h4><p style="color:var(--muted);font-size:13.8px">Large CDNs and API hosts often expose a JSONP endpoint that reflects a caller-supplied callback name into executable JavaScript. If that host is on your allowlist, an attacker points a script tag at it and runs arbitrary code — fully permitted by your policy. One friendly-looking CDN entry can undo the whole thing.</p>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">Allowlists also rot</h4><p style="color:var(--muted);font-size:13.8px">Every new vendor means another origin, and nobody ever removes one. Policies drift towards permissive over time because tightening them risks breaking a page nobody owns any more.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">What a nonce changes</h4><p style="color:var(--muted);font-size:13.8px">A nonce is a fresh random token per response, echoed on each script tag you intended to include. An injected script has no way to know it, so it cannot execute — regardless of which host it came from. Trust becomes a property of <em>your markup</em> rather than of somebody else\'s domain.</p>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">strict-dynamic makes it practical</h4><p style="color:var(--muted);font-size:13.8px">Nonces alone break loaders that inject further scripts. <code>\'strict-dynamic\'</code> propagates trust: a script you nonced may load others. That is what makes a strict policy survive contact with real analytics and tag libraries.</p></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span>The nonce must be <strong>cryptographically random and regenerated on every request</strong>. A nonce baked into a static HTML file, or reused across a cached page, is public knowledge and provides no protection at all — it is the most common way a strict-looking policy turns out to be decorative.</span></div>',
+    related: ['x-robots-tag-generator', 'security-txt-generator', 'nginx-redirect-generator'],
+    faqs: [
+      { q: 'What is a Content Security Policy?', a: 'An HTTP response header that tells the browser which sources of script, style, images and other resources are permitted on your pages. Anything not permitted is blocked, which turns most cross-site scripting bugs from an exploit into a console error.' },
+      { q: 'Should I start with enforcing or Report-Only?', a: 'Always Report-Only. It blocks nothing and reports everything, so you discover what a real policy would break using real traffic rather than guesswork. Run it for one to two weeks, fix the reports, then rename the header to enforce.' },
+      { q: 'Why is unsafe-inline in my strict policy?', a: 'As a deliberate fallback. When a nonce is present, modern browsers ignore <code>\'unsafe-inline\'</code> entirely; only older browsers that do not understand nonces use it. Removing it makes no difference to modern security and breaks legacy clients.' },
+      { q: 'Does default-src cover everything?', a: 'No, and this is the most common mistake. <code>base-uri</code>, <code>form-action</code>, <code>frame-ancestors</code>, <code>report-uri</code> and <code>sandbox</code> all ignore <code>default-src</code> and must be set explicitly.' },
+      { q: 'Can I put CSP in a meta tag?', a: 'Partly. A meta tag works for most fetch directives but browsers ignore <code>frame-ancestors</code>, <code>report-uri</code>, <code>report-to</code> and <code>sandbox</code> there, and it only applies from the point it is parsed. Use a real header whenever you control the server.' },
+      { q: 'Will CSP break Google Tag Manager?', a: 'Potentially, and by design — GTM exists to inject arbitrary tags. Containers using custom HTML tags need <code>\'unsafe-inline\'</code>, which defeats the policy. Either use GTM\'s nonce support with a strict policy, or restrict the container to native tag templates.' }
+    ],
+    seo: {
+      title: 'Content Security Policy: nonces, strict-dynamic and a rollout that works',
+      lead: 'This <strong>CSP generator</strong> builds a strict, nonce-based Content Security Policy — or a host allowlist if you need one — with third-party presets and an analysis pass that catches the directives most policies forget. Below: how CSP stops XSS, why allowlists usually fail, and how to deploy without breaking your site.',
+      blocks: [
+        {
+          h: 'What CSP actually does',
+          html: '<p>A <strong>Content Security Policy</strong> is a response header listing where the browser may load each type of resource from. Anything outside the policy is refused and reported.</p>' +
+            '<p>Its main job is turning cross-site scripting from a compromise into a logged error. An XSS bug lets an attacker place a script into your page; a good CSP means the browser declines to execute it. The bug still exists and still needs fixing — but it is no longer an incident.</p>' +
+            '<p>It is defence in depth, not a substitute for escaping output. A policy makes exploitation hard; correct encoding makes injection impossible. You want both.</p>'
+        },
+        {
+          h: 'The directives, and what falls through',
+          table: {
+            head: ['Directive', 'Controls', 'Covered by default-src?'],
+            rows: [
+              ['<code>script-src</code>', 'JavaScript. The one that matters most.', 'Yes'],
+              ['<code>style-src</code>', 'Stylesheets and inline styles.', 'Yes'],
+              ['<code>img-src</code>', 'Images, including <code>data:</code> URIs.', 'Yes'],
+              ['<code>connect-src</code>', 'fetch, XHR, WebSocket, EventSource, beacons.', 'Yes'],
+              ['<code>font-src</code>', 'Web fonts.', 'Yes'],
+              ['<code>frame-src</code>', 'What you may embed.', 'Yes'],
+              ['<code>object-src</code>', 'Plugins. Set to <code>\'none\'</code>.', 'Yes'],
+              ['<code>base-uri</code>', 'The <code>&lt;base&gt;</code> tag.', '<strong>No</strong>'],
+              ['<code>form-action</code>', 'Where forms may submit.', '<strong>No</strong>'],
+              ['<code>frame-ancestors</code>', 'Who may frame you.', '<strong>No</strong>'],
+              ['<code>sandbox</code>', 'Applies iframe-style restrictions.', '<strong>No</strong>']
+            ]
+          },
+          callout: { type: 'warn', text: '<strong>The bottom four are the gap in most hand-written policies.</strong> People set a tight <code>default-src</code> and assume it covers everything. It does not: without <code>base-uri</code>, an injected <code>&lt;base href&gt;</code> silently re-points every relative URL on the page, including your script tags.' }
+        },
+        {
+          h: 'Why host allowlists usually fail',
+          html: '<p>The obvious policy names the origins you trust. The problem is that an origin is not a unit of trust — it is thousands of files maintained by someone else.</p>',
+          list: [
+            '<strong>JSONP endpoints.</strong> Many large hosts expose an endpoint that reflects a callback parameter into executable JavaScript. Allowlist that host and an attacker has arbitrary code execution, fully within your policy.',
+            '<strong>Bundled libraries.</strong> Public CDNs host frameworks with known gadget chains that convert injected markup into script execution.',
+            '<strong>User content.</strong> Any allowlisted origin that serves user-uploaded files is an open door.',
+            '<strong>Drift.</strong> Origins accumulate as vendors are added and are never removed, because removing one risks breaking a page nobody owns.'
+          ],
+          after: '<p>Studies of real deployed policies have repeatedly found the large majority of allowlist-based CSPs to be bypassable in practice. This is why Google\'s own guidance moved to nonce-based policies.</p>'
+        },
+        {
+          h: 'The strict policy, explained line by line',
+          html: '<p>The modern recommendation looks like this:</p>' +
+            '<p><code>script-src \'nonce-{RANDOM}\' \'strict-dynamic\' https: \'unsafe-inline\'; object-src \'none\'; base-uri \'none\';</code></p>' +
+            '<p>Each part earns its place, and two of them look wrong until you know why they are there:</p>',
+          steps: [
+            { t: "'nonce-{RANDOM}'", d: 'A fresh random token per response, echoed on every script tag you meant to include. Injected scripts cannot guess it, so they do not run.' },
+            { t: "'strict-dynamic'", d: 'Scripts loaded by an already-trusted script inherit trust. Without it, any loader or analytics bootstrapper breaks.' },
+            { t: 'https:', d: 'Ignored entirely by browsers that support strict-dynamic. It is a fallback for older browsers that do not.' },
+            { t: "'unsafe-inline'", d: 'Also ignored whenever a nonce is present. Purely a fallback for browsers predating nonce support. It is not a hole.' },
+            { t: "object-src 'none'", d: 'Removes the legacy plugin attack surface entirely.' },
+            { t: "base-uri 'none'", d: 'Blocks the base-tag hijack that would otherwise re-point relative URLs.' }
+          ],
+          callout: { type: 'warn', text: 'The nonce must be cryptographically random and <strong>different on every response</strong>. Generating it at build time, or caching a page that contains it, makes it public and the policy decorative. If your pages are served from a CDN cache, the nonce must be injected at the edge.' }
+        },
+        {
+          h: 'Rolling it out without breaking the site',
+          steps: [
+            { t: 'Start in Report-Only', d: 'Send <code>Content-Security-Policy-Report-Only</code>. Nothing is blocked and every violation is reported.' },
+            { t: 'Collect for one to two weeks', d: 'Long enough to catch weekly jobs, campaign scripts and the pages nobody visits on a Tuesday.' },
+            { t: 'Triage the reports', d: 'Expect noise: browser extensions generate violations you cannot fix and should ignore. Look for your own origins and your real vendors.' },
+            { t: 'Tighten and repeat', d: 'Add what is genuinely needed, remove what is not, and let it run again.' },
+            { t: 'Enforce', d: 'Rename the header. Keep the reporting endpoint — it is now your early warning that someone shipped an inline script.' },
+            { t: 'Watch the first 24 hours', d: 'This is when a missed third party surfaces, usually on checkout or a form nobody tested.' }
+          ]
+        },
+        {
+          h: 'Reporting endpoints',
+          html: '<p>A policy without reporting tells you nothing. You find out it is broken when a customer emails.</p>' +
+            '<p>There are two mechanisms, and the sensible move is to send both. <code>report-uri</code> is deprecated but is what Safari and older browsers understand. <code>report-to</code> is the modern replacement and requires a matching <code>Reporting-Endpoints</code> response header naming the group.</p>' +
+            '<p>Whatever receives the reports must tolerate volume and nonsense. Browser extensions, injected ISP scripts and antivirus tooling all generate violations that are not your bug, and a busy site can produce a lot of them. Aggregate by directive and blocked URI rather than reading them individually.</p>',
+          callout: { type: 'tip', text: 'Keep reporting switched on after you enforce. It becomes a regression alarm: the day a developer adds an inline script or marketing pastes in a new tag, you hear about it from the report stream rather than from a blank page.' }
+        },
+        {
+          h: 'What commonly breaks',
+          cards: [
+            { t: 'Inline event handlers', d: '<code>onclick="…"</code> attributes are blocked by any policy without <code>\'unsafe-inline\'</code>, and a nonce cannot rescue them. They must move into external scripts.' },
+            { t: 'javascript: URLs', d: '<code>href="javascript:…"</code> is blocked. Usually found in legacy templates and third-party widgets.' },
+            { t: 'eval in libraries', d: 'Some older templating and date libraries call <code>eval</code> or <code>new Function</code>. They need replacing, not exempting.' },
+            { t: 'Inline styles', d: 'Many frameworks set <code>style</code> attributes at runtime. <code>\'unsafe-inline\'</code> in <code>style-src</code> is a far smaller risk than in <code>script-src</code> and is usually the pragmatic call.' },
+            { t: 'Tag managers', d: 'Custom HTML tags in GTM are arbitrary script injection by design. Use nonce support or restrict the container to native templates.' },
+            { t: 'Browser extensions', d: 'They generate violation reports constantly. Not your bug, and not fixable from your side — filter them out of your triage.' }
+          ]
+        },
+        {
+          h: 'Related security tools',
+          list: [
+            '<a href="/tools/security-txt-generator">security.txt Generator</a> — publish a vulnerability disclosure contact.',
+            '<a href="/tools/x-robots-tag-generator">X-Robots-Tag Generator</a> — indexing headers for files and directories.',
+            '<a href="/tools/htaccess-redirect-generator">.htaccess Redirect Generator</a> — Apache rules, including header setup.',
+            '<a href="/tools/nginx-redirect-generator">Nginx Redirect Generator</a> — server config for the same stack.',
+            '<a href="/tools/random-byte-generator">Random Byte Generator</a> — entropy for nonces and keys.'
+          ]
+        }
+      ],
+      keywords: [
+        'content security policy generator', 'csp generator', 'csp header example',
+        'strict-dynamic nonce csp', 'csp report-only', 'script-src unsafe-inline',
+        'frame-ancestors', 'csp base-uri', 'how to implement csp', 'csp nginx header',
+        'csp meta tag', 'csp google tag manager'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>
