@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CX2WHCM8XP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CX2WHCM8XP');
+</script>
+<title>CORS Header Generator — Preflight, Credentials &amp; Vary: Origin | Manage My Batch</title>
+<meta name="description" content="Free CORS header generator with a request simulator. Build Access-Control-Allow-Origin rules, handle preflight correctly, and catch the wildcard-plus-credentials and missing Vary bugs.">
+<meta name="keywords" content="cors header generator, access-control-allow-origin, cors preflight options, cors credentials wildcard, vary origin, cors nginx config, cors error fix">
+<link rel="canonical" href="https://managemybatch.com/tools/cors-header-generator">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="CORS Header Generator — Preflight, Credentials &amp; Vary: Origin">
+<meta property="og:description" content="Free CORS header generator with a request simulator. Build Access-Control-Allow-Origin rules, handle preflight correctly, and catch the wildcard-plus-credentials and missing Vary bugs.">
+<meta property="og:url" content="https://managemybatch.com/tools/cors-header-generator">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CORS Header Generator — Preflight, Credentials &amp; Vary: Origin">
+<meta name="twitter:description" content="Free CORS header generator with a request simulator. Build Access-Control-Allow-Origin rules, handle preflight correctly, and catch the wildcard-plus-credentials and missing Vary bugs.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="/assets/favicon/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/favicon/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Generator Settings</div>
+
+    <div class="field">
+      <label for="scenario">Scenario</label>
+      <select id="scenario">
+        <option value="public">Public API — anyone may call it</option>
+        <option value="known" selected>Known origins — your own front ends</option>
+        <option value="credentials">Credentialed — cookies or auth headers</option>
+        <option value="assets">Static assets — fonts, images</option>
+      </select>
+      <div class="hint" id="scHint"></div>
+    </div>
+
+    <div class="field" id="originsField">
+      <label for="origins">Allowed origins</label>
+      <textarea id="origins" style="min-height:80px">https://app.example.com
+https://admin.example.com</textarea>
+      <div class="hint">One per line, scheme and host, no trailing slash. Wildcard subdomains are <strong>not</strong> valid CORS — the server must match and echo the origin.</div>
+    </div>
+
+    <div class="field">
+      <div class="label">Methods</div>
+      <div class="checks" id="methods"></div>
+    </div>
+
+    <div class="field">
+      <label for="headers">Allowed request headers</label>
+      <input type="text" id="headers" value="Content-Type, Authorization">
+      <div class="hint">Comma-separated. <code>Authorization</code> is never covered by a wildcard — it must always be named.</div>
+    </div>
+
+    <div class="field">
+      <label for="expose">Exposed response headers</label>
+      <input type="text" id="expose" placeholder="X-Total-Count, Link">
+      <div class="hint">Headers your JavaScript may read. Without this, only a handful of safe-listed headers are visible to <code>fetch</code>.</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <div class="label">Options</div>
+      <div class="checks">
+        <label class="check"><input type="checkbox" id="optCreds"><span><span class="t">Allow credentials</span><span class="d">Cookies and <code>Authorization</code> on cross-origin requests.</span></span></label>
+        <label class="check"><input type="checkbox" id="optVary" checked><span><span class="t">Send <code>Vary: Origin</code></span><span class="d">Required whenever the origin is echoed. Prevents cache poisoning.</span></span></label>
+        <label class="check"><input type="checkbox" id="optPreflight" checked><span><span class="t">Include preflight handling</span><span class="d">Answers <code>OPTIONS</code> with 204 before auth runs.</span></span></label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="maxAge">Preflight cache (Access-Control-Max-Age)</label>
+      <select id="maxAge">
+        <option value="0">0 — do not cache</option>
+        <option value="600">600 — 10 minutes</option>
+        <option value="7200" selected>7200 — 2 hours (Chrome's cap)</option>
+        <option value="86400">86400 — 24 hours (Firefox's cap)</option>
+      </select>
+      <div class="hint" id="maxHint"></div>
+    </div>
+
+    <div class="out-actions">
+      <button class="btn btn-primary" type="submit"><span id="icoBolt"></span> Generate</button>
+      <button class="btn btn-ghost" type="button" id="resetBtn"><span id="icoReset"></span> Reset</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Generated Headers<span class="spacer"></span>
+      <span class="result-pill" id="pill">ready</span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="header">Headers</button>
+      <button type="button" data-tab="sim">Request simulator</button>
+      <button type="button" data-tab="config">Server config</button>
+      <button type="button" data-tab="checks">Checks</button>
+      <button type="button" data-tab="ref">Reference</button>
+    </div>
+
+    <div data-panel="header">
+      <div class="output-box">
+        <div class="output-bar"><span class="fname">Response headers</span><span class="chip" id="meta"></span></div>
+        <pre class="code" id="out"></pre>
+      </div>
+      <div class="out-actions">
+        <button class="btn btn-primary" id="copyBtn"><span id="icoCopy"></span> Copy</button>
+        <button class="btn btn-ghost" id="dlBtn"><span id="icoDl"></span> Download</button>
+      </div>
+      <div class="note note-info"><span id="icoInfo"></span><span>CORS is enforced by the <strong>browser</strong>, on behalf of the user. It is not server-side access control — curl, a mobile app or any server-side client ignores these headers entirely. Never use CORS as authorisation.</span></div>
+    </div>
+
+    <div data-panel="sim" hidden>
+      <div class="row">
+        <div class="field"><label for="simOrigin">Requesting origin</label><input type="text" id="simOrigin" value="https://app.example.com"></div>
+        <div class="field"><label for="simMethod">Method</label>
+          <select id="simMethod"><option>GET</option><option>POST</option><option>PUT</option><option>PATCH</option><option>DELETE</option></select></div>
+      </div>
+      <div class="row">
+        <div class="field"><label for="simCT">Content-Type</label>
+          <select id="simCT">
+            <option value="">(none)</option>
+            <option value="application/json" selected>application/json</option>
+            <option value="application/x-www-form-urlencoded">application/x-www-form-urlencoded</option>
+            <option value="multipart/form-data">multipart/form-data</option>
+            <option value="text/plain">text/plain</option>
+          </select></div>
+        <div class="field"><label for="simHeaders">Custom headers</label><input type="text" id="simHeaders" placeholder="Authorization"></div>
+      </div>
+      <div id="sim"></div>
+    </div>
+
+    <div data-panel="config" hidden>
+      <div class="field">
+        <label for="platform">Platform</label>
+        <select id="platform">
+          <option value="nginx">Nginx</option>
+          <option value="apache">Apache / .htaccess</option>
+          <option value="express">Express</option>
+          <option value="vercel">Vercel — vercel.json</option>
+          <option value="cloudflare">Cloudflare Worker</option>
+        </select>
+      </div>
+      <div class="output-box"><div class="output-bar"><span class="fname" id="cfname">nginx.conf</span></div>
+        <pre class="code" id="cfgOut"></pre></div>
+      <div class="out-actions"><button class="btn btn-ghost" id="copyCfg">Copy config</button></div>
+    </div>
+
+    <div data-panel="checks" hidden><div id="checks"></div></div>
+    <div data-panel="ref" hidden><div id="ref"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var $ = GT.$, $$ = GT.$$, I = GTI;
+
+  ['icoGear:gear', 'icoSpark:spark', 'icoBolt:bolt', 'icoReset:reset',
+   'icoCopy:copy', 'icoDl:download', 'icoInfo:info'].forEach(function (p) {
+    var b = p.split(':'), el = $('#' + b[0]); if (el) el.innerHTML = I[b[1]];
+  });
+
+  var SCH = {
+    public: 'A wildcard origin. Correct for genuinely public, unauthenticated data — and incompatible with credentials.',
+    known: 'Match the request origin against an allowlist and echo it back. The only way to support several specific origins.',
+    credentials: 'Cookies or Authorization travel with the request. A wildcard origin is forbidden here; the origin must be echoed.',
+    assets: 'Fonts and images served cross-origin. A wildcard is usually right, and no preflight is involved.'
+  };
+  var METHODS = ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'];
+  var DEFAULT_METHODS = { GET: 1, POST: 1, OPTIONS: 1 };
+  var SIMPLE_CT = ['application/x-www-form-urlencoded', 'multipart/form-data', 'text/plain'];
+  var SAFELISTED = ['accept', 'accept-language', 'content-language', 'content-type'];
+
+  $('#methods').innerHTML = METHODS.map(function (m) {
+    return '<label class="check"><input type="checkbox" data-m="' + m + '"' + (DEFAULT_METHODS[m] ? ' checked' : '') +
+      '><span><span class="t">' + m + '</span></span></label>';
+  }).join('');
+
+  function methods() {
+    return METHODS.filter(function (m) { var e = document.querySelector('[data-m="' + m + '"]'); return e && e.checked; });
+  }
+  function origins() {
+    return $('#origins').value.split('\n').map(function (s) { return s.trim().replace(/\/$/, ''); }).filter(Boolean);
+  }
+  function isWildcard() { return $('#scenario').value === 'public' || $('#scenario').value === 'assets'; }
+  function creds() { return $('#optCreds').checked; }
+
+  function headerSet() {
+    var h = [], sc = $('#scenario').value;
+    h.push(['Access-Control-Allow-Origin', isWildcard() ? '*' : '{ECHO}']);
+    if (creds()) h.push(['Access-Control-Allow-Credentials', 'true']);
+    h.push(['Access-Control-Allow-Methods', methods().join(', ')]);
+    var reqH = $('#headers').value.trim();
+    if (reqH) h.push(['Access-Control-Allow-Headers', reqH]);
+    var ex = $('#expose').value.trim();
+    if (ex) h.push(['Access-Control-Expose-Headers', ex]);
+    var ma = $('#maxAge').value;
+    if (ma !== '0') h.push(['Access-Control-Max-Age', ma]);
+    if ($('#optVary').checked && !isWildcard()) h.push(['Vary', 'Origin']);
+    return h;
+  }
+
+  function build() {
+    $('#scHint').textContent = SCH[$('#scenario').value];
+    $('#originsField').hidden = isWildcard();
+    $('#maxHint').textContent = $('#maxAge').value === '86400'
+      ? 'Chrome caps preflight caching at 7200 seconds regardless of what you send, so this behaves as 2 hours there.'
+      : ($('#maxAge').value === '0' ? 'Every non-simple request will be preflighted. Correct while debugging, expensive in production.'
+        : 'Preflight results are cached for this long per origin, method and header set.');
+
+    var h = headerSet();
+    var text = h.map(function (x) { return x[0] + ': ' + x[1]; }).join('\n');
+    $('#out').textContent = text.replace('{ECHO}', '<the request Origin, if allowlisted>');
+    $('#meta').textContent = h.length + ' headers';
+    $('#pill').textContent = isWildcard() ? 'wildcard' : origins().length + ' origins';
+    window.__h = h;
+
+    buildConfig();
+    runChecks();
+    simulate();
+  }
+
+  function buildConfig() {
+    var p = $('#platform').value, h = window.__h || [], t = '', f = '';
+    var list = origins(), ma = $('#maxAge').value;
+    var wc = isWildcard();
+
+    if (p === 'nginx') {
+      f = 'nginx.conf';
+      if (wc) {
+        t = 'location /api/ {\n' +
+            h.map(function (x) { return '  add_header ' + x[0] + ' "' + x[1] + '" always;'; }).join('\n') + '\n' +
+            ($('#optPreflight').checked ? '\n  if ($request_method = OPTIONS) {\n    return 204;\n  }\n' : '') +
+            '}';
+      } else {
+        t = '# Match the Origin against an allowlist, then echo it back.\n' +
+            'map $http_origin $cors_origin {\n  default "";\n' +
+            list.map(function (o) { return '  "' + o + '" "' + o + '";'; }).join('\n') + '\n}\n\n' +
+            'location /api/ {\n' +
+            '  add_header Access-Control-Allow-Origin $cors_origin always;\n' +
+            (creds() ? '  add_header Access-Control-Allow-Credentials "true" always;\n' : '') +
+            '  add_header Access-Control-Allow-Methods "' + methods().join(', ') + '" always;\n' +
+            '  add_header Access-Control-Allow-Headers "' + $('#headers').value.trim() + '" always;\n' +
+            ($('#expose').value.trim() ? '  add_header Access-Control-Expose-Headers "' + $('#expose').value.trim() + '" always;\n' : '') +
+            (ma !== '0' ? '  add_header Access-Control-Max-Age ' + ma + ' always;\n' : '') +
+            '  add_header Vary Origin always;\n' +
+            ($('#optPreflight').checked ? '\n  if ($request_method = OPTIONS) {\n    return 204;\n  }\n' : '') +
+            '}';
+      }
+    } else if (p === 'apache') {
+      f = '.htaccess';
+      t = '<IfModule mod_headers.c>\n' +
+        (wc ? '  Header always set Access-Control-Allow-Origin "*"\n'
+            : '  SetEnvIf Origin "^(' + list.map(function (o) { return o.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }).join('|') + ')$" CORS_ORIGIN=$0\n' +
+              '  Header always set Access-Control-Allow-Origin %{CORS_ORIGIN}e env=CORS_ORIGIN\n' +
+              '  Header always append Vary Origin\n') +
+        (creds() ? '  Header always set Access-Control-Allow-Credentials "true"\n' : '') +
+        '  Header always set Access-Control-Allow-Methods "' + methods().join(', ') + '"\n' +
+        '  Header always set Access-Control-Allow-Headers "' + $('#headers').value.trim() + '"\n' +
+        (ma !== '0' ? '  Header always set Access-Control-Max-Age "' + ma + '"\n' : '') +
+        '</IfModule>';
+    } else if (p === 'express') {
+      f = 'app.js';
+      t = wc
+        ? "app.use(cors({\n  origin: '*',\n  methods: " + JSON.stringify(methods()) + ",\n  allowedHeaders: " + JSON.stringify($('#headers').value.split(',').map(function (s) { return s.trim(); }).filter(Boolean)) + ",\n  maxAge: " + ma + "\n}));"
+        : "const ALLOWED = " + JSON.stringify(list, null, 2) + ";\n\n" +
+          "app.use(cors({\n" +
+          "  origin(origin, cb) {\n" +
+          "    // No Origin header means a same-origin or non-browser request.\n" +
+          "    if (!origin) return cb(null, true);\n" +
+          "    cb(null, ALLOWED.includes(origin));\n" +
+          "  },\n" +
+          (creds() ? "  credentials: true,\n" : "") +
+          "  methods: " + JSON.stringify(methods()) + ",\n" +
+          "  allowedHeaders: " + JSON.stringify($('#headers').value.split(',').map(function (s) { return s.trim(); }).filter(Boolean)) + ",\n" +
+          ($('#expose').value.trim() ? "  exposedHeaders: " + JSON.stringify($('#expose').value.split(',').map(function (s) { return s.trim(); }).filter(Boolean)) + ",\n" : "") +
+          "  maxAge: " + ma + "\n}));";
+    } else if (p === 'vercel') {
+      f = 'vercel.json';
+      t = JSON.stringify({ headers: [{ source: '/api/(.*)', headers: headerSet().map(function (x) {
+        return { key: x[0], value: x[1] === '{ECHO}' ? (list[0] || 'https://app.example.com') : x[1] };
+      }) }] }, null, 2) + (wc ? '' : '\n\n// Static config cannot echo a dynamic Origin.\n// For multiple origins, set the header from a serverless function instead.');
+    } else {
+      f = 'worker.js';
+      t = "const ALLOWED = " + JSON.stringify(list) + ";\n\n" +
+        "export default {\n  async fetch(request) {\n" +
+        "    const origin = request.headers.get('Origin');\n" +
+        "    const allow = " + (wc ? "'*'" : "ALLOWED.includes(origin) ? origin : null") + ";\n\n" +
+        ($('#optPreflight').checked ?
+        "    if (request.method === 'OPTIONS') {\n      return new Response(null, { status: 204, headers: cors(allow) });\n    }\n\n" : "") +
+        "    const res = await fetch(request);\n" +
+        "    const out = new Response(res.body, res);\n" +
+        "    for (const [k, v] of Object.entries(cors(allow))) out.headers.set(k, v);\n" +
+        "    return out;\n  }\n};\n\n" +
+        "function cors(allow) {\n  if (!allow) return {};\n  return {\n" +
+        "    'Access-Control-Allow-Origin': allow,\n" +
+        (creds() ? "    'Access-Control-Allow-Credentials': 'true',\n" : "") +
+        "    'Access-Control-Allow-Methods': '" + methods().join(', ') + "',\n" +
+        "    'Access-Control-Allow-Headers': '" + $('#headers').value.trim() + "',\n" +
+        (ma !== '0' ? "    'Access-Control-Max-Age': '" + ma + "',\n" : "") +
+        (wc ? "" : "    'Vary': 'Origin',\n") +
+        "  };\n}";
+    }
+    $('#cfname').textContent = f;
+    $('#cfgOut').textContent = t;
+  }
+
+  /* ---------------- request simulator ---------------- */
+  function simulate() {
+    var o = $('#simOrigin').value.trim().replace(/\/$/, '');
+    var m = $('#simMethod').value;
+    var ct = $('#simCT').value;
+    var custom = $('#simHeaders').value.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+
+    var simpleMethod = ['GET', 'HEAD', 'POST'].indexOf(m) > -1;
+    var simpleCT = !ct || SIMPLE_CT.indexOf(ct) > -1;
+    var nonSafelisted = custom.filter(function (h) { return SAFELISTED.indexOf(h.toLowerCase()) === -1; });
+    var preflight = !simpleMethod || !simpleCT || nonSafelisted.length > 0;
+
+    var originOk = isWildcard() || origins().indexOf(o) > -1;
+    var methodOk = methods().indexOf(m) > -1;
+    var allowedHeaders = $('#headers').value.split(',').map(function (s) { return s.trim().toLowerCase(); }).filter(Boolean);
+    var headerMisses = nonSafelisted.filter(function (h) { return allowedHeaders.indexOf(h.toLowerCase()) === -1; });
+    var wildcardCredClash = isWildcard() && creds();
+
+    var reasons = [];
+    if (!originOk) reasons.push('The origin <code>' + GT.esc(o) + '</code> is not in the allowlist, so no <code>Access-Control-Allow-Origin</code> is returned.');
+    if (!methodOk) reasons.push('<code>' + m + '</code> is not in <code>Access-Control-Allow-Methods</code>.');
+    if (headerMisses.length) reasons.push('These request headers are not allowed: <code>' + GT.esc(headerMisses.join(', ')) + '</code>.');
+    if (wildcardCredClash) reasons.push('Credentials are enabled with a wildcard origin, which browsers reject outright.');
+
+    var pass = reasons.length === 0;
+    var html = '<div class="note ' + (preflight ? 'note-warn' : 'note-ok') + '" style="margin-top:12px">' +
+      (preflight ? I.warn : I.check) + '<span><strong>' +
+      (preflight ? 'Preflighted request' : 'Simple request — no preflight') + '.</strong> ' +
+      (preflight
+        ? 'The browser sends an <code>OPTIONS</code> request first because ' +
+          (!simpleMethod ? '<code>' + m + '</code> is not a simple method' :
+           !simpleCT ? '<code>' + GT.esc(ct) + '</code> is not one of the three simple content types' :
+           'of the custom header ' + GT.esc(nonSafelisted.join(', '))) + '. Your server must answer it with a 2xx <em>before</em> authentication runs.'
+        : 'This request is sent directly. Note that it still <em>reaches your server</em> — the browser only hides the response if CORS fails.') +
+      '</span></div>';
+
+    html += '<div class="note ' + (pass ? 'note-ok' : 'note-err') + '" style="margin-top:8px">' +
+      (pass ? I.check : I.warn) + '<span><strong>' + (pass ? 'Allowed' : 'Blocked by the browser') + '.</strong>' +
+      (pass ? ' JavaScript on <code>' + GT.esc(o) + '</code> will be able to read the response.'
+            : '<br>' + reasons.join('<br>')) + '</span></div>';
+
+    if (preflight && pass) {
+      html += '<div class="output-box" style="margin-top:12px"><div class="output-bar"><span class="fname">Preflight exchange</span></div>' +
+        '<pre class="code">' + GT.esc(
+          'OPTIONS /api/resource HTTP/1.1\n' +
+          'Origin: ' + o + '\n' +
+          'Access-Control-Request-Method: ' + m +
+          (nonSafelisted.length ? '\nAccess-Control-Request-Headers: ' + nonSafelisted.join(', ').toLowerCase() : '') +
+          '\n\n' +
+          'HTTP/1.1 204 No Content\n' +
+          'Access-Control-Allow-Origin: ' + (isWildcard() ? '*' : o) + '\n' +
+          (creds() ? 'Access-Control-Allow-Credentials: true\n' : '') +
+          'Access-Control-Allow-Methods: ' + methods().join(', ') + '\n' +
+          'Access-Control-Allow-Headers: ' + $('#headers').value.trim() + '\n' +
+          ($('#maxAge').value !== '0' ? 'Access-Control-Max-Age: ' + $('#maxAge').value + '\n' : '') +
+          (isWildcard() ? '' : 'Vary: Origin\n')
+        ) + '</pre></div>';
+    }
+    $('#sim').innerHTML = html;
+  }
+
+  function runChecks() {
+    var out = [], wc = isWildcard(), c = creds();
+
+    if (wc && c)
+      out.push({ s: 'err', m: '<strong>A wildcard origin cannot be combined with credentials.</strong> Browsers reject <code>Access-Control-Allow-Origin: *</code> whenever <code>Access-Control-Allow-Credentials: true</code> is present — the request fails entirely. Switch to an allowlist and echo the specific origin.' });
+
+    if (!wc && !$('#optVary').checked)
+      out.push({ s: 'err', m: '<strong>Missing <code>Vary: Origin</code>.</strong> You are echoing the request origin, so any shared cache — a CDN, a reverse proxy — may store one origin\'s response and serve it to another. That leaks your CORS grant to sites you never allowlisted. This is a real vulnerability, not a tidiness issue.' });
+    else if (!wc)
+      out.push({ s: 'ok', m: '<code>Vary: Origin</code> is set, so caches key the response on the requesting origin rather than serving one origin\'s headers to another.' });
+
+    if (c) out.push({ s: 'warn', m: '<strong>Credentials are enabled.</strong> Cookies and <code>Authorization</code> now travel cross-origin, so an allowlisted origin can act as the logged-in user. Keep the allowlist to origins you control, and never add one you do not.' });
+
+    var hs = $('#headers').value.toLowerCase();
+    if (/\*/.test(hs) && c)
+      out.push({ s: 'err', m: 'A wildcard in <code>Access-Control-Allow-Headers</code> is treated as a literal <code>*</code> when credentials are enabled, not as "any header". List headers explicitly.' });
+    if (/\*/.test(hs) && !/authorization/.test(hs))
+      out.push({ s: 'warn', m: '<code>Authorization</code> is <strong>never</strong> covered by a wildcard, even without credentials. If your clients send it, name it explicitly.' });
+
+    if (methods().indexOf('OPTIONS') === -1 && $('#optPreflight').checked)
+      out.push({ s: 'warn', m: '<code>OPTIONS</code> is not in your methods list. Preflight still works because it is handled separately, but some frameworks route <code>OPTIONS</code> through the same middleware and will reject it.' });
+
+    if ($('#optPreflight').checked)
+      out.push({ s: 'ok', m: 'Preflight returns 204 before authentication. This matters: a browser sends <code>OPTIONS</code> <strong>without</strong> cookies or an <code>Authorization</code> header, so an auth middleware that rejects it with 401 breaks every non-simple request — and produces a CORS error that looks nothing like an auth bug.' });
+
+    if ($('#maxAge').value === '0')
+      out.push({ s: 'warn', m: 'Preflight caching is off, so every non-simple request costs two round trips. Fine while debugging; expensive in production.' });
+
+    if (!wc && !origins().length)
+      out.push({ s: 'err', m: 'No origins listed. Nothing will be allowed.' });
+    var bad = origins().filter(function (o) { return !/^https?:\/\/[^/]+$/.test(o); });
+    if (bad.length) out.push({ s: 'err', m: 'Malformed origin: <code>' + GT.esc(bad.join(', ')) + '</code>. An origin is scheme, host and optional port — no path, no trailing slash.' });
+    if (origins().some(function (o) { return /\*/.test(o); }))
+      out.push({ s: 'err', m: '<strong>Wildcard subdomains are not valid CORS.</strong> <code>https://*.example.com</code> is never accepted. Match the origin server-side against a pattern and echo the exact value back.' });
+
+    out.push({ s: 'warn', m: '<strong>CORS is not access control.</strong> It restricts what browser JavaScript may read; it does nothing about curl, a server-side client or a mobile app. The request still reaches your server and still executes. Authorise every endpoint properly.' });
+
+    $('#checks').innerHTML = out.map(function (x) {
+      return '<div class="note ' + (x.s === 'ok' ? 'note-ok' : x.s === 'warn' ? 'note-warn' : 'note-err') + '" style="margin-top:8px">' +
+        (x.s === 'ok' ? I.check : I.warn) + '<span>' + x.m + '</span></div>';
+    }).join('');
+  }
+
+  $('#ref').innerHTML = [
+    ['<code>Access-Control-Allow-Origin</code>', 'A single origin, or <code>*</code>. It cannot be a list — to support several origins the server must match the incoming <code>Origin</code> and echo one value back.'],
+    ['<code>Access-Control-Allow-Credentials</code>', 'Set to <code>true</code> to permit cookies and <code>Authorization</code>. Incompatible with a wildcard origin. The client must also opt in with <code>credentials: \'include\'</code>.'],
+    ['<code>Access-Control-Allow-Methods</code>', 'Answered on preflight. <code>GET</code>, <code>HEAD</code> and <code>POST</code> are always permitted for simple requests regardless.'],
+    ['<code>Access-Control-Allow-Headers</code>', 'Which non-safelisted request headers are permitted. Must include <code>Content-Type</code> if you send JSON.'],
+    ['<code>Access-Control-Expose-Headers</code>', 'Which response headers JavaScript may read. Without it only Cache-Control, Content-Language, Content-Type, Expires, Last-Modified and Pragma are visible.'],
+    ['<code>Access-Control-Max-Age</code>', 'How long a preflight result may be cached. Chrome caps it at 7200 seconds, Firefox at 86400.'],
+    ['<code>Vary: Origin</code>', 'Mandatory whenever the origin is echoed. Without it a shared cache can serve one origin\'s CORS headers to another.'],
+    ['Simple requests', 'GET, HEAD or POST, with a Content-Type of <code>application/x-www-form-urlencoded</code>, <code>multipart/form-data</code> or <code>text/plain</code>, and no non-safelisted headers. Everything else is preflighted — including all JSON POSTs.'],
+    ['The <code>null</code> origin', 'Sent by sandboxed iframes, <code>file://</code> pages and some redirects. Never allowlist it: any site can obtain a null origin.']
+  ].map(function (x) {
+    return '<div style="margin-bottom:18px"><h4 style="font-size:14.5px;margin-bottom:8px">' + x[0] + '</h4>' +
+      '<div style="color:var(--muted);font-size:13.8px">' + x[1] + '</div></div>';
+  }).join('');
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#scenario').addEventListener('change', function () {
+    if ($('#scenario').value === 'credentials') $('#optCreds').checked = true;
+    if ($('#scenario').value === 'public' || $('#scenario').value === 'assets') $('#optCreds').checked = false;
+    build();
+  });
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); build(); GT.toast('Headers generated'); });
+  $('#cfg').addEventListener('input', build);
+  $('#cfg').addEventListener('change', build);
+  ['#simOrigin', '#simMethod', '#simCT', '#simHeaders'].forEach(function (s) {
+    $(s).addEventListener('input', simulate); $(s).addEventListener('change', simulate);
+  });
+  $('#platform').addEventListener('change', buildConfig);
+  $('#copyBtn').addEventListener('click', function () { GT.copy($('#out').textContent, 'Headers'); });
+  $('#copyCfg').addEventListener('click', function () { GT.copy($('#cfgOut').textContent, 'Config'); });
+  $('#dlBtn').addEventListener('click', function () { GT.download($('#out').textContent, 'cors-headers.txt', 'text/plain'); });
+  $('#resetBtn').addEventListener('click', function () { setTimeout(build, 0); });
+
+  build();
+
+  GT.page({
+    slug: 'cors-header-generator',
+    lede: 'Generate CORS headers that work the first time — with a simulator that tells you whether a given request preflights, and whether the browser will allow it.',
+    steps: [
+      { icon: 'gear', title: 'Pick a scenario', text: 'Public API, known origins, credentialed, or static assets.' },
+      { icon: 'send', title: 'Simulate a request', text: 'See whether it preflights and exactly why it would be blocked.' },
+      { icon: 'copy', title: 'Ship the config', text: 'Nginx, Apache, Express, Vercel or a Cloudflare Worker, preflight included.' }
+    ],
+    guideTitle: 'The three bugs behind almost every CORS error',
+    guide:
+      '<p style="color:var(--muted)">CORS failures are famously opaque because the browser reports them from the client side, where the useful detail is deliberately hidden. Nearly all of them come down to three causes.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">1. Wildcard plus credentials</h4><p style="color:var(--muted);font-size:13.8px"><code>Access-Control-Allow-Origin: *</code> and <code>Access-Control-Allow-Credentials: true</code> cannot coexist. The browser rejects the response outright. The fix is to match the <code>Origin</code> header against an allowlist and echo that single value back — a wildcard is not a shortcut here, it is a different mode.</p>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">2. Preflight hitting your auth layer</h4><p style="color:var(--muted);font-size:13.8px">A browser sends <code>OPTIONS</code> <strong>without</strong> cookies or an <code>Authorization</code> header. If your authentication middleware sits in front of it and answers 401, every non-simple request fails — and the browser reports it as a CORS error, so you go looking in entirely the wrong place. Answer preflight before authentication.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">3. Missing <code>Vary: Origin</code></h4><p style="color:var(--muted);font-size:13.8px">If you echo the origin but omit <code>Vary: Origin</code>, any shared cache may store the response for one origin and serve it to another. In front of a CDN this hands your CORS grant to sites you never allowlisted. It also causes intermittent failures that look like a flaky network, because the outcome depends on who warmed the cache.</p>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">And one misconception</h4><p style="color:var(--muted);font-size:13.8px">CORS does not protect your server. The request arrives and executes; the browser merely withholds the response from the calling page. Anything that must be restricted needs real authorisation.</p></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span>Any <code>POST</code> with <code>Content-Type: application/json</code> is preflighted — JSON is not one of the three simple content types. That single fact explains most "it works in Postman but not in the browser" reports.</span></div>',
+    related: ['content-security-policy-generator', 'fetch-api-request-generator', 'curl-command-generator'],
+    faqs: [
+      { q: 'How do I fix a CORS error?', a: 'Read whether the failure is on the preflight or the actual request. If preflight, your server must answer <code>OPTIONS</code> with a 2xx and the right <code>Access-Control-Allow-*</code> headers before authentication runs. If the actual request, check that the origin is echoed correctly and that a wildcard is not combined with credentials.' },
+      { q: 'Why does my request work in Postman but not the browser?', a: 'Because CORS is enforced only by browsers. Postman, curl and server-side clients ignore it completely. A request succeeding there tells you the endpoint works; it says nothing about your CORS headers.' },
+      { q: 'Can I allow multiple origins?', a: 'Not in a single header — <code>Access-Control-Allow-Origin</code> takes one value or <code>*</code>. The server must compare the incoming <code>Origin</code> against an allowlist and echo back the matching value, and send <code>Vary: Origin</code> alongside it.' },
+      { q: 'Can I use a wildcard subdomain?', a: 'No. <code>https://*.example.com</code> is not valid in this header. Match the pattern server-side and echo the exact origin that was sent.' },
+      { q: 'Why is my POST preflighted?', a: 'Almost certainly <code>Content-Type: application/json</code>. Only <code>application/x-www-form-urlencoded</code>, <code>multipart/form-data</code> and <code>text/plain</code> count as simple, so every JSON POST triggers an OPTIONS request first.' },
+      { q: 'Does CORS make my API secure?', a: 'No. It restricts what other websites\' JavaScript may read in a user\'s browser. It does not stop anyone calling your API directly. Authentication and authorisation are separate and still required.' }
+    ],
+    seo: {
+      title: 'CORS headers: preflight, credentials and why the errors are so opaque',
+      lead: 'This <strong>CORS header generator</strong> builds the <code>Access-Control-*</code> response set for four common scenarios and includes a simulator that shows whether a given request preflights and whether the browser will allow it. Below: what CORS actually protects, and the three bugs behind most failures.',
+      blocks: [
+        {
+          h: 'What CORS is for',
+          html: '<p>Browsers enforce the <strong>same-origin policy</strong>: script on one origin cannot read responses from another. That is what stops a malicious page reading your webmail in a background request while you are logged in.</p>' +
+            '<p><strong>CORS</strong> is the controlled exception. A server opts in by returning <code>Access-Control-*</code> headers saying which origins may read its responses. The browser enforces the answer.</p>' +
+            '<p>The consequence people miss: CORS protects <em>the user</em>, not the server. A cross-origin request that fails CORS has usually still arrived at your server and still executed. The browser simply refuses to hand the response back to the calling page. Anything that must not happen requires authorisation, not CORS.</p>',
+          callout: { type: 'warn', text: 'This is why an endpoint "works in Postman but not in the browser". Postman, curl and every server-side client ignore CORS entirely. Success there proves the endpoint works and tells you nothing about your headers.' }
+        },
+        {
+          h: 'Simple requests and preflight',
+          html: '<p>Some cross-origin requests go straight out. Others are preceded by an <code>OPTIONS</code> request asking permission first. A request is <strong>simple</strong> — no preflight — only if all three hold:</p>',
+          list: [
+            'The method is <code>GET</code>, <code>HEAD</code> or <code>POST</code>.',
+            'The <code>Content-Type</code> is <code>application/x-www-form-urlencoded</code>, <code>multipart/form-data</code> or <code>text/plain</code>.',
+            'There are no non-safelisted request headers.'
+          ],
+          after: '<p><strong><code>application/json</code> is not on that list.</strong> Every JSON POST is therefore preflighted, which is the single most common surprise in the whole topic. Adding an <code>Authorization</code> header also forces a preflight regardless of anything else.</p>',
+          table: {
+            head: ['Request', 'Preflight?', 'Why'],
+            rows: [
+              ['<code>GET</code>, no custom headers', 'No', 'Simple.'],
+              ['<code>POST</code> form-encoded', 'No', 'Simple content type.'],
+              ['<code>POST</code> JSON', '<strong>Yes</strong>', 'JSON is not a simple content type.'],
+              ['<code>GET</code> with <code>Authorization</code>', '<strong>Yes</strong>', 'Non-safelisted header.'],
+              ['<code>PUT</code>, <code>PATCH</code>, <code>DELETE</code>', '<strong>Yes</strong>', 'Not a simple method.']
+            ]
+          }
+        },
+        {
+          h: 'Preflight must not require authentication',
+          html: '<p>This causes more wasted debugging than anything else in CORS.</p>' +
+            '<p>The browser sends the <code>OPTIONS</code> preflight <strong>without cookies and without an <code>Authorization</code> header</strong>, by design — it is asking whether it may send the real request, so it does not yet send credentials.</p>' +
+            '<p>If your authentication middleware runs first and returns 401 for the unauthenticated OPTIONS, the preflight fails. The browser then reports a CORS error, and you spend an afternoon adjusting <code>Access-Control-Allow-Origin</code> when the headers were never the problem.</p>',
+          steps: [
+            { t: 'Handle OPTIONS first', d: 'Answer preflight before any auth middleware in the chain.' },
+            { t: 'Return 204', d: 'No body needed. Any 2xx works; 204 is conventional.' },
+            { t: 'Echo the CORS headers on it', d: 'The preflight response carries the permissions, not the actual response.' },
+            { t: 'Do not require a token', d: 'There will not be one.' },
+            { t: 'Cache it', d: '<code>Access-Control-Max-Age</code> avoids paying for the round trip on every call.' }
+          ],
+          callout: { type: 'tip', text: 'When debugging, look at the OPTIONS request in the network tab specifically, not the failed GET or POST underneath it. If OPTIONS returned 401, 403, 404 or 500, that is your bug — the headers on the real request are irrelevant until preflight passes.' }
+        },
+        {
+          h: 'Credentials change the rules',
+          html: '<p>Sending cookies or an <code>Authorization</code> header cross-origin requires opt-in on both sides: <code>credentials: \'include\'</code> in the client, and <code>Access-Control-Allow-Credentials: true</code> on the server. Three restrictions then apply:</p>',
+          list: [
+            '<strong><code>Access-Control-Allow-Origin</code> cannot be <code>*</code>.</strong> It must be a specific echoed origin. The browser rejects the wildcard outright.',
+            '<strong><code>Access-Control-Allow-Headers: *</code> stops meaning "any header"</strong> and is treated as a literal asterisk. List headers explicitly.',
+            '<strong>The same applies to <code>Access-Control-Expose-Headers</code>.</strong>'
+          ],
+          after: '<p>And a security point: an origin on a credentialed allowlist can act as the logged-in user. Only list origins you control, and treat adding one as a privilege grant rather than a configuration change.</p>',
+          callout: { type: 'warn', text: 'Never allowlist the <code>null</code> origin with credentials enabled. Sandboxed iframes, <code>file://</code> documents and certain redirects all produce a null origin, so any site can obtain one. It is not a safe identifier.' }
+        },
+        {
+          h: 'Vary: Origin is not optional',
+          html: '<p>Because <code>Access-Control-Allow-Origin</code> holds one value, supporting multiple origins means reading the request\'s <code>Origin</code> header and echoing it back. That makes the response <em>depend on a request header</em> — and caches need telling.</p>' +
+            '<p>Without <code>Vary: Origin</code>, a CDN or reverse proxy may store the response generated for <code>https://app.example.com</code> and serve it, headers included, to a request from anywhere else. The second origin receives an <code>Access-Control-Allow-Origin</code> naming the first, which usually just breaks — but with the right cache ordering it hands a CORS grant to an origin you never allowlisted.</p>' +
+            '<p>The symptom is intermittency: it works, then it does not, depending on who warmed the cache. That signature almost always means a missing <code>Vary</code>.</p>'
+        },
+        {
+          h: 'Reading response headers',
+          html: '<p>By default, JavaScript can only read six response headers cross-origin: <code>Cache-Control</code>, <code>Content-Language</code>, <code>Content-Type</code>, <code>Expires</code>, <code>Last-Modified</code> and <code>Pragma</code>.</p>' +
+            '<p>Anything else — a pagination count, a rate-limit header, a <code>Link</code> header, a custom request ID — is invisible unless you name it in <code>Access-Control-Expose-Headers</code>. The header is present on the wire and in the network tab, which makes this confusing: developers can see it in DevTools and cannot read it in code.</p>',
+          callout: { type: 'tip', text: 'If a header is visible in DevTools but <code>undefined</code> in your code, you need <code>Access-Control-Expose-Headers</code>. Nothing is wrong with the request.' }
+        },
+        {
+          h: 'Related tools',
+          list: [
+            '<a href="/tools/fetch-api-request-generator">Fetch API Request Generator</a> — the client side, including <code>credentials</code>.',
+            '<a href="/tools/curl-command-generator">curl Command Generator</a> — reproduce a request without CORS in the way.',
+            '<a href="/tools/content-security-policy-generator">Content Security Policy Generator</a> — the other major browser security header.',
+            '<a href="/tools/permissions-policy-generator">Permissions-Policy Generator</a> — disable unused browser features.',
+            '<a href="/tools/axios-request-generator">Axios Request Generator</a> — instances and interceptors for the calling side.'
+          ]
+        }
+      ],
+      keywords: [
+        'cors header generator', 'access-control-allow-origin', 'cors preflight options',
+        'fix cors error', 'cors credentials wildcard', 'vary origin header',
+        'cors multiple origins', 'access-control-expose-headers', 'cors nginx config',
+        'why is my post preflighted', 'cors express config', 'access-control-max-age'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

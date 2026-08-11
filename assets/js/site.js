@@ -150,6 +150,11 @@
       cat: 'Security & Business', icon: 'link', tone: 'ic-amber',
       kw: 'referrer policy header referer privacy strict-origin-when-cross-origin no-referrer meta tag' },
 
+    { slug: 'cors-header-generator', name: 'CORS Header Generator', short: 'CORS Headers',
+      desc: 'Access-Control headers with preflight handling and a request simulator.',
+      cat: 'API & HTTP', icon: 'send', tone: 'ic-amber',
+      kw: 'cors access-control-allow-origin preflight options credentials vary origin api headers' },
+
     /* ---- IDs & Random ---- */
     { slug: 'uuid-v7-generator', name: 'UUID v7 Generator', short: 'UUID v7',
       desc: 'Generate RFC 9562 time-ordered UUID v7 identifiers, with a built-in timestamp decoder.',

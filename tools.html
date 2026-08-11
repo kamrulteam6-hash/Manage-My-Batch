@@ -107,7 +107,7 @@
   document.getElementById('searchForm').addEventListener('submit', function (e) { e.preventDefault(); render(); });
 
   document.getElementById('soon').innerHTML = [
-    'CORS Header Generator', 'Breadcrumb Schema Generator', 'Video Schema Generator',
+    'Breadcrumb Schema Generator', 'Video Schema Generator',
     'Job Posting Schema Generator', 'Dataset Schema Generator', 'Software Application Schema Generator'
   ].map(function (n) { return '<span class="chip" style="font-family:var(--sans)">' + n + '</span>'; }).join('');
 
