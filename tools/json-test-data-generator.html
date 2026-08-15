@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>JSON Test Data Generator — Realistic Mock Fixtures, Free | Manage My Batch</title>
-<meta name="description" content="Free JSON test data generator. Design a schema from 40 field types, set a seed for reproducible output, and export JSON, NDJSON, a mock API response or TypeScript types.">
+<title>JSON Test Data Generator – Realistic Mock JSON Fixtures Online | Manage My Batch</title>
+<meta name="description" content="Generate realistic JSON test data from custom fields or templates. Create seeded, repeatable mock fixtures with names, emails, UUIDs, dates and more.">
 <link rel="canonical" href="https://managemybatch.com/tools/json-test-data-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="JSON Test Data Generator — Realistic Mock Fixtures, Free">
-<meta property="og:description" content="Free JSON test data generator. Design a schema from 40 field types, set a seed for reproducible output, and export JSON, NDJSON, a mock API response or TypeScript types.">
+<meta property="og:title" content="JSON Test Data Generator – Realistic Mock JSON Fixtures Online">
+<meta property="og:description" content="Generate realistic JSON test data from custom fields or templates. Create seeded, repeatable mock fixtures with names, emails, UUIDs, dates and more.">
 <meta property="og:url" content="https://managemybatch.com/tools/json-test-data-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="JSON Test Data Generator — Realistic Mock Fixtures, Free">
-<meta name="twitter:description" content="Free JSON test data generator. Design a schema from 40 field types, set a seed for reproducible output, and export JSON, NDJSON, a mock API response or TypeScript types.">
+<meta name="twitter:title" content="JSON Test Data Generator – Realistic Mock JSON Fixtures Online">
+<meta name="twitter:description" content="Generate realistic JSON test data from custom fields or templates. Create seeded, repeatable mock fixtures with names, emails, UUIDs, dates and more.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -338,93 +338,105 @@
       '<div><h4 style="font-size:14.5px;margin-bottom:8px">Choosing an output shape</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><strong>Array</strong> — the default for component fixtures.</li><li><strong>Envelope / paginated</strong> — match a real API contract so your client code is exercised properly.</li><li><strong>NDJSON</strong> — streaming, log pipelines, bulk import into Elasticsearch or BigQuery.</li><li><strong>Keyed object</strong> — normalized store shapes such as Redux or a lookup cache.</li><li><strong>TypeScript</strong> — typed fixtures that fail compilation when the schema drifts.</li></ul></div></div>' +
       '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>All the names, emails and domains here come from reserved example ranges (<code>example.com</code>, <code>example.org</code>) and invented word lists. Nothing corresponds to a real person, and no email in the output can reach a live inbox.</span></div>',
     related: ['csv-test-data-generator', 'sql-insert-data-generator', 'json-array-generator'],
-    faqs: [
-      { q: 'What is the seed for?', a: 'It makes generation deterministic. The same seed and schema always produce the same rows, so a fixture committed today still matches in six months and CI never sees phantom diffs.' },
-      { q: 'Is the fake data based on real people?', a: 'No. Names are assembled from invented word lists and all emails use IANA-reserved example domains, so nothing resolves to a real person or a deliverable mailbox.' },
-      { q: 'How many rows can I generate?', a: 'Up to 10,000 in one pass. Everything runs in your browser, so very large sets are limited by memory rather than any server quota — for load-test volumes, generate NDJSON in a few batches.' },
-      { q: 'Can I get TypeScript types for the data?', a: 'Yes. The Types tab emits a matching interface and a JSON Schema, and the TypeScript output option ships the interface and the typed data together in one file.' },
-      { q: 'What does “sometimes null” do?', a: 'It makes roughly 15% of that field null, which is the fastest way to find code paths that assume a value is always present.' },
-      { q: 'Can I generate nested objects?', a: 'Not yet — the schema is flat. For nested fixtures, generate the flat data and reshape it in your test setup, which usually keeps the fixture more readable anyway.' }
+faqs: [
+      { q: 'What is JSON test data?', a: 'It is fictional structured data used to test software without relying on live production records.' },
+      { q: 'Can I generate the same JSON twice?', a: 'Yes. Use the same seed, schema and settings when you need deterministic repeatable fixtures.' },
+      { q: 'Is generated JSON valid JSON?', a: 'The tool produces JSON-formatted output using supported JSON types. Always make sure your selected fields also match the contract your application expects.' },
+      { q: 'Does JSON have a date type?', a: 'No. Dates are normally represented as strings or numeric timestamps by convention.' },
+      { q: 'Can I generate an array of objects?', a: 'Yes. Use the appropriate output shape for a collection of generated records.' },
+      { q: 'Should I use real customer data for testing?', a: 'Avoid it when synthetic data can cover the test. Generated fictional data reduces privacy and handling risks.' },
+      { q: 'Can I download the generated data?', a: 'Yes. Generate the fixture, preview it, then copy or download the JSON file.' }
     ],
     seo: {
-      title: 'JSON test data: seeded fixtures, schemas and TypeScript types',
-      lead: 'This <strong>JSON test data generator</strong> turns a schema into realistic fixtures that are byte-identical on every run, plus the TypeScript interface and JSON Schema to match. Below: why seeded data beats random data, how to model nulls and nesting, and where fake data stops being safe.',
+      title: 'JSON Test Data Generator – Create Realistic Mock Fixtures Online',
+      lead: 'Need believable JSON for a UI, API test, seed file or demo without using real customer data? Use the JSON Test Data Generator above to build a schema and generate structured mock records in seconds.',
       blocks: [
-        {
-          h: 'Why seeded fixtures beat random ones',
-          html: '<p>Random test data finds bugs. Random test data you cannot reproduce <em>wastes</em> the bug it found.</p>' +
-            '<p>A seeded generator is deterministic: the same seed produces the same records, in the same order, with the same values, on every machine. When a test fails in CI you re-run it locally with the recorded seed and get the identical dataset. Without a seed you get a screenshot of a failure and a shrug.</p>' +
-            '<p>The other half of the argument is diffs. Committed fixtures regenerate identically, so a change in the file means a change in your schema — not noise. Unseeded fixtures produce a full-file diff on every regeneration and quickly stop being reviewed at all.</p>',
-          callout: { type: 'tip', text: 'Record the seed in the test name or the fixture header. "Fails with seed 4821" is a bug report someone can act on; "fails intermittently" is one that gets closed as unreproducible.' }
-        },
-        {
-          h: 'Designing a schema',
-          steps: [
-            { t: 'Add a field per column', d: 'Name it exactly as your API or table does — a fixture whose keys do not match the real payload tests your typos, not your code.' },
-            { t: 'Pick a type per field', d: 'Names, emails, addresses, companies, dates, booleans, integers, decimals, enums, UUIDs and free text are all available.' },
-            { t: 'Constrain the ranges', d: 'A price between 1 and 500, a date within the last year. Realistic bounds surface formatting and rounding bugs that <code>0.1</code> never will.' },
-            { t: 'Mark optional fields', d: 'Set a null rate so some records omit the field — this is what exercises your null handling.' },
-            { t: 'Nest where your data nests', d: 'Objects within objects, and arrays of objects, so the fixture has the same shape as the real response.' },
-            { t: 'Set a seed and a row count', d: 'Then export the JSON, the TypeScript interface and the JSON Schema together.' }
-          ]
-        },
-        {
-          h: 'Model the awkward cases deliberately',
-          html: '<p>Fixtures made only of tidy values test only the happy path. The values that break production are the ones nobody thought to type into a form.</p>',
-          cards: [
-            { t: 'Nulls and absent keys', d: 'Not the same thing. A field that is <code>null</code> and a field that is missing take different branches in most languages — generate both.' },
-            { t: 'Empty and boundary values', d: 'Empty strings, zero, empty arrays, the first and last day of a range. Off-by-one bugs live here.' },
-            { t: 'Unicode and long strings', d: 'Accents, emoji, right-to-left text and a name at your column limit. Truncation and encoding bugs surface immediately.' },
-            { t: 'Structural extremes', d: 'A record with an empty child array and one with fifty. Pagination and rendering both care.' }
-          ]
-        },
-        {
-          h: 'TypeScript interfaces and JSON Schema',
-          html: '<p>A fixture whose shape drifts from your types is worse than no fixture — it passes while the real payload fails. Generating both from the same definition keeps them aligned.</p>',
-          list: [
-            '<strong>TypeScript interface</strong> — optional fields marked <code>?</code> where a null rate is set, nested objects emitted as named interfaces, and unions for enum fields.',
-            '<strong>JSON Schema</strong> — for runtime validation with Ajv or any validator, and for contract tests against a real API response.',
-            '<strong>The JSON itself</strong> — an array of records, or a single object where that is what the endpoint returns.'
-          ],
-          after: '<p>The useful pattern is to validate the <em>real</em> API response against the generated schema in a contract test. When the backend changes a field, the test fails immediately rather than three sprints later in the client.</p>'
-        },
-        {
-          h: 'Is the fake data based on real people?',
-          html: '<p>No. Names, emails, companies and addresses are assembled from generic word lists at generation time. Nothing is scraped, nothing is sampled from a real dataset, and everything runs in your browser — no data is transmitted anywhere.</p>' +
-            '<p>Two caveats worth stating plainly. Generated email domains are placeholders such as <code>example.com</code>, which is reserved by RFC 2606 precisely so that test mail never leaves the building — but if you configure a fixture with a real domain, mail sent to it goes to a real server. And with enough rows, a plausible-looking name will coincide with a real person, so a public demo dataset deserves a "these are not real people" note.</p>',
-          callout: { type: 'warn', text: '<strong>Never use generated data as a substitute for anonymising production data.</strong> They solve different problems. If you need production-shaped data, mask the real dataset properly — a fixture that merely <em>looks</em> like the production schema will not reproduce the distribution, cardinality or edge cases that cause real incidents.' }
-        },
-        {
-          h: 'How much data to generate',
-          html: '<p>Different quantities answer different questions, and the common mistake is generating 100,000 rows for a test that needed three.</p>',
-          table: {
-            head: ['Rows', 'Good for'],
-            rows: [
-              ['3–10', 'Unit tests and snapshot fixtures. Small enough to read and to commit.'],
-              ['50–500', 'UI development — pagination, empty states, long lists, sorting.'],
-              ['1,000–10,000', 'Local performance checks and index behaviour on realistic volumes.'],
-              ['100,000+', 'Load testing and query planning. Generate to file rather than to the clipboard.']
-            ]
-          },
-          after: '<p>Everything runs client-side, so very large sets are limited by browser memory. Above a few hundred thousand records, stream to a file from a script using the same seed rather than generating in a tab.</p>'
-        },
-        {
-          h: 'Related test data tools',
-          list: [
-            '<a href="/tools/csv-test-data-generator">CSV Test Data Generator</a> — the same fixtures as RFC 4180 CSV or TSV.',
-            '<a href="/tools/sql-insert-data-generator">SQL Insert Data Generator</a> — seed scripts for five database dialects.',
-            '<a href="/tools/json-array-generator">JSON Array Generator</a> — flat arrays without a schema.',
-            '<a href="/tools/uuid-v7-generator">UUID v7 Generator</a> — time-ordered primary keys.',
-            '<a href="/tools/dummy-api-key-generator">Dummy API Key Generator</a> — fake credentials in the right formats.'
-          ]
-        }
+        { html: '<p>Choose a template or define your own fields, set the number of rows, enter a seed when you need repeatable output, then copy or download the generated JSON. You can pretty-print the result for readability or keep it compact for smaller files.</p>' +
+            '<p>The useful part is not simply producing random names. Good test data should match the shape your application expects, preserve JSON data types and remain reproducible when a test needs the same fixture tomorrow.</p>' },
+        { h: 'What Is a JSON Test Data Generator?',
+          html: '<p>A JSON test data generator creates fictional records formatted as valid JSON.</p><p>Instead of manually writing objects such as:</p>' +
+            '<pre class="code">{"id":1,"name":"Example User","active":true}</pre><p>you define the fields once and generate many records.</p>' +
+            '<p>Typical field types include IDs, sequences, UUIDs, names, emails, usernames, phone numbers, dates, timestamps, integers, decimals, booleans, prices, countries, cities, URLs, status values, lorem text and fixed values.</p>' +
+            '<p>This is useful anywhere software needs realistic-shaped data but should not depend on production information.</p>' },
+        { h: 'How to Use This JSON Test Data Generator',
+          html: '<p>Start from a template if it resembles your data model.</p><p>Templates are useful for common records such as users, products, orders or API objects.</p>' +
+            '<p>Otherwise, create the fields manually.</p><p>Give each field a meaningful property name and select the type of value it should contain.</p><p>For example:</p>' +
+            '<pre class="code">id → sequence\nname → full name\nemail → email\nactive → boolean\ncreatedAt → timestamp</pre>' +
+            '<p>Set the number of rows and choose the output shape.</p>' +
+            '<p>Use a seed when you want the same schema and seed to produce the same fixture again.</p>' +
+            '<p>Generate the JSON, inspect the preview and download the file when the structure matches your test.</p>' },
+        { h: 'Why Seeded Test Data Matters',
+          html: '<p>Random data is useful until a test fails once and cannot reproduce the same input.</p><p>A seed solves that problem.</p>' +
+            '<p>With deterministic seeded generation, the same seed can produce the same sequence of generated values.</p>' +
+            '<p>That gives you repeatable fixtures for unit tests, integration tests, visual regression tests, bug reproduction, demo environments, documentation screenshots and front-end development.</p>' +
+            '<p>For example, a bug discovered with seed <code>checkout-1042</code> can be rerun later with the same fixture instead of hoping a random generator recreates the bad case.</p>' +
+            '<p>Seeds also make generated files practical to commit to a test workflow without manually maintaining hundreds of fake rows.</p>' },
+        { h: 'Valid JSON Data Types',
+          html: '<p>JSON supports a small set of data types:</p>',
+          list: ['string', 'number', 'boolean', 'null', 'object', 'array'],
+          after: '<p>That simplicity is one reason JSON is widely used for APIs.</p><p>However, it also creates common test-data mistakes.</p>' +
+            '<p>A number should not be wrapped in quotes if your API expects a JSON number.</p><p>Correct:</p><pre class="code">"age": 37</pre>' +
+            '<p>Different type:</p><pre class="code">"age": "37"</pre>' +
+            '<p>Likewise, JSON booleans are <code>true</code> and <code>false</code>, not <code>"true"</code> and <code>"false"</code>.</p>' +
+            '<p>Good fixtures preserve these distinctions because validation, sorting, filtering and database mapping can behave differently when the type is wrong.</p>' },
+        { h: 'JSON Objects and Arrays',
+          html: '<p>Most API fixtures use one of two shapes.</p><p>An array of objects:</p><pre class="code">[{"id":1},{"id":2}]</pre>' +
+            '<p>or a wrapper object:</p><pre class="code">{"data":[{"id":1},{"id":2}]}</pre><p>Both are valid JSON.</p>' +
+            '<p>Choose the shape your application actually returns or consumes.</p>' +
+            '<p>A wrapper object is useful when an API response also includes metadata such as pagination, total count, links, status or filters.</p>' +
+            '<p>A plain array is simpler when the endpoint genuinely returns only a collection.</p>' +
+            '<p>Do not choose a wrapper solely because it looks more “API-like.” Match the contract you are testing.</p>' },
+        { h: 'Realistic Data vs Real Personal Data',
+          html: '<p>Realistic test data should look plausible without copying actual customer records.</p><p>That distinction matters.</p>' +
+            '<p>A production database may contain names, addresses, phone numbers, account IDs and other sensitive data that should not be moved into developer laptops or public demos.</p>' +
+            '<p>Synthetic data lets a team test layout width, search, filtering, pagination, validation, imports, exports and API rendering without reusing live user information.</p>' +
+            '<p>Mock data is not automatically anonymous production data. It is better to generate fictional values from scratch than to assume lightly edited customer data is safe.</p>' },
+        { h: 'Test More Than the Happy Path',
+          html: '<p>Perfectly clean fake data can hide bugs.</p><p>A useful test dataset should also challenge assumptions.</p>' +
+            '<p>Depending on your application, include cases such as empty strings, null values, long names, Unicode characters, zero values, negative values, large numbers, duplicate-looking names, unusual dates, optional fields, false booleans and boundary values.</p>' +
+            '<p>The right edge cases depend on the schema.</p>' +
+            '<p>For example, a checkout form should test long addresses and non-ASCII names. A dashboard should test zero values and large totals. An API parser should test nulls where the contract permits them.</p>' },
+        { h: 'Pretty-Printed vs Minified JSON',
+          html: '<p>Pretty-printed JSON uses whitespace and indentation:</p><pre class="code">{\n  "id": 1,\n  "active": true\n}</pre>' +
+            '<p>Minified JSON removes unnecessary whitespace:</p><pre class="code">{"id":1,"active":true}</pre>' +
+            '<p>The data is equivalent.</p><p>Pretty printing is better for code review, documentation, debugging and hand inspection.</p>' +
+            '<p>Minified output is smaller and may be more convenient for transfer-size tests.</p>' +
+            '<p>Do not confuse formatting with data structure. Whitespace outside JSON strings does not change the represented values.</p>' },
+        { h: 'JSON Dates Are Strings',
+          html: '<p>JSON has no native date type.</p><p>Dates are normally represented as strings.</p><p>A common API format is an ISO 8601-style timestamp such as:</p>' +
+            '<pre class="code">"2026-08-15T14:30:00Z"</pre><p>Your application must agree on the expected date representation.</p>' +
+            '<p>Possible conventions include full UTC timestamps, date-only values, timestamps with offsets, Unix seconds as numbers or Unix milliseconds as numbers.</p>' +
+            '<p>A generated date that looks reasonable can still break a test if it uses the wrong representation.</p><p>Match the actual API contract.</p>' },
+        { h: 'IDs, UUIDs and Fixture Relationships',
+          html: '<p>Random data becomes more useful when related records stay related.</p>' +
+            '<p>Suppose an order contains <code>"userId": "..."</code> and your users fixture contains IDs.</p>' +
+            '<p>If the two datasets are generated independently with unrelated values, relationship tests become awkward.</p>' +
+            '<p>For complex test environments, generate parent IDs first and reuse them in dependent fixtures.</p>' +
+            '<p>For simple single-file mock data, UUIDs and sequence IDs are useful because every row can have a stable-looking identity.</p>' +
+            '<p>Use the <a href="/tools/uuid-v7-generator">UUID v7 Generator</a> when you specifically need standalone time-ordered UUID fixtures.</p>' },
+        { h: 'JSON Schema and Generated Fixtures',
+          html: '<p>A generator schema describes what data to create.</p><p>A formal JSON Schema describes what data is valid.</p><p>They are related, but they are not the same thing.</p>' +
+            '<p>JSON Schema can express constraints such as required properties, data types, numeric limits, string patterns, array item rules and allowed values.</p>' +
+            '<p>If your application publishes a JSON Schema, generated test data should ideally be validated against it.</p>' +
+            '<p>A visually convincing object can still violate a formal contract.</p>' +
+            '<p>Generation gives you examples; validation proves those examples satisfy the rules.</p>' },
+        { h: 'Mock JSON for API Development',
+          html: '<p>Front-end developers often need data before a backend endpoint is finished.</p>' +
+            '<p>Generated JSON can unblock table layouts, cards, charts, profile screens, filters, pagination controls, loading states and empty states.</p>' +
+            '<p>Start with the field names and types from the planned API contract.</p><p>Then generate enough rows to expose layout behavior.</p>' +
+            '<p>Five perfect rows are not enough to test pagination. One short product name is not enough to prove a card handles long text.</p>' +
+            '<p>Use the row count intentionally.</p>' },
+        { h: 'Common JSON Test Data Mistakes',
+          html: '<p>Avoid these problems:</p>',
+          list: ['Using strings where numbers or booleans are expected', 'Copying production data instead of generating fictional records', 'Testing only clean happy-path values',
+                 'Using fresh randomness when a failing test must be reproducible', 'Assuming JSON has a native date type', 'Depending on object key order',
+                 'Generating IDs without maintaining relationships between fixtures', 'Creating thousands of rows when ten carefully chosen edge cases would test more',
+                 'Assuming realistic-looking data automatically satisfies JSON Schema'],
+          after: '<p>The best fixture is not the biggest. It is the one that exercises the behavior you actually need to verify. For flat CSV or SQL output instead, see the <a href="/tools/csv-test-data-generator">CSV Test Data Generator</a> and the <a href="/tools/sql-insert-data-generator">SQL Insert Data Generator</a>.</p>' }
       ],
-      keywords: [
-        'json test data generator', 'fake json data', 'mock api data', 'json fixtures',
-        'seeded test data', 'json schema generator', 'typescript interface from json',
-        'sample json data', 'nested json generator', 'faker alternative online',
-        'reproducible test fixtures', 'mock rest api response'
-      ]
+      keywords: ['json test data generator', 'mock json fixtures', 'seeded json generator', 'realistic fake json data',
+        'json schema test data', 'json array of objects generator', 'repeatable test fixtures', 'json date format testing',
+        'pretty print json vs minified', 'json data types testing', 'fake api response generator', 'json edge case test data']
     }
   });
 })();

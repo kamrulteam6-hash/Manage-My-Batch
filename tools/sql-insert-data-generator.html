@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>SQL Insert Data Generator — MySQL, Postgres, SQLite, MSSQL | Manage My Batch</title>
-<meta name="description" content="Free SQL INSERT generator. Produce dialect-correct seed data with proper escaping, batching, CREATE TABLE DDL and upsert variants for MySQL, PostgreSQL, SQLite and SQL Server.">
+<title>SQL Insert Data Generator – MySQL, PostgreSQL, SQLite &amp; MSSQL | Manage My Batch</title>
+<meta name="description" content="Generate realistic SQL INSERT test data for MySQL, PostgreSQL, SQLite and SQL Server. Create seeded rows, batches, DDL, transactions and upserts.">
 <link rel="canonical" href="https://managemybatch.com/tools/sql-insert-data-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="SQL Insert Data Generator — MySQL, Postgres, SQLite, MSSQL">
-<meta property="og:description" content="Free SQL INSERT generator. Produce dialect-correct seed data with proper escaping, batching, CREATE TABLE DDL and upsert variants for MySQL, PostgreSQL, SQLite and SQL Server.">
+<meta property="og:title" content="SQL Insert Data Generator – MySQL, PostgreSQL, SQLite &amp; MSSQL">
+<meta property="og:description" content="Generate realistic SQL INSERT test data for MySQL, PostgreSQL, SQLite and SQL Server. Create seeded rows, batches, DDL, transactions and upserts.">
 <meta property="og:url" content="https://managemybatch.com/tools/sql-insert-data-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="SQL Insert Data Generator — MySQL, Postgres, SQLite, MSSQL">
-<meta name="twitter:description" content="Free SQL INSERT generator. Produce dialect-correct seed data with proper escaping, batching, CREATE TABLE DDL and upsert variants for MySQL, PostgreSQL, SQLite and SQL Server.">
+<meta name="twitter:title" content="SQL Insert Data Generator – MySQL, PostgreSQL, SQLite &amp; MSSQL">
+<meta name="twitter:description" content="Generate realistic SQL INSERT test data for MySQL, PostgreSQL, SQLite and SQL Server. Create seeded rows, batches, DDL, transactions and upserts.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -443,95 +443,118 @@
       '<h4 style="font-size:14.5px;margin:16px 0 8px">Keep the seed stable</h4><p style="color:var(--muted);font-size:13.8px">The seed string makes output deterministic. Commit it alongside the script and every environment gets identical data, so a failing test means a real regression rather than different fixtures.</p></div></div>' +
       '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>Generated SQL is for seeding, not for application code.</strong> These literals are correctly escaped for the dialect you chose, but building queries by concatenating values is the pattern that produces SQL injection. In application code, always use parameterised queries and let the driver handle escaping.</span></div>',
     related: ['json-test-data-generator', 'csv-test-data-generator', 'mongodb-objectid-generator'],
-    faqs: [
-      { q: 'Which SQL dialects are supported?', a: 'MySQL/MariaDB, PostgreSQL, SQLite, SQL Server and Oracle. Column types, boolean literals, identity syntax and upsert clauses all change to match the engine you select.' },
-      { q: 'How are quotes and special characters escaped?', a: 'Single quotes are doubled, which is the SQL standard. For MySQL, backslashes are also doubled because it treats them as escape characters unless <code>NO_BACKSLASH_ESCAPES</code> is enabled.' },
-      { q: 'What batch size should I use?', a: '500 to 1000 rows per statement is a good default. Larger batches keep getting faster until you hit the server packet or parameter limit, at which point the statement is rejected outright.' },
-      { q: 'Can I make the script re-runnable?', a: 'Yes — choose the upsert or ignore-duplicates style. PostgreSQL and SQLite use <code>ON CONFLICT</code>, MySQL uses <code>ON DUPLICATE KEY UPDATE</code>. SQL Server and Oracle need <code>MERGE</code>, and the output says so rather than emitting invalid SQL.' },
-      { q: 'Does it generate the CREATE TABLE too?', a: 'Yes. The DDL is inferred from your field types and rendered in the selected dialect, including the right auto-increment syntax for the id column.' },
-      { q: 'Is this safe to run against production?', a: 'Treat it as a development and testing tool. If you enable DROP TABLE, the script destroys the existing table and all its data — always read a generated script before executing it anywhere that matters.' }
+faqs: [
+      { q: 'Can I generate SQL INSERT statements online?', a: 'Yes. Define your table and fields, choose a dialect and generate copy-ready seed statements.' },
+      { q: 'Which databases are supported?', a: 'The tool supports MySQL, PostgreSQL, SQLite and Microsoft SQL Server output.' },
+      { q: 'Can SQL insert multiple rows in one statement?', a: 'Yes, common multi-row <code>VALUES</code> forms are supported by these databases, although practical limits and dialect details differ.' },
+      { q: 'Should I use generated SQL for user input?', a: 'No. Production applications should use parameterized queries or prepared statements for untrusted data.' },
+      { q: 'Can I generate the same seed rows again?', a: 'Yes. Reuse the same seed and settings for deterministic fixtures.' },
+      { q: 'What does wrapping in a transaction do?', a: 'It groups the seed operation so the database can treat the load as a unit rather than leaving partial data after certain failures.' },
+      { q: 'Is DROP TABLE IF EXISTS safe?', a: 'It is intentionally destructive. Use it only when removing the existing table is acceptable and verify the target database first.' }
     ],
     seo: {
-      title: 'SQL INSERT scripts: escaping, batching, upserts and re-runnable seeds',
-      lead: 'This <strong>SQL insert generator</strong> writes dialect-correct <code>INSERT</code> statements for PostgreSQL, MySQL, SQLite, SQL Server and Oracle — with real escaping, sensible batch sizes, matching DDL and upsert variants. Below: how each dialect differs, what batch size to pick, and how to make a seed script safe to run twice.',
+      title: 'SQL Insert Data Generator – Create Database Seed Data Online',
+      lead: 'Use the SQL Insert Data Generator above to create realistic seed records without hand-writing hundreds of <code>INSERT</code> statements.',
       blocks: [
-        {
-          h: 'Dialects are not interchangeable',
-          html: '<p>The <code>INSERT</code> keyword is standard. Almost everything around it is not, and a script that runs on MySQL will fail on Postgres for reasons that have nothing to do with your data.</p>',
-          table: {
-            head: ['Concern', 'PostgreSQL', 'MySQL', 'SQL Server', 'SQLite', 'Oracle'],
-            rows: [
-              ['Identifier quoting', '<code>"col"</code>', '<code>`col`</code>', '<code>[col]</code>', '<code>"col"</code>', '<code>"COL"</code>'],
-              ['String escape', 'Double the quote', 'Double or backslash', 'Double the quote', 'Double the quote', 'Double the quote'],
-              ['Booleans', '<code>TRUE</code>', '<code>1</code> / <code>0</code>', '<code>1</code> / <code>0</code>', '<code>1</code> / <code>0</code>', '<code>1</code> / <code>0</code>'],
-              ['Multi-row insert', 'Supported', 'Supported', 'Supported (1000 row cap)', 'Supported', 'Needs <code>INSERT ALL</code>'],
-              ['Upsert', '<code>ON CONFLICT</code>', '<code>ON DUPLICATE KEY</code>', '<code>MERGE</code>', '<code>ON CONFLICT</code>', '<code>MERGE</code>'],
-              ['Timestamps', '<code>TIMESTAMPTZ</code>', '<code>DATETIME</code>', '<code>DATETIME2</code>', '<code>TEXT</code>', '<code>TIMESTAMP</code>']
-            ]
-          },
-          after: '<p>Pick your engine before generating and the output accounts for all of it — including Oracle\'s lack of multi-row <code>VALUES</code>, which trips up anyone porting a script from Postgres.</p>'
-        },
-        {
-          h: 'Escaping, done properly',
-          html: '<p>Every string value is escaped for the target dialect. The standard rule is doubling: an apostrophe in <code>O\'Brien</code> becomes <code>O\'\'Brien</code>. MySQL additionally honours backslash escapes unless <code>NO_BACKSLASH_ESCAPES</code> is set, so a Windows path in your data needs handling that Postgres does not require.</p>' +
-            '<p>Other values that need care: <code>NULL</code> must be the bare keyword, never the quoted string <code>\'NULL\'</code>; numbers are emitted unquoted so the engine does not do an implicit cast; dates are written in an unambiguous ISO form rather than a locale format; and binary data is emitted in the dialect\'s hex literal syntax.</p>',
-          callout: { type: 'warn', text: '<strong>This generates static seed scripts you review before running — not a way to build queries in application code.</strong> String-concatenated SQL in an application is SQL injection regardless of how carefully it escapes. Use parameterised queries or an ORM there, always.' }
-        },
-        {
-          h: 'Choosing a batch size',
-          html: '<p>One <code>INSERT</code> per row is slow: every statement is a round trip and, by default, its own transaction. One <code>INSERT</code> with 100,000 rows is also bad: it may exceed a packet limit, it locks longer, and a single bad row rolls back everything.</p>',
-          cards: [
-            { t: '500–1,000 rows', d: 'The sweet spot for most engines. Fast, and a failure loses only that batch.' },
-            { t: 'SQL Server: max 1,000', d: 'A hard limit on rows per <code>VALUES</code> clause. Exceed it and the statement is rejected outright.' },
-            { t: 'MySQL: watch max_allowed_packet', d: 'Default 64 MB in recent versions, much smaller on managed hosts. Wide rows hit it sooner than you expect.' },
-            { t: 'Wrap in a transaction', d: 'Explicit <code>BEGIN</code> / <code>COMMIT</code> around the batches turns thousands of implicit commits into one, often a tenfold speedup in SQLite.' }
-          ]
-        },
-        {
-          h: 'Making a seed script re-runnable',
-          html: '<p>A seed script you can only run once is a script you will eventually run twice by accident. Idempotency is worth the extra clause.</p>',
-          steps: [
-            { t: 'Use the upsert form', d: 'PostgreSQL and SQLite: <code>ON CONFLICT (id) DO UPDATE</code> or <code>DO NOTHING</code>. MySQL: <code>ON DUPLICATE KEY UPDATE</code>. SQL Server and Oracle: <code>MERGE</code>.' },
-            { t: 'Include explicit primary keys', d: 'Deterministic IDs — from a seeded generator — are what make a conflict detectable at all. Auto-increment keys create a new row every run.' },
-            { t: 'Wrap in a transaction', d: 'So a partial failure leaves nothing behind.' },
-            { t: 'Emit the DDL alongside', d: 'A <code>CREATE TABLE</code> matching the columns, so the script bootstraps an empty database from scratch.' },
-            { t: 'Consider a truncate header', d: 'For a development database, <code>TRUNCATE</code> before insert gives a known state. Never put this in a script that could reach production.' }
-          ],
-          callout: { type: 'tip', text: 'Generate your primary keys with a fixed seed and keep the seed in the script header. The same seed produces the same IDs, which is what makes the upsert path work and what lets a colleague reproduce your local database exactly.' }
-        },
-        {
-          h: 'The generated DDL',
-          html: '<p>The tool infers a <code>CREATE TABLE</code> from your columns: types mapped to the dialect, a primary key on the ID column, and <code>NOT NULL</code> where no null values were generated.</p>' +
-            '<p>Treat it as a starting point rather than a schema. Inferred types are sized from the sample — a <code>VARCHAR(64)</code> derived from your longest generated name will reject a longer real one. Indexes, foreign keys, defaults and check constraints are yours to add, and they are the parts that matter for anything beyond a fixture.</p>'
-        },
-        {
-          h: 'Never point this at production',
-          html: '<p>The output is plain SQL, and plain SQL does exactly what it says against whichever connection is open. The realistic failure mode is not malice — it is a terminal left connected to the wrong environment.</p>',
-          list: [
-            'Read the script before running it, especially any <code>TRUNCATE</code> or <code>DELETE</code> header.',
-            'Confirm the connection target. Colour-code production terminals if your client supports it.',
-            'Run inside a transaction so a mistake can be rolled back.',
-            'Never seed a table that shares a sequence or key space with real records.',
-            'Keep seed scripts in a clearly named <code>seeds/</code> directory, separate from migrations.'
-          ]
-        },
-        {
-          h: 'Related database tools',
-          list: [
-            '<a href="/tools/json-test-data-generator">JSON Test Data Generator</a> — design the schema, then export as SQL.',
-            '<a href="/tools/csv-test-data-generator">CSV Test Data Generator</a> — for bulk loaders like <code>COPY</code> and <code>LOAD DATA</code>.',
-            '<a href="/tools/mongodb-objectid-generator">MongoDB ObjectId Generator</a> — the document-database equivalent.',
-            '<a href="/tools/uuid-v7-generator">UUID v7 Generator</a> — index-friendly, time-ordered primary keys.',
-            '<a href="/tools/json-array-generator">JSON Array Generator</a> — value lists for <code>IN</code> clauses.'
-          ]
-        }
+        { html: '<p>Choose MySQL, PostgreSQL, SQLite or Microsoft SQL Server, enter the table name, define the columns and field types, then generate repeatable rows with a seed. You can choose the statement style, control rows per statement and optionally include <code>CREATE TABLE</code>, <code>DROP TABLE</code>, identifier quoting and transaction wrappers.</p>' +
+            '<p>SQL dialect matters here.</p>' +
+            '<p>A script that works in PostgreSQL is not automatically correct for MySQL, SQLite or SQL Server. Identifier quoting, upsert syntax, boolean values and type names can differ.</p>' +
+            '<p>The generator produces output for the dialect you actually select rather than pretending “SQL” is one identical language everywhere.</p>' },
+        { h: 'What Is a SQL Insert Data Generator?',
+          html: '<p>A SQL insert data generator creates executable <code>INSERT</code> statements from a test-data schema.</p><p>A simple example looks like:</p>' +
+            '<pre class="code">INSERT INTO users (id, name, active) VALUES (1, \'Alice\', true);</pre>' +
+            '<p>For multiple rows, the generator can create either separate statements or multi-row <code>VALUES</code> syntax when supported by the chosen dialect.</p>' +
+            '<p>This is useful for development databases, demos, unit and integration tests, schema experiments, local environments, migration rehearsals, SQL tutorials and reproducible bug reports.</p>' +
+            '<p>The generated values are fictional, so you can populate realistic-looking tables without copying production records.</p>' },
+        { h: 'How to Use This SQL Data Generator',
+          html: '<p>Select the target SQL dialect first.</p><p>Then enter your table name.</p><p>Choose a template or define the columns manually.</p><p>Example:</p>' +
+            '<pre class="code">id → sequence\ncustomer_name → full name\nemail → email\namount → decimal\nstatus → enum\ncreated_at → timestamp</pre>' +
+            '<p>Set the row count and seed.</p>' +
+            '<p>Choose whether output should use one statement per row or batch several rows into each statement.</p>' +
+            '<p>Finally, select optional DDL and transaction settings.</p>' +
+            '<p>Generate the script, read the dialect notes and review the SQL before executing it.</p>' +
+            '<p>If the output includes <code>DROP TABLE IF EXISTS</code>, treat it as destructive code and verify the target database carefully.</p>' },
+        { h: 'One INSERT per Row vs Multi-Row INSERT',
+          html: '<p>One statement per row is easy to inspect:</p><pre class="code">INSERT INTO users (...) VALUES (...);\nINSERT INTO users (...) VALUES (...);</pre>' +
+            '<p>A multi-row statement is more compact:</p><pre class="code">INSERT INTO users (...) VALUES (...), (...), (...);</pre>' +
+            '<p>MySQL, PostgreSQL, SQLite and SQL Server all support common forms of inserting multiple rows, although details and limits differ.</p>' +
+            '<p>Multi-row statements reduce repeated SQL text and can be faster for seed loading.</p>' +
+            '<p>However, extremely large statements can hit practical limits such as maximum packet size, parameter limits, query length, memory usage or transaction-log pressure.</p>' +
+            '<p>For generated seed scripts, batching hundreds of rows per statement is often more manageable than producing one enormous statement.</p>' },
+        { h: 'Why SQL Dialect Selection Matters',
+          html: '<p>SQL has standards, but production databases implement their own syntax and features.</p><p>Differences can include:</p>',
+          list: ['identifier quoting', 'data types', 'boolean literals', 'auto-increment behavior', 'conflict handling', 'date functions', 'generated keys', 'returning inserted rows'],
+          after: '<p>For example, PostgreSQL uses <code>ON CONFLICT</code> for common upsert patterns.</p>' +
+            '<p>MySQL supports <code>ON DUPLICATE KEY UPDATE</code>.</p>' +
+            '<p>SQLite provides its own conflict-resolution forms including <code>INSERT OR ...</code> and UPSERT syntax.</p>' +
+            '<p>SQL Server has its own T-SQL features.</p>' +
+            '<p>Choose the dialect that will execute the script. Do not generate PostgreSQL syntax and hope MySQL silently understands it.</p>' },
+        { h: 'SQL String Escaping',
+          html: '<p>SQL string values are commonly enclosed in single quotes.</p><p>A single quote inside the data must be escaped correctly.</p>' +
+            '<p>For example, a name such as:</p><pre class="code">O\'Brien</pre>' +
+            '<p>cannot simply be pasted between single quotes without escaping.</p><p>A common SQL literal representation is:</p>' +
+            '<pre class="code">\'O\'\'Brien\'</pre><p>where the embedded quote is doubled.</p>' +
+            '<p>This is one reason hand-building large seed scripts is error-prone.</p>' +
+            '<p>Generated SQL should escape data according to the selected dialect.</p>' +
+            '<p>For real application queries containing user input, do not use generated string concatenation as a security pattern. Use parameterized queries or prepared statements.</p>' },
+        { h: 'Generated SQL Is for Fixtures, Not User Input',
+          html: '<p>There is a crucial difference between a seed-data generator and production query construction.</p>' +
+            '<p>A generated <code>.sql</code> file contains controlled literal values.</p>' +
+            '<p>A live application receives untrusted values from users and external systems.</p>' +
+            '<p>Do not look at a generated statement and conclude that your application should build queries by concatenating strings.</p>' +
+            '<p>Production code should use the database driver’s parameterized-query mechanism.</p>' +
+            '<p>This separates SQL syntax from data and is a fundamental defense against SQL injection.</p>' +
+            '<p>The generator is a fixture tool, not a replacement for prepared statements.</p>' },
+        { h: 'Seeded SQL Data',
+          html: '<p>A deterministic seed lets you regenerate the same records.</p><p>That is valuable when a test refers to a specific row.</p>' +
+            '<p>Instead of “run the generator until the bug happens again,” you can store the seed with the issue.</p>' +
+            '<p>Seeded output is useful for automated database tests, demos, classroom examples, reproducible QA environments, migration rehearsals and benchmark baselines.</p>' +
+            '<p>If the table contains random-looking UUIDs, names and dates, a stable seed also makes diffs easier because regenerating the fixture does not rewrite every row unnecessarily.</p>' },
+        { h: 'Include a CREATE TABLE Statement',
+          html: '<p>The tool can infer a basic <code>CREATE TABLE</code> statement from your selected field types.</p>' +
+            '<p>This is convenient when you need a self-contained demonstration.</p><p>For example, a bug report can include:</p>',
+          ol: ['table definition', 'sample inserts', 'query that fails'],
+          after: '<p>That makes reproduction much easier.</p><p>Treat generated DDL as a starting point.</p>' +
+            '<p>A production schema may need details the generator cannot infer from sample fields, including indexes, foreign keys, check constraints, collations, storage options, generated columns, precise numeric scale and timezone decisions.</p>' +
+            '<p>Fixture DDL should not automatically become production schema design.</p>' },
+        { h: 'DROP TABLE IF EXISTS',
+          html: '<p>Including a drop statement makes a seed script easy to rerun because the old fixture table can be removed first.</p><p>It is also destructive.</p>' +
+            '<p>A command such as:</p><pre class="code">DROP TABLE IF EXISTS users;</pre>' +
+            '<p>does not know whether the table contains disposable test data or something important.</p>' +
+            '<p>Use this option only in an isolated development or test environment where deleting the table is intentional.</p>' +
+            '<p>Never execute an unfamiliar generated script against production simply because it is labeled “seed.sql.”</p>' +
+            '<p>Review destructive statements before running them.</p>' },
+        { h: 'NULL vs Empty String',
+          html: '<p>SQL <code>NULL</code> is not the same as an empty string.</p><p><code>NULL</code> means the value is absent or unknown.</p>' +
+            '<p><code>\'\'</code> is a string with zero characters.</p>' +
+            '<p>These can behave differently in constraints, comparisons, aggregation, sorting and application mapping.</p>' +
+            '<p>A good seed dataset includes null values where the schema allows them.</p>' +
+            '<p>Do not replace every missing value with an empty string merely because it is easier to see in generated SQL.</p>' +
+            '<p>Your fixtures should exercise the actual nullability rules of the table.</p>' },
+        { h: 'Upserts Are Dialect-Specific',
+          html: '<p>An upsert means “insert, or handle the row if a uniqueness conflict already exists.”</p><p>The syntax differs substantially.</p>' +
+            '<p>PostgreSQL commonly uses:</p><pre class="code">ON CONFLICT</pre><p>MySQL uses:</p><pre class="code">ON DUPLICATE KEY UPDATE</pre>' +
+            '<p>SQLite supports conflict clauses and UPSERT forms.</p><p>SQL Server uses different T-SQL approaches depending on the requirement.</p>' +
+            '<p>Do not copy one database’s conflict syntax into another.</p>' +
+            '<p>Also remember that an upsert is driven by keys and constraints. If your generated schema has no appropriate unique constraint, the conflict behavior may not match what you expect.</p>' },
+        { h: 'How Many Rows per INSERT?',
+          html: '<p>There is no single perfect batch size.</p><p>A moderate batch reduces repetitive SQL while keeping statements manageable.</p>' +
+            '<p>The tool notes that very large single statements can hit packet or parameter limits, so a setting in the hundreds is a sensible starting point for many fixture scripts.</p>' +
+            '<p>For truly large datasets, database-native bulk-loading tools may be more appropriate than generated <code>INSERT</code> literals.</p>' +
+            '<p>Use this generator when readability, portability and straightforward seed execution matter.</p>' +
+            '<p>Use dedicated bulk-loading mechanisms when loading millions of records is the primary goal.</p>' },
+        { h: 'Common SQL Seed Data Mistakes',
+          html: '<p>Avoid these problems:</p>',
+          list: ['Selecting the wrong SQL dialect', 'Treating generated literals as a production query-security pattern', 'Forgetting to escape apostrophes',
+                 'Running DROP TABLE against the wrong database', 'Confusing NULL with an empty string', 'Building one giant INSERT that exceeds practical limits',
+                 'Assuming generated DDL is production-ready schema design', 'Ignoring unique constraints when testing upserts',
+                 'Using random, non-repeatable fixtures for regression tests', 'Loading production customer records when synthetic data would work'],
+          after: '<p>A good seed script should be safe to understand, easy to rerun and specific to the database you actually use. For flat file or nested-object fixtures instead, see the <a href="/tools/csv-test-data-generator">CSV Test Data Generator</a> and the <a href="/tools/json-test-data-generator">JSON Test Data Generator</a>.</p>' }
       ],
-      keywords: [
-        'sql insert generator', 'generate insert statements', 'sql seed data',
-        'bulk insert sql', 'postgres insert script', 'mysql insert generator',
-        'sql upsert on conflict', 'test data sql', 'create table generator',
-        'sql escape apostrophe', 'idempotent seed script', 'sql batch insert size'
-      ]
+      keywords: ['sql insert data generator', 'sql seed data generator', 'mysql insert statement generator',
+        'postgresql insert generator', 'sqlite test data', 'sql server seed script', 'sql upsert on conflict',
+        'sql escape apostrophe', 'multi row insert sql', 'create table ddl generator', 'sql injection parameterized queries',
+        'drop table if exists warning']
     }
   });
 })();

@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>JSON Array Generator — Numbers, Strings, Ranges &amp; Objects | Manage My Batch</title>
-<meta name="description" content="Free JSON array generator. Build arrays of numbers, sequences, ranges, dates, strings or objects — with shuffling, unique values, custom separators and multiple output formats.">
+<title>JSON Array Generator – Numbers, Strings, Dates &amp; Objects | Manage My Batch</title>
+<meta name="description" content="Generate valid JSON arrays of numbers, ranges, strings, dates, IDs, custom values or objects. Shuffle, sort, de-duplicate, seed and export instantly.">
 <link rel="canonical" href="https://managemybatch.com/tools/json-array-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="JSON Array Generator — Numbers, Strings, Ranges &amp; Objects">
-<meta property="og:description" content="Free JSON array generator. Build arrays of numbers, sequences, ranges, dates, strings or objects — with shuffling, unique values, custom separators and multiple output formats.">
+<meta property="og:title" content="JSON Array Generator – Numbers, Strings, Dates &amp; Objects">
+<meta property="og:description" content="Generate valid JSON arrays of numbers, ranges, strings, dates, IDs, custom values or objects. Shuffle, sort, de-duplicate, seed and export instantly.">
 <meta property="og:url" content="https://managemybatch.com/tools/json-array-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="JSON Array Generator — Numbers, Strings, Ranges &amp; Objects">
-<meta name="twitter:description" content="Free JSON array generator. Build arrays of numbers, sequences, ranges, dates, strings or objects — with shuffling, unique values, custom separators and multiple output formats.">
+<meta name="twitter:title" content="JSON Array Generator – Numbers, Strings, Dates &amp; Objects">
+<meta name="twitter:description" content="Generate valid JSON arrays of numbers, ranges, strings, dates, IDs, custom values or objects. Shuffle, sort, de-duplicate, seed and export instantly.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -479,96 +479,124 @@ yellow</textarea>
       '<p style="color:var(--muted);font-size:13.8px;margin-top:10px"><strong>Seed</strong> makes everything reproducible. The same seed and settings always produce the same array, which is what you want in a committed fixture and what you do not want when you are eyeballing random variation — click the refresh button to change it.</p></div></div>' +
       '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>The SQL <code>IN</code> output escapes single quotes and leaves numbers unquoted. It is meant for ad-hoc queries and migrations — in application code, bind the values as parameters instead of interpolating a list into the statement.</span></div>',
     related: ['json-test-data-generator', 'csv-test-data-generator', 'html-select-option-generator'],
-    faqs: [
-      { q: 'Can I generate an array of objects?', a: 'Yes. Choose “Objects” and describe the shape as <code>key: type</code> lines. Available types include id, int, float, bool, fullName, email, word, sentence, date, uuid, city, price and status.' },
-      { q: 'How do I make a numeric range?', a: 'Choose “Number sequence” and set the start, step and item count. For 0–99 use start 1 changed to 0, step 1 and count 100.' },
-      { q: 'Why did I get fewer items than I asked for?', a: 'The unique option removes duplicates after generation. If the possible value space is smaller than the requested count — for example 100 unique integers between 1 and 10 — you get the maximum possible and a warning explaining why.' },
-      { q: 'What is the seed for?', a: 'It makes the output deterministic. The same seed produces the same array every time, which keeps committed fixtures stable. Click the refresh button next to it for a different set.' },
-      { q: 'Can I shuffle a list I already have?', a: 'Yes — choose “From my own list”, paste your values, and pick shuffle. Random sampling with repeats is also available for building weighted-looking test data.' },
-      { q: 'Which output formats are supported?', a: 'JSON (pretty or minified), JavaScript const, typed TypeScript const, Python list, PHP array, comma-separated, one-per-line, and a ready-to-paste SQL <code>IN (…)</code> clause.' }
+faqs: [
+      { q: 'What is a JSON array?', a: 'It is an ordered collection of JSON values enclosed in square brackets.' },
+      { q: 'Can a JSON array contain objects?', a: 'Yes. Arrays can contain objects, other arrays, strings, numbers, booleans and null.' },
+      { q: 'Can a JSON array contain mixed data types?', a: 'Yes, JSON syntax permits mixed values, although an application or JSON Schema may impose stricter rules.' },
+      { q: 'Are dates valid JSON types?', a: 'There is no native JSON date type. Dates are commonly encoded as strings or numeric timestamps by convention.' },
+      { q: 'Can JSON contain NaN or Infinity?', a: 'No. They are not valid JSON values.' },
+      { q: 'Can I generate unique random values?', a: 'Yes, when the selected value space contains enough distinct possibilities. Otherwise uniqueness can reduce the returned count.' },
+      { q: 'Can I reproduce the same random array?', a: 'Yes. Use the same seed and settings when deterministic output is required.' },
+      { q: 'Is a JavaScript array the same as JSON?', a: 'They use similar array syntax, but JavaScript source can contain language features that are not valid JSON.' }
     ],
     seo: {
-      title: 'Generating JSON arrays: ranges, objects, shuffles and export formats',
-      lead: 'This <strong>JSON array generator</strong> builds arrays of numbers, dates, strings, identifiers or objects — then exports them as JSON, JavaScript, TypeScript, Python, PHP or a SQL <code>IN</code> clause. Below: how each mode works, why seeding matters, and when unique values quietly reduce your count.',
+      title: 'JSON Array Generator – Build Numbers, Strings, Dates and Objects',
+      lead: 'Use the JSON Array Generator above to create valid JSON arrays without manually typing, quoting and separating every value.',
       blocks: [
-        {
-          h: 'What it generates',
-          html: '<p>Most of the time you need an array for something small and specific: a dropdown\'s options, a test fixture, a range to iterate, a list of IDs to paste into a query. Writing a loop for that is thirty seconds you did not need to spend, and the result is not in your clipboard.</p>',
-          table: {
-            head: ['Mode', 'Produces', 'Typical use'],
-            rows: [
-              ['Sequence', '<code>[1, 2, 3, …]</code> with a start, step and count.', 'Pagination fixtures, iteration ranges, ID ranges.'],
-              ['Random numbers', 'Integers or decimals within a range.', 'Chart data, load-test payloads, price fixtures.'],
-              ['Dates', 'ISO timestamps or dates across a span.', 'Time-series fixtures, calendar tests.'],
-              ['Strings', 'Prefixed, padded or patterned values.', 'Codes, labels, generated slugs.'],
-              ['Identifiers', 'UUIDs, ULIDs, NanoIDs, hex tokens.', 'Primary keys for seed data.'],
-              ['Objects', 'Repeated objects with per-field rules.', 'API mock responses, fixture files.'],
-              ['Your own list', 'Shuffled, sampled or deduplicated.', 'Randomising an existing set.']
-            ]
-          }
-        },
-        {
-          h: 'Arrays of objects',
-          html: '<p>Object mode is where the tool replaces a real script. Define the fields once — name, type, and a rule such as a range, a pattern or a pick-list — and every element follows the same shape:</p>' +
-            '<p><code>[{ "id": 1, "name": "Ada Lovelace", "active": true }, …]</code></p>' +
-            '<p>Two details make the output usable as a fixture rather than as noise. Field order is preserved, so the JSON diffs cleanly against a checked-in snapshot. And a sequential <code>id</code> alongside random content gives you a stable key to assert against while everything else varies.</p>',
-          callout: { type: 'tip', text: 'For deeply nested fixtures with realistic names, addresses and emails, the <a href="/tools/json-test-data-generator">JSON test data generator</a> is the better tool — it takes a schema, supports nesting and optional nulls, and emits a matching TypeScript interface. This one is for flat arrays you need right now.' }
-        },
-        {
-          h: 'Numeric ranges',
-          steps: [
-            { t: 'Choose the sequence mode', d: 'Set a start value, a step and how many items you want.' },
-            { t: 'Or set start and end', d: 'The count is derived from the step, so <code>0</code> to <code>100</code> in tens gives eleven items — the endpoints are inclusive.' },
-            { t: 'Use a negative step to count down', d: 'Handy for reverse-chronological year lists and countdowns.' },
-            { t: 'Add padding for string ranges', d: '<code>"001"</code> through <code>"050"</code> when the values are codes rather than numbers.' },
-            { t: 'Export in your language', d: 'A Python list, a PHP array and a JS array are all the same data with different brackets — pick the one you are pasting into.' }
-          ]
-        },
-        {
-          h: 'Why you got fewer items than you asked for',
-          html: '<p>Almost always because <strong>unique values are on and the pool is too small</strong>. Asking for 500 unique integers between 1 and 100 can only ever yield 100. Rather than looping forever, the generator stops when the space is exhausted and tells you.</p>' +
-            '<p>The fixes are the obvious ones: widen the range, reduce the count, or turn uniqueness off if duplicates are acceptable. The same applies to patterned strings — a three-character alphanumeric pattern has about 46,000 possibilities, which sounds like plenty until you ask for 100,000 unique ones.</p>' +
-            '<p>Deduplicating a supplied list has the same effect for the same reason: the output is the size of the distinct set, not the input.</p>'
-        },
-        {
-          h: 'Seeding for reproducible output',
-          html: '<p>The seed makes randomness repeatable. Same seed, same list, every time — on your machine, in CI, and on a colleague\'s laptop.</p>',
-          cards: [
-            { t: 'Fixed seed', d: 'Use one when the array is a test fixture. A failing assertion can then be reproduced exactly instead of "sometimes".' },
-            { t: 'New seed each run', d: 'Use one when you want varied data — a demo dataset, load-test input, or screenshots that should not all look identical.' },
-            { t: 'Seed as documentation', d: 'Note the seed in the test file. It is the difference between a bug you can reproduce and one you can only describe.' }
-          ]
-        },
-        {
-          h: 'Export formats',
-          html: '<p>The same array, formatted for wherever it is going:</p>',
-          list: [
-            '<strong>JSON</strong> — for fixture files and API mocks. Pretty-printed or minified.',
-            '<strong>JavaScript / TypeScript</strong> — a <code>const</code> declaration, with an inferred type annotation on the TS output.',
-            '<strong>Python</strong> — a list literal, with <code>True</code>/<code>False</code>/<code>None</code> rather than JSON\'s lowercase booleans.',
-            '<strong>PHP</strong> — modern <code>[…]</code> array syntax.',
-            '<strong>SQL <code>IN</code> clause</strong> — parenthesised and quoted correctly for pasting straight into a query.',
-            '<strong>CSV column</strong> — one value per line, for spreadsheets.'
-          ],
-          callout: { type: 'warn', text: 'A generated <code>IN</code> clause is for ad-hoc queries you are running yourself, not for application code. Interpolating values into SQL in an application is how injection happens — use parameterised queries there, and see the <a href="/tools/sql-insert-data-generator">SQL insert generator</a> for properly escaped seed scripts.' }
-        },
-        {
-          h: 'Related data tools',
-          list: [
-            '<a href="/tools/json-test-data-generator">JSON Test Data Generator</a> — schema-driven fixtures with nesting and TypeScript types.',
-            '<a href="/tools/csv-test-data-generator">CSV Test Data Generator</a> — the same data as RFC 4180 CSV.',
-            '<a href="/tools/sql-insert-data-generator">SQL Insert Data Generator</a> — dialect-correct seed scripts.',
-            '<a href="/tools/html-select-option-generator">HTML Select Option Generator</a> — turn a list into dropdown markup.',
-            '<a href="/tools/uuid-v7-generator">UUID v7 Generator</a> — time-ordered identifiers for array elements.'
-          ]
-        }
+        { html: '<p>Generate random numbers, numeric sequences, ranges, strings, dates, identifiers, custom values or objects. Then choose whether values should be unique, shuffled, sorted or forced to strings. A seed lets you regenerate repeatable random arrays, and output can be copied as JSON or adapted for code where supported.</p>' +
+            '<p>The tool is useful when you need the array itself, not an entire fake database.</p>' +
+            '<p>That might be a list of IDs, test scores, dates, feature flags, category names or small objects for an API payload.</p>' },
+        { h: 'What Is a JSON Array?',
+          html: '<p>A JSON array is an ordered collection of values enclosed in square brackets.</p><p>Example:</p><pre class="code">[10, 20, 30]</pre>' +
+            '<p>Arrays can contain strings:</p><pre class="code">["red", "green", "blue"]</pre><p>booleans:</p><pre class="code">[true, false, true]</pre>' +
+            '<p>objects:</p><pre class="code">[{"id":1},{"id":2}]</pre><p>or a mixture of valid JSON values:</p><pre class="code">[1, "two", true, null]</pre>' +
+            '<p>JSON arrays are structured values defined by the JSON format.</p>' +
+            '<p>The order of elements is meaningful. Index <code>0</code> refers to the first item, index <code>1</code> to the second and so on in programming environments that use zero-based indexing.</p>' },
+        { h: 'How to Use This JSON Array Generator',
+          html: '<p>Choose the kind of values you need.</p><p>Depending on the mode, configure:</p>',
+          list: ['item count', 'minimum and maximum', 'start and step', 'decimal places', 'string length', 'character set', 'date range', 'date format', 'identifier type', 'object fields', 'custom values'],
+          after: '<p>Then choose modifiers.</p><p>Enable uniqueness when duplicates are not allowed.</p><p>Shuffle when order should be randomized.</p>' +
+            '<p>Sort when ordered output is easier to use.</p>' +
+            '<p>Force values to strings only when your application expects text instead of native JSON numbers or booleans.</p>' +
+            '<p>Enter a seed when you need repeatable random output.</p>' +
+            '<p>Generate the array and check both the values and JSON types before copying it into your application.</p>' },
+        { h: 'Generate an Array of Numbers',
+          html: '<p>A numeric JSON array looks like:</p><pre class="code">[12, 4, 98, 31]</pre><p>Numbers are not quoted.</p><p>This matters because:</p>' +
+            '<pre class="code">[1, 2, 3]</pre><p>is different from:</p><pre class="code">["1", "2", "3"]</pre>' +
+            '<p>The first contains numbers.</p><p>The second contains strings.</p>' +
+            '<p>Use native numbers when your API expects values for calculation, sorting or numeric validation.</p>' +
+            '<p>Use the decimal-place control when you need floating-point-style test values.</p>' +
+            '<p>For financial applications, remember that JSON itself does not define decimal-money semantics. Your application still decides how amounts are stored and interpreted.</p>' },
+        { h: 'Generate a Number Sequence or Range',
+          html: '<p>Sometimes you do not want random values.</p><p>You want predictable progression.</p><p>Example:</p><pre class="code">[0, 10, 20, 30, 40]</pre>' +
+            '<p>A sequence is useful for chart axes, pagination tests, batch numbers, score ranges, time intervals, IDs in fixtures and boundary testing.</p>' +
+            '<p>Set the starting value and step.</p>' +
+            '<p>A negative step can produce descending sequences where supported by the configuration.</p>' +
+            '<p>Predictable arrays are easier to reason about than random arrays when the test is verifying order or arithmetic.</p>' +
+            '<p>Use randomness only when randomness is part of the behavior you want to exercise.</p>' },
+        { h: 'Generate Arrays of Dates',
+          html: '<p>JSON has no native date type.</p><p>A JSON date is normally represented as a string or sometimes as a numeric timestamp by application convention.</p>' +
+            '<p>An array may look like:</p><pre class="code">["2026-08-01","2026-08-08","2026-08-15"]</pre>' +
+            '<p>or:</p><pre class="code">["2026-08-15T10:00:00Z","2026-08-15T11:00:00Z"]</pre>' +
+            '<p>Choose the date format expected by your API.</p>' +
+            '<p>Sorting date strings chronologically works reliably only when the representation itself has appropriate sortable properties, such as consistently formatted ISO-style dates.</p>' +
+            '<p>Do not mix several date formats in one production contract unless the test is deliberately checking invalid input.</p>' },
+        { h: 'Generate Identifier Arrays',
+          html: '<p>Many API calls accept a list of IDs.</p>' +
+            '<p>An identifier array can be useful for bulk delete requests, batch fetches, permission checks, fixture relationships, selected-row state and queue processing.</p>' +
+            '<p>Choose an ID type that matches the receiving system.</p>' +
+            '<p>A UUID, MongoDB ObjectId, ULID and NanoID are not interchangeable simply because they are strings.</p>' +
+            '<p>If your API validates the format, realistic shape matters.</p>' },
+        { h: 'Generate Arrays of Objects',
+          html: '<p>JSON arrays often contain objects.</p><p>Example:</p>' +
+            '<pre class="code">[\n  {"id":1,"name":"Alice","active":true},\n  {"id":2,"name":"Bob","active":false}\n]</pre>' +
+            '<p>Define object keys using the supported <code>key: type</code> pattern.</p>' +
+            '<p>This is convenient for small structured payloads when a full schema-driven test data generator would be excessive.</p>' +
+            '<p>Use the <a href="/tools/json-test-data-generator">JSON Test Data Generator</a> when you need a larger or more detailed record schema.</p>' +
+            '<p>Use this array tool when the primary requirement is a compact collection with a few predictable properties.</p>' },
+        { h: 'Custom Value Arrays',
+          html: '<p>Sometimes the values already exist and you simply need valid JSON around them.</p><p>For example:</p>' +
+            '<pre class="code">draft\nreview\napproved\narchived</pre><p>can become:</p><pre class="code">["draft","review","approved","archived"]</pre>' +
+            '<p>This is useful for enums, category lists, allowed statuses, feature names, country codes, product options and test labels.</p>' +
+            '<p>The tool can interpret your values according to the selected mode and export valid JSON without hand-adding commas and quotes.</p>' +
+            '<p>Always confirm whether numeric-looking values should remain numbers or become strings.</p>' +
+            '<p>A postal code such as <code>"00123"</code> should not automatically become the number <code>123</code> if leading zeros matter.</p>' },
+        { h: 'Unique Values Only',
+          html: '<p>Turning on uniqueness removes duplicate values.</p><p>That sounds simple, but there is an important consequence.</p>' +
+            '<p>If the possible value space is smaller than the requested item count, the generator may return fewer items than requested.</p>' +
+            '<p>For example, you cannot produce 20 unique booleans because JSON has only two boolean values.</p>' +
+            '<p>Likewise, a tiny numeric range cannot provide an unlimited number of distinct random integers.</p>' +
+            '<p>When exact array length matters, make sure the selected range or alphabet provides enough unique possibilities.</p>' +
+            '<p>Uniqueness is a constraint, not a way to create additional values.</p>' },
+        { h: 'Force Values to Strings',
+          html: '<p>This modifier converts values such as numbers and booleans into string representations.</p><p>Example:</p>' +
+            '<p>Native:</p><pre class="code">[1, true, 2]</pre><p>Forced strings:</p><pre class="code">["1","true","2"]</pre>' +
+            '<p>Use it only when the API expects strings.</p>' +
+            '<p>This option is helpful for systems such as HTML form values, environment-style configuration, query-parameter fixtures, CSV-derived data and legacy APIs.</p>' +
+            '<p>Do not force strings to make an array “look consistent” if doing so changes the schema.</p>' +
+            '<p>Type correctness is more important than visual uniformity.</p>' },
+        { h: 'Seeded Random Arrays',
+          html: '<p>A seed makes random generation reproducible.</p>' +
+            '<p>That is useful for tests involving randomized numbers, strings, shuffled custom values and generated objects.</p>' +
+            '<p>If a failure occurs with a specific array, save the seed.</p>' +
+            '<p>The same settings can reproduce the dataset for debugging.</p>' +
+            '<p>This is especially useful when the array is too long to paste directly into a bug report.</p>' +
+            '<p>A seed can become part of the test case itself.</p>' +
+            '<p>Random testing is much more useful when a failure can be recreated.</p>' },
+        { h: 'Valid JSON Values',
+          html: '<p>JSON supports strings, numbers, booleans, null, objects and arrays.</p><p>It does not use JavaScript-specific values such as:</p>',
+          list: ['<code>undefined</code>', '<code>NaN</code>', '<code>Infinity</code>'],
+          after: '<p>Those are not valid JSON values.</p><p>JSON also does not allow comments in the standard data format.</p>' +
+            '<p>If you are generating an array intended for <code>application/json</code>, keep the output within JSON syntax rather than JavaScript object-literal extensions.</p>' +
+            '<p>This distinction matters when something works inside source code but fails when sent to an API parser.</p>' },
+        { h: 'Arrays in JSON Schema',
+          html: '<p>JSON Schema can define rules for arrays.</p>' +
+            '<p>It can specify item type, minimum and maximum item counts, uniqueness, tuple-like positions and nested object requirements.</p>' +
+            '<p>If your API has a formal schema, use generated arrays to test both valid and invalid cases.</p>' +
+            '<p>A generator can create values, but your validator determines whether those values satisfy the contract.</p>' +
+            '<p>For example, an array of ten integers can still be invalid if the schema allows at most five items.</p>' +
+            '<p>Generation and validation solve different problems.</p>' },
+        { h: 'Common JSON Array Mistakes',
+          html: '<p>Avoid these problems:</p>',
+          list: ['Quoting numbers when numeric types are required', 'Treating JSON dates as a native date type', 'Using JavaScript-only values such as undefined',
+                 'Assuming unique generation can exceed the available value space', 'Losing leading zeros by converting codes to numbers', 'Using the wrong identifier format',
+                 'Depending on random output without saving a seed', 'Confusing JSON output with a JavaScript variable declaration',
+                 'Sorting number-like strings as if they were numbers', 'Assuming valid JSON automatically satisfies your API schema'],
+          after: '<p>Check syntax, type and application-level rules separately. For record-shaped fixtures, see the <a href="/tools/json-test-data-generator">JSON Test Data Generator</a>; for standalone identifiers, see the <a href="/tools/uuid-v7-generator">UUID v7 Generator</a>.</p>' }
       ],
-      keywords: [
-        'json array generator', 'generate array of objects', 'json array example',
-        'number range array', 'random array generator', 'array of uuids',
-        'shuffle a list online', 'json fixture generator', 'sql in clause generator',
-        'typescript array literal', 'python list generator', 'seeded random array'
-      ]
+      keywords: ['json array generator', 'json array of objects', 'json number sequence generator', 'json array of dates',
+        'unique json array values', 'shuffle json array', 'json array vs javascript array', 'json array identifiers uuid',
+        'seeded json array', 'json schema array rules', 'force values to string json', 'custom json value array']
     }
   });
 })();

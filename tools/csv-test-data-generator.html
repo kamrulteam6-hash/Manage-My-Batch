@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>CSV Test Data Generator — RFC 4180 Sample Data, Free | Manage My Batch</title>
-<meta name="description" content="Free CSV test data generator. Build sample CSV or TSV files from 40 field types with correct quoting, delimiters, line endings and optional BOM for Excel.">
+<title>CSV Test Data Generator – RFC 4180 Mock CSV Files Online | Manage My Batch</title>
+<meta name="description" content="Generate realistic CSV test data with custom columns, seeded fixtures, delimiters, quoting, CRLF or LF, UTF-8 BOM and parser-breaking edge cases.">
 <link rel="canonical" href="https://managemybatch.com/tools/csv-test-data-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="CSV Test Data Generator — RFC 4180 Sample Data, Free">
-<meta property="og:description" content="Free CSV test data generator. Build sample CSV or TSV files from 40 field types with correct quoting, delimiters, line endings and optional BOM for Excel.">
+<meta property="og:title" content="CSV Test Data Generator – RFC 4180 Mock CSV Files Online">
+<meta property="og:description" content="Generate realistic CSV test data with custom columns, seeded fixtures, delimiters, quoting, CRLF or LF, UTF-8 BOM and parser-breaking edge cases.">
 <meta property="og:url" content="https://managemybatch.com/tools/csv-test-data-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="CSV Test Data Generator — RFC 4180 Sample Data, Free">
-<meta name="twitter:description" content="Free CSV test data generator. Build sample CSV or TSV files from 40 field types with correct quoting, delimiters, line endings and optional BOM for Excel.">
+<meta name="twitter:title" content="CSV Test Data Generator – RFC 4180 Mock CSV Files Online">
+<meta name="twitter:description" content="Generate realistic CSV test data with custom columns, seeded fixtures, delimiters, quoting, CRLF or LF, UTF-8 BOM and parser-breaking edge cases.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -349,93 +349,115 @@
       '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">If your importer survives that file, it will survive real customer uploads. If it does not, you have just found the bug on your own terms rather than during a migration.</p></div></div>' +
       '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>CSV injection is a real vulnerability.</strong> Export user-supplied text into a CSV, have someone open it in Excel, and a cell beginning <code>=</code> becomes an executable formula. Sanitise on export by prefixing such cells with an apostrophe — the “awkward values” option generates examples so you can verify your handling.</span></div>',
     related: ['json-test-data-generator', 'sql-insert-data-generator', 'markdown-table-generator'],
-    faqs: [
-      { q: 'What is RFC 4180?', a: 'The specification that defines CSV: comma delimiters, CRLF line endings, optional quoting, and quotes escaped by doubling them inside a quoted field. This generator follows it by default.' },
-      { q: 'When should a field be quoted?', a: 'Whenever it contains the delimiter, a double quote, or a line break. Minimal quoting applies this rule automatically; quoting every field is also valid and slightly safer for simple consumers.' },
-      { q: 'Why does Excel show my accented characters incorrectly?', a: 'Excel assumes the system codepage unless the file starts with a UTF-8 BOM. Enable the BOM option for files people will open in Excel, and leave it off for files consumed by an API.' },
-      { q: 'What is the difference between CSV and TSV?', a: 'Only the delimiter. TSV uses a tab, which is far less likely to appear inside a value, so quoting is rarely needed. It is a good choice when your data naturally contains commas.' },
-      { q: 'How do I test my CSV parser properly?', a: 'Enable “awkward values”. The generated file will include embedded commas, doubled quotes, multi-line fields, unicode and leading zeros — the cases that break parsers built on string splitting.' },
-      { q: 'Can I generate large files?', a: 'Up to 50,000 rows per pass, generated entirely in your browser. For larger volumes, generate several files with different seeds and concatenate them.' }
+faqs: [
+      { q: 'What is CSV test data?', a: 'It is fictional tabular data created to test imports, exports, spreadsheet workflows and parsers.' },
+      { q: 'When does a CSV field need quotes?', a: 'Under common RFC 4180-style rules, quote a field when it contains the delimiter, a double quote or a line break.' },
+      { q: 'How do you escape a quote inside CSV?', a: 'Inside a quoted field, represent a double quote as two double quotes.' },
+      { q: 'Should CSV use CRLF or LF?', a: 'RFC 4180 describes CRLF, while LF is also common in modern systems. Use and test the line ending your integration supports.' },
+      { q: 'What does UTF-8 BOM do?', a: 'It can help some spreadsheet workflows identify UTF-8 encoding. It is not required for every UTF-8 CSV file.' },
+      { q: 'Can CSV contain newlines inside a value?', a: 'Yes, when the field is quoted correctly.' },
+      { q: 'Can I regenerate the same CSV?', a: 'Yes. Keep the same seed, schema and settings for repeatable fixture generation.' }
     ],
     seo: {
-      title: 'CSV test data: RFC 4180 quoting, encodings and the values that break parsers',
-      lead: 'This <strong>CSV test data generator</strong> produces sample CSV and TSV files with correct RFC 4180 quoting — and can deliberately inject the awkward values that expose a naive parser. Below: when a field must be quoted, why Excel mangles accents, and how to test an importer properly.',
+      title: 'CSV Test Data Generator – Create Realistic Sample CSV Files',
+      lead: 'Use the CSV Test Data Generator above to create mock tabular data for imports, exports, spreadsheets, parsers and QA.',
       blocks: [
-        {
-          h: 'CSV is not as simple as it looks',
-          html: '<p>Everyone assumes CSV is "split on commas". It is not, and the assumption is why so many importers fail on real data.</p>' +
-            '<p><strong>RFC 4180</strong> is the closest thing to a specification. It defines a header row, comma separators, CRLF line endings and — crucially — a quoting rule: a field containing a comma, a double quote or a line break must be wrapped in double quotes, and any inner double quote is escaped by doubling it.</p>' +
-            '<p>The rule that surprises people is that a quoted field may contain <em>newlines</em>. A single record can span five physical lines. Any parser that reads the file line by line is already broken; it just has not met that data yet.</p>'
-        },
-        {
-          h: 'When a field must be quoted',
-          table: {
-            head: ['Raw value', 'Correct CSV', 'Why'],
-            rows: [
-              ['<code>Smith, John</code>', '<code>"Smith, John"</code>', 'Contains the delimiter.'],
-              ['<code>He said "hi"</code>', '<code>"He said ""hi"""</code>', 'Inner quotes are doubled, whole field quoted.'],
-              ['A value with a line break', '<code>"line one\\nline two"</code>', 'Newlines are legal inside quotes.'],
-              ['<code>  padded  </code>', '<code>"  padded  "</code>', 'Quote to preserve leading and trailing spaces.'],
-              ['<code>=1+1</code>', '<code>"=1+1"</code>', 'Quoting does not stop Excel treating it as a formula — see below.'],
-              ['<code>plain</code>', '<code>plain</code>', 'No quoting needed, and adding it is still valid.']
-            ]
-          },
-          after: '<p>Quoting every field is always valid and slightly larger. Quoting only where required is the RFC\'s minimal form. The generator supports both, plus a "quote non-numeric" mode that keeps numbers unquoted for spreadsheet import.</p>'
-        },
-        {
-          h: 'Why Excel mangles your accents',
-          html: '<p>Excel does not detect UTF-8 in a <code>.csv</code> file. On Windows it assumes the system ANSI codepage, so <code>café</code> arrives as <code>cafÃ©</code> and Cyrillic or Greek text becomes unreadable.</p>' +
-            '<p>The fix is a <strong>UTF-8 BOM</strong> — three bytes (<code>EF BB BF</code>) at the start of the file that tell Excel the encoding explicitly. The generator can add one.</p>' +
-            '<p>The trade-off is real: the BOM makes Excel correct but confuses some parsers, which read it as part of the first header name — producing a mysterious column called <code>﻿id</code> that never matches. Add the BOM for files humans will open in Excel; omit it for machine-to-machine transfer.</p>',
-          callout: { type: 'warn', text: '<strong>A CSV field starting with <code>=</code>, <code>+</code>, <code>-</code> or <code>@</code> is executed as a formula by Excel and Sheets.</strong> This is CSV injection, and it is a real attack path when your application exports user-supplied data. Prefix such values with an apostrophe or a tab on export. The generator can inject these values so you can confirm your export escapes them.' }
-        },
-        {
-          h: 'CSV or TSV?',
-          cards: [
-            { t: 'CSV', d: 'Universal, understood by everything, and requires quoting because commas appear in ordinary text — names, addresses, descriptions.' },
-            { t: 'TSV', d: 'Tab-separated. Tabs are rare in real text, so quoting is seldom needed and the output is easier to read. The convention is to reject rather than escape embedded tabs.' },
-            { t: 'Semicolon-separated', d: 'What Excel produces in locales where the comma is the decimal separator. Still called <code>.csv</code>, which causes no end of confusion in European data exchange.' }
-          ],
-          after: '<p>If you control both ends and the data is plain, TSV is less error-prone. If anyone will open the file in a spreadsheet, use CSV and accept the quoting.</p>'
-        },
-        {
-          h: 'Testing a parser properly',
-          html: '<p>A parser that handles your sample file proves nothing. Test it against the values that actually occur:</p>',
-          list: [
-            '<strong>Commas inside quoted fields</strong> — the baseline case that naive splitting fails.',
-            '<strong>Doubled quotes</strong> — <code>"He said ""hi"""</code>. A surprising number of parsers return the wrong string here.',
-            '<strong>Embedded newlines</strong> — multi-line addresses and free-text notes.',
-            '<strong>Empty fields versus quoted empty strings</strong> — <code>a,,b</code> and <code>a,"",b</code> differ in some readers.',
-            '<strong>Mixed line endings</strong> — a file with both CRLF and LF, which is what you get when two systems have appended to it.',
-            '<strong>Ragged rows</strong> — more or fewer fields than the header. Decide whether to reject or pad, then test that decision.',
-            '<strong>A trailing newline, and none</strong> — off-by-one row counts come from here.',
-            '<strong>Unicode, emoji and RTL text</strong> — encoding and width assumptions.',
-            '<strong>Formula-prefixed values</strong> — confirm your export escapes them.'
-          ],
-          callout: { type: 'tip', text: 'Turn on "inject awkward values" and keep the resulting file as a permanent regression fixture. It costs nothing to check into the repository and it catches the class of bug that otherwise arrives as a customer complaint about one broken row in a 40,000-row import.' }
-        },
-        {
-          h: 'Generating large files',
-          html: '<p>Everything runs in your browser, so the practical ceiling is memory rather than a server limit. Tens of thousands of rows are comfortable; hundreds of thousands will make a tab sluggish while it builds the string.</p>' +
-            '<p>For genuinely large volumes — millions of rows for a load test — generate a small seeded sample here to fix the schema and quoting, then reproduce it in a script that streams to disk. The point of the tool is getting the <em>shape</em> right, and the shape is identical at any size.</p>'
-        },
-        {
-          h: 'Related data tools',
-          list: [
-            '<a href="/tools/json-test-data-generator">JSON Test Data Generator</a> — the same fixtures as schema-driven JSON.',
-            '<a href="/tools/sql-insert-data-generator">SQL Insert Data Generator</a> — load the data straight into a database.',
-            '<a href="/tools/markdown-table-generator">Markdown Table Generator</a> — convert CSV into documentation tables.',
-            '<a href="/tools/html-table-generator">HTML Table Generator</a> — accessible table markup from the same data.',
-            '<a href="/tools/json-array-generator">JSON Array Generator</a> — single-column value lists.'
-          ]
-        }
+        { html: '<p>Choose a template or define your own columns, set the number of rows and a repeatable seed, then control the delimiter, line ending and quoting style. You can include a header row, add a UTF-8 BOM for Excel-oriented workflows, sprinkle empty cells or deliberately inject awkward values containing commas, quotes, newlines and Unicode.</p>' +
+            '<p>That last option matters.</p>' +
+            '<p>A CSV parser that works only with simple values such as <code>Alice,32,London</code> has not been tested very hard. Real files eventually contain punctuation, missing values and text that crosses assumptions.</p>' },
+        { h: 'What Is a CSV Test Data Generator?',
+          html: '<p>A CSV test data generator creates fictional rows in a delimiter-separated tabular format.</p><p>A basic CSV file might look like:</p>' +
+            '<pre class="code">id,name,active\n1,Alice,true\n2,Bob,false</pre>' +
+            '<p>Each row represents a record.</p><p>Each field occupies a column.</p>' +
+            '<p>CSV is widely used because spreadsheets, databases, analytics tools and programming languages can all read or write it.</p>' +
+            '<p>However, CSV has details that are easy to get wrong, especially around quotes and line breaks.</p>' +
+            '<p>Generating deliberate edge cases is often more useful than generating thousands of perfectly clean rows.</p>' },
+        { h: 'How to Use This CSV Generator',
+          html: '<p>Start with a template or add your own columns.</p><p>Choose realistic field types for each column.</p><p>For example:</p>' +
+            '<pre class="code">id → sequence\nname → full name\nemail → email\namount → price\ncreated_at → timestamp</pre>' +
+            '<p>Set the number of rows.</p><p>Add a seed when you want the same test file to be regenerated later.</p><p>Next, choose:</p>',
+          list: ['delimiter', 'line ending', 'quoting mode', 'header behavior', 'UTF-8 BOM', 'awkward values', 'empty-cell frequency'],
+          after: '<p>Generate the file and inspect both the raw CSV and preview.</p>' +
+            '<p>The preview should look right, but the raw view is where quoting and line-ending problems become visible.</p>' },
+        { h: 'RFC 4180 and CSV Quoting',
+          html: '<p>RFC 4180 documents a common CSV format.</p><p>One important rule is that fields containing certain characters need quoting.</p><p>A field should be enclosed in double quotes when it contains:</p>',
+          list: ['the delimiter', 'a double quote', 'a line break'],
+          after: '<p>For example:</p><pre class="code">1,"Smith, Jane",Active</pre>' +
+            '<p>The comma inside the name is data, not a column separator, because the entire field is quoted.</p>' +
+            '<p>If a field itself contains a double quote, that quote is escaped by doubling it.</p><p>Example:</p><pre class="code">"He said ""hello"""</pre>' +
+            '<p>A parser must interpret that as:</p><pre class="code">He said "hello"</pre>' +
+            '<p>This is why naive <code>split(",")</code> parsing fails on real CSV.</p>' },
+        { h: 'Minimal Quoting vs Quote Everything',
+          html: '<p>There are two common output styles.</p><p><strong>Minimal quoting</strong> wraps only fields that need quotes.</p><p>Example:</p>' +
+            '<pre class="code">1,Alice,"New York, NY"</pre><p><strong>Quote all</strong> wraps every field.</p><p>Example:</p>' +
+            '<pre class="code">"1","Alice","New York, NY"</pre><p>Both can be valid.</p>' +
+            '<p>Minimal quoting produces cleaner, smaller files.</p>' +
+            '<p>Quoting every field can simplify some integrations and make the format visually consistent.</p>' +
+            '<p>The receiving system matters more than personal preference.</p>' +
+            '<p>If you are testing an import pipeline, generate the style the pipeline is expected to accept.</p>' },
+        { h: 'Commas Inside CSV Fields',
+          html: '<p>A comma inside a field is not a problem when the field is quoted correctly.</p><p>Example:</p>' +
+            '<pre class="code">42,"Last name, First name",active</pre><p>The parser sees three fields, not four.</p>' +
+            '<p>This is one of the most important CSV tests because human-entered text commonly contains punctuation.</p>' +
+            '<p>Addresses, company names, descriptions and product titles may all contain commas.</p>' +
+            '<p>If an import succeeds only when all generated text avoids commas, the importer may fail as soon as real users provide normal content.</p>' +
+            '<p>Enable awkward values specifically to expose this class of bug.</p>' },
+        { h: 'Newlines Inside CSV Fields',
+          html: '<p>CSV fields can contain line breaks when quoted.</p><p>For example, an address might contain multiple lines inside one field.</p>' +
+            '<p>That means one logical CSV record can occupy more than one physical text line.</p>' +
+            '<p>A line-by-line parser that assumes each newline always means the next row can break.</p>' +
+            '<p>This is a valuable test for addresses, notes, comments, descriptions, exported text areas and customer-support data.</p>' +
+            '<p>If your application explicitly forbids newlines in a field, test that validation too.</p>' +
+            '<p>The generator can create awkward values so you can prove your parser handles or rejects them intentionally.</p>' },
+        { h: 'CRLF vs LF Line Endings',
+          html: '<p>RFC 4180 describes records separated with CRLF.</p><p>In practice, many modern tools also work with LF-only files.</p><p>The common representations are:</p>' +
+            '<p>CRLF: <code>\\r\\n</code></p><p>LF: <code>\\n</code></p>' +
+            '<p>Windows-oriented exports frequently use CRLF.</p><p>Unix and many web-development workflows commonly use LF.</p>' +
+            '<p>If you are testing cross-platform imports, try both.</p>' +
+            '<p>A robust parser should follow the requirements of your product rather than assuming every file was generated on the same operating system.</p>' },
+        { h: 'CSV Delimiters Are Not Always Commas',
+          html: '<p>Despite the name, real-world delimited files may use commas, semicolons, tabs or pipes.</p>' +
+            '<p>Regional spreadsheet settings can make semicolon-delimited files especially common where commas are used as decimal separators.</p>' +
+            '<p>A tab-delimited file is often called TSV rather than CSV, but many import systems treat delimiter choice as one configurable family of formats.</p>' +
+            '<p>Use the delimiter your receiving application expects.</p>' +
+            '<p>Then test data that contains that same delimiter inside quoted fields.</p>' +
+            '<p>That is where parser correctness becomes obvious.</p>' },
+        { h: 'UTF-8 and Excel BOM',
+          html: '<p>UTF-8 can represent international characters such as:</p><pre class="code">José\nMünchen\n東京\nবাংলা</pre>' +
+            '<p>A UTF-8 BOM is a small byte marker sometimes added at the beginning of a text file.</p>' +
+            '<p>Modern software generally understands UTF-8 without it, but some Excel-oriented workflows use the BOM to help recognize encoding correctly.</p>' +
+            '<p>If your CSV will be opened in spreadsheet software, test the actual path users follow.</p>' +
+            '<p>A file that looks correct in a code editor may display accented or non-Latin characters incorrectly in another program if encoding is misdetected.</p>' +
+            '<p>The BOM option exists for interoperability, not because every UTF-8 CSV requires one.</p>' },
+        { h: 'Empty Field vs Missing Column',
+          html: '<p>These concepts are different.</p><p>A row like:</p><pre class="code">1,,active</pre><p>contains an empty second field.</p><p>The column is still present.</p>' +
+            '<p>If a row has fewer delimiters than expected, it may have fewer fields entirely.</p>' +
+            '<p>That distinction matters to importers.</p>' +
+            '<p>Empty values may map to an empty string, null, default value or validation error depending on your system.</p>' +
+            '<p>Use the “sprinkle empty cells” option to test how your pipeline handles missing content without corrupting the column structure.</p>' },
+        { h: 'CSV vs JSON for Test Data',
+          html: '<p>CSV is best suited to flat tabular data.</p><p>JSON handles nested structures naturally.</p>' +
+            '<p>If a record contains arrays or nested objects, forcing it into CSV usually requires flattening or encoding those structures as strings.</p>' +
+            '<p>Use CSV when you are testing spreadsheet import, flat database export, bulk upload or tabular interchange.</p>' +
+            '<p>Use the <a href="/tools/json-test-data-generator">JSON Test Data Generator</a> when the structure includes nested objects, arrays or native JSON booleans and nulls.</p>' +
+            '<p>The data format should match the integration, not whichever generator you opened first.</p>' },
+        { h: 'Test Your Parser with Awkward Values',
+          html: '<p>The most valuable CSV file may be the ugly one.</p><p>Try values containing:</p>',
+          list: ['delimiter characters', 'double quotes', 'line breaks', 'Unicode', 'blank cells', 'very long text', 'leading zeros', 'dates', 'numbers that look like scientific notation'],
+          after: '<p>Spreadsheet software may reinterpret some values automatically.</p>' +
+            '<p>For example, product codes, ZIP codes or account references can lose leading zeros when treated as numbers.</p>' +
+            '<p>CSV itself does not define a rich type system. Every field is textual data whose interpretation is left to the consuming application.</p>' },
+        { h: 'Common CSV Test Data Mistakes',
+          html: '<p>Avoid these problems:</p>',
+          list: ['Parsing with a simple string split', 'Forgetting to escape quotes inside quoted fields', 'Assuming one physical line always equals one record',
+                 'Treating a UTF-8 BOM as mandatory everywhere', 'Assuming CSV fields carry reliable data types', 'Generating only ASCII values',
+                 'Testing only comma delimiters when your product supports others', 'Ignoring empty cells', 'Using random fixtures that cannot reproduce a parser failure',
+                 'Opening a file in a spreadsheet and assuming that proves the raw CSV is correct'],
+          after: '<p>Inspect both the raw text and the behavior of the actual parser you are testing. For nested or typed data, see the <a href="/tools/json-test-data-generator">JSON Test Data Generator</a>; for database seed scripts, see the <a href="/tools/sql-insert-data-generator">SQL Insert Data Generator</a>.</p>' }
       ],
-      keywords: [
-        'csv test data generator', 'sample csv file', 'rfc 4180', 'csv quoting rules',
-        'csv escape double quotes', 'tsv generator', 'csv utf-8 bom excel',
-        'csv injection', 'test csv parser', 'dummy csv data', 'csv with newlines in field',
-        'large csv sample'
-      ]
+      keywords: ['csv test data generator', 'rfc 4180 csv', 'csv quoting rules', 'csv escape double quotes',
+        'csv crlf vs lf', 'csv utf-8 bom', 'csv delimiter testing', 'csv parser edge cases',
+        'sample csv file generator', 'csv newline in field', 'csv empty field vs missing column', 'seeded csv fixtures']
     }
   });
 })();
