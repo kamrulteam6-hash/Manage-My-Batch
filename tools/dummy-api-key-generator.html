@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>Dummy API Key Generator — Fake Placeholder Keys for Tests &amp; Docs | Manage My Batch</title>
-<meta name="description" content="Generate realistic but non-functional placeholder API keys for tests, documentation and screenshots. Correct shape and length for 20+ providers, with EXAMPLE markers.">
+<title>Dummy API Key Generator – Fake Keys for Tests &amp; Documentation | Manage My Batch</title>
+<meta name="description" content="Generate realistic but non-functional dummy API keys for tests, docs, screenshots and fixtures. Add EXAMPLE markers, export formats or create a custom key pattern.">
 <link rel="canonical" href="https://managemybatch.com/tools/dummy-api-key-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="Dummy API Key Generator — Fake Placeholder Keys for Tests &amp; Docs">
-<meta property="og:description" content="Generate realistic but non-functional placeholder API keys for tests, documentation and screenshots. Correct shape and length for 20+ providers, with EXAMPLE markers.">
+<meta property="og:title" content="Dummy API Key Generator – Fake Keys for Tests &amp; Documentation">
+<meta property="og:description" content="Generate realistic but non-functional dummy API keys for tests, docs, screenshots and fixtures. Add EXAMPLE markers, export formats or create a custom key pattern.">
 <meta property="og:url" content="https://managemybatch.com/tools/dummy-api-key-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Dummy API Key Generator — Fake Placeholder Keys for Tests &amp; Docs">
-<meta name="twitter:description" content="Generate realistic but non-functional placeholder API keys for tests, documentation and screenshots. Correct shape and length for 20+ providers, with EXAMPLE markers.">
+<meta name="twitter:title" content="Dummy API Key Generator – Fake Keys for Tests &amp; Documentation">
+<meta name="twitter:description" content="Generate realistic but non-functional dummy API keys for tests, docs, screenshots and fixtures. Add EXAMPLE markers, export formats or create a custom key pattern.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -347,91 +347,109 @@
       '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span><strong>Prefixes are a security feature.</strong> When GitHub moved to <code>ghp_</code>, <code>gho_</code> and friends, it became possible to detect a leaked token from the string alone — no context, no guessing. That is why push protection can block a commit before it ever reaches a remote. If you design your own key format, give it a distinctive prefix for the same reason.</span></div>' +
       '<div class="note note-warn" style="margin-top:12px">' + GTI.warn + '<span>Keep the EXAMPLE marker enabled unless you specifically need an exact-length string. A reviewer skimming a diff should be able to tell at a glance that no real credential was committed.</span></div>',
     related: ['random-hex-string-generator', 'random-byte-generator', 'json-test-data-generator'],
-    faqs: [
-      { q: 'Do these API keys actually work?', a: 'No. They reproduce the visible shape — prefix, character set and length — but carry none of the checksum or account binding a real key needs. Every provider will reject them.' },
-      { q: 'What are they for?', a: 'Test fixtures, <code>.env.example</code> files, documentation, screenshots and mock servers: anywhere you need something that looks and validates like a key without exposing a real credential.' },
-      { q: 'Is it safe to commit these to a repository?', a: 'Yes — that is the point. They are random strings with no account behind them. Keeping the EXAMPLE marker on makes that obvious to reviewers and reduces the chance of a false-positive scanner alert.' },
-      { q: 'Can I generate a key for my own service?', a: 'Choose “Custom pattern” and describe the shape: <code>{a:n}</code> alphanumeric, <code>{A:n}</code> uppercase, <code>{h:n}</code> hex, <code>{d:n}</code> digits, <code>{u}</code> UUID. For example <code>myapp_live_{a:32}</code>.' },
-      { q: 'Why do real API keys start with prefixes like sk_ or ghp_?', a: 'So automated scanners can recognise a leaked credential from the string alone. It lets GitHub block a push containing a token, and lets providers revoke leaked keys proactively. It is worth copying the convention in your own systems.' },
-      { q: 'Should I use these instead of a provider sandbox?', a: 'No. If the provider offers test-mode credentials — as Stripe, Twilio and others do — use those for integration tests; they exercise the real API safely. Use these placeholders for docs, fixtures and anything that never makes a network call.' }
+faqs: [
+      { q: 'Are the generated dummy API keys real?', a: 'No. They are intentionally non-functional placeholders and do not authenticate with the providers they resemble.' },
+      { q: 'Can I use a dummy key in documentation?', a: 'Yes. Documentation, screenshots, tutorials and <code>.env.example</code> files are primary use cases.' },
+      { q: 'Is a dummy API key the same as a provider test key?', a: 'No. A provider-issued test key may still authenticate to a sandbox and should be handled as a credential. A dummy key authenticates nothing.' },
+      { q: 'Why should I add an EXAMPLE marker?', a: 'It makes the value visibly fake so readers, reviewers and future developers do not mistake it for a leaked or usable credential.' },
+      { q: 'Can I create my own API key pattern?', a: 'Yes. Use custom format to combine fixed text with generated alphanumeric, uppercase, hex, digit or UUID segments.' },
+      { q: 'Should I use dummy keys in production?', a: 'No. Use credentials issued by your provider or generated by your own secure credential system.' },
+      { q: 'Can I use dummy keys for unit tests?', a: 'Yes, when the test does not need to authenticate against the real external service.' },
+      { q: 'Is this dummy API key generator free?', a: 'Yes. Generate, customize, copy and export placeholder keys above without creating an account.' }
     ],
     seo: {
-      title: 'Dummy API keys: fake credentials with the right shape for docs and tests',
-      lead: 'This <strong>dummy API key generator</strong> produces realistic placeholder credentials in the exact format of 20+ providers — Stripe, GitHub, OpenAI, AWS, Slack and more — that authenticate nothing. Below: why shape matters, why real keys should never appear in documentation, and what those prefixes mean.',
+      title: 'Dummy API Key Generator – Create Safe Placeholder Keys for Tests and Docs',
+      lead: 'Need an API key in a screenshot, <code>.env.example</code>, unit test or documentation page without exposing a real credential? Use the Dummy API Key Generator above.',
       blocks: [
-        {
-          h: 'Why a fake key needs the right shape',
-          html: '<p><code>YOUR_API_KEY_HERE</code> is honest and useless. Anything that validates the key — a form, a schema, a client library, a regex in your own code — rejects it, so the path you meant to test never runs.</p>' +
-            '<p>A placeholder with the correct <em>shape</em> exercises the real code path: right prefix, right length, right character set, right checksum where one exists. Your validation accepts it, your UI renders it at the right width, your screenshot looks like the product — and the request still fails at the provider, which is exactly what you want.</p>',
-          list: [
-            '<strong>Tests</strong> that assert on key format, masking or storage without touching a live account.',
-            '<strong>Documentation and tutorials</strong> where the example should look like the real thing.',
-            '<strong>Screenshots and demos</strong> that show a plausible key without exposing one.',
-            '<strong>UI development</strong> — truncation, monospace widths, copy buttons, reveal toggles.',
-            '<strong>Secret-scanner testing</strong> — confirm your pre-commit hook and CI actually catch a leaked key.'
-          ]
-        },
-        {
-          h: 'What the prefixes mean',
-          html: '<p>Modern providers put a structured prefix on every key. It is not decoration — it exists so that a leaked key can be recognised instantly.</p>',
-          table: {
-            head: ['Prefix', 'Provider', 'Meaning'],
-            rows: [
-              ['<code>sk_live_</code> / <code>sk_test_</code>', 'Stripe', 'Secret key, live or test mode. The mode is visible at a glance.'],
-              ['<code>pk_</code>', 'Stripe and others', 'Publishable key — safe in client-side code.'],
-              ['<code>ghp_</code> / <code>gho_</code> / <code>ghs_</code>', 'GitHub', 'Personal access, OAuth and server token types.'],
-              ['<code>sk-</code>', 'OpenAI', 'Secret key.'],
-              ['<code>AKIA</code>', 'AWS', 'Access key ID for a long-lived IAM user.'],
-              ['<code>xoxb-</code> / <code>xoxp-</code>', 'Slack', 'Bot token and user token.'],
-              ['<code>SG.</code>', 'SendGrid', 'API key.'],
-              ['<code>AIza</code>', 'Google', 'API key.']
-            ]
-          },
-          after: '<p>The prefix is what makes automated scanning possible. GitHub\'s secret scanning, and the equivalent in most CI systems, matches these patterns and notifies the provider — which is why a real key pushed to a public repository is often revoked within minutes.</p>'
-        },
-        {
-          h: 'Do they work?',
-          html: '<p>No. Every key is random data in a provider\'s format. There is no account behind it, no signature that would verify, and no possibility of one being valid — the key space is large enough that colliding with a real key is not a meaningful risk.</p>' +
-            '<p>What they do is pass <em>local</em> validation: format checks, length checks, prefix matching, and the client-side regex your SDK applies before making a request. The request itself returns a 401 from the provider, which is normally the behaviour you want to test anyway.</p>',
-          callout: { type: 'warn', text: '<strong>Never edit a real key to make a "fake" one.</strong> Changing a few characters of a production key is how partially valid secrets end up in public repositories, and some formats include checksums that make the original recoverable. Generate a fresh placeholder instead.' }
-        },
-        {
-          h: 'Committing them to a repository',
-          cards: [
-            { t: 'Generally safe', d: 'They authenticate nothing. Test fixtures, documentation examples and README snippets are all fine.' },
-            { t: 'But scanners will flag them', d: 'That is the scanner working correctly — it matches on shape, and the shape is right. Expect alerts.' },
-            { t: 'So mark them', d: 'A comment saying the value is a generated placeholder, or a recognisable marker inside the key, saves the next person a security review.' },
-            { t: 'Never in a .env file', d: 'Not because it is dangerous, but because the habit is. <code>.env</code> belongs in <code>.gitignore</code>; put examples in <code>.env.example</code> instead.' }
-          ]
-        },
-        {
-          h: 'Placeholders or a provider sandbox?',
-          html: '<p>They answer different questions and most projects want both.</p>',
-          steps: [
-            { t: 'Use placeholder keys', d: 'For unit tests, format validation, documentation, screenshots and UI work. No network, no rate limits, no account required, and no shared state to reset.' },
-            { t: 'Use a provider sandbox', d: 'For integration tests that must exercise real request and response behaviour — Stripe test mode, a PayPal sandbox, a GitHub test app.' },
-            { t: 'Never use production credentials in tests', d: 'Even read-only ones. Rate limits, audit noise and the eventual accident are all avoidable.' },
-            { t: 'Keep sandbox keys out of the repository', d: 'They are real credentials for a real account. Environment variables or a secret manager, same as production.' }
-          ],
-          callout: { type: 'tip', text: 'Generate placeholders for your own service too. Pick a memorable prefix, a fixed length and a defined alphabet, and publish the pattern — it makes your keys scannable by GitHub and by your customers\' tooling, which turns a leak into an automatic revocation rather than an incident.' }
-        },
-        {
-          h: 'Related tools',
-          list: [
-            '<a href="/tools/random-hex-string-generator">Random Hex String Generator</a> — real entropy when you need an actual secret.',
-            '<a href="/tools/random-byte-generator">Random Byte Generator</a> — key material in any encoding.',
-            '<a href="/tools/json-test-data-generator">JSON Test Data Generator</a> — fixtures containing credential fields.',
-            '<a href="/tools/curl-command-generator">curl Command Generator</a> — example requests with a placeholder token.',
-            '<a href="/tools/security-txt-generator">security.txt Generator</a> — a contact route for reported leaks.'
-          ]
-        }
+        { html: '<p>Choose a provider-style format or build your own pattern, generate one placeholder or a batch, add a visible <code>EXAMPLE</code> marker and export the result as plain text, environment variables or code-ready values.</p>' +
+            '<p>These are intentionally non-functional placeholders. They are designed to look structurally useful in examples while authenticating nothing.</p>' +
+            '<p>That distinction is the purpose of this tool.</p>' +
+            '<p>A random secret generator creates values you may intend to keep private. A dummy API key generator creates values you can safely use as obvious stand-ins for real credentials.</p>' },
+        { h: 'What Is a Dummy API Key?',
+          html: '<p>A dummy API key is a fake credential used where software, documentation or a user interface expects something that looks like an API key.</p>' +
+            '<p>It should not provide access to a real account.</p>' +
+            '<p>Typical uses include README files, API documentation, <code>.env.example</code> files, unit tests, integration fixtures, demos, screenshots, tutorials and mock database records.</p>' +
+            '<p>A good placeholder communicates the expected shape without tempting anyone to paste a live secret into public content.</p>' +
+            '<p>For example, a documentation sample may need to show:</p><pre class="code">API_KEY=&lt;placeholder&gt;</pre>' +
+            '<p>The point is to demonstrate where a credential belongs, not to provide one.</p>' },
+        { h: 'Why Not Use a Real API Key in Documentation?',
+          html: '<p>Because published secrets have a habit of staying published.</p>' +
+            '<p>A real key can leak through Git history, documentation builds, screenshots, recordings, chats, CI logs and copied code samples. Even after revocation, removing every published copy can be difficult.</p>' +
+            '<p>Using a dummy key from the beginning eliminates that class of accident.</p>' +
+            '<p>Public examples should look like examples.</p>' +
+            '<p>Production credentials belong in the provider’s credential system and your secret-management workflow.</p>' },
+        { h: 'How to Use This Dummy API Key Generator',
+          html: '<p>Choose the key format that best matches the application or provider you are demonstrating.</p><p>Set how many placeholders you need.</p>' +
+            '<p>Enable <strong>Embed an EXAMPLE marker</strong> when you want the value itself to make its fake status obvious.</p>' +
+            '<p>That is especially useful in public documentation because a reader can immediately distinguish the placeholder from a usable credential.</p>' +
+            '<p>You can also add a “not a real key” comment when exporting to formats such as <code>.env</code> or code.</p>' +
+            '<p>If the built-in shapes do not fit your application, switch to custom format and define your own pattern.</p>' +
+            '<p>Generate the values, review the output and use them only as test or documentation placeholders.</p>' },
+        { h: 'Dummy API Key vs Random API Key',
+          html: '<p>These are different tools with different safety goals.</p>' +
+            '<p>A <strong>dummy API key</strong> is intentionally fake.</p>' +
+            '<p>A <strong>random API key</strong> may be intended to function as a real credential in a system you control.</p>' +
+            '<p>If you need a secret for your own application, generate and manage it according to your authentication design.</p>' +
+            '<p>If you need a value for a README, tutorial or screenshot, use a dummy placeholder.</p>' +
+            '<p>Do not generate a high-entropy random value and then publish it as an “example” if someone could reasonably mistake it for a real credential.</p>' +
+            '<p>The visible EXAMPLE marker helps remove that ambiguity.</p>' },
+        { h: 'Provider-Shaped Placeholder Keys',
+          html: '<p>Developers often want examples that resemble the service being documented.</p>' +
+            '<p>A cloud credential may look different from a payment-provider token, a source-control token or an AI API credential.</p>' +
+            '<p>A provider-shaped placeholder helps readers understand the environment variable, rough length, prefix style, character restrictions and how the value appears in a header.</p>' +
+            '<p>The placeholder should still be unmistakably non-functional.</p>' +
+            '<p>This tool’s built-in formats are designed for structural realism, not authentication.</p>' +
+            '<p>Never assume that reproducing the visible pattern of a provider token can create a working credential. Real provider keys are issued and validated by the provider.</p>' },
+        { h: 'Why Add an EXAMPLE Marker?',
+          html: '<p>An obvious marker reduces mistakes.</p><p>Consider a code sample copied by a junior developer six months after it was written.</p>' +
+            '<p>If the credential looks completely real, they may waste time trying to use it or wonder whether a live secret was accidentally committed.</p>' +
+            '<p>A marker such as <code>EXAMPLE</code> communicates intent immediately.</p>' +
+            '<p>It also helps reviewers distinguish sample data from production data during code review.</p>' +
+            '<p>For public documentation, explicitness is usually better than realism.</p>' +
+            '<p>The best placeholder looks realistic enough to teach the format while remaining obviously fake.</p>' },
+        { h: 'Use Dummy Keys in .env.example',
+          html: '<p>A common pattern is to commit an <code>.env.example</code> file showing which variables an application expects.</p><p>Good:</p>' +
+            '<pre class="code">PAYMENT_API_KEY=&lt;dummy placeholder&gt;\nAI_API_KEY=&lt;dummy placeholder&gt;\nWEBHOOK_SECRET=&lt;dummy placeholder&gt;</pre>' +
+            '<p>The actual <code>.env</code> file containing live values should remain outside version control or be managed through your deployment platform’s secret system.</p>' +
+            '<p>A dummy key makes the example file useful without requiring developers to erase a real credential before committing it.</p>' +
+            '<p>If your project has multiple environments, make the naming and comments clear so nobody confuses sample values with staging or production secrets.</p>' },
+        { h: 'Dummy API Keys in Unit Tests',
+          html: '<p>Tests often need credential-shaped input even when no external API request occurs.</p>' +
+            '<p>For example, tests may cover configuration loading, header construction, validation, redaction, masked displays, schemas, rotation UI and mocked API clients.</p>' +
+            '<p>A dummy key is ideal for these cases.</p>' +
+            '<p>It gives the test a realistic value without depending on a secret manager or external provider.</p>' +
+            '<p>For integration tests that genuinely call a provider, use a dedicated test credential created by that provider and manage it securely. A dummy key will—and should—fail authentication.</p>' },
+        { h: 'Build a Custom API Key Pattern',
+          html: '<p>Your own application may use a key shape that is not based on a third-party provider.</p>' +
+            '<p>The custom pattern builder lets you combine fixed text with generated alphanumeric, uppercase, hexadecimal, digit or UUID segments.</p>' +
+            '<p>This is useful for testing regex validation, field lengths, prefix recognition, masking logic, copy buttons and credential lists.</p>' +
+            '<p>Keep dummy and production namespaces visibly different where practical.</p>' +
+            '<p>For example, a documentation prefix can include <code>example</code>, <code>dummy</code> or <code>test-fixture</code> even when the real production namespace is shorter.</p>' },
+        { h: 'Dummy API Keys and Secret Scanners',
+          html: '<p>Modern repositories and security tools often scan for credentials.</p>' +
+            '<p>Realistic provider-shaped strings can sometimes trigger secret-detection rules even when they are fake.</p>' +
+            '<p>That is another reason to make placeholders explicit.</p>' +
+            '<p>An EXAMPLE marker or clearly non-production namespace can reduce confusion for human reviewers and may reduce false alarms in some scanning systems.</p>' +
+            '<p>Do not weaken or disable secret scanning merely because your test suite contains placeholders.</p>' +
+            '<p>Instead, make test data clearly test data and configure scanner exceptions narrowly if your organization’s tooling requires them.</p>' +
+            '<p>A false positive is inconvenient. A missed live credential is far worse.</p>' },
+        { h: 'Dummy API Key vs Test API Key',
+          html: '<p>A dummy key is fake.</p><p>A provider-issued <strong>test key</strong> can be real within the provider’s sandbox or test environment.</p>' +
+            '<p>That difference matters.</p>' +
+            '<p>A test-mode credential may still access sandbox data, create resources, consume quotas or trigger webhooks. Treat provider-issued test credentials as secrets according to the provider’s guidance.</p>' +
+            '<p>Do not publish them merely because they cannot affect production data.</p>' +
+            '<p>A dummy key generated here has no account behind it.</p>' },
+        { h: 'Common Dummy API Key Mistakes',
+          html: '<p>Avoid these problems:</p>',
+          list: ['Publishing a live key as an example', 'Publishing a provider-issued test key and assuming it is harmless', 'Creating a placeholder that looks so real nobody knows it is fake',
+                 'Telling users to disable secret scanning around examples', 'Using a dummy key in an integration test that genuinely calls the provider', 'Hard-coding real secrets after the dummy fixture is removed',
+                 'Treating an API key as the same thing as a UUID', 'Assuming a correct-looking provider prefix makes a credential valid', 'Reusing screenshots that were captured before secrets were replaced'],
+          after: '<p>The goal is simple: realistic documentation without credential risk. For raw secure randomness instead of a credential shape, see the <a href="/tools/random-hex-string-generator">Random Hex String Generator</a>, and for sample request bodies see the <a href="/tools/json-test-data-generator">JSON Test Data Generator</a> or the <a href="/tools/curl-command-generator">cURL Command Generator</a>.</p>' }
       ],
-      keywords: [
-        'dummy api key generator', 'fake api key', 'example api key', 'test api key',
-        'placeholder credentials', 'stripe test key format', 'github token format',
-        'fake aws access key', 'sample openai api key', 'mock secret for tests',
-        'secret scanner test', 'api key format examples'
-      ]
+      keywords: ['dummy api key generator', 'fake api key generator', 'placeholder api key', 'env.example dummy key',
+        'example api key documentation', 'test api key vs dummy key', 'custom api key pattern generator',
+        'safe fake credentials for docs', 'api key secret scanner false positive', 'mock api key for unit tests',
+        'provider shaped fake key', 'non functional api key generator']
     }
   });
 })();

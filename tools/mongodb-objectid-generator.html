@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>MongoDB ObjectId Generator &amp; Decoder — Free | Manage My Batch</title>
-<meta name="description" content="Free MongoDB ObjectId generator and decoder. Create valid 12-byte BSON ObjectIds for any timestamp, decode existing ones, and build query snippets for the shell and drivers.">
+<title>MongoDB ObjectId Generator &amp; Decoder – Create Test IDs Online | Manage My Batch</title>
+<meta name="description" content="Generate valid MongoDB ObjectIds for current or custom timestamps, decode existing IDs, inspect their 12-byte structure and create realistic test fixtures.">
 <link rel="canonical" href="https://managemybatch.com/tools/mongodb-objectid-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="MongoDB ObjectId Generator &amp; Decoder — Free">
-<meta property="og:description" content="Free MongoDB ObjectId generator and decoder. Create valid 12-byte BSON ObjectIds for any timestamp, decode existing ones, and build query snippets for the shell and drivers.">
+<meta property="og:title" content="MongoDB ObjectId Generator &amp; Decoder – Create Test IDs Online">
+<meta property="og:description" content="Generate valid MongoDB ObjectIds for current or custom timestamps, decode existing IDs, inspect their 12-byte structure and create realistic test fixtures.">
 <meta property="og:url" content="https://managemybatch.com/tools/mongodb-objectid-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="MongoDB ObjectId Generator &amp; Decoder — Free">
-<meta name="twitter:description" content="Free MongoDB ObjectId generator and decoder. Create valid 12-byte BSON ObjectIds for any timestamp, decode existing ones, and build query snippets for the shell and drivers.">
+<meta name="twitter:title" content="MongoDB ObjectId Generator &amp; Decoder – Create Test IDs Online">
+<meta name="twitter:description" content="Generate valid MongoDB ObjectIds for current or custom timestamps, decode existing IDs, inspect their 12-byte structure and create realistic test fixtures.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -329,87 +329,108 @@
       '<div><h4 style="font-size:14.5px;margin-bottom:8px">Things to be careful about</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>ObjectIds are <strong>not secrets</strong>. They expose creation time and are partially sequential, so they are guessable — never use one as an access token.</li><li>Passing a malformed 24-character string to the driver throws; validate user input first.</li><li>The old spec encoded machine ID and process ID, which leaked infrastructure detail. Modern drivers use random bytes instead.</li><li>The 32-bit timestamp overflows in 2106.</li></ul></div></div>' +
       '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span>Generate ObjectIds here for fixtures, seed data and tests. In application code always call <code>new ObjectId()</code> from the driver — it owns the per-process random value and the counter state that make uniqueness guarantees hold.</span></div>',
     related: ['uuid-v7-generator', 'ulid-generator', 'json-test-data-generator'],
-    faqs: [
-      { q: 'What is a MongoDB ObjectId?', a: 'The default value for the <code>_id</code> field: a 12-byte BSON type shown as 24 hexadecimal characters, composed of a 4-byte timestamp, 5 random process bytes and a 3-byte incrementing counter.' },
-      { q: 'Can I get the creation date from an ObjectId?', a: 'Yes — the first 4 bytes are a Unix timestamp in seconds. Paste any ObjectId into the decoder above, or call <code>id.getTimestamp()</code> in the Node driver and <code>oid.generation_time</code> in PyMongo.' },
-      { q: 'Are ObjectIds sequential?', a: 'Roughly. The leading timestamp means they increase over time, which gives good index locality, but they are not strictly monotonic — the counter starts at a random point and ordering within one second is by counter, not by real time.' },
-      { q: 'Is it safe to expose ObjectIds in URLs?', a: 'They are not secret. Anyone can read the creation time and the sequential counter makes neighbouring IDs partly guessable. Fine as opaque record references behind proper authorisation; unsuitable as an access token or invite code.' },
-      { q: 'ObjectId or UUID for MongoDB?', a: 'ObjectId is the native default: 12 bytes rather than 16, natively indexed, and it carries a free timestamp. Use a UUID only when IDs must be shared across systems that already speak UUID, or when you specifically need a format MongoDB does not own.' },
-      { q: 'Can two ObjectIds collide?', a: 'Practically no. A collision requires two processes to generate the same 5 random bytes and hit the same counter value in the same second. Within one process the counter alone guarantees uniqueness for over 16 million documents per second.' }
+faqs: [
+      { q: 'How many characters are in a MongoDB ObjectId?', a: 'The standard hexadecimal representation is 24 characters, representing 12 bytes.' },
+      { q: 'Does a MongoDB ObjectId contain a timestamp?', a: 'Yes. The first four bytes encode Unix time in seconds.' },
+      { q: 'Can I extract the creation date from an ObjectId?', a: 'You can extract the timestamp encoded in the ObjectId. MongoDB also provides <code>getTimestamp()</code> for this purpose.' },
+      { q: 'Is ObjectId globally unique?', a: 'Its timestamp, process-random value and counter are designed to make collisions extremely unlikely across clients. The <code>_id</code> field is also required to be unique within a collection.' },
+      { q: 'Can I create an ObjectId for an old date?', a: 'Yes. That is useful for test fixtures and migration simulations. Use the timestamp controls above.' },
+      { q: 'Should I generate production ObjectIds online?', a: 'Normally let your MongoDB driver generate production <code>_id</code> values. This tool is best for development, fixtures, examples and debugging.' },
+      { q: 'Is this ObjectId generator free?', a: 'Yes. Generate and decode ObjectIds above without creating an account.' }
     ],
     seo: {
-      title: 'MongoDB ObjectId: structure, timestamps and whether to use it',
-      lead: 'This <strong>ObjectId generator</strong> creates structurally valid MongoDB ObjectIds for any moment in time and decodes the timestamp inside one you already have. Below: what the twelve bytes contain, why ObjectIds leak information in URLs, and when a UUID is the better key.',
+      title: 'MongoDB ObjectId Generator & Decoder – Create Valid Test IDs Online',
+      lead: 'Need a realistic MongoDB <code>_id</code> for a fixture, seed file or query test? Use the MongoDB ObjectId Generator above to create structurally valid 12-byte ObjectIds without opening a shell or writing a helper script.',
       blocks: [
-        {
-          h: 'What is inside an ObjectId',
-          html: '<p>A <strong>MongoDB ObjectId</strong> is a 12-byte value, displayed as 24 hexadecimal characters. It is not random — it has a defined structure, and that structure is the whole reason it exists.</p>',
-          table: {
-            head: ['Bytes', 'Contents', 'Purpose'],
-            rows: [
-              ['0–3', 'Unix timestamp in seconds, big-endian.', 'Makes IDs roughly ordered by creation time and encodes the creation date.'],
-              ['4–8', 'A random value, generated once per process.', 'Distinguishes documents created in the same second on different machines.'],
-              ['9–11', 'A counter, initialised randomly and incremented per document.', 'Distinguishes documents created in the same second by the same process.']
-            ]
-          },
-          after: '<p>The design predates UUID v7 by more than a decade and solves the same problem: an identifier that can be generated client-side without coordination, yet still sorts approximately by time so that B-tree inserts stay near the end of the index.</p>'
-        },
-        {
-          h: 'Reading the creation date',
-          html: '<p>Yes — the first four bytes are the creation timestamp, so every ObjectId carries its own date. In the shell, <code>ObjectId("…").getTimestamp()</code>; in a driver, the equivalent accessor; and in this tool, paste the ID into the decoder.</p>' +
-            '<p>The resolution is one second, which matters more than it sounds. Two documents created in the same second have timestamps that are indistinguishable, so an ObjectId sort is not a reliable ordering within a second — the counter breaks ties consistently only within one process.</p>' +
-            '<p>Also note the timestamp reflects when the ObjectId was <em>generated</em>, which is usually in the driver on the application server, not when the document reached the database. Under retry or queueing the two can differ noticeably.</p>',
-          callout: { type: 'tip', text: 'Because the timestamp is the leading component, you can query a date range without a separate <code>createdAt</code> field: build ObjectIds from the range boundaries and compare against <code>_id</code>. It uses the primary key index and costs nothing extra. Keep a real date field anyway if the value is business-meaningful.' }
-        },
-        {
-          h: 'Are ObjectIds sequential?',
-          html: '<p>Roughly, not strictly. They increase over time because the timestamp leads, which is what keeps index inserts efficient. Within a single second they are not ordered globally — the process-random component means two servers produce values that interleave unpredictably.</p>' +
-            '<p>The practical consequences: sorting by <code>_id</code> is a good proxy for creation order at second granularity and a bad one below it. And an ObjectId is not a sequence number — you cannot infer that one document is "the next" after another, and gaps mean nothing.</p>'
-        },
-        {
-          h: 'Exposing ObjectIds in URLs',
-          html: '<p>They are not secret. Two properties leak:</p>',
-          list: [
-            '<strong>The creation date is readable by anyone.</strong> A public order ID discloses exactly when the order was placed.',
-            '<strong>The counter is partly enumerable.</strong> Given two IDs from the same process, the values in between are guessable, so a naive endpoint can be walked.',
-            '<strong>Volume is inferable.</strong> Sample two IDs a day apart and the counter delta estimates how many documents you created — the classic competitor-intelligence leak.'
-          ],
-          after: '<p>None of that is fatal on its own, but it means an ObjectId is an <em>identifier</em>, never an <em>access control</em>. Authorise every request on the server; never rely on an ID being hard to guess.</p>',
-          callout: { type: 'warn', text: '<strong>If a URL identifier must not be guessable or must not reveal timing, do not use an ObjectId.</strong> Use a random public ID — a <a href="/tools/nanoid-generator">NanoID</a> or a UUID v4 — as a separate indexed field, and keep the ObjectId as the internal primary key.' }
-        },
-        {
-          h: 'ObjectId or UUID?',
-          cards: [
-            { t: 'Stick with ObjectId', d: 'It is the default <code>_id</code>, it is 12 bytes rather than 16, it is time-ordered, and every MongoDB tool understands it. For a MongoDB-only system, there is rarely a reason to change.' },
-            { t: 'Use UUID v7', d: 'When identifiers cross system boundaries — a shared key space with a relational database, an event bus, or a service that is not MongoDB. Also time-ordered, and universally understood.' },
-            { t: 'Use UUID v4', d: 'When unguessability matters more than index locality. Fully random, no timestamp, worse insert performance on large collections.' },
-            { t: 'Avoid mixing', d: 'A collection with ObjectId keys and one with UUID keys in the same application is a permanent source of subtle bugs in joins, caches and serialisation.' }
-          ],
-          after: '<p>See the <a href="/tools/uuid-v7-generator">UUID v7 generator</a> and the <a href="/tools/ulid-generator">ULID generator</a> for the time-ordered alternatives.</p>'
-        },
-        {
-          h: 'Collisions',
-          html: '<p>Practically impossible, and the reason is structural rather than probabilistic. For two ObjectIds to collide they must share the same second, the same five random process bytes, and the same counter value.</p>' +
-            '<p>Within one process the counter guarantees uniqueness until it wraps after roughly 16.7 million documents in a single second. Across processes, collision requires a birthday collision in a 40-bit random space <em>within the same second</em> — with a thousand concurrent processes the probability is around one in two million per second, and the counters would still have to align.</p>' +
-            '<p>The realistic risk is not collision but a broken generator: a container image that seeds every process identically, or a custom implementation using a non-random source. That is worth checking; the maths is not.</p>'
-        },
-        {
-          h: 'Related identifier tools',
-          list: [
-            '<a href="/tools/uuid-v7-generator">UUID v7 Generator</a> — the standardised time-ordered UUID.',
-            '<a href="/tools/ulid-generator">ULID Generator</a> — sortable, URL-safe, 26 characters.',
-            '<a href="/tools/nanoid-generator">NanoID Generator</a> — short random IDs for public URLs.',
-            '<a href="/tools/json-test-data-generator">JSON Test Data Generator</a> — documents with ObjectId keys.',
-            '<a href="/tools/sql-insert-data-generator">SQL Insert Data Generator</a> — the relational counterpart.'
-          ]
-        }
+        { html: '<p>You can generate one ID or a batch, use the current time or choose a historical timestamp, keep one process identifier across the batch, control the starting counter and decode any existing 24-character ObjectId to inspect what is inside it.</p>' +
+            '<p>The tool is intended for development, testing and debugging. In a production application, the safest normal practice is still to let your MongoDB driver generate ObjectIds because the driver manages the process-specific value and counter for you.</p>' },
+        { h: 'What Is a MongoDB ObjectId?',
+          html: '<p>A MongoDB ObjectId is a 12-byte BSON value commonly used as the default value of the <code>_id</code> field.</p>' +
+            '<p>When written as hexadecimal text, those 12 bytes become 24 characters.</p><p>Example:</p><pre class="code">507f1f77bcf86cd799439011</pre>' +
+            '<p>The modern ObjectId layout contains three parts:</p>',
+          table: { head: ['Part', 'Size', 'Purpose'], rows: [['Timestamp', '4 bytes', 'Unix time in seconds'], ['Process random value', '5 bytes', 'Random value unique to a process'], ['Counter', '3 bytes', 'Incrementing value initialized randomly'], ['Total', '12 bytes', 'Complete ObjectId']] },
+          after: '<p>The timestamp and counter bytes are stored most-significant-byte first.</p>' },
+        { h: 'How to Use This MongoDB ObjectId Generator',
+          html: '<p>Choose how many ObjectIds you need.</p>' +
+            '<p>For ordinary fixtures, keep the timestamp set to the current time. If you are building historical data, select a specific date and time.</p>' +
+            '<p>Next, choose the process identifier.</p>' +
+            '<p>Leaving it on automatic creates a random five-byte value for the batch. Keeping that value stable makes the generated set resemble IDs created by one running client process.</p>' +
+            '<p>Set the counter start if you need predictable sequential values within the same timestamp.</p>' +
+            '<p>Then choose the output format and generate the batch.</p>' +
+            '<p>You can also paste an existing ObjectId into the decoder. The tool will break it into its timestamp, process-random and counter portions so you can see how the value was formed.</p>' },
+        { h: 'Why Is an ObjectId 24 Characters Long?',
+          html: '<p>The underlying ObjectId is 12 bytes.</p><p>Each byte contains 8 bits, giving:</p><pre class="code">12 × 8 = 96 bits</pre>' +
+            '<p>Hexadecimal represents each byte with two characters.</p><p>So:</p><pre class="code">12 bytes × 2 hex characters = 24 characters</pre>' +
+            '<p>That is why a MongoDB ObjectId string is normally exactly 24 hexadecimal characters using digits <code>0–9</code> and letters <code>a–f</code>.</p>' +
+            '<p>Uppercase hexadecimal can represent the same bytes, although MongoDB commonly displays ObjectIds in lowercase.</p>' +
+            '<p>A random 24-character hex string may fit the textual length, but that alone does not make it a realistic driver-generated ObjectId. Real ObjectIds have a defined timestamp/process/counter structure.</p>' },
+        { h: 'The 4-Byte ObjectId Timestamp',
+          html: '<p>The first four bytes encode a Unix timestamp in seconds.</p><p>That means an ObjectId usually reveals approximately when it was created.</p>' +
+            '<p>MongoDB can retrieve this value with <code>getTimestamp()</code>.</p>' +
+            '<p>Because the timestamp resolution is one second, many ObjectIds created during the same second share the same first eight hexadecimal characters.</p>' +
+            '<p>That does not create a collision by itself. The remaining five-byte process value and three-byte counter distinguish IDs created within that period.</p>' +
+            '<p>The embedded timestamp is useful for debugging and rough sorting, but it should not replace an explicit business date field.</p>' },
+        { h: 'Decode an ObjectId to a Date',
+          html: '<p>If you already have an ObjectId, paste it into the decoder.</p>' +
+            '<p>The first eight hexadecimal characters represent the four-byte timestamp.</p>' +
+            '<p>The decoder converts that value from Unix seconds into a human-readable date and time.</p><p>This is useful when investigating:</p>',
+          list: ['Old fixture data', 'Imported records', 'Log entries', 'API responses', 'Suspicious record order', 'Migration output', 'Example IDs in documentation'],
+          after: '<p>Remember that the decoded time tells you the timestamp encoded in the ID. It does not prove when a document was inserted into its current collection.</p>' +
+            '<p>ObjectIds can be generated manually or moved between systems.</p>' },
+        { h: 'What Is the 5-Byte Process Random Value?',
+          html: '<p>The middle five bytes are a random value generated for the client-side process.</p>' +
+            '<p>MongoDB documentation describes this value as unique to the machine and process. It is generated again when the process restarts.</p>' +
+            '<p>A normal driver keeps it stable while the process remains alive.</p>' +
+            '<p>That is why this generator lets you keep one process value across a batch.</p>' +
+            '<p>If you are creating 100 fixture IDs intended to look as though they came from one application process, one stable value produces a more realistic structure than choosing a new five-byte random block for every row.</p>' +
+            '<p>For normal production writes, leave this job to the driver.</p>' },
+        { h: 'What Is the 3-Byte Counter?',
+          html: '<p>The final three bytes form an incrementing counter.</p><p>Three bytes can represent:</p><pre class="code">2^24 = 16,777,216</pre><p>different counter values before wrapping.</p>' +
+            '<p>The counter is initialized to a random value when a process starts and increments for each ObjectId produced by that process.</p>' +
+            '<p>Together with the timestamp and process value, it helps prevent IDs generated within the same second from colliding.</p>' +
+            '<p>In a realistic fixture batch, incrementing the counter creates the same structural pattern you would expect from one process generating several IDs close together.</p>' },
+        { h: 'Are MongoDB ObjectIds Sorted by Creation Time?',
+          html: '<p>ObjectIds are roughly sortable by creation time because the timestamp comes first.</p><p>However, “roughly” matters.</p>' +
+            '<p>The timestamp only has one-second resolution. Several processes can create IDs during the same second, each with a different process-random value and counter state.</p>' +
+            '<p>That means sorting ObjectIds is useful for broad chronology but should not be treated as a perfect global event sequence.</p>' +
+            '<p>If exact ordering matters, store an explicit timestamp or sequence appropriate to your application.</p>' +
+            '<p>For newer system designs where millisecond ordering and UUID compatibility are important, compare the <a href="/tools/uuid-v7-generator">UUID v7 Generator</a> as well.</p>' },
+        { h: 'Generate an ObjectId for a Specific Timestamp',
+          html: '<p>Historical ObjectIds are useful in tests.</p>' +
+            '<p>Suppose you are testing a retention rule that affects documents older than 90 days. You may want fixtures whose IDs carry older timestamps so your test data resembles real MongoDB records.</p>' +
+            '<p>Choose the required date in the generator and create the batch.</p>' +
+            '<p>It is useful for pagination tests, time-range examples, migration rehearsals, seed databases and integration fixtures.</p>' +
+            '<p>Do not create backdated production IDs merely to make a record appear older. Use explicit application fields for business dates.</p>' },
+        { h: 'ObjectId vs UUID v7',
+          html: '<p>Both can work as distributed identifiers, but their structures differ.</p>',
+          table: { head: ['Feature', 'ObjectId', 'UUID v7'], rows: [
+            ['Binary size', '12 bytes', '16 bytes'], ['Common text length', '24', '36'], ['Timestamp resolution', 'Seconds', 'Milliseconds'],
+            ['Time ordered', 'Roughly', 'Yes'], ['Native MongoDB default', 'Yes', 'No'], ['Standard UUID format', 'No', 'Yes']
+          ] },
+          after: '<p>Use ObjectId when MongoDB’s native conventions fit your application.</p>' +
+            '<p>Use UUID v7 when identifiers need to move cleanly across systems that already understand UUIDs or when millisecond timestamp ordering is useful.</p>' },
+        { h: 'ObjectId vs ULID',
+          html: '<p>ULID is another timestamp-first identifier.</p>' +
+            '<p>A ULID is 128 bits and uses a 26-character Crockford Base32 representation. Its timestamp has millisecond resolution.</p>' +
+            '<p>ObjectId is smaller at 96 bits and is deeply associated with MongoDB.</p>' +
+            '<p>ULID is attractive when you want a sortable identifier that remains compact as text across different databases.</p>' +
+            '<p>ObjectId is usually simpler when MongoDB itself is the center of the system.</p>' +
+            '<p>Use the <a href="/tools/ulid-generator">ULID Generator</a> if you want to compare the text length, decoded timestamp and sorting behavior directly.</p>' },
+        { h: 'Should You Manually Generate Production _id Values?',
+          html: '<p>Usually, no.</p><p>MongoDB drivers already know how to create ObjectIds correctly.</p>' +
+            '<p>Manual generation is most useful when you need controlled fixtures, examples, migration data or debugging.</p>' +
+            '<p>If you decide to supply your own production <code>_id</code>, uniqueness becomes your responsibility. MongoDB requires <code>_id</code> values to be unique within a collection, but your application must still generate a valid non-colliding value.</p>' +
+            '<p>Do not copy a generated example from documentation into several real records.</p>' },
+        { h: 'Common MongoDB ObjectId Mistakes',
+          html: '<p>Avoid these common assumptions:</p>',
+          list: ['Every 24-character string is a valid ObjectId', 'The timestamp has millisecond precision', 'ObjectId sorting provides perfect event order',
+                 'The ObjectId creation time always equals database insertion time', 'A new random process block should be generated for every ID in one process',
+                 'The counter can be ignored when imitating realistic batches', 'A hand-built production ID is automatically safe because it has the right length'],
+          after: '<p>Use the decoder when an unfamiliar ObjectId needs inspection rather than guessing from the string. For a broader entropy source, see the <a href="/tools/random-hex-string-generator">Random Hex String Generator</a>, and see the <a href="/tools/nanoid-generator">NanoID Generator</a> for compact alternatives.</p>' }
       ],
-      keywords: [
-        'mongodb objectid generator', 'objectid decoder', 'objectid timestamp',
-        'what is an objectid', 'mongodb _id format', 'objectid to date',
-        'objectid vs uuid', 'mongodb primary key', 'generate objectid online',
-        'objectid structure', 'objectid collision', 'mongodb test data'
-      ]
+      keywords: ['mongodb objectid generator', 'objectid decoder', 'objectid timestamp', 'objectid structure',
+        '12 byte objectid', 'objectid vs uuid v7', 'objectid vs ulid', 'mongodb _id generator',
+        'getTimestamp objectid', 'objectid test fixtures', 'objectid counter byte', 'objectid process random value']
     }
   });
 })();
