@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>LLMs.txt Generator — Create a Free llms.txt File Online | Manage My Batch</title>
-<meta name="description" content="Free llms.txt generator. Build a spec-compliant llms.txt (and llms-full.txt) so ChatGPT, Claude, Perplexity and Gemini understand and cite your site correctly.">
+<title>LLMs.txt Generator – Create an AI-Ready llms.txt File | Manage My Batch</title>
+<meta name="description" content="Create a clean llms.txt file for your website with structured sections, summaries, absolute URLs and optional Markdown links. Free, fast and browser-based.">
 <link rel="canonical" href="https://managemybatch.com/tools/llms-txt-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="LLMs.txt Generator — Create a Free llms.txt File Online">
-<meta property="og:description" content="Free llms.txt generator. Build a spec-compliant llms.txt (and llms-full.txt) so ChatGPT, Claude, Perplexity and Gemini understand and cite your site correctly.">
+<meta property="og:title" content="LLMs.txt Generator – Create an AI-Ready llms.txt File">
+<meta property="og:description" content="Create a clean llms.txt file for your website with structured sections, summaries, absolute URLs and optional Markdown links. Free, fast and browser-based.">
 <meta property="og:url" content="https://managemybatch.com/tools/llms-txt-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="LLMs.txt Generator — Create a Free llms.txt File Online">
-<meta name="twitter:description" content="Free llms.txt generator. Build a spec-compliant llms.txt (and llms-full.txt) so ChatGPT, Claude, Perplexity and Gemini understand and cite your site correctly.">
+<meta name="twitter:title" content="LLMs.txt Generator – Create an AI-Ready llms.txt File">
+<meta name="twitter:description" content="Create a clean llms.txt file for your website with structured sections, summaries, absolute URLs and optional Markdown links. Free, fast and browser-based.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -371,93 +371,132 @@
       '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span>llms.txt is a proposed convention, not a standard that every model obeys today. It costs nothing to publish, helps assistants that do read it, and it is not a substitute for <a href="/tools/ai-crawler-robots-txt-generator">robots.txt rules</a> if your goal is to <em>block</em> AI crawlers.</span></div>',
     related: ['ai-crawler-robots-txt-generator', 'security-txt-generator', 'sitemap-index-generator'],
     faqs: [
-      { q: 'What is an llms.txt file?', a: 'It is a markdown file published at <code>/llms.txt</code> that lists the pages you want AI assistants to read, with short notes explaining each one. It gives models a clean, curated entry point instead of forcing them to crawl and guess.' },
-      { q: 'Does llms.txt block AI crawlers?', a: 'No. It is purely informational — an index, not a permission system. To allow or block crawlers such as GPTBot, ClaudeBot or PerplexityBot, use robots.txt directives instead.' },
-      { q: 'What is the difference between llms.txt and llms-full.txt?', a: 'llms.txt is the compact curated index. llms-full.txt expands each entry with additional inline context for models that can afford a larger fetch. Publishing both is common; start with llms.txt.' },
-      { q: 'Where do I upload the file?', a: 'The web root, so it resolves at <code>https://yourdomain.com/llms.txt</code>. Serve it with the content type <code>text/plain; charset=utf-8</code> and a 200 status.' },
-      { q: 'Should the links be absolute or relative?', a: 'Absolute. The file is frequently fetched and processed away from your domain, so relative paths can be resolved against the wrong base. This generator expands them for you.' },
-      { q: 'How often should I update it?', a: 'Whenever your key pages change — a release, new docs, restructured pricing. It is a curated index, so a quarterly review is usually enough for a stable site.' }
+      { q: 'Is llms.txt an official standard?', a: 'It is currently a proposal and convention, not a formal internet standard. Adoption has grown, but support varies between tools and agents.' },
+      { q: 'Do I need an llms.txt file for SEO?', a: 'No. It is not required for normal search engine optimization, and Google says it does not use llms.txt for Search rankings or generative Search visibility.' },
+      { q: 'Where should llms.txt be placed?', a: 'For a site-wide file, publish it at <code>/llms.txt</code>. The current proposal also supports files at subpaths when you want to describe a specific section of a website.' },
+      { q: 'Should every page be listed?', a: 'No. Include the pages that provide the best context and most useful information. Your XML sitemap is the better place for comprehensive URL discovery.' },
+      { q: 'Can I include external pages?', a: 'The format can technically contain useful links, but for a business website it is usually best to prioritize authoritative first-party pages that explain your own site or product.' },
+      { q: 'Can I generate llms.txt for free?', a: 'Yes. Use the generator above, review the output, then copy or download the file without creating an account.' }
     ],
     seo: {
-      title: 'llms.txt: the file that tells AI assistants what to read',
-      lead: 'This <strong>llms.txt generator</strong> builds a spec-compliant Markdown file that points ChatGPT, Claude, Perplexity and Gemini at the pages you want them to read and cite. Below: what the proposal actually specifies, how it differs from robots.txt, and how to structure one that gets used.',
+      title: 'LLMs.txt Generator – Create a Clean llms.txt File Online',
+      lead: 'Use the LLMs.txt Generator above to create a structured <code>llms.txt</code> file without writing Markdown by hand. Add your site or project name, a short summary, extra context and the pages you want AI agents to find. The tool formats everything into a file that you can copy, download and publish on your site.',
       blocks: [
         {
-          h: 'What is llms.txt?',
-          html: '<p><strong>llms.txt</strong> is a Markdown file at your domain root that gives large language models a curated map of your site. Where a sitemap lists everything, llms.txt lists the handful of pages that actually answer questions — documentation, API references, pricing, policies — with a one-line description of each.</p>' +
-            '<p>The reason it exists is context windows. An assistant asked about your product cannot read your entire site; it fetches a few pages. Left to guess, it may pick a 2019 blog post over your current docs. llms.txt is you making that choice instead.</p>' +
-            '<p>It is a <em>proposal</em>, introduced in 2024, not a ratified standard. No search engine or model provider is obliged to read it. Adoption is growing steadily among documentation and developer-tool sites, and the cost of publishing one is a few minutes.</p>'
+          html: '<p>An <code>llms.txt</code> file is a lightweight, human-readable Markdown file designed to give AI agents a concise guide to a website or section of a website. It can explain what the site is about, highlight important resources and point agents toward useful pages without forcing them to interpret an entire navigation system.</p>' +
+            '<p>The format is still a proposal rather than a formal web standard. It should be treated as an additional machine-readable guide, not as a replacement for good website content, robots.txt, XML sitemaps or normal SEO.</p>'
+        },
+        {
+          h: 'What Is an llms.txt File?',
+          html: '<p>An <code>llms.txt</code> file is a Markdown document that provides a compact overview of a website for language models and AI agents.</p><p>A simple file can contain:</p>',
+          list: [
+            'The site or project name',
+            'A short description',
+            'Important context',
+            'Groups of useful links',
+            'Short descriptions explaining what each linked page contains'
+          ],
+          after: '<p>The file is normally published at <code>/llms.txt</code>. The current proposal also allows files at subpaths such as <code>/docs/llms.txt</code> for a specific site section.</p>' +
+            '<p>The goal is not listing every URL. It is to give an agent a useful starting point.</p>'
+        },
+        {
+          h: 'How to Use This LLMs.txt Generator',
+          html: '<p>You do not need to know Markdown syntax to create the file.</p>' +
+            '<p>Start by entering your website or project name. This becomes the main H1 heading at the top of the generated file.</p>' +
+            '<p>Next, enter your site URL. The generator can use it to turn relative paths such as <code>/pricing</code> or <code>/docs/start</code> into complete absolute URLs.</p>' +
+            '<p>Add a short one-line summary that explains what the website, product or project does. Keep this direct. An agent should understand the basic purpose of the site from that sentence alone.</p>' +
+            '<p>Add extra context for details an agent might otherwise misunderstand, such as important terminology, product limitations, pricing rules or API conventions.</p>' +
+            '<p>Finally, create link sections for the pages that matter most. Generate the file, review the validation output and download it.</p>'
+        },
+        {
+          h: 'Recommended llms.txt Structure',
+          html: '<p>A clean llms.txt file is deliberately simple.</p><p>A typical structure looks like this:</p>' +
+            '<pre class="code"># Project Name\n\n&gt; A short explanation of what the project does.\n\nAdditional context can go here.\n\n## Documentation\n\n- [Getting Started](https://example.com/docs/start): Basic setup instructions.\n\n- [API Reference](https://example.com/docs/api): Complete API documentation.\n\n## Optional\n\n- [Blog](https://example.com/blog): Additional articles and announcements.</pre>' +
+            '<p>The project or site name is the core element. The llms.txt proposal uses an H1 heading for it.</p>' +
+            '<p>After that, you can add a short blockquote summary, supporting context and H2 sections containing lists of links. Each link can also have a short description.</p>' +
+            '<p>Descriptions matter. A link titled “API” says little; a short note about authentication, endpoints and examples gives useful context.</p>'
+        },
+        {
+          h: 'What Pages Should You Include?',
+          html: '<p>Do not treat llms.txt like a sitemap.</p>' +
+            '<p>A sitemap is designed to help search engines discover URLs. An llms.txt file is better used as a curated guide to the pages an agent is most likely to need.</p>' +
+            '<p>For software, useful sections might include Getting Started, Documentation, API Reference, Tutorials, Pricing, Security and Support. For a business site, consider About, Products or Services, Pricing, Help Center, Policies and FAQs. Content sites can highlight cornerstone guides, major topic hubs and reference pages.</p>' +
+            '<p>Prioritize pages that explain your product, organization or subject clearly. Avoid filling the file with hundreds of weak or repetitive URLs simply because they exist.</p>'
+        },
+        {
+          h: 'What Is the Optional Section?',
+          html: '<p>The <code>## Optional</code> section has a specific purpose in the llms.txt convention.</p>' +
+            '<p>Use it for secondary resources that are useful but not essential. An agent working with limited context can skip this section and still retain the most important information about your site.</p>' +
+            '<p>Examples can include older articles, supplementary tutorials, community pages, changelogs or background reading.</p>' +
+            '<p>Put your must-read pages in clearly named sections before Optional.</p>' +
+            '<p>This generator can keep the Optional section last automatically, which makes the output easier to maintain and keeps the hierarchy predictable.</p>'
+        },
+        {
+          h: 'Absolute URLs or Relative URLs?',
+          html: '<p>Absolute URLs are usually the safest choice inside an llms.txt file.</p>' +
+            '<p>The generator can automatically expand a relative path such as <code>/docs/start</code> into a complete URL using the site URL you provide. This reduces manual editing and keeps each resource unambiguous.</p>' +
+            '<p>If your site provides dedicated Markdown versions of pages, the generator can also append <code>.md</code> to link targets.</p>' +
+            '<p>Only enable that option when those Markdown URLs actually exist.</p>'
         },
         {
           h: 'llms.txt vs robots.txt vs sitemap.xml',
+          html: '<p>These files serve different purposes.</p>',
           table: {
-            head: ['File', 'Format', 'Purpose', 'Status'],
+            head: ['File', 'Main Purpose'],
             rows: [
-              ['<code>llms.txt</code>', 'Markdown', 'Curated reading list with context for AI assistants.', 'Community proposal.'],
-              ['<code>robots.txt</code>', 'Plain text', 'Which paths crawlers may or may not request.', 'De facto standard since 1994, RFC 9309.'],
-              ['<code>sitemap.xml</code>', 'XML', 'Exhaustive machine list of indexable URLs.', 'sitemaps.org protocol.'],
-              ['<code>llms-full.txt</code>', 'Markdown', 'The full text of your documentation in one file.', 'Optional companion to llms.txt.']
+              ['llms.txt', 'Gives AI agents curated context and useful resource links'],
+              ['robots.txt', 'Communicates crawler access preferences'],
+              ['sitemap.xml', 'Lists URLs for search engine discovery']
             ]
           },
-          callout: { type: 'warn', text: '<strong>llms.txt does not block anything.</strong> It is an invitation, not a restriction. To keep AI crawlers out, you need <code>Disallow</code> rules — see the <a href="/tools/ai-crawler-robots-txt-generator">AI crawler robots.txt generator</a>. Publishing llms.txt while trying to block scraping achieves the opposite of what you intended.' }
+          after: '<p>An llms.txt file does not control crawler access. If you want to allow or block specific AI crawlers, use an <a href="/tools/ai-crawler-robots-txt-generator">AI Crawler Robots.txt Generator</a>.</p>' +
+            '<p>It also does not replace your sitemap. Search engines still rely on normal crawling, links and sitemap discovery — see the <a href="/tools/sitemap-index-generator">Sitemap Index Generator</a>.</p>' +
+            '<p>Think of llms.txt as a guide: “Here is what this site is, and here are the pages most useful for understanding it.”</p>'
         },
         {
-          h: 'The file format',
-          html: '<p>The spec is deliberately small. A valid llms.txt has, in order:</p>',
-          ol: [
-            'An <code>H1</code> with the site or project name. Required, and there must be exactly one.',
-            'An optional blockquote summarising what the site is, in a sentence or two.',
-            'Optional free paragraphs of context — audience, scope, caveats.',
-            'Any number of <code>H2</code> sections, each containing a Markdown list of links in the form <code>[Title](url): description</code>.',
-            'An optional final <code>## Optional</code> section for links that may be skipped when context is tight.'
-          ],
-          after: '<p>That last section is the one people miss and it is genuinely useful: it gives a model an explicit signal about what to drop first.</p>'
+          h: 'Does llms.txt Improve Google Rankings?',
+          html: '<p>No direct Google ranking benefit should be assumed.</p>' +
+            '<p>Google has stated that Google Search does not use llms.txt files for ranking or for inclusion in its generative AI search experiences. Creating the file therefore should not be presented as a shortcut to Google rankings, AI Overviews or automatic citations.</p>' +
+            '<p>That does not make the format useless.</p>' +
+            '<p>The llms.txt proposal is aimed at agents and systems that choose to read it. Its value is in providing a concise, structured route into your content for compatible tools.</p>' +
+            '<p>For Google visibility, continue focusing on crawlable pages, useful original content, strong internal linking, clear site structure and normal technical SEO — including your <a href="/tools/meta-robots-tag-generator">Meta Robots Tag Generator</a> settings.</p>'
         },
         {
-          h: 'How to build yours',
-          steps: [
-            { t: 'Name the site and summarise it', d: 'One clear sentence. This is what an assistant repeats when describing you, so write it as you would want to be quoted.' },
-            { t: 'Group links into sections', d: 'Documentation, API reference, guides, policies, about. Group by what a question would be about, not by your navigation structure.' },
-            { t: 'Write real descriptions', d: 'Not "Docs" but "REST API reference including authentication, rate limits and error codes." The description is what a model uses to decide whether to fetch the page.' },
-            { t: 'Use absolute URLs', d: 'Relative paths resolve unpredictably when the file is fetched and cached out of context. Always include the full origin.' },
-            { t: 'Mark the skippable links optional', d: 'Move changelogs, press pages and archives into the Optional section.' },
-            { t: 'Publish at the root', d: 'The file must be at <code>https://example.com/llms.txt</code>, served as <code>text/plain</code> or <code>text/markdown</code> with a 200 response.' }
-          ]
+          h: 'llms.txt and llms-full.txt: What Is the Difference?',
+          html: '<p>An llms.txt file is meant to stay concise. It acts like a map or curated index.</p>' +
+            '<p>An <code>llms-full.txt</code> file is generally a larger version containing much more page content in one place. For most websites, start with concise llms.txt. It is easier to review and maintain when the goal is to direct an agent toward the right source.</p>'
         },
         {
-          h: 'What to include, and what to leave out',
-          cards: [
-            { t: 'Include', d: 'Documentation, API references, getting-started guides, pricing, security and privacy policies, and any page that answers a question people actually ask about you.' },
-            { t: 'Leave out', d: 'Login pages, checkout, search results, tag archives, paginated listings and anything behind authentication. They waste a fetch and return nothing useful.' },
-            { t: 'Consider carefully', d: 'Blog archives and changelogs. Valuable when current, actively harmful when a model quotes a three-year-old post as your present position.' }
-          ]
+          h: 'How to Write Better Link Descriptions',
+          html: '<p>Use descriptions that answer one question: why should an agent open this page?</p>' +
+            '<p>Weak:</p><pre class="code">- [Docs](https://example.com/docs)</pre>' +
+            '<p>Better:</p><pre class="code">- [Developer Documentation](https://example.com/docs): Setup guides, authentication instructions, API examples and integration references.</pre>' +
+            '<p>Keep descriptions factual. Do not stuff them with marketing claims or keyword variations.</p>' +
+            '<p>Clear descriptions can help distinguish pages that otherwise have similar titles and reduce the chance that an agent follows the wrong resource.</p>'
         },
         {
-          h: 'llms-full.txt',
-          html: '<p>Some sites also publish <code>llms-full.txt</code>: the entire documentation set concatenated into one Markdown file. Instead of following links, an assistant fetches one document and has everything.</p>' +
-            '<p>It suits focused documentation — a library, an API, a single product. It does not suit a large content site, where the file becomes hundreds of thousands of tokens and no model will read it. If your docs would exceed roughly 50,000 words, keep the curated index and skip the full dump.</p>' +
-            '<p>Where you do publish both, link to the full file from llms.txt so the choice is discoverable.</p>'
+          h: 'How to Publish Your llms.txt File',
+          html: '<p>After generating the file, download it and upload it to your website.</p>' +
+            '<p>For a site-wide file, make it available at:</p><pre class="code">https://yourdomain.com/llms.txt</pre>' +
+            '<p>Serve it as plain text and check the live URL in your browser after publishing.</p>' +
+            '<p>Confirm that the live URL returns the text file rather than a login screen, error page or HTML template. With many frameworks, the file belongs in the public or static directory.</p>'
         },
         {
-          h: 'Does llms.txt actually work?',
-          html: '<p>Honestly: it depends who is asking. No major provider has committed publicly to reading llms.txt as a ranked signal, and none of them will confirm a fetch. What is observable is that assistants performing live retrieval do fetch root-level text files, and that sites publishing a well-structured llms.txt tend to be summarised more accurately.</p>' +
-            '<p>Treat it as low-cost, low-risk positioning rather than a guaranteed channel. The file takes ten minutes to write, sits at your root doing no harm, and the exercise of choosing your ten most important pages is worth doing regardless of who reads the result.</p>',
-          callout: { type: 'tip', text: 'Revisit the file whenever your documentation structure changes. A stale llms.txt pointing at 404s is worse than none at all — it teaches assistants that your links do not resolve.' }
+          h: 'How Often Should You Update llms.txt?',
+          html: '<p>Update the file whenever the structure or important resources on your website change.</p>' +
+            '<p>Revise it after major product launches, documentation moves, API changes, removed resources or site restructuring. A stale file can send agents toward redirects, missing pages or obsolete information. Keep it curated rather than constantly adding links.</p>'
         },
         {
-          h: 'Related AI and crawler tools',
-          list: [
-            '<a href="/tools/ai-crawler-robots-txt-generator">AI Crawler robots.txt Generator</a> — control which AI bots may crawl at all.',
-            '<a href="/tools/sitemap-index-generator">Sitemap Index Generator</a> — the exhaustive machine-readable counterpart.',
-            '<a href="/tools/security-txt-generator">security.txt Generator</a> — the RFC 9116 root file for vulnerability contacts.',
-            '<a href="/tools/meta-robots-tag-generator">Meta Robots Tag Generator</a> — per-page indexing and snippet control.'
-          ]
+          h: 'Common llms.txt Mistakes',
+          html: '<p>The biggest mistake is turning the file into a dump of every URL on the site.</p>' +
+            '<p>Other common problems include using vague link names, linking to deleted pages, claiming the file guarantees AI rankings, mixing critical and optional resources without structure, and adding <code>.md</code> URLs that do not actually exist.</p>' +
+            '<p>Humans may read the file too, so use clear labels rather than cryptic internal terminology.</p>'
         }
       ],
       keywords: [
         'llms.txt generator', 'llms txt', 'what is llms.txt', 'llms-full.txt',
-        'llms.txt format', 'llms.txt example', 'ai seo file', 'generative engine optimisation',
-        'llms.txt vs robots.txt', 'chatgpt site file', 'perplexity llms.txt', 'llms.txt spec'
+        'llms.txt format', 'llms.txt example', 'ai seo file', 'llms.txt vs robots.txt',
+        'llms.txt structure', 'create llms.txt file', 'llms.txt optional section', 'llms.txt seo'
       ]
     }
   });
