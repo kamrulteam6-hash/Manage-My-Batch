@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>HTML Data List Generator — datalist Autocomplete Markup | Manage My Batch</title>
-<meta name="description" content="Free HTML datalist generator. Create native autocomplete markup correctly wired to its input, with presets, value/label pairs, and notes on browser behaviour and accessibility.">
+<title>HTML Datalist Generator – Native Autocomplete Suggestions</title>
+<meta name="description" content="Generate HTML datalist autocomplete markup with labels, values, descriptions, presets, input types, duplicate removal and optional strict-list validation.">
 <link rel="canonical" href="https://managemybatch.com/tools/html-datalist-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="HTML Data List Generator — datalist Autocomplete Markup">
-<meta property="og:description" content="Free HTML datalist generator. Create native autocomplete markup correctly wired to its input, with presets, value/label pairs, and notes on browser behaviour and accessibility.">
+<meta property="og:title" content="HTML Datalist Generator – Native Autocomplete Suggestions">
+<meta property="og:description" content="Generate HTML datalist autocomplete markup with labels, values, descriptions, presets, input types, duplicate removal and optional strict-list validation.">
 <meta property="og:url" content="https://managemybatch.com/tools/html-datalist-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="HTML Data List Generator — datalist Autocomplete Markup">
-<meta name="twitter:description" content="Free HTML datalist generator. Create native autocomplete markup correctly wired to its input, with presets, value/label pairs, and notes on browser behaviour and accessibility.">
+<meta name="twitter:title" content="HTML Datalist Generator – Native Autocomplete Suggestions">
+<meta name="twitter:description" content="Generate HTML datalist autocomplete markup with labels, values, descriptions, presets, input types, duplicate removal and optional strict-list validation.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -404,91 +404,137 @@ Kotlin</textarea>
       '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>A datalist never validates anything.</strong> It is a convenience layer over a plain text input, so the submitted value can be anything the user types. Validate on the server as you would for any free-text field — the optional client-side check generated here improves the experience but is not a security control.</span></div>' +
       '<div class="note note-info" style="margin-top:12px">' + GTI.info + '<span>Because the dropdown is rendered by the browser, it inherits native keyboard handling, touch behaviour and screen-reader support at no cost. A hand-rolled combobox has to reimplement all of that correctly, and most do not.</span></div>',
     related: ['html-select-option-generator', 'html-table-generator', 'json-array-generator'],
-    faqs: [
-      { q: 'What is an HTML datalist?', a: 'An element containing a list of suggested values for an input. The input references it with <code>list="datalist-id"</code>, and the browser shows a native autocomplete dropdown as the user types.' },
-      { q: 'Does datalist restrict what can be entered?', a: 'No. It only suggests. The user can type any value, so a datalist is not a substitute for a select when the value must come from a fixed set — and server-side validation is still required.' },
-      { q: 'Can I style the datalist dropdown?', a: 'No. It is rendered by the browser outside your CSS. If custom styling, match highlighting or grouped results matter, you need a real combobox component implementing the ARIA combobox pattern.' },
-      { q: 'What is the difference between datalist and select?', a: 'A select restricts the user to your options and always submits one of them. A datalist suggests values while still allowing free text. Choose based on whether unexpected values are acceptable.' },
-      { q: 'Why is the option label attribute not showing?', a: 'Only Chromium browsers display it, as a secondary hint beside the value. Firefox and Safari ignore it, so never put essential information in a label attribute.' },
-      { q: 'Does datalist work with date or color inputs?', a: 'Support is inconsistent. Where implemented it appears as tick marks on a range input or preset swatches on a colour input, and elsewhere it is silently ignored. It is reliable on text, search, email, url and tel.' }
+faqs: [
+      { q: 'What does HTML datalist do?', a: 'It provides a list of suggested values for an associated input control.' },
+      { q: 'How do I connect an input to a datalist?', a: 'Set the input’s <code>list</code> attribute to the same value as the datalist’s <code>id</code>.' },
+      { q: 'Does datalist force the user to choose one option?', a: 'No. Datalist normally provides suggestions while still allowing other valid input.' },
+      { q: 'What is the difference between datalist and select?', a: 'Select restricts users to defined options. Datalist suggests values for a free-form input.' },
+      { q: 'Can I make datalist required?', a: 'You can make the input required, which prevents an empty submission. That alone does not require the value to match a datalist option.' },
+      { q: 'Can datalist options have descriptions?', a: 'Options can use labels or text to provide additional context, but display behavior varies by browser.' },
+      { q: 'Is datalist supported in every browser the same way?', a: 'No. Support, rendering and accessibility behavior vary, so test the browsers relevant to your users.' }
     ],
     seo: {
-      title: 'HTML datalist: native autocomplete, its limits and when to use it',
-      lead: 'This <strong>datalist generator</strong> produces correctly wired <code>&lt;datalist&gt;</code> markup with a working preview, presets and optional value restriction. Below: what you get for free, what you cannot style, and how it differs from a select.',
+      title: 'HTML Datalist Generator – Create Native Autocomplete Suggestions',
+      lead: 'Use the HTML Data List Generator above to create native autocomplete markup without building a custom JavaScript combobox.',
       blocks: [
-        {
-          h: 'The autocomplete you get for free',
-          html: '<p><code>&lt;datalist&gt;</code> attaches a list of suggestions to a text input. The browser renders a dropdown, filters as the user types, and handles keyboard navigation — with no JavaScript and no library.</p>' +
-            '<p>The wiring is one attribute:</p>' +
-            '<p><code>&lt;input list="cities" name="city"&gt;</code><br><code>&lt;datalist id="cities"&gt;&lt;option value="Lisbon"&gt;&lt;/datalist&gt;</code></p>' +
-            '<p>The input\'s <code>list</code> attribute must match the datalist\'s <code>id</code>. That is the entire contract, and a mismatch is the reason a datalist silently does nothing — there is no error, just an ordinary text field.</p>',
-          callout: { type: 'tip', text: 'The datalist element can live anywhere in the document; it renders nothing itself. Putting it immediately after its input keeps the relationship obvious to whoever edits the template next.' }
-        },
-        {
-          h: 'It suggests, it does not restrict',
-          html: '<p>A datalist offers values. It does not enforce them. The user can type anything, and the form submits whatever they typed.</p>' +
-            '<p>That is usually the point — a datalist suits fields where the list is helpful but not exhaustive: a job title, a city, a tag, a browser version. If you need to <em>constrain</em> the answer, you need something else:</p>',
-          list: [
-            '<strong>Use a <a href="/tools/html-select-option-generator">select</a></strong> when only listed values are acceptable. The control cannot express anything else.',
-            '<strong>Add a <code>pattern</code> attribute</strong> to reject anything outside a set — the generator can emit one built from your options.',
-            '<strong>Validate on the server regardless.</strong> Client-side restriction of any kind is a convenience, never a guarantee.'
-          ],
-          callout: { type: 'warn', text: '<strong>Never treat a datalist value as validated input.</strong> The dropdown is a suggestion UI; the field is a free-text input. Anything that reaches your database from it must be checked server-side exactly as if the list did not exist.' }
-        },
-        {
-          h: 'Datalist or select?',
-          table: {
-            head: ['', 'datalist', 'select'],
-            rows: [
-              ['Free text allowed', 'Yes — the list is a suggestion.', 'No — only listed options.'],
-              ['Type to filter', 'Yes, built in.', 'First-letter jump only.'],
-              ['Empty state', 'An ordinary text box.', 'Shows the first option or a placeholder.'],
-              ['Long lists', 'Handles hundreds well — typing narrows them.', 'Painful beyond about fifty.'],
-              ['Styling the dropdown', 'Not possible.', 'Very limited, but more than none.'],
-              ['Mobile', 'Renders as a keyboard suggestion strip on some platforms.', 'Native picker wheel — familiar and reliable.'],
-              ['Best for', 'Open sets: cities, tags, titles, versions.', 'Closed sets: countries, statuses, categories.']
-            ]
-          }
-        },
-        {
-          h: 'You cannot style the dropdown',
-          html: '<p>The suggestion list is rendered by the browser as a native popup, outside your document\'s styling. There is no reliable CSS hook — no way to change the font, the highlight colour, the row height, or how matches are emphasised. Vendor-specific pseudo-elements exist in one or two engines and are neither stable nor portable.</p>' +
-            '<p>Behaviour differs too. Some browsers match anywhere in the string, others only at the start. Some show the full list on focus, others only after a keystroke. None of it is configurable.</p>' +
-            '<p>So the decision is straightforward: accept the browser\'s appearance, or build a custom combobox with a listbox role, <code>aria-expanded</code>, <code>aria-activedescendant</code> and full keyboard handling. The custom route is a genuine amount of accessible-widget work — worth it for a core interaction, rarely worth it for one field on a settings page.</p>'
-        },
-        {
-          h: 'The label attribute',
-          html: '<p>An <code>&lt;option&gt;</code> in a datalist can carry both a value and a label:</p>' +
-            '<p><code>&lt;option value="GB" label="United Kingdom"&gt;</code></p>' +
-            '<p>The intent is a code inserted into the field with a friendly description beside it. In practice, support is inconsistent: some browsers show both, some show only the value, and what gets inserted is always the <code>value</code>. That last part is the trap — the user picks "United Kingdom" and the field contains <code>GB</code>, which looks like a bug to them.</p>' +
-            '<p>The reliable pattern is to put the human-readable text in the value and use text content rather than the label attribute for any extra hint. If you truly need a code stored, use a select, or pair a visible text input with a hidden field your JavaScript populates.</p>'
-        },
-        {
-          h: 'Which input types support it',
-          cards: [
-            { t: 'Works well', d: '<code>text</code>, <code>search</code>, <code>email</code>, <code>url</code>, <code>tel</code>. The classic use, with a dropdown of suggestions.' },
-            { t: 'Works differently', d: '<code>range</code> renders tick marks rather than a list. <code>color</code> shows a swatch palette. Both are useful and neither is a dropdown.' },
-            { t: 'Inconsistent', d: '<code>date</code>, <code>time</code> and <code>month</code> — support varies by browser and the native picker usually wins anyway.' },
-            { t: 'No effect', d: '<code>checkbox</code>, <code>radio</code>, <code>file</code>, <code>hidden</code>, <code>password</code>. The attribute is ignored.' }
-          ],
-          after: '<p>The <code>range</code> case is the underused one: a handful of datalist options turns a bare slider into one with labelled stops, with no JavaScript at all.</p>'
-        },
-        {
-          h: 'Related form tools',
-          list: [
-            '<a href="/tools/html-select-option-generator">HTML Select Option Generator</a> — for closed sets of values.',
-            '<a href="/tools/html-table-generator">HTML Table Generator</a> — accessible tabular markup.',
-            '<a href="/tools/json-array-generator">JSON Array Generator</a> — the same list as data.',
-            '<a href="/tools/regex-character-class-generator">Regex Character Class Generator</a> — build the <code>pattern</code> attribute that restricts input.'
-          ]
-        }
+        { html: '<p>Enter one suggestion per line, optionally add descriptions, choose the input type, set the input and datalist IDs, include a visible label and generate the connected <code>&lt;input&gt;</code> and <code>&lt;datalist&gt;</code> elements.</p>' +
+            '<p>You can sort suggestions, remove duplicates, control browser autocomplete behavior and optionally add JavaScript when the field must be restricted to the suggested list.</p>' +
+            '<p>That last point matters because a datalist is normally a suggestion mechanism, not a closed dropdown. Users can generally type a value that is not listed.</p>' +
+            '<p>If the value must come from a fixed set, use a <code>&lt;select&gt;</code> instead.</p>' },
+        { h: 'What Is an HTML datalist?',
+          html: '<p>The <code>&lt;datalist&gt;</code> element contains a set of <code>&lt;option&gt;</code> suggestions for another form control.</p><p>A simple example looks like:</p>' +
+            '<pre class="code">&lt;label for="browser"&gt;Browser&lt;/label&gt;\n&lt;input id="browser" name="browser" list="browsers"&gt;\n\n&lt;datalist id="browsers"&gt;\n  &lt;option value="Chrome"&gt;&lt;/option&gt;\n  &lt;option value="Firefox"&gt;&lt;/option&gt;\n  &lt;option value="Safari"&gt;&lt;/option&gt;\n&lt;/datalist&gt;</pre>' +
+            '<p>The connection comes from matching:</p><pre class="code">input list="browsers"</pre><p>with:</p><pre class="code">datalist id="browsers"</pre>' +
+            '<p>When the user interacts with the input, the browser can show matching suggestions.</p>' +
+            '<p>The input remains the form control.</p><p>The datalist provides recommended values.</p>' },
+        { h: 'How to Use This Datalist Generator',
+          html: '<p>Enter the suggested values.</p><p>One per line is easiest.</p>' +
+            '<p>Optionally use the tool’s value/description format when you want a supporting hint.</p><p>Set:</p>',
+          list: ['input <code>id</code>', 'datalist <code>id</code>', 'input <code>name</code>', 'input type', 'label text', 'placeholder'],
+          after: '<p>Then choose options such as:</p><ul style="color:var(--muted);padding-left:18px"><li>include label</li><li>required</li><li>use option labels</li><li>sort suggestions</li><li>remove duplicates</li><li>disable browser-saved autocomplete</li><li>add strict-list JavaScript</li></ul>' +
+            '<p>Generate the markup and test the live preview.</p>' +
+            '<p>Because rendering varies between browsers, test the field in browsers your users use.</p>' },
+        { h: 'How the list Attribute Connects the Input',
+          html: '<p>The <code>&lt;datalist&gt;</code> is not automatically attached to an input.</p>' +
+            '<p>The input’s <code>list</code> attribute must equal the datalist’s <code>id</code>.</p><p>Example:</p>' +
+            '<pre class="code">&lt;input list="cities"&gt;\n\n&lt;datalist id="cities"&gt;</pre>' +
+            '<p>If those values do not match, the suggestions are not connected.</p>' +
+            '<p>Use a unique datalist ID in the document.</p>' +
+            '<p>A page can have several autocomplete fields, each with its own list.</p>' +
+            '<p>In reusable components, be careful not to generate duplicate IDs.</p>' +
+            '<p>The tool separates the input ID from the datalist ID so both relationships remain explicit.</p>' },
+        { h: 'Datalist Is Not the Same as Select',
+          html: '<p>This is the most important concept on the page.</p>' +
+            '<p>A <code>&lt;select&gt;</code> asks the user to choose from a fixed set of options.</p>' +
+            '<p>A <code>&lt;datalist&gt;</code> suggests values for an input.</p><p>The user can normally type something else.</p>' +
+            '<p>Example: suggested programming languages:</p>',
+          list: ['JavaScript', 'Python', 'Rust'],
+          after: '<p>The user might still enter:</p><pre class="code">Elixir</pre>' +
+            '<p>and the input can accept it if normal validation allows that value.</p>' +
+            '<p>Use datalist for open-ended input with helpful suggestions.</p>' +
+            '<p>Use select when only predefined values are valid.</p>' },
+        { h: 'Datalist Does Not Enforce the Suggested Values',
+          html: '<p>Developers sometimes assume:</p><p>“If it appears in a dropdown, the user must choose one of those values.”</p>' +
+            '<p>That is not how datalist works by default.</p><p>The suggestions do not create a strict enum.</p>' +
+            '<p>If your application requires a value from the list, you need additional validation.</p><p>That can happen:</p>',
+          list: ['in JavaScript', 'during form submission', 'on the server'],
+          after: '<p>The generator can add JavaScript that checks whether the current value exists in the suggestion set.</p>' +
+            '<p>Even then, server-side validation is still required when the submitted value matters to application integrity.</p>' +
+            '<p>Client-side checks improve UX; they are not security boundaries.</p>' },
+        { h: 'Option value Is the Actual Suggested Input',
+          html: '<p>Inside a datalist, each <code>&lt;option&gt;</code> should provide a <code>value</code>.</p>' +
+            '<p>That value is what the browser inserts into the associated input when the user chooses the suggestion.</p><p>Example:</p>' +
+            '<pre class="code">&lt;option value="JavaScript"&gt;&lt;/option&gt;</pre>' +
+            '<p>You can also provide a label or descriptive text.</p><p>Browser display behavior varies.</p>' +
+            '<p>Some browsers may show the label alongside the value.</p><p>Others may display it differently.</p>' +
+            '<p>Do not design the interaction around a description being rendered identically everywhere.</p>' +
+            '<p>The actual inserted input value comes from the option value.</p>' },
+        { h: 'Add Descriptions to Suggestions',
+          html: '<p>Descriptions can help distinguish similar values.</p><p>For example:</p>' +
+            '<pre class="code">JFK | New York — John F. Kennedy International</pre>' +
+            '<p>could become a suggestion where:</p><pre class="code">JFK</pre>' +
+            '<p>is the value and the longer text provides context.</p><p>This is useful for:</p>',
+          list: ['airport codes', 'product codes', 'city names', 'technical identifiers', 'employee lookup', 'category suggestions'],
+          after: '<p>However, datalist labels are not rendered consistently across browsers.</p>' +
+            '<p>Treat the description as enhancement.</p>' +
+            '<p>The value itself should remain understandable enough for the field.</p>' +
+            '<p>If rich, fully controlled suggestion cards are essential, a custom accessible combobox may be more appropriate.</p>' },
+        { h: 'Use a Real label',
+          html: '<p>The associated input should normally have a visible label.</p><p>Example:</p>' +
+            '<pre class="code">&lt;label for="framework"&gt;Framework&lt;/label&gt;</pre>' +
+            '<p>A placeholder such as:</p><pre class="code">Start typing…</pre><p>does not explain the field permanently.</p>' +
+            '<p>Once the user types, the placeholder disappears.</p>' +
+            '<p>A label remains available and can be programmatically associated with the control through matching <code>for</code> and <code>id</code>.</p>' +
+            '<p>This improves usability and accessibility.</p>' +
+            '<p>The datalist itself is not the field label.</p><p>It is only the source of suggestions.</p>' },
+        { h: 'required with Datalist',
+          html: '<p>Adding <code>required</code> means the input cannot be empty during normal browser form validation.</p>' +
+            '<p>It does <strong>not</strong> mean the value must match one of the datalist options.</p>' +
+            '<p>This distinction is easy to miss.</p>' +
+            '<p>A required datalist-backed field can still accept free text that is not in the suggestion list, as long as the input’s other validation rules accept it.</p>' +
+            '<p>If membership in the list is mandatory, add explicit validation.</p>' +
+            '<p>The generator’s strict-list option is designed for this scenario.</p>' +
+            '<p>Still validate on the server when the rule affects real application data.</p>' },
+        { h: 'Browser Compatibility and Rendering Differences',
+          html: '<p>Datalist is not rendered exactly the same everywhere.</p><p>Current browser support and accessibility behavior vary.</p><p>Differences can include:</p>',
+          list: ['how labels are displayed', 'how suggestions are filtered', 'whether certain input types use the list', 'visual styling', 'zoom behavior', 'screen-reader announcements'],
+          after: '<p>MDN currently flags datalist as not universally Baseline because support gaps remain in widely used browser combinations.</p>' +
+            '<p>For a convenience feature, progressive enhancement may be acceptable.</p>' +
+            '<p>For a mission-critical controlled selection, test carefully or use a more robust alternative.</p>' },
+        { h: 'Accessibility Considerations',
+          html: '<p>Native HTML usually gives you a useful semantic starting point, but datalist has known accessibility limitations.</p><p>Current documentation notes issues such as:</p>',
+          list: ['suggestion text that may not scale with page zoom', 'limited high-contrast styling', 'some screen reader/browser combinations not announcing the suggestion popup well'],
+          after: '<p>That does not make datalist unusable.</p>' +
+            '<p>It means the decision should depend on how essential the autocomplete interaction is.</p>' +
+            '<p>Provide a real label.</p><p>Keep free typing functional where appropriate.</p>' +
+            '<p>Test with keyboard navigation and assistive technology if the field is important to the workflow.</p>' },
+        { h: 'Strict Datalist Validation',
+          html: '<p>Sometimes you want autocomplete behavior visually but still require a known value.</p>' +
+            '<p>The generator can add JavaScript that compares the submitted input against the allowed options.</p>' +
+            '<p>This can produce a helpful browser-side message before submission.</p>' +
+            '<p>However, do not treat JavaScript membership checking as your only validation.</p><p>A user can:</p>',
+          list: ['disable JavaScript', 'modify the DOM', 'send a request directly', 'alter the submitted value'],
+          after: '<p>If the server expects one of a known set of codes, validate it there too.</p>' +
+            '<p>Client validation improves feedback.</p><p>Server validation protects the data contract.</p>' },
+        { h: 'Datalist vs Custom Autocomplete',
+          html: '<p>Use datalist when:</p>',
+          list: ['suggestions are simple text values', 'free text is allowed', 'browser-native appearance is acceptable', 'minimal JavaScript is preferred'],
+          after: '<p>Use a custom autocomplete or combobox when you need:</p>' +
+            '<ul style="color:var(--muted);padding-left:18px"><li>remote search</li><li>rich result templates</li><li>complex ranking</li><li>fully controlled styling</li><li>advanced keyboard behavior</li><li>consistent cross-browser rendering</li><li>strict option selection with richer UX</li></ul>' +
+            '<p>Native HTML is valuable when it fits.</p>' +
+            '<p>A custom component is justified when the product requirements exceed the native control’s capabilities.</p>' },
+        { h: 'Common HTML Datalist Mistakes',
+          html: '<p>Avoid these problems:</p>',
+          list: ['assuming suggestions restrict the user to the list', 'mismatching the input list value and datalist id', 'omitting a real label',
+                 'depending on option descriptions rendering identically in every browser', 'using datalist when a fixed enum should be a select',
+                 'expecting full CSS control over the suggestion popup', 'using required and assuming it forces list membership',
+                 'shipping strict-list JavaScript without server validation', 'ignoring screen-reader and browser differences',
+                 'choosing datalist for a complex rich-search experience it was not designed to provide'],
+          after: '<p>Use the native element for lightweight input suggestions. For a fixed set of valid choices, see the <a href="/tools/html-select-option-generator">HTML Select Option Generator</a>.</p>' }
       ],
-      keywords: [
-        'html datalist generator', 'datalist example', 'html autocomplete input',
-        'datalist vs select', 'input list attribute', 'datalist styling',
-        'native autocomplete html', 'datalist restrict values', 'datalist option label',
-        'datalist range ticks', 'html5 suggestions input', 'combobox html'
-      ]
+      keywords: ['html datalist generator', 'datalist autocomplete example', 'datalist vs select', 'input list attribute',
+        'datalist not enforcing values', 'datalist strict validation', 'datalist browser support', 'datalist accessibility',
+        'native html autocomplete', 'datalist option value label', 'datalist required attribute', 'datalist multiple suggestions']
     }
   });
 })();

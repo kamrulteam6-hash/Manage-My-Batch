@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>HTML Table Generator — Accessible Tables from CSV or Grid | Manage My Batch</title>
-<meta name="description" content="Free HTML table generator. Paste CSV or build a grid, then export accessible HTML with thead, scope attributes, caption and optional CSS — plus responsive and striped styles.">
+<title>HTML Table Generator – Accessible Tables from CSV or Data | Manage My Batch</title>
+<meta name="description" content="Generate clean accessible HTML tables from pasted data or CSV. Add thead, tbody, captions, scope attributes, responsive wrapping, striping and optional CSS.">
 <link rel="canonical" href="https://managemybatch.com/tools/html-table-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="HTML Table Generator — Accessible Tables from CSV or Grid">
-<meta property="og:description" content="Free HTML table generator. Paste CSV or build a grid, then export accessible HTML with thead, scope attributes, caption and optional CSS — plus responsive and striped styles.">
+<meta property="og:title" content="HTML Table Generator – Accessible Tables from CSV or Data">
+<meta property="og:description" content="Generate clean accessible HTML tables from pasted data or CSV. Add thead, tbody, captions, scope attributes, responsive wrapping, striping and optional CSS.">
 <meta property="og:url" content="https://managemybatch.com/tools/html-table-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="HTML Table Generator — Accessible Tables from CSV or Grid">
-<meta name="twitter:description" content="Free HTML table generator. Paste CSV or build a grid, then export accessible HTML with thead, scope attributes, caption and optional CSS — plus responsive and striped styles.">
+<meta name="twitter:title" content="HTML Table Generator – Accessible Tables from CSV or Data">
+<meta name="twitter:description" content="Generate clean accessible HTML tables from pasted data or CSV. Add thead, tbody, captions, scope attributes, responsive wrapping, striping and optional CSS.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -479,93 +479,129 @@ Monitor Stand,62.00,88,In stock</textarea>
       '<div><h4 style="font-size:14.5px;margin-bottom:8px">Practical details</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><strong>Right-align numbers</strong> and use <code>font-variant-numeric: tabular-nums</code> so digits line up in columns. This tool detects numeric columns automatically.</li><li><strong>Wide tables should scroll</strong> inside their own container, never force the page to scroll horizontally.</li><li><strong>Zebra striping</strong> helps on wide tables and adds noise on narrow ones.</li><li><strong>HTML email</strong> is the one place inline styles are correct — most clients strip <code>&lt;style&gt;</code> blocks.</li></ul></div></div>' +
       '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>The "responsive table" that stacks rows into cards breaks accessibility.</strong> Once each cell becomes its own block, the association between value and column header is gone unless you duplicate the label in a <code>data-label</code> attribute. A horizontally scrolling wrapper keeps the real table structure and is almost always the better answer.</span></div>',
     related: ['markdown-table-generator', 'csv-test-data-generator', 'html-select-option-generator'],
-    faqs: [
-      { q: 'How do I make an HTML table accessible?', a: 'Use <code>&lt;thead&gt;</code> with <code>&lt;th scope="col"&gt;</code> for column headers, <code>&lt;th scope="row"&gt;</code> where the first column is a label, and add a <code>&lt;caption&gt;</code> so the table has an accessible name. This generator does all three by default.' },
-      { q: 'Can I paste data straight from Excel?', a: 'Yes. Excel and Google Sheets copy as tab-separated text, which is detected automatically. CSV, semicolon and pipe-delimited data all work too, including quoted fields containing commas.' },
-      { q: 'What does scope do?', a: 'It tells assistive technology whether a header cell labels its column or its row. Without it, a screen reader reading a cell announces the value with no context about what it measures.' },
-      { q: 'Should I use a table for page layout?', a: 'No — use CSS Grid or Flexbox. Layout tables are announced as data tables and read cell by cell, which is confusing. The single exception is HTML email, where table layout is still necessary.' },
-      { q: 'How do I make a wide table work on mobile?', a: 'Enable the responsive wrapper. It puts the table in a horizontally scrolling container so the page layout stays intact and the table structure — and its accessibility — is preserved.' },
-      { q: 'Which styling option should I choose?', a: 'Semantic HTML only if you already have table styles. HTML plus CSS for a standalone snippet. Inline styles only for HTML email. Bootstrap or Tailwind if your project already uses them.' }
+faqs: [
+      { q: 'What tags are used in an HTML table?', a: 'Common elements include <code>&lt;table&gt;</code>, <code>&lt;tr&gt;</code>, <code>&lt;th&gt;</code>, <code>&lt;td&gt;</code>, <code>&lt;caption&gt;</code>, <code>&lt;thead&gt;</code>, <code>&lt;tbody&gt;</code> and optionally <code>&lt;tfoot&gt;</code>.' },
+      { q: 'Should table headers use <th> or <td>?', a: 'Use <code>&lt;th&gt;</code> for cells that act as row or column headers.' },
+      { q: 'What does scope="col" mean?', a: 'It identifies a header cell as applying to its column. <code>scope="row"</code> identifies a row header.' },
+      { q: 'Why should I add a caption?', a: 'A descriptive caption helps users quickly understand the table’s purpose and provides useful accessible context.' },
+      { q: 'Can I convert CSV into an HTML table?', a: 'Yes. Paste the delimited data and identify the header row. Correct CSV parsing should preserve quoted commas and line breaks.' },
+      { q: 'How do I make a wide table responsive?', a: 'A common approach is a horizontally scrollable wrapper that preserves the semantic table structure.' },
+      { q: 'Should I use HTML tables for page layout?', a: 'No. Use table markup for tabular data and modern CSS layout systems for page structure.' }
     ],
     seo: {
-      title: 'Accessible HTML tables: thead, scope, captions and responsive behaviour',
-      lead: 'This <strong>HTML table generator</strong> turns pasted spreadsheet data into semantic markup — <code>thead</code>, <code>scope</code> attributes, a caption and numeric alignment — with optional plain CSS, Bootstrap or Tailwind classes. Below: what makes a table accessible, and how to handle a wide one on a phone.',
+      title: 'HTML Table Generator – Create Accessible Table Markup Online',
+      lead: 'Use the HTML Table Generator above to turn pasted rows or CSV-style data into clean HTML table markup without hand-writing every <code>&lt;tr&gt;</code>, <code>&lt;th&gt;</code> and <code>&lt;td&gt;</code>.',
       blocks: [
-        {
-          h: 'A table is a data structure, not a layout',
-          html: '<p>A <code>&lt;table&gt;</code> tells assistive technology that the content is a grid of related values with meaningful rows and columns. A screen reader announces the dimensions, lets the user move cell by cell, and — if the markup is right — reads the relevant header before each value.</p>' +
-            '<p>A grid of <code>&lt;div&gt;</code>s with CSS Grid looks identical and communicates none of that. The user hears a stream of numbers with no idea which column each belongs to.</p>' +
-            '<p>The rule is simple: if the content is tabular data, use a table. If it is page layout, use CSS Grid or Flexbox. Layout tables have been obsolete for twenty years and remain actively harmful to screen reader users.</p>'
-        },
-        {
-          h: 'What makes a table accessible',
-          steps: [
-            { t: 'Use th for headers, not styled td', d: 'A bold <code>&lt;td&gt;</code> is visually a header and semantically a value. Assistive technology reads the difference.' },
-            { t: 'Add scope to every header cell', d: '<code>scope="col"</code> on column headers, <code>scope="row"</code> on row headers. This is what associates a value with its label.' },
-            { t: 'Group with thead, tbody and tfoot', d: 'Headers repeat across printed pages, and some readers use the grouping for navigation.' },
-            { t: 'Add a caption', d: '<code>&lt;caption&gt;</code> is the table\'s accessible name — the first thing announced. It is also what tells a sighted user what they are looking at.' },
-            { t: 'Keep one header row where possible', d: 'Complex multi-level headers need <code>id</code> and <code>headers</code> attributes, which are laborious and easy to get wrong.' },
-            { t: 'Never leave the top-left corner as a th with no scope', d: 'If it labels nothing, an empty <code>&lt;td&gt;</code> is more accurate.' }
-          ]
-        },
-        {
-          h: 'What scope actually does',
-          html: '<p><code>scope</code> declares which cells a header applies to. Without it, a screen reader has to guess from position — and it guesses badly as soon as the table has both row and column headers.</p>',
-          table: {
-            head: ['Value', 'Meaning', 'Where it goes'],
-            rows: [
-              ['<code>scope="col"</code>', 'This header labels the column below it.', 'Header cells in <code>thead</code>.'],
-              ['<code>scope="row"</code>', 'This header labels the rest of its row.', 'The first cell of each body row, when it is a label.'],
-              ['<code>scope="colgroup"</code>', 'Labels a group of columns spanned by this cell.', 'A spanning header above sub-headers.'],
-              ['<code>scope="rowgroup"</code>', 'Labels a group of rows.', 'A section header inside <code>tbody</code>.']
-            ]
-          },
-          after: '<p>With <code>scope</code> set correctly, a user landing on a cell hears "Revenue, Q3, 48,200" instead of "48,200".</p>',
-          callout: { type: 'tip', text: 'A table with a row header column — product names, dates, people — is far easier to use than one that is all values. If your first column identifies the row, mark it up as <code>&lt;th scope="row"&gt;</code> rather than a plain cell.' }
-        },
-        {
-          h: 'Pasting from a spreadsheet',
-          html: '<p>Copying cells from Excel, Google Sheets or Numbers puts tab-separated text on the clipboard. Paste it in and the generator detects the delimiter, splits the columns, and treats the first row as headers.</p>' +
-            '<p>Two things to check after pasting. Numbers formatted in the spreadsheet arrive as display text — <code>£1,234.00</code>, not <code>1234</code> — so if the values feed anything other than a human eye, paste the underlying values instead. And cells containing line breaks arrive quoted, which the parser handles but which usually indicates the data wants a different shape.</p>' +
-            '<p>CSV works identically, as does a plain tab- or comma-separated block typed by hand.</p>'
-        },
-        {
-          h: 'Wide tables on small screens',
-          cards: [
-            { t: 'Horizontal scroll container', d: 'Wrap the table in a <code>div</code> with <code>overflow-x: auto</code> and a <code>tabindex="0"</code> so keyboard users can scroll it. The simplest option, and the only one that preserves the grid.' },
-            { t: 'Stacked cards', d: 'CSS turns each row into a labelled block below a breakpoint, using <code>data-label</code> attributes for the headers. Readable, but the columns are no longer comparable.' },
-            { t: 'Hide low-priority columns', d: 'Show four columns on mobile and ten on desktop. Honest only if the hidden data is genuinely secondary.' },
-            { t: 'Do not shrink the text', d: 'A table at 9px fits and cannot be read. Scrolling beats illegibility.' }
-          ],
-          after: '<p>Whichever you choose, keep a visible affordance that there is more content — a shadow, a fade, or a scrollbar. A silently clipped table looks complete and is not.</p>'
-        },
-        {
-          h: 'Choosing a styling option',
-          html: '<p>The markup is identical in each case; only the classes differ.</p>',
-          list: [
-            '<strong>Semantic HTML only</strong> — no classes at all. Right when a design system or a stylesheet already targets <code>table</code> elements.',
-            '<strong>Plain CSS</strong> — a small self-contained stylesheet with borders, zebra striping and padding. Right for a static page, an email template or a document with no framework.',
-            '<strong>Bootstrap</strong> — <code>table</code>, <code>table-striped</code>, <code>table-responsive</code>. Right if the page already loads Bootstrap.',
-            '<strong>Tailwind</strong> — utility classes on each element. Verbose in the markup, but consistent with the rest of a Tailwind project.'
-          ],
-          callout: { type: 'warn', text: '<strong>Zebra striping is decoration, not structure.</strong> It helps sighted users track a row and does nothing for anyone using a screen reader. It is never a substitute for <code>scope</code> and <code>th</code> — and with insufficient contrast between stripes it fails WCAG on its own terms.' }
-        },
-        {
-          h: 'Related markup tools',
-          list: [
-            '<a href="/tools/markdown-table-generator">Markdown Table Generator</a> — the same data for READMEs and docs.',
-            '<a href="/tools/csv-test-data-generator">CSV Test Data Generator</a> — realistic rows to populate a table.',
-            '<a href="/tools/html-select-option-generator">HTML Select Option Generator</a> — accessible dropdown markup.',
-            '<a href="/tools/html-datalist-generator">HTML Datalist Generator</a> — native autocomplete for inputs.'
-          ]
-        }
+        { html: '<p>Paste your data, choose the delimiter and header behavior, then add semantic options such as a table caption, <code>&lt;thead&gt;</code>, <code>&lt;tbody&gt;</code> and scoped header cells. You can also generate optional styling for borders, striping, compact layouts or responsive horizontal scrolling.</p>' +
+            '<p>A good HTML table is more than a visual grid.</p>' +
+            '<p>When the content is genuinely tabular, the markup should express the relationship between headers and data cells so browsers, screen readers, copy tools and search systems can understand the structure.</p>' },
+        { h: 'What Is an HTML Table?',
+          html: '<p>An HTML table represents data arranged in rows and columns.</p><p>The core elements are:</p>' +
+            '<p><code>&lt;table&gt;</code> — the table container</p><p><code>&lt;tr&gt;</code> — a table row</p>' +
+            '<p><code>&lt;th&gt;</code> — a header cell</p><p><code>&lt;td&gt;</code> — a data cell</p>' +
+            '<p>For structured tables, you can also use:</p><pre class="code">&lt;caption&gt;\n&lt;thead&gt;\n&lt;tbody&gt;\n&lt;tfoot&gt;</pre>' +
+            '<p>These elements describe what the data means.</p>' +
+            '<p>Use tables for data with real row/column relationships.</p>' +
+            '<p>Do not use them as a general page-layout system.</p>' +
+            '<p>CSS Grid and Flexbox are better choices for non-tabular layout.</p>' },
+        { h: 'How to Use This HTML Table Generator',
+          html: '<p>Paste data into the input area.</p><p>Choose the delimiter if the tool does not detect it automatically.</p>' +
+            '<p>Indicate whether the first row contains column headings.</p><p>Then configure semantic output.</p>' +
+            '<p>For most data tables, useful options include:</p>',
+          list: ['<code>&lt;thead&gt;</code>', '<code>&lt;tbody&gt;</code>', 'header cells as <code>&lt;th&gt;</code>', '<code>scope="col"</code> for column headers', 'a descriptive <code>&lt;caption&gt;</code>'],
+          after: '<p>Choose optional CSS only if you need styling with the generated markup.</p>' +
+            '<p>Generate the table, inspect the live preview and review the accessibility output before copying it into your page.</p>' +
+            '<p>A table can look correct visually while still having weak markup for assistive technology.</p>' },
+        { h: 'Use thead and tbody',
+          html: '<p><code>&lt;thead&gt;</code> groups the header rows.</p><p><code>&lt;tbody&gt;</code> groups the main data rows.</p><p>Example structure:</p>' +
+            '<pre class="code">&lt;table&gt;\n  &lt;thead&gt;...&lt;/thead&gt;\n  &lt;tbody&gt;...&lt;/tbody&gt;\n&lt;/table&gt;</pre>' +
+            '<p>These elements make the document structure clearer.</p>' +
+            '<p>They also help with CSS targeting and table processing in JavaScript.</p>' +
+            '<p>For complex tables, semantic row groups can improve the information available to assistive technology.</p>' +
+            '<p>You do not need to add unnecessary wrappers around every small table, but for normal data tables, a clear head/body split is a strong default.</p>' },
+        { h: 'Use th for Headers',
+          html: '<p>A table header is not just a bold <code>&lt;td&gt;</code>.</p><p>Use <code>&lt;th&gt;</code> when the cell labels a row or column.</p>' +
+            '<p>For a standard table with headings across the top, the first row normally contains <code>&lt;th&gt;</code> cells.</p><p>For example:</p>' +
+            '<pre class="code">Name | Department | Location</pre><p>should be represented as headers, not styled data cells.</p>' +
+            '<p>The semantic difference matters to screen readers and other software that navigates tables.</p>' +
+            '<p>CSS can make any cell bold.</p><p>Only correct HTML communicates that the cell is actually a header.</p>' },
+        { h: 'What Does scope="col" Do?',
+          html: '<p>The <code>scope</code> attribute helps identify which cells a header applies to.</p><p>For a column heading:</p>' +
+            '<pre class="code">&lt;th scope="col"&gt;Price&lt;/th&gt;</pre><p>For a row heading:</p>' +
+            '<pre class="code">&lt;th scope="row"&gt;Product A&lt;/th&gt;</pre>' +
+            '<p>In simple tables, browser and assistive technology can often infer relationships.</p>' +
+            '<p>Adding scope makes the association explicit and is especially useful when row headers are present.</p>' +
+            '<p>For complicated multi-level tables, additional header association techniques may be necessary.</p>' +
+            '<p>The generator is best suited to straightforward data tables where scoped row and column headers accurately describe the structure.</p>' },
+        { h: 'Add a Table Caption',
+          html: '<p>A <code>&lt;caption&gt;</code> gives the table a name or short description.</p>' +
+            '<p>It belongs inside the <code>&lt;table&gt;</code> and is normally placed immediately after the opening table tag.</p><p>Example:</p>' +
+            '<pre class="code">&lt;caption&gt;Quarterly revenue by region&lt;/caption&gt;</pre>' +
+            '<p>A caption helps all readers quickly understand what the table contains.</p>' +
+            '<p>It is especially valuable for screen-reader users who may otherwise need to navigate into several cells before discovering the table’s purpose.</p>' +
+            '<p>Avoid captions such as:</p><p>“Table 1”</p><p>when a more informative description is available.</p>' +
+            '<p>Tell the reader what the data represents.</p>' },
+        { h: 'HTML Tables and Accessibility',
+          html: '<p>Accessible table markup lets a user understand relationships that sighted users often infer from visual position.</p><p>Important practices include:</p>',
+          list: ['use <code>&lt;th&gt;</code> for actual headers', 'associate headers with rows or columns', 'add an informative caption where useful',
+                 'keep the table structure logical', 'avoid empty fake header cells when possible', 'do not use a table only for visual layout'],
+          after: '<p>For a simple table, native HTML semantics are usually better than recreating a table from generic <code>&lt;div&gt;</code> elements and ARIA roles.</p>' +
+            '<p>Native elements already carry table meaning.</p>' +
+            '<p>Use ARIA to fill genuine semantic gaps, not to replace correct HTML unnecessarily.</p>' },
+        { h: 'Row Headers',
+          html: '<p>Some tables have labels down the first column.</p><p>For example:</p>',
+          table: { head: ['Product', 'Q1', 'Q2', 'Q3'], rows: [['Widget A', '...', '...', '...'], ['Widget B', '...', '...', '...']] },
+          after: '<p>The product names can be row headers rather than ordinary data cells.</p><p>Use:</p>' +
+            '<pre class="code">&lt;th scope="row"&gt;Widget A&lt;/th&gt;</pre>' +
+            '<p>That tells assistive technology that the remaining cells in the row relate to Widget A.</p>' +
+            '<p>The generator can help create the common column-header structure, but decide whether your first column is actually a row label rather than ordinary data.</p>' },
+        { h: 'Tables Are for Tabular Data',
+          html: '<p>A table is appropriate when data has meaningful two-dimensional relationships.</p><p>Examples include:</p>',
+          list: ['price comparisons', 'schedules', 'specifications', 'financial results', 'test results', 'product matrices', 'reports'],
+          after: '<p>A table is usually not appropriate for:</p><ul style="color:var(--muted);padding-left:18px"><li>page columns</li><li>card layouts</li><li>image galleries</li><li>navigation</li><li>form layout</li></ul>' +
+            '<p>Historically, HTML tables were used for page design because older CSS was limited.</p>' +
+            '<p>Modern layout should use CSS.</p>' +
+            '<p>Using semantic elements for their intended purpose improves accessibility and makes markup easier to maintain.</p>' },
+        { h: 'Convert CSV to HTML Table',
+          html: '<p>CSV is a natural input for a table because it already contains rows and columns.</p><p>Paste data such as:</p>' +
+            '<pre class="code">Name,Score,Status\nAlice,92,Pass\nBob,84,Pass</pre>' +
+            '<p>and convert the first row into table headers.</p><p>Be careful with real CSV parsing.</p>' +
+            '<p>A quoted field can contain commas or line breaks.</p>' +
+            '<p>A robust converter should respect quoting rather than splitting every line on every comma.</p>' +
+            '<p>If you need deliberately difficult CSV input for testing, use the <a href="/tools/csv-test-data-generator">CSV Test Data Generator</a> first, then feed the output into your table workflow.</p>' },
+        { h: 'Escape HTML in Cell Values',
+          html: '<p>Data inserted into HTML must be escaped correctly.</p><p>A value containing:</p><pre class="code">&lt;</pre>' +
+            '<p>does not necessarily mean “start an HTML tag.”</p>' +
+            '<p>If the cell value is plain text, it should remain text.</p>' +
+            '<p>This is particularly important when table content comes from users, files or external systems.</p>' +
+            '<p>Never concatenate untrusted text into raw HTML without appropriate escaping or sanitization.</p>' +
+            '<p>A table generator can create safe markup from the data you provide, but application code should still follow normal cross-site-scripting protections when rendering dynamic values.</p>' },
+        { h: 'Responsive Tables',
+          html: '<p>Wide tables can overflow narrow screens.</p>' +
+            '<p>One practical approach is to wrap the table in a horizontally scrollable container.</p>' +
+            '<p>This preserves the underlying table structure while allowing users to reach columns that do not fit on a phone.</p>' +
+            '<p>Avoid solving responsive design by hiding important columns without considering whether users still need the information.</p>' +
+            '<p>Also be cautious with CSS techniques that completely transform table rows into card layouts.</p>' +
+            '<p>Those transformations can make header relationships harder to understand.</p>' +
+            '<p>For complex mobile experiences, test both usability and accessibility.</p>' },
+        { h: 'HTML Table vs Markdown Table',
+          html: '<p>Markdown tables are convenient for README files, documentation and systems that render Markdown.</p>' +
+            '<p>HTML tables offer much more control over:</p>',
+          list: ['semantics', 'captions', 'row groups', 'scoped headers', 'CSS', 'complex cells', 'spanning'],
+          after: '<p>Use Markdown when the publishing system is Markdown-first and the table is simple.</p>' +
+            '<p>Use HTML when accessibility control or layout complexity requires richer markup.</p>' +
+            '<p>The <a href="/tools/markdown-table-generator">Markdown Table Generator</a> is useful when the same pasted data needs to become documentation markup instead of HTML.</p>' },
+        { h: 'Common HTML Table Mistakes',
+          html: '<p>Avoid these problems:</p>',
+          list: ['Using &lt;td&gt; cells styled as headers instead of &lt;th&gt;', 'Omitting meaningful header relationships', 'Using tables for general page layout',
+                 'Adding no caption when the table’s purpose is unclear', 'Injecting unescaped user data into table HTML', 'Creating mobile CSS that destroys the logical structure',
+                 'Centering every numeric and text column indiscriminately', 'Using colspan and rowspan when several simpler tables would be clearer',
+                 'Assuming visual bold text provides accessibility semantics', 'Rebuilding a table with divs when native table HTML already fits the content'],
+          after: '<p>Good table markup should still make sense when the decorative CSS is removed. To build a form dropdown from the same data, see the <a href="/tools/html-select-option-generator">HTML Select Option Generator</a>.</p>' }
       ],
-      keywords: [
-        'html table generator', 'accessible html table', 'table scope attribute',
-        'thead tbody tfoot', 'table caption accessibility', 'excel to html table',
-        'csv to html table', 'responsive table css', 'bootstrap table markup',
-        'tailwind table', 'semantic table html', 'screen reader table'
-      ]
+      keywords: ['html table generator', 'accessible html table', 'csv to html table', 'html table scope attribute',
+        'thead tbody html table', 'table caption accessibility', 'responsive html table', 'html table vs markdown table',
+        'html table th vs td', 'row header scope row', 'html table escape user data', 'semantic html table']
     }
   });
 })();

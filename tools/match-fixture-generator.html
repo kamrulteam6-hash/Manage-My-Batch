@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>Match Fixture Generator — Dated Fixture Lists with Times &amp; Venues | Manage My Batch</title>
-<meta name="description" content="Free match fixture generator. Turn a team list into a dated fixture list with kick-off times, venues, match numbers and printable fixture cards.">
+<title>Match Fixture Generator – Dates, Kick-Off Times & Venues</title>
+<meta name="description" content="Turn a team list into dated match fixtures with kick-off times, venues, match numbers and home/away schedules. Print or export fixtures to CSV.">
 <link rel="canonical" href="https://managemybatch.com/tools/match-fixture-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="Match Fixture Generator — Dated Fixture Lists with Times &amp; Venues">
-<meta property="og:description" content="Free match fixture generator. Turn a team list into a dated fixture list with kick-off times, venues, match numbers and printable fixture cards.">
+<meta property="og:title" content="Match Fixture Generator – Dates, Kick-Off Times & Venues">
+<meta property="og:description" content="Turn a team list into dated match fixtures with kick-off times, venues, match numbers and home/away schedules. Print or export fixtures to CSV.">
 <meta property="og:url" content="https://managemybatch.com/tools/match-fixture-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Match Fixture Generator — Dated Fixture Lists with Times &amp; Venues">
-<meta name="twitter:description" content="Free match fixture generator. Turn a team list into a dated fixture list with kick-off times, venues, match numbers and printable fixture cards.">
+<meta name="twitter:title" content="Match Fixture Generator – Dates, Kick-Off Times & Venues">
+<meta name="twitter:description" content="Turn a team list into dated match fixtures with kick-off times, venues, match numbers and home/away schedules. Print or export fixtures to CSV.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -398,93 +398,105 @@ Carlton</textarea>
       '<div><h4 style="font-size:14.5px;margin-bottom:8px">Impossible venue loads</h4><p style="color:var(--muted);font-size:13.8px">Eight teams produce four simultaneous matches per round. On two pitches with a single kick-off time, half of them cannot happen. This is easy to miss on paper and obvious on the day — so the tool treats it as an error and tells you how many time slots you actually need.</p></div></div>' +
       '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>Send captains the <strong>by-team view</strong> rather than the full list. Players want their own season — home and away marked, dates in order — not a grid of everyone else\'s fixtures.</span></div>',
     related: ['league-schedule-generator', 'round-robin-schedule-generator', 'tournament-bracket-generator'],
-    faqs: [
-      { q: 'What happens with an odd number of teams?', a: 'One team has a bye each round, and the tool lists it explicitly in the fixture list so nobody turns up expecting a match. Across the full cycle every team gets exactly one bye.' },
-      { q: 'How do I handle limited pitches?', a: 'Either add a gap between kick-off times so matches run in slots, or list multiple venues to rotate through. The tool checks whether your venue count can host each round and flags it if not.' },
-      { q: 'Can I export the fixtures to a calendar?', a: 'Use the CSV export — date, time, teams and venue are separate columns, which imports cleanly into a spreadsheet and maps easily into most calendar tools.' },
-      { q: 'Can I set the home team\'s ground as the venue?', a: 'Yes — tick the home-venue option and each match is assigned to the home team rather than a rotating pitch list.' },
-      { q: 'Is home and away balanced?', a: 'Close to even in a single round, and exactly equal if you choose the home-and-away format. The tool warns you if any team is more than two fixtures out of balance.' },
-      { q: 'Can I change the dates later?', a: 'You can regenerate at any time, but every subsequent date shifts. Settle the rhythm — weekly, fortnightly — before publishing to captains.' }
+faqs: [
+      { q: 'What is a match fixture?', a: 'It is a scheduled match with participants and usually a date, time, venue and round.' },
+      { q: 'Can I add kick-off times?', a: 'Yes. Set the first kick-off and the interval between starts.' },
+      { q: 'Can I use several pitches or courts?', a: 'Yes. Enter the venue list and the generator can allocate fixtures across them.' },
+      { q: 'Can every match in a round start at the same time?', a: 'Yes. Use simultaneous venue capacity and a zero stagger where that matches the event setup.' },
+      { q: 'Can I number the matches?', a: 'Yes. Enable match numbers for easier administration.' },
+      { q: 'Can the home team be the venue?', a: 'Yes. Use that option for competitions where the named home side hosts the fixture.' },
+      { q: 'Can I export the fixture list?', a: 'Yes. The tool provides printable output and CSV export.' }
     ],
     seo: {
-      title: 'Fixture lists: dates, venues, kick-off times and the capacity check',
-      lead: 'This <strong>match fixture generator</strong> turns a team list into a real fixture list — dates, kick-off times, venues and match numbers — with a check that your venues can physically host each round. Below: the two things fixture lists usually get wrong, and how to publish one people can actually use.',
+      title: 'Match Fixture Generator – Create Dated Games With Times and Venues',
+      lead: 'Use the Match Fixture Generator above when a list of teams needs to become an operational fixture schedule.',
       blocks: [
-        {
-          h: 'The two things fixture lists get wrong',
-          html: '<p>Generating pairings is the easy part. Turning pairings into a fixture list that survives contact with a real season is where lists fail, and it fails in the same two ways almost every time.</p>',
-          cards: [
-            { t: 'More matches than pitches', d: 'A 12-team round needs 6 simultaneous matches. If the club has 3 pitches, half the round cannot be played — and this is discovered by a team turning up to a pitch that is already in use.' },
-            { t: 'No unique match reference', d: 'Without a match number, every conversation about a postponement, a result or a referee assignment has to describe the fixture. Two teams that meet twice a season are then genuinely ambiguous.' }
-          ],
-          after: '<p>Both are trivially avoidable and neither is handled by a bare pairing generator. This tool checks venue capacity per round and numbers every fixture.</p>'
-        },
-        {
-          h: 'The venue capacity check',
-          html: '<p>Each round needs <em>n</em>/2 concurrent slots. If you have fewer venues than that, the round has to be split across time slots or days.</p>',
-          table: {
-            head: ['Teams', 'Matches per round', 'With 2 venues', 'With 3 venues'],
-            rows: [
-              ['6', '3', '2 slots', '1 slot'],
-              ['8', '4', '2 slots', '2 slots'],
-              ['10', '5', '3 slots', '2 slots'],
-              ['12', '6', '3 slots', '2 slots'],
-              ['16', '8', '4 slots', '3 slots']
-            ]
-          },
-          after: '<p>The generator computes this and assigns kick-off times accordingly — so a round that needs three slots at a two-pitch venue produces fixtures at 10:00, 12:00 and 14:00 rather than three impossible simultaneous matches.</p>',
-          callout: { type: 'warn', text: '<strong>Check that no team appears twice in the same time slot.</strong> This is the failure mode when a round is split manually: two matches at 10:00 that share a team. The generator keeps each slot\'s teams disjoint — verify again if you rearrange anything by hand afterwards.' }
-        },
-        {
-          h: 'Building the list',
-          steps: [
-            { t: 'Enter teams and venues', d: 'One team per line; venues as a list with the number of simultaneous matches each supports.' },
-            { t: 'Set the start date and cadence', d: 'Weekly Saturdays, midweek evenings, or a custom pattern.' },
-            { t: 'Set the slot times', d: 'The generator fills slots in order and creates additional ones only when the round requires it.' },
-            { t: 'Set home team rules', d: 'Alternate by round, fix a home venue per team, or use a neutral venue throughout.' },
-            { t: 'Number the fixtures', d: 'Sequential match numbers across the season, so every fixture has a permanent reference.' },
-            { t: 'Export', d: 'CSV for a spreadsheet, ICS for calendars, or a printable list for the noticeboard.' }
-          ]
-        },
-        {
-          h: 'Home and away assignment',
-          html: '<p>Three approaches, suited to different competitions.</p>',
-          list: [
-            '<strong>Alternating.</strong> The default for a league. Home and away interleave so nobody has a long run either way. The <a href="/tools/league-schedule-generator">league schedule generator</a> reports the longest run.',
-            '<strong>Fixed home venue.</strong> Each team is assigned a ground and hosts there. Realistic for a club league, and the venue check matters most here — two teams sharing a ground cannot both host in the same round.',
-            '<strong>Neutral venue.</strong> Everything at one site, as at a tournament or a school event. "Home" then means only which team is listed first, and kit clashes rather than travel become the thing to manage.'
-          ],
-          after: '<p>For an odd number of teams, one team has a bye each round. The bye appears in the fixture list explicitly rather than as a gap, because a team with no fixture listed assumes an error and phones the secretary.</p>'
-        },
-        {
-          h: 'Calendar export',
-          html: '<p>The ICS export produces one calendar event per fixture, with the teams in the title, the venue in the location field and the match number in the description. It imports into Google Calendar, Outlook, Apple Calendar and anything else that reads the standard.</p>' +
-            '<p>Two things to know before you distribute it. Events carry a fixed date and time, so a postponement means reissuing the file — recipients who imported the old one keep the stale event. And a single file containing the whole season is easier to distribute than a subscription feed but harder to update, which is the trade every club league makes.</p>',
-          callout: { type: 'tip', text: 'Publish the match number in every communication — result submissions, postponement requests, referee appointments. "Match 47" is unambiguous in a way that "the Rovers game" is not, particularly when two teams meet twice a season.' }
-        },
-        {
-          h: 'Changing dates later',
-          html: '<p>Fixtures move. Weather, cup runs, unavailable pitches and clashing events all guarantee it.</p>' +
-            '<p>The rule that keeps a season traceable: <strong>the match number never changes</strong>. A postponed fixture keeps its number and gains a new date. A rearranged fixture is the same match, played later. Only an abandoned and completely re-staged match warrants a new reference, and even then the original should be marked rather than deleted.</p>' +
-            '<p>Regenerate the list only if you are rebuilding the season from scratch. Regenerating to fix one postponement renumbers everything, and every result already submitted against a match number becomes ambiguous.</p>'
-        },
-        {
-          h: 'Related fixture tools',
-          list: [
-            '<a href="/tools/league-schedule-generator">League Schedule Generator</a> — full home-and-away seasons with fairness reporting.',
-            '<a href="/tools/round-robin-schedule-generator">Round Robin Generator</a> — the underlying pairing rotation.',
-            '<a href="/tools/tournament-bracket-generator">Tournament Bracket Generator</a> — cup draws.',
-            '<a href="/tools/team-generator">Team Generator</a> — split players into balanced teams.',
-            '<a href="/tools/ticket-number-generator">Ticket Number Generator</a> — admission numbers for the matches.'
-          ]
-        }
+        { html: '<p>Enter one team per line, choose the competition format and set the first match date. Then define how rounds are spaced, the first kick-off time, minutes between kick-offs and the venues or pitches available.</p>' +
+            '<p>The tool can number every match, use the home team as the venue when appropriate and provide both a full fixture list and a team-by-team view.</p>' +
+            '<p>You can print the schedule, copy it or export the fixtures to CSV.</p>' +
+            '<p>This is the right tool when "Team A plays Team B" is not enough. You also need to know: When? Where? and sometimes: Which match number?</p>' },
+        { h: 'What Is a Match Fixture?',
+          html: '<p>A fixture is a scheduled match between two participants.</p><p>It normally includes at least home/team A and away/team B, and may also include:</p>',
+          list: ['date', 'time', 'venue', 'round', 'match number'],
+          after: '<p>A pairing tells you who plays whom.</p>' +
+            '<p>A fixture turns that pairing into an event that can actually be run.</p>' +
+            '<p>That distinction matters for organizers.</p>' +
+            '<p>A round robin draw might be mathematically complete but still unusable until courts, dates and kick-off times are assigned.</p>' +
+            '<p>The Match Fixture Generator bridges that gap.</p>' },
+        { h: 'How to Use This Match Fixture Generator',
+          html: '<p>Paste one team per line.</p><p>Choose the competition format.</p><p>Set the first match date.</p>' +
+            '<p>Then decide how the generated rounds progress across the calendar.</p>' +
+            '<p>Enter the first kick-off time.</p>' +
+            '<p>If matches use staggered times, set the number of minutes between kick-offs.</p>' +
+            '<p>Enter the venue or pitch list.</p>' +
+            '<p>If every match in a round starts together, set the interval to zero where appropriate.</p>' +
+            '<p>Enable match numbering if officials or score sheets need stable match IDs.</p>' +
+            '<p>Use the home team as venue option when each home team hosts its own fixture.</p><p>Generate, then review:</p>',
+          list: ['Fixtures', 'By team', 'Export', 'Notes'],
+          after: '<p>before printing or downloading CSV.</p>' },
+        { h: 'Fixture List vs Round Robin Schedule',
+          html: '<p>A round robin schedule focuses on opponent rotation.</p><p>A match fixture list adds calendar and venue detail.</p>' +
+            '<p>Example round robin pairing: Round 2, Riverside v Ashford.</p>' +
+            '<p>Fixture version: Match 7, Saturday 5 September, 14:00, Pitch 2, Riverside v Ashford.</p>' +
+            '<p>Use the <a href="/tools/round-robin-schedule-generator">Round Robin Schedule Generator</a> if you need only the all-play-all structure.</p>' +
+            '<p>Use this tool when volunteers, players, referees or venue staff need exact operational details.</p>' +
+            '<p>Keeping these stages separate also makes it easier to change venue timing without rebuilding the underlying competition format.</p>' },
+        { h: 'First Match Date and Round Spacing',
+          html: '<p>The first match date anchors the schedule.</p>' +
+            '<p>Later rounds are calculated from the selected round interval.</p><p>Before choosing the date, check:</p>',
+          list: ['venue availability', 'holidays', 'school terms', 'public events', 'daylight', 'competition registration deadlines'],
+          after: '<p>The generator creates a regular fixture pattern.</p>' +
+            '<p>It cannot know every local blackout date automatically.</p>' +
+            '<p>Rounds may occur same day, daily, weekly, or on another supported interval.</p>' +
+            '<p>The correct spacing depends on the sport and competition.</p>' +
+            '<p>Do not choose a calendar interval only because it creates a neat schedule.</p>' +
+            '<p>Players need enough recovery, travel time and setup time, and venues need enough operational capacity.</p>' },
+        { h: 'Kick-Off Times and Simultaneous Matches',
+          html: '<p>The first kick-off establishes the start of the day’s schedule.</p><p>Example: first kick-off 09:00, interval 45 minutes → 09:00, 09:45, 10:30, 11:15.</p>' +
+            '<p>The interval should include more than the nominal match duration if turnover is needed.</p>' +
+            '<p>A schedule with zero transition time may look efficient on paper and fail immediately in practice.</p>' +
+            '<p>If several venues or pitches are available, multiple matches can share the same kick-off.</p>' +
+            '<p>This compresses the event, but only if the organization also has enough referees, scorekeepers, equipment, changing facilities and staff.</p>' +
+            '<p>Do not schedule four simultaneous matches because four pitches exist if only two officials are available.</p>' },
+        { h: 'Venue Assignment',
+          html: '<p>Enter the available venues or pitches.</p><p>The generator can rotate fixtures across them.</p>' +
+            '<p>Examples: Pitch 1, Pitch 2, Court A, Court B, Main Hall.</p>' +
+            '<p>If teams play at their own grounds, use the option that treats the home team as the venue.</p>' +
+            '<p>That avoids creating an artificial neutral-pitch rotation.</p>' +
+            '<p>For centralized tournaments, use the actual venue list.</p>' +
+            '<p>Keep venue names short enough to fit printed schedules, but specific enough that players know where to go.</p>' },
+        { h: 'Match Numbers',
+          html: '<p>Match numbers make individual fixtures easier to reference.</p><p>Example: Match 12: Northgate v Belmont.</p><p>They are useful for:</p>',
+          list: ['referee sheets', 'score entry', 'public announcements', 'court boards', 'incident reports', 'tournament desks'],
+          after: '<p>Keep numbers stable after publishing.</p>' +
+            '<p>If Match 12 moves to a different time, it should normally remain Match 12.</p>' +
+            '<p>A match number identifies the fixture. Date, time and venue are attributes that can change.</p>' },
+        { h: 'Fixture Scheduling and Rest Time',
+          html: '<p>Rest requirements depend on the sport, age group and competition rules.</p>' +
+            '<p>A generator should not invent one universal minimum.</p><p>Instead, inspect each team’s fixture sequence.</p><p>Look for:</p>',
+          list: ['back-to-back matches', 'long idle gaps', 'last game followed by first game next day', 'travel between venues'],
+          after: '<p>For formal competitions, follow governing-body rules.</p>' +
+            '<p>For social events, apply common sense and player welfare.</p>' +
+            '<p>If the generated schedule creates an undesirable turnaround, adjust times or venue assignments while preserving the underlying matchup structure.</p>' +
+            '<p>The team-by-team view makes these problems easier to see.</p>' },
+        { h: 'Match Fixture vs League Schedule Generator',
+          html: '<p>Use this fixture tool when you need flexible dated matches.</p>' +
+            '<p>Use the <a href="/tools/league-schedule-generator">League Schedule Generator</a> when you specifically need a season-long league structure with full home/away scheduling, match weeks and fairness reporting.</p>' +
+            '<p>The league tool is more specialized.</p><p>The match fixture tool is more operational.</p>' +
+            '<p>For a one-day tournament or short competition, this page is usually the better fit.</p>' +
+            '<p>For a double round robin running across a season, move to the league-specific generator.</p>' },
+        { h: 'Common Match Fixture Mistakes',
+          html: '<p>Avoid these problems:</p>',
+          list: ['generating pairings without checking real dates', 'using match duration as the kick-off interval with no changeover time',
+                 'scheduling more simultaneous games than staff can support', 'using home team as venue for a neutral event', 'renumbering fixtures after publication',
+                 'distributing team-specific sheets that no longer match the master schedule', 'ignoring holidays or venue closures',
+                 'treating CSV dates casually across different regional formats', 'forgetting player rest and travel',
+                 'assuming a fixture generator can automatically know every referee or equipment conflict'],
+          after: '<p>A fixture list is successful when participants can answer three questions instantly: who, when and where.</p>' }
       ],
-      keywords: [
-        'match fixture generator', 'fixture list maker', 'sports fixture scheduling',
-        'fixture list with venues', 'kick off time scheduling', 'match number reference',
-        'limited pitches scheduling', 'fixtures ics export', 'club league fixtures',
-        'printable fixture list', 'home and away fixtures', 'rearranged fixture numbering'
-      ]
+      keywords: ['match fixture generator', 'dated fixture schedule maker', 'kick off time fixture generator', 'venue schedule generator sports',
+        'match number fixture list', 'csv fixture export generator', 'home team as venue fixtures', 'simultaneous match scheduling',
+        'fixture list vs round robin', 'sports fixture generator online', 'printable match schedule generator', 'fixture rest time scheduling']
     }
   });
 })();

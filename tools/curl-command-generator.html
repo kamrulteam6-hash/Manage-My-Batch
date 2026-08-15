@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>cURL Command Generator — Bash, CMD &amp; PowerShell | Manage My Batch</title>
-<meta name="description" content="Free cURL command generator. Build correct curl requests with headers, auth, JSON and form bodies — with escaping for bash, Windows CMD and PowerShell, plus common flags explained.">
+<title>cURL Command Generator – Build Bash, CMD &amp; PowerShell Requests | Manage My Batch</title>
+<meta name="description" content="Generate cURL commands for GET, POST, PUT, PATCH and DELETE requests with headers, JSON, auth, redirects, retries, timeouts and shell-safe quoting.">
 <link rel="canonical" href="https://managemybatch.com/tools/curl-command-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="cURL Command Generator — Bash, CMD &amp; PowerShell">
-<meta property="og:description" content="Free cURL command generator. Build correct curl requests with headers, auth, JSON and form bodies — with escaping for bash, Windows CMD and PowerShell, plus common flags explained.">
+<meta property="og:title" content="cURL Command Generator – Build Bash, CMD &amp; PowerShell Requests">
+<meta property="og:description" content="Generate cURL commands for GET, POST, PUT, PATCH and DELETE requests with headers, JSON, auth, redirects, retries, timeouts and shell-safe quoting.">
 <meta property="og:url" content="https://managemybatch.com/tools/curl-command-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="cURL Command Generator — Bash, CMD &amp; PowerShell">
-<meta name="twitter:description" content="Free cURL command generator. Build correct curl requests with headers, auth, JSON and form bodies — with escaping for bash, Windows CMD and PowerShell, plus common flags explained.">
+<meta name="twitter:title" content="cURL Command Generator – Build Bash, CMD &amp; PowerShell Requests">
+<meta name="twitter:description" content="Generate cURL commands for GET, POST, PUT, PATCH and DELETE requests with headers, JSON, auth, redirects, retries, timeouts and shell-safe quoting.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -360,99 +360,120 @@
       '<h4 style="font-size:14.5px;margin:16px 0 8px">Secrets end up in history</h4><p style="color:var(--muted);font-size:13.8px">A token pasted inline is written to <code>~/.bash_history</code>, captured in CI logs, and copied into every chat message that shares the command. Reading it from an environment variable costs one extra line and removes the whole class of leak.</p></div></div>' +
       '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>The <code>-w</code> timing breakdown is the fastest way to diagnose slow requests: it separates DNS lookup, TCP connect, TLS handshake and time-to-first-byte, so you can tell whether the problem is the network, the certificate chain or the application itself.</span></div>',
     related: ['fetch-api-request-generator', 'axios-request-generator', 'dummy-api-key-generator'],
-    faqs: [
-      { q: 'Why does my curl command fail on Windows?', a: 'CMD does not support single-quoted strings, so bash-style commands break. In PowerShell, <code>curl</code> is an alias for <code>Invoke-WebRequest</code>, which takes different arguments — you need <code>curl.exe</code>. Select your shell above and the output is escaped correctly.' },
-      { q: 'How do I send a JSON body with curl?', a: 'Use <code>-H "Content-Type: application/json"</code> with <code>-d</code> and the JSON string. Note that <code>-d</code> automatically switches the method to POST, so <code>-X POST</code> is redundant.' },
-      { q: 'How do I upload a file?', a: 'Use multipart form data: <code>curl -F "file=@/path/to/photo.jpg" -F "title=Holiday" https://…</code>. The <code>@</code> tells curl to read the file from disk.' },
-      { q: 'Why does curl exit 0 on an HTTP error?', a: 'Because the transfer itself succeeded — curl only reports network-level failures by default. Add <code>-f</code> and it will exit non-zero on 4xx and 5xx, which is what a script needs.' },
-      { q: 'What is the difference between -s, -S and -v?', a: '<code>-s</code> silences the progress meter and errors, <code>-S</code> restores error messages, and <code>-v</code> shows the full handshake including request and response headers. Use <code>-sS</code> in scripts and <code>-v</code> when debugging.' },
-      { q: 'How do I keep my API token out of my shell history?', a: 'Export it as an environment variable and reference it in the header. Enable the environment-variable option above and the generated command does this, including the export line for your shell.' }
+faqs: [
+      { q: 'What does cURL stand for?', a: 'The project name is commonly associated with “Client URL,” and cURL is a tool and library for transferring data using URL syntax.' },
+      { q: 'Do I need -X GET for a GET request?', a: 'Usually no. A basic cURL URL request uses GET by default.' },
+      { q: 'How do I follow redirects?', a: 'Use <code>-L</code> or <code>--location</code>.' },
+      { q: 'How do I make cURL fail on HTTP 404 or 500?', a: 'Use <code>-f</code> or <code>--fail</code> when you want HTTP error responses to produce a failure exit status.' },
+      { q: 'Why does my cURL command work in Bash but not PowerShell?', a: 'The shells parse quoting and special characters differently. Generate the command specifically for the shell you are using.' },
+      { q: 'Is cURL affected by CORS?', a: 'No. CORS is primarily enforced by browsers. A cURL request can succeed even when browser JavaScript is not permitted to read the same cross-origin response.' },
+      { q: 'Can I keep my token out of shell history?', a: 'Yes. Referencing a protected environment variable is safer than embedding a real bearer token directly in the command.' }
     ],
     seo: {
-      title: 'curl commands: quoting, auth, JSON bodies and the flags that matter',
-      lead: 'This <strong>curl command generator</strong> builds correctly quoted requests for bash, PowerShell or cmd, with authentication, JSON and multipart bodies. Below: why the same command breaks on Windows, how to stop curl reporting success on a 500, and how to keep tokens out of your shell history.',
+      title: 'cURL Command Generator – Build Reliable API Requests Online',
+      lead: 'Use the cURL Command Generator above to turn an API request into a command you can actually run in Bash, Windows CMD or PowerShell.',
       blocks: [
-        {
-          h: 'Why curl commands break when you paste them',
-          html: '<p>Almost every "this curl example does not work" is a <strong>quoting</strong> problem, not a curl problem. Shells parse the command line before curl ever sees it, and they do not agree on the rules.</p>' +
-            '<p>In bash and zsh, single quotes are literal — a JSON body wrapped in <code>\'...\'</code> passes through untouched, which is exactly what you want. Windows <code>cmd.exe</code> does not treat single quotes as quotes at all, so the JSON arrives fragmented. PowerShell treats single quotes as literal but historically mangled embedded double quotes when calling native executables.</p>' +
-            '<p>The result is that a command copied from documentation written on macOS fails on a Windows laptop with a parse error from the API rather than the shell — which is why the cause is rarely obvious.</p>',
-          callout: { type: 'tip', text: 'In PowerShell, prefer <code>curl.exe</code> over <code>curl</code>. Bare <code>curl</code> is an alias for <code>Invoke-WebRequest</code>, which takes entirely different flags — so <code>-X POST -d</code> produces a confusing parameter error rather than a request.' }
-        },
-        {
-          h: 'Quoting by shell',
-          table: {
-            head: ['Shell', 'Wrap the JSON body in', 'Escape inner double quotes as'],
-            rows: [
-              ['bash / zsh', "Single quotes <code>'{\"a\":1}'</code>", 'No escaping needed.'],
-              ['PowerShell', "Single quotes, calling <code>curl.exe</code>", 'No escaping needed inside single quotes.'],
-              ['cmd.exe', 'Double quotes <code>"{...}"</code>', '<code>\\"</code> — every inner quote must be escaped.'],
-              ['Makefile', 'Single quotes', 'Also double any <code>$</code> as <code>$$</code>.'],
-              ['YAML (CI configs)', 'A block scalar', 'Avoid inline quoting entirely — use <code>&gt;-</code> or a data file.']
-            ]
-          },
-          after: '<p>For anything longer than a line or two, sidestep quoting altogether: put the body in a file and use <code>-d @body.json</code>. It works identically on every platform and the file is diffable.</p>'
-        },
-        {
-          h: 'Sending a JSON body',
-          steps: [
-            { t: 'Set the method', d: '<code>-X POST</code>. With <code>-d</code>, curl defaults to POST anyway, but stating it makes the command self-documenting.' },
-            { t: 'Set the content type', d: '<code>-H "Content-Type: application/json"</code>. Without it curl sends <code>application/x-www-form-urlencoded</code> and the server will reject or misparse the body.' },
-            { t: 'Pass the body', d: '<code>-d \'{"name":"Ada"}\'</code> inline, or <code>-d @payload.json</code> from a file.' },
-            { t: 'Preserve newlines if they matter', d: '<code>-d</code> strips newlines from file input; use <code>--data-binary @file.json</code> when the exact bytes matter.' },
-            { t: 'Add an Accept header', d: '<code>-H "Accept: application/json"</code> so error responses come back as JSON rather than an HTML error page.' }
-          ]
-        },
-        {
-          h: 'Uploading files',
-          html: '<p>Use <code>-F</code> for multipart form uploads. Each <code>-F</code> is one part, and the <code>@</code> prefix means "read from this file":</p>' +
-            '<p><code>curl -F "file=@report.pdf" -F "title=Q3 report" https://api.example.com/upload</code></p>' +
-            '<p>Curl sets the multipart boundary and <code>Content-Type</code> itself. Do not add a <code>Content-Type</code> header manually with <code>-F</code> — overriding it removes the boundary parameter and the server cannot parse a single part.</p>' +
-            '<p>Two variants worth knowing: <code>@</code> uploads as a file part, <code>&lt;</code> reads a file\'s contents into a plain field value, and <code>;type=</code> sets the part\'s MIME type when the server is fussy.</p>'
-        },
-        {
-          h: 'The flags that change the outcome',
-          table: {
-            head: ['Flag', 'What it does', 'Why it matters'],
-            rows: [
-              ['<code>-f</code> / <code>--fail</code>', 'Exit non-zero on HTTP 4xx and 5xx.', 'Without it, curl exits 0 on a 500. Scripts and CI treat the failure as success.'],
-              ['<code>-s</code>', 'Silent — hides the progress meter.', 'Also hides errors, which is why it is usually wrong alone.'],
-              ['<code>-S</code>', 'Show errors even when silent.', '<code>-sS</code> together is the correct scripting pair.'],
-              ['<code>-L</code>', 'Follow redirects.', 'Without it a 301 returns an empty body and looks like a broken API.'],
-              ['<code>-i</code> / <code>-D -</code>', 'Include or dump response headers.', 'Essential when debugging auth, caching or CORS.'],
-              ['<code>-v</code>', 'Verbose — full request and response headers.', 'The first thing to reach for when something is inexplicable.'],
-              ['<code>--max-time</code>', 'Overall timeout in seconds.', 'Prevents a hung request stalling a pipeline indefinitely.'],
-              ['<code>--compressed</code>', 'Request and decode gzip.', 'Faster, and matches what a browser sends.']
-            ]
-          },
-          callout: { type: 'warn', text: '<strong><code>curl -s</code> alone in a CI script is a trap.</strong> It hides the progress meter <em>and</em> the error message, and curl still exits 0 on an HTTP 500. Use <code>curl -sS --fail</code> so failures are both visible and fatal.' }
-        },
-        {
-          h: 'Keeping tokens out of your shell history',
-          list: [
-            '<strong>Use a variable from the environment:</strong> <code>-H "Authorization: Bearer $API_TOKEN"</code>. The literal token never appears in the command line.',
-            '<strong>Use <code>--netrc</code> or <code>--netrc-file</code></strong> for basic auth credentials stored with restricted file permissions.',
-            '<strong>Read the header from a file:</strong> <code>-H @headers.txt</code>, kept out of version control.',
-            '<strong>Prefix the command with a space</strong> where <code>HISTCONTROL=ignorespace</code> is set — a stopgap, not a policy.',
-            '<strong>Never use <code>-u user:password</code> in a shared terminal.</strong> It lands in history and, on some systems, in the process list where any user can read it.'
-          ],
-          after: '<p>For placeholder credentials in documentation and examples, generate obviously fake ones with the <a href="/tools/dummy-api-key-generator">dummy API key generator</a> rather than redacting a real key by hand.</p>'
-        },
-        {
-          h: 'Related request tools',
-          list: [
-            '<a href="/tools/fetch-api-request-generator">Fetch API Request Generator</a> — the same request as browser or Node JavaScript.',
-            '<a href="/tools/axios-request-generator">Axios Request Generator</a> — instances, interceptors and error branches.',
-            '<a href="/tools/dummy-api-key-generator">Dummy API Key Generator</a> — realistic fake credentials for docs and tests.',
-            '<a href="/tools/json-test-data-generator">JSON Test Data Generator</a> — request bodies to POST.'
-          ]
-        }
+        { html: '<p>Enter the URL, choose the HTTP method, add headers, authentication, query parameters or a request body, then select the flags you need. The generator handles shell-specific quoting so JSON, spaces and special characters are less likely to break when you paste the command into a terminal.</p>' +
+            '<p>You can also add useful operational options such as redirect following, HTTP-error handling, retries, timeouts, compressed responses, verbose output and response timing.</p>' +
+            '<p>That makes the tool useful beyond a simple GET request. It can produce commands for debugging APIs, reproducing bug reports, testing authentication, downloading files and checking how a server behaves under real HTTP conditions.</p>' },
+        { h: 'What Is cURL?',
+          html: '<p>cURL is a command-line tool for transferring data using URLs.</p>' +
+            '<p>Developers commonly use it for HTTP and HTTPS requests because it works well in terminals, scripts, CI pipelines and troubleshooting workflows.</p>' +
+            '<p>A minimal request looks like:</p><pre class="code">curl https://api.example.com/users</pre>' +
+            '<p>A JSON POST request may include a method, headers and body:</p><pre class="code">curl -X POST ...</pre>' +
+            '<p>The command can become difficult to write correctly once authentication, JSON data, query strings, retries and different shell quoting rules are involved.</p>' +
+            '<p>That is where a generator helps: you describe the request, and the tool builds the command syntax.</p>' },
+        { h: 'How to Use This cURL Command Generator',
+          html: '<p>Start with the target shell.</p><p>This matters because Bash, CMD and PowerShell do not quote arguments in exactly the same way.</p>' +
+            '<p>Enter the request URL and choose the HTTP method.</p><p>Then add any required:</p>',
+          list: ['headers', 'authorization', 'request body', 'query parameters', 'output file', 'timeout', 'retry count'],
+          after: '<p>Choose additional flags based on what you are trying to inspect.</p><p>For example:</p>' +
+            '<ul style="color:var(--muted);padding-left:18px"><li><code>-sS</code> for quieter script output while preserving errors</li>' +
+            '<li><code>-i</code> to include response headers</li><li><code>-v</code> for verbose connection details</li>' +
+            '<li><code>-L</code> to follow redirects</li><li><code>-f</code> to fail on HTTP error responses</li>' +
+            '<li><code>--compressed</code> to request compressed content</li><li><code>-w</code> to print timing information</li>' +
+            '<li><code>-o</code> to save the body to a file</li></ul>' +
+            '<p>Generate the command, review it, then run it in the shell you selected.</p>' },
+        { h: 'Why Shell Selection Matters',
+          html: '<p>A cURL command is not interpreted by cURL first.</p><p>Your shell parses the command line before cURL receives the arguments.</p>' +
+            '<p>That means quoting errors can change the request.</p>' +
+            '<p>For example, JSON contains braces, quotes and spaces that different shells may interpret differently.</p>' +
+            '<p>A command copied from a Bash tutorial may not work unchanged in Windows CMD or PowerShell.</p>' +
+            '<p>The safest workflow is to generate specifically for the terminal you intend to use.</p><p>This is particularly important for:</p>',
+          list: ['JSON request bodies', 'bearer tokens', 'URLs containing &amp;', 'form values with spaces', 'nested quotes', 'environment variables'],
+          after: '<p>A syntactically correct HTTP request can still fail before it reaches cURL if the shell splits it incorrectly.</p>' },
+        { h: 'POST JSON with cURL',
+          html: '<p>A JSON POST commonly needs:</p>',
+          list: ['POST behavior', '<code>Content-Type: application/json</code>', 'JSON request body'],
+          after: '<p>The body must remain one shell argument after quoting.</p><p>This is one of the easiest places to make a copy-paste mistake.</p>' +
+            '<p>The generator builds the body for the selected shell rather than assuming Unix quoting everywhere.</p>' +
+            '<p>Also make sure the JSON itself is valid.</p>' +
+            '<p>A shell can successfully pass invalid JSON to the server. cURL does not validate your application payload for you.</p>' +
+            '<p>If you need realistic sample request bodies, create them with the <a href="/tools/json-test-data-generator">JSON Test Data Generator</a> and then place the result into the request builder.</p>' },
+        { h: 'Add Request Headers',
+          html: '<p>Headers carry request metadata.</p><p>Common examples include:</p>' +
+            '<pre class="code">Accept: application/json\nContent-Type: application/json\nAuthorization: Bearer ...\nUser-Agent: ...</pre>' +
+            '<p>Custom application headers may also be required.</p><p>Headers containing spaces should be correctly quoted.</p>' +
+            '<p>Do not add <code>Content-Type: application/json</code> automatically to requests that are not sending JSON.</p>' +
+            '<p>For multipart form uploads, the boundary is important and is often best handled by cURL itself when using the appropriate form options.</p>' +
+            '<p>Match the header to the actual body format.</p>' },
+        { h: 'Safer Bearer Token Handling',
+          html: '<p>Pasting a real bearer token directly into a terminal command can leave it in shell history.</p><p>It can also leak when you:</p>',
+          list: ['copy the command into chat', 'paste it into a ticket', 'record your screen', 'share terminal output', 'commit a script'],
+          after: '<p>The generator can reference an environment variable instead of embedding the token directly.</p>' +
+            '<p>That is a safer pattern for reusable commands.</p>' +
+            '<p>A generated example should also use a dummy credential when it is going into documentation.</p>' +
+            '<p>Use the <a href="/tools/dummy-api-key-generator">Dummy API Key Generator</a> for screenshots, README files and tutorials.</p>' +
+            '<p>Do not turn a production secret into sample content.</p>' },
+        { h: 'Follow Redirects with -L',
+          html: '<p>HTTP redirects return a status and a <code>Location</code> header telling the client where to go next.</p>' +
+            '<p>cURL does not always follow those redirects unless requested.</p><p>The <code>-L</code> or <code>--location</code> option follows them.</p>' +
+            '<p>This is useful when testing:</p>',
+          list: ['shortened URLs', 'HTTP-to-HTTPS redirects', 'moved API endpoints', 'authentication flows', 'download links'],
+          after: '<p>When debugging a migration, you may want to inspect the original redirect first instead of following it immediately.</p>' +
+            '<p>Use <code>-i</code> or verbose output to see the response status and <code>Location</code> header.</p>' +
+            '<p>Then enable <code>-L</code> when you want to test the final destination.</p>' },
+        { h: 'Make HTTP Errors Fail with -f',
+          html: '<p>By default, a completed HTTP transfer can still produce a successful cURL process even when the server returns an HTTP error.</p>' +
+            '<p>The <code>-f</code> or <code>--fail</code> option makes HTTP response errors such as 4xx or 5xx produce a failure exit status instead of treating the transfer as successful.</p>' +
+            '<p>That matters in scripts and CI.</p>' +
+            '<p>Without it, a command may download an error page and the script may continue as though the API call succeeded.</p>' +
+            '<p>For automation, consider combining:</p><pre class="code">-f</pre><p>with:</p><pre class="code">-sS</pre>' +
+            '<p>so normal progress output stays quiet but failures remain visible.</p>' },
+        { h: 'Retry Transient Failures',
+          html: '<p>Networks fail temporarily.</p><p>Servers return 429, 500, 502, 503 or 504.</p>' +
+            '<p>A short connection interruption should not always terminate a batch job permanently.</p>' +
+            '<p>cURL supports retry behavior for transient failures.</p><p>Set a retry count when the request is safe to retry.</p>' +
+            '<p>Be careful with non-idempotent operations.</p>' +
+            '<p>Repeating a POST that creates a payment, order or job can cause duplicates unless the API supports idempotency.</p>' +
+            '<p>Retries are not simply a “make it reliable” switch.</p><p>Ask whether repeating the operation is safe.</p>' +
+            '<p>For GET requests and explicitly idempotent APIs, retry behavior is often easier to justify.</p>' },
+        { h: 'Timeouts Prevent Hanging Requests',
+          html: '<p>A request that never completes can block a script longer than expected.</p>' +
+            '<p>Set a timeout when your workflow has a clear maximum wait.</p><p>This is useful for:</p>',
+          list: ['CI jobs', 'health checks', 'batch processing', 'API monitoring', 'deployment scripts'],
+          after: '<p>A timeout should reflect the endpoint.</p>' +
+            '<p>A two-second limit may be sensible for a fast health endpoint but unreasonable for a report export.</p>' +
+            '<p>Do not choose a timeout solely because “five seconds sounds safe.”</p>' +
+            '<p>Measure normal behavior and leave enough room for expected variance.</p>' },
+        { h: 'Use Verbose Mode for Troubleshooting',
+          html: '<p>When a request behaves differently from what you expect, <code>-v</code> is one of the most useful cURL flags.</p><p>Verbose output can reveal:</p>',
+          list: ['DNS resolution', 'connection attempts', 'TLS negotiation', 'request headers', 'response headers', 'redirects', 'proxy behavior'],
+          after: '<p>Be careful when sharing verbose logs.</p><p>They may contain credentials, cookies or sensitive headers.</p>' +
+            '<p>Redact secrets before posting diagnostic output publicly.</p>' +
+            '<p>For a clean production script, verbose mode is normally disabled. For debugging, it can explain problems that a response body alone cannot.</p>' },
+        { h: 'Common cURL Mistakes',
+          html: '<p>Avoid these problems:</p>',
+          list: ['Using Bash quoting in PowerShell or CMD', 'Embedding production tokens in shared commands', 'Forgetting -L when testing a redirecting URL',
+                 'Assuming a 404 automatically makes the process fail', 'Retrying a non-idempotent request without safeguards', 'Setting the wrong Content-Type',
+                 'Printing binary output into the terminal', 'Sharing verbose logs without redacting secrets', 'Copying JSON that the shell breaks before cURL sees it',
+                 'Assuming a working cURL request proves browser CORS will allow the same request'],
+          after: '<p>cURL is not subject to browser CORS enforcement.</p>' +
+            '<p>A request can work perfectly in cURL and still be blocked by a browser because of CORS policy. For the browser-side equivalent, see the <a href="/tools/fetch-api-request-generator">Fetch API Request Generator</a> and the <a href="/tools/axios-request-generator">Axios Request Generator</a>.</p>' }
       ],
-      keywords: [
-        'curl command generator', 'curl post json', 'curl headers', 'curl file upload',
-        'curl windows quoting', 'curl powershell', 'curl bearer token', 'curl --fail',
-        'curl verbose debug', 'curl basic auth', 'curl form data', 'curl timeout'
-      ]
+      keywords: ['curl command generator', 'curl post json', 'curl bash cmd powershell', 'curl follow redirects -L',
+        'curl fail on http error', 'curl bearer token', 'curl retry timeout', 'curl verbose debugging',
+        'curl vs cors', 'curl shell quoting', 'curl download file', 'curl authentication header']
     }
   });
 })();

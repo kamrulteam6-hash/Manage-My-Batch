@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>Random Gift Exchange Generator — Draws, Budgets &amp; Wishlists | Manage My Batch</title>
-<meta name="description" content="Free gift exchange generator. Organise any swap — Secret Santa, white elephant, family draws — with budgets, wishlists, group rules and printable slips.">
+<title>Random Gift Exchange Generator – Draw Names, Groups & Wishlists</title>
+<meta name="description" content="Organize gift exchanges with name draws, White Elephant order, family-group exclusions, wishlists, budgets, dates, private results and printable slips.">
 <link rel="canonical" href="https://managemybatch.com/tools/random-gift-exchange-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="Random Gift Exchange Generator — Draws, Budgets &amp; Wishlists">
-<meta property="og:description" content="Free gift exchange generator. Organise any swap — Secret Santa, white elephant, family draws — with budgets, wishlists, group rules and printable slips.">
+<meta property="og:title" content="Random Gift Exchange Generator – Draw Names, Groups & Wishlists">
+<meta property="og:description" content="Organize gift exchanges with name draws, White Elephant order, family-group exclusions, wishlists, budgets, dates, private results and printable slips.">
 <meta property="og:url" content="https://managemybatch.com/tools/random-gift-exchange-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Random Gift Exchange Generator — Draws, Budgets &amp; Wishlists">
-<meta name="twitter:description" content="Free gift exchange generator. Organise any swap — Secret Santa, white elephant, family draws — with budgets, wishlists, group rules and printable slips.">
+<meta name="twitter:title" content="Random Gift Exchange Generator – Draw Names, Groups & Wishlists">
+<meta name="twitter:description" content="Organize gift exchanges with name draws, White Elephant order, family-group exclusions, wishlists, budgets, dates, private results and printable slips.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -393,99 +393,110 @@ Jones: Cara, Dan</textarea>
       '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span><strong>Wishlists matter more than budgets.</strong> Two or three concrete hints — "books, coffee, plants" — transform what people actually receive, particularly when the giver barely knows the recipient. They print on the slip, so nobody has to ask around and reveal who they drew.</span></div>' +
       '<div class="note note-warn" style="margin-top:12px">' + GTI.warn + '<span>If you run white elephant, agree the steal limit before the first gift is opened — commonly three steals per gift, after which it is frozen. Without a cap the game genuinely does not terminate.</span></div>',
     related: ['secret-santa-generator', 'chore-rotation-generator', 'team-generator'],
-    faqs: [
-      { q: 'What is the difference from Secret Santa?', a: 'A name draw is Secret Santa. This tool adds two other formats — white elephant, where the draw only sets a picking order, and family groups, where households never draw each other.' },
-      { q: 'How do family group exclusions work?', a: 'List each household as <code>Household: Name, Name</code>. Everyone in the same group is excluded from drawing each other, so every gift crosses between households.' },
-      { q: 'How do wishlists work?', a: 'Add them after a pipe character: <code>Ana | books, coffee</code>. The recipient\'s wishlist prints on their giver\'s slip, so nobody has to ask around and reveal the draw.' },
-      { q: 'What are white elephant rules?', a: 'Everyone brings one wrapped gift. Player one opens a gift; each following player either opens a new one or steals an opened one, and whoever was stolen from picks again. Set a steal limit — usually three per gift — or the game will not end.' },
-      { q: 'Can two people be assigned to each other?', a: 'No. The draw builds a single chain, so reciprocal pairs are structurally impossible, which keeps it a genuine secret.' },
-      { q: 'Can I organise it and take part?', a: 'Yes — leave "Hide the result from me" on, print the slips without looking, and hand them out folded.' }
+faqs: [
+      { q: 'What gift exchange styles can I organize?', a: 'The tool supports a name draw, White Elephant-style exchange planning and family-group draws.' },
+      { q: 'Can participants add wishlists?', a: 'Yes. Add the wishlist after the participant’s name using the pipe format shown in the tool.' },
+      { q: 'Can people in the same family avoid drawing each other?', a: 'Yes. Add household or family group membership.' },
+      { q: 'Can I also block individual pairs?', a: 'Yes. Use the never-match list for additional exclusions.' },
+      { q: 'Can the organizer stay unaware of the assignments?', a: 'Yes. Enable the private result option.' },
+      { q: 'What is the difference between Secret Santa and White Elephant?', a: 'Secret Santa assigns a recipient in advance. White Elephant normally uses unassigned gifts and a randomized selection/swapping order during the event.' },
+      { q: 'Can the exchange be reproduced later?', a: 'Yes. Keep the same inputs and draw seed.' }
     ],
     seo: {
-      title: 'Gift exchange draws: formats, household exclusions and mutual pairs',
-      lead: 'This <strong>gift exchange generator</strong> runs any swap — a name draw, white elephant, or a family exchange where households never draw each other — with wishlists and budgets on every printed slip. Below: how to choose a format, how group exclusions work, and how to organise a draw you are also in.',
+      title: 'Random Gift Exchange Generator – Organize Draws, Wishlists and Group Rules',
+      lead: 'Use the Random Gift Exchange Generator above when your holiday or party gift swap needs more flexibility than a basic Secret Santa name draw.',
       blocks: [
-        {
-          h: 'Choosing a format',
-          html: '<p>"Gift exchange" covers several games with quite different dynamics. Picking the wrong one for the group is why some office swaps are fun and others are awkward.</p>',
-          cards: [
-            { t: 'Name draw (Secret Santa)', d: 'Everyone draws one person and buys for them. Anonymous, one gift each, and the assignment is secret until the day. The default for offices and large families.' },
-            { t: 'White elephant', d: 'Everyone brings one wrapped gift; participants take turns opening or stealing. No assignment needed — the fun is in the stealing. Best with 6–20 people.' },
-            { t: 'Family group exchange', d: 'A name draw where households never draw within themselves. Stops a couple buying for each other under the guise of the game.' },
-            { t: 'Mutual pairs', d: 'People are matched two-way — you buy for the person buying for you. Simpler, and better for small groups where anonymity is impossible anyway.' }
-          ],
-          after: '<p>For a pure Secret Santa with exclusions and a strict no-mutual-pairs rule, the <a href="/tools/secret-santa-generator">Secret Santa generator</a> is the more focused tool. This one covers the wider set of formats.</p>'
-        },
-        {
-          h: 'Household and group exclusions',
-          html: '<p>A group exclusion says that nobody in a household draws anyone else from it. Enter each household as a group and the draw treats them as mutually excluded.</p>' +
-            '<p>The arithmetic matters here, and it is why some draws fail. If one group contains more than half the participants, there are not enough people outside it for its members to draw — the draw is impossible, not unlucky. Six people with a household of four leaves only two possible recipients for four givers.</p>',
-          steps: [
-            { t: 'List every participant', d: 'One per line.' },
-            { t: 'Mark the groups', d: 'Households, couples, teams — whatever should not draw within itself.' },
-            { t: 'Add individual exclusions if needed', d: 'Two people who exchanged last year, or who have agreed to buy separately.' },
-            { t: 'Generate', d: 'The draw retries until it finds an arrangement satisfying every rule.' },
-            { t: 'Read the warning if it appears', d: 'An impossible constraint set is reported explicitly rather than being silently relaxed.' }
-          ],
-          callout: { type: 'warn', text: '<strong>No group can hold more than half the participants.</strong> Above that, at least one member has nobody left to draw, and no amount of reshuffling helps. The fix is more participants or fewer exclusions — the tool tells you which group is the problem.' }
-        },
-        {
-          h: 'Wishlists and budgets',
-          html: '<p>Every printed slip carries the recipient\'s name, the agreed budget and their wishlist if they supplied one. It is the single change that most improves the gifts.</p>' +
-            '<p>Wishlists solve the real problem with a name draw: you have drawn a colleague you speak to twice a month and have no idea what they like. A three-item list turns an anxious guess into a straightforward purchase, and it substantially reduces the number of unwanted candles in circulation.</p>' +
-            '<p>The budget belongs on the slip rather than in an email, because the email is what nobody can find in December. Print it on every slip and there is no ambiguity about whether the limit was £10 or £20 — which is the other thing that makes a swap awkward.</p>',
-          list: [
-            'Ask for three items at different prices, so the giver has a choice within the budget.',
-            'Include a "please do not buy" line — allergies, dietary restrictions, things they already own.',
-            'Keep the budget a firm number rather than a range. Ranges get rounded upwards by some people and not others.',
-            'Set a deadline for wishlists a week before the draw, not after it.'
-          ]
-        },
-        {
-          h: 'White elephant rules',
-          html: '<p>White elephant needs no assignment, but it does need rules agreed before anyone opens anything. The common set:</p>',
-          table: {
-            head: ['Rule', 'Effect'],
-            rows: [
-              ['Draw numbers for turn order', 'Player 1 opens first, and gets the last turn to swap at the end.'],
-              ['On your turn, open a gift or steal one', 'The person stolen from then takes another turn.'],
-              ['A gift can be stolen twice, then it is frozen', 'Prevents an endless chain over one popular item.'],
-              ['You cannot steal back immediately', 'Stops two people trading the same gift forever.'],
-              ['Player 1 gets a final swap', 'Compensates for having no gifts to choose from at the start.']
-            ]
-          },
-          after: '<p>Agree the steal limit before you start. Almost every white elephant that drags on does so because nobody set one, and the game hinges entirely on that number.</p>'
-        },
-        {
-          h: 'Can two people draw each other?',
-          html: '<p>By default, no. Mutual pairs are prevented in name-draw mode, because a two-way match is generally considered a failed draw — the anonymity disappears and the pair effectively drops out of the wider exchange.</p>' +
-            '<p>You can allow them deliberately, and in a small group it is sometimes the sensible choice: with four participants, prohibiting mutual pairs sharply limits the possible arrangements and makes the draw feel less random rather than more.</p>' +
-            '<p>Mutual-pairs mode makes them the point — everyone is matched two-way, which suits a small team or a group that would rather exchange openly than pretend at secrecy.</p>',
-          callout: { type: 'tip', text: 'Print the slips folded, or use the individual reveal links, so the organiser never sees who drew whom. A draw where one person knows every assignment is not really anonymous, and that person spends December being asked leading questions.' }
-        },
-        {
-          h: 'Organising and taking part',
-          html: '<p>You can do both, and the draw runs in your browser so nothing is sent anywhere — but the printed slips are visible to whoever prints them.</p>' +
-            '<p>Two ways to keep your own assignment a surprise. Print the slips folded and have someone else distribute them, taking yours without looking. Or generate the draw, close the results without reading, and have a second person open the print view and hand them out.</p>' +
-            '<p>Everything runs client-side: no names, wishlists or assignments are transmitted, stored or logged. That is also why there is no "email everyone their assignment" feature — it would require sending your participants\' details to a server, which for a family gift draw is a poor trade.</p>'
-        },
-        {
-          h: 'Related group tools',
-          list: [
-            '<a href="/tools/secret-santa-generator">Secret Santa Generator</a> — focused name draws with exclusions.',
-            '<a href="/tools/chore-rotation-generator">Chore Rotation Generator</a> — fair rotation for households.',
-            '<a href="/tools/team-generator">Team Generator</a> — split a group into balanced teams.',
-            '<a href="/tools/classroom-group-generator">Classroom Group Generator</a> — grouping with constraints.',
-            '<a href="/tools/presentation-order-generator">Presentation Order Generator</a> — randomised turn order.'
-          ]
-        }
+        { html: '<p>Choose the exchange style, paste the participant list and optionally add each person’s wishlist after a pipe.</p>' +
+            '<p>You can also define household or family groups so people in the same group do not draw one another, add specific never-match pairs, set a budget and event date, and print a shared note on every slip.</p>' +
+            '<p>The tool supports three different planning styles: name draw, White Elephant, and family groups.</p>' +
+            '<p>That distinction matters because not every gift exchange uses the same assignment rules.</p>' +
+            '<p>A generator should follow the game you are actually playing rather than forcing every event into a Secret Santa format.</p>' },
+        { h: 'What Is a Random Gift Exchange?',
+          html: '<p>A random gift exchange is any event where participants or gift-selection order are randomized.</p><p>Common versions include:</p>' +
+            '<p><strong>Secret Santa-style name draw</strong> — each participant receives one person to buy for.</p>' +
+            '<p><strong>Family or household draw</strong> — participants draw outside their own household or group.</p>' +
+            '<p><strong>White Elephant</strong> — participants bring an unassigned gift and the event uses a randomized selection order rather than a private giver-recipient assignment.</p>' +
+            '<p>These formats share the idea of randomization but use it differently.</p>' +
+            '<p>Before generating anything, agree on the exchange style.</p>' +
+            '<p>Otherwise people may arrive expecting completely different rules.</p>' },
+        { h: 'How to Use This Gift Exchange Generator',
+          html: '<p>Choose the exchange style.</p><p>Then paste one participant per line.</p>' +
+            '<p>You can add a wishlist using <code>Name | wishlist</code>.</p><p>Example:</p>' +
+            '<pre class="code">Ana | books, coffee\nBen | cycling gear\nCara | plants, candles</pre>' +
+            '<p>If the exchange includes families or households, enter the group membership.</p>' +
+            '<p>You can also add never-match pairs for individual restrictions.</p><p>Set:</p>',
+          list: ['budget', 'exchange date', 'note for every slip'],
+          after: '<p>Choose whether recipient wishlists should appear on slips.</p>' +
+            '<p>Enable Hide the result from me when the organizer should not see private assignments.</p>' +
+            '<p>Add a draw seed if reproducibility matters, then run and print the exchange.</p>' },
+        { h: 'Name Draw Format',
+          html: '<p>A name draw assigns each participant another participant.</p><p>The basic goal is:</p>',
+          list: ['no self-match', 'one recipient per giver', 'one giver per recipient'],
+          after: '<p>This format suits Secret Santa, office gifting, family Christmas draws, friend groups and club exchanges.</p>' +
+            '<p>Wishlists can be displayed directly on the recipient slip.</p>' +
+            '<p>That saves the giver from asking around and accidentally revealing who they drew.</p>' +
+            '<p>If the event is a simple Secret Santa with only a few pair exclusions, the dedicated <a href="/tools/secret-santa-generator">Secret Santa Generator</a> may be more direct.</p>' +
+            '<p>Use this broader tool when the wishlist or family-group features matter.</p>' },
+        { h: 'Family Group Exchange',
+          html: '<p>Family-group mode is useful when several participants belong to the same household and should buy outside it.</p>' +
+            '<p>For example: <code>Smith: Ana, Ben</code> and <code>Jones: Cara, Dan</code> means people within each named group should not draw one another.</p>' +
+            '<p>This is cleaner than manually entering every pairwise household exclusion.</p><p>It works well for:</p>',
+          list: ['extended families', 'couples living together', 'multi-household holiday gatherings', 'office departments where internal matches are discouraged'],
+          after: '<p>The group name is an organizing label.</p><p>The draw cares about membership.</p>' +
+            '<p>Keep the group structure simple and check that each group has enough people outside it to make a valid exchange possible.</p>' },
+        { h: 'Why Large Family Groups Can Make a Draw Impossible',
+          html: '<p>Suppose six people participate.</p><p>Four belong to one household.</p>' +
+            '<p>If nobody may draw within their own household, each of those four people has only two eligible recipients outside the group.</p>' +
+            '<p>But the assignment still needs to give every participant one distinct recipient.</p>' +
+            '<p>Depending on all group sizes and exclusions, a valid mapping may not exist.</p>' +
+            '<p>This is a structural limitation.</p><p>The generator cannot create new eligible recipients.</p><p>If the draw fails:</p>',
+          list: ['review household rules', 'remove optional restrictions', 'add more participants', 'change the exchange style'],
+          after: '<p>Do not silently allow same-household matches when participants were promised otherwise.</p>' },
+        { h: 'Wishlists and Budget',
+          html: '<p>A wishlist helps a giver choose something the recipient is likely to appreciate.</p><p>Keep entries concise.</p>' +
+            '<p>Examples: <code>books, coffee</code>, <code>board games</code>, <code>baking tools</code>, <code>houseplants</code>.</p>' +
+            '<p>The list can express categories rather than exact products, preserving some surprise.</p>' +
+            '<p>The tool can place the recipient’s wishlist on the slip so each giver receives the relevant information automatically.</p>' +
+            '<p>Agree beforehand whether participants are expected to buy directly from it or simply use it for ideas.</p>' +
+            '<p>A clear budget reduces awkwardness.</p>' +
+            '<p>Without one, one participant may spend very little while another spends far more.</p>' +
+            '<p>Possible approaches include a maximum amount, target amount, or spending range, such as "Around £20" or "Maximum $25."</p>' +
+            '<p>If the event has special rules—such as handmade-only or second-hand gifts—add that to the shared note.</p>' },
+        { h: 'White Elephant Exchange',
+          html: '<p>White Elephant uses a different structure from Secret Santa.</p>' +
+            '<p>Participants normally bring a wrapped gift that is not assigned to a specific recipient.</p>' +
+            '<p>The event then uses a randomized turn order.</p><p>Depending on the house rules, later participants may be able to:</p>',
+          list: ['open a new gift', 'steal an opened gift', 'trigger another selection'],
+          after: '<p>The generator’s White Elephant mode is therefore about organizing the exchange rather than assigning one private giver to one recipient.</p>' +
+            '<p>Before the event, decide the stealing rules separately, such as maximum steals per gift, whether a stolen player immediately chooses again, or whether the first player gets a final turn.</p>' +
+            '<p>There is no need to argue that one version is universally correct.</p>' +
+            '<p>Pick the house rules and explain them before the first gift is opened.</p>' },
+        { h: 'White Elephant vs Secret Santa',
+          html: '<p>These are frequently grouped together online, but the mechanics differ.</p>' +
+            '<p><strong>Secret Santa</strong> — recipient assigned in advance, giver buys for that person, assignment is private, wishlist can be recipient-specific.</p>' +
+            '<p><strong>White Elephant</strong> — gifts generally enter a common pool, selection happens during the event, turn order matters, stealing/swapping may be allowed.</p>' +
+            '<p>Use name draw for the first. Use White Elephant mode for the second.</p>' +
+            '<p>Do not generate private recipient slips for an event where gifts are intentionally unassigned.</p>' +
+            '<p>The right randomization depends on the game.</p>' },
+        { h: 'Never-Match Pairs',
+          html: '<p>A family-group rule may not cover every special case.</p><p>Use individual never-match pairs for exceptions.</p><p>Examples:</p>',
+          list: ['last year’s pairing should not repeat', 'manager and direct report should be separated', 'two participants are buying a joint present elsewhere'],
+          after: '<p>Every restriction reduces possible assignments.</p><p>Keep the list limited to rules that actually matter.</p>' +
+            '<p>If a group has dozens of pair exclusions, manually review whether the event design itself needs changing.</p>' +
+            '<p>Complex constraint lists are difficult to explain and can make the draw impossible.</p>' +
+            '<p>The generator should organize the exchange, not encode years of social history.</p>' },
+        { h: 'Common Gift Exchange Mistakes',
+          html: '<p>Avoid these problems:</p>',
+          list: ['choosing White Elephant while participants expect Secret Santa', 'defining family groups so large that no valid draw exists',
+                 'printing wishlists for the wrong recipient', 'forgetting to set a budget', 'keeping White Elephant stealing rules vague',
+                 'redrawing after people have started shopping', 'adding unnecessary personal information',
+                 'using many exclusions without checking whether the draw is feasible', 'treating the seed as a security credential',
+                 'adding late participants without validating the full assignment again'],
+          after: '<p>The best gift exchange feels simple because the format, budget and assignment rules were agreed before the gifts were bought.</p>' }
       ],
-      keywords: [
-        'gift exchange generator', 'secret santa alternative', 'white elephant rules',
-        'family gift exchange draw', 'name draw generator', 'gift swap organiser',
-        'household exclusions gift draw', 'wishlist gift exchange', 'office gift exchange',
-        'printable gift exchange slips', 'random gift assignment', 'christmas draw generator'
-      ]
+      keywords: ['random gift exchange generator', 'gift exchange with wishlists', 'family group gift draw', 'white elephant exchange generator',
+        'secret santa vs white elephant', 'gift exchange budget generator', 'never match gift draw', 'office gift exchange generator',
+        'household exclusion gift draw', 'printable gift exchange slips', 'gift swap organizer online', 'holiday gift draw generator']
     }
   });
 })();

@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>Classroom Group Generator — Balanced Random Student Groups | Manage My Batch</title>
-<meta name="description" content="Free classroom group generator. Split a class into balanced random groups with keep-apart and keep-together rules, custom group names and printable output.">
+<title>Classroom Group Generator – Balanced Random Student Groups</title>
+<meta name="description" content="Split students into fair classroom groups by group size or number of groups. Add keep-apart, keep-together rules, custom names and reproducible seeds.">
 <link rel="canonical" href="https://managemybatch.com/tools/classroom-group-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="Classroom Group Generator — Balanced Random Student Groups">
-<meta property="og:description" content="Free classroom group generator. Split a class into balanced random groups with keep-apart and keep-together rules, custom group names and printable output.">
+<meta property="og:title" content="Classroom Group Generator – Balanced Random Student Groups">
+<meta property="og:description" content="Split students into fair classroom groups by group size or number of groups. Add keep-apart, keep-together rules, custom names and reproducible seeds.">
 <meta property="og:url" content="https://managemybatch.com/tools/classroom-group-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Classroom Group Generator — Balanced Random Student Groups">
-<meta name="twitter:description" content="Free classroom group generator. Split a class into balanced random groups with keep-apart and keep-together rules, custom group names and printable output.">
+<meta name="twitter:title" content="Classroom Group Generator – Balanced Random Student Groups">
+<meta name="twitter:description" content="Split students into fair classroom groups by group size or number of groups. Add keep-apart, keep-together rules, custom names and reproducible seeds.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -364,100 +364,122 @@ Rosa</textarea>
       '<div><h4 style="font-size:14.5px;margin-bottom:8px">Balance is best-effort</h4><p style="color:var(--muted);font-size:13.8px">With 16 students in groups of 5, someone gets a group of 4 or 6 — there is no arrangement that avoids it. The tool places the largest units first into the smallest group, which keeps sizes as even as the numbers allow, and reports the actual spread so there are no surprises when you print.</p>' +
       '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">Student names stay in your browser and are never uploaded.</p></div></div>',
     related: ['random-student-pair-generator', 'classroom-seating-chart-generator', 'presentation-order-generator'],
-    faqs: [
-      { q: 'How do I stop two students being in the same group?', a: 'List them under keep apart as <code>Name &amp; Name</code>. The tool avoids placing them together and tells you explicitly if there are too few groups to make that possible.' },
-      { q: 'Can I force two students into the same group?', a: 'Yes — use the keep together field. The pair is treated as one unit during allocation, which can make their group one member larger than the others.' },
-      { q: 'What group size works best?', a: 'Threes and fours for discussion tasks, since everyone has to contribute. Five or more lets a quieter student stay silent. Pairs maximise talk time but narrow the range of ideas.' },
-      { q: 'Why are my groups different sizes?', a: 'Because the class does not divide evenly, or a keep-together pair had to be placed as a unit. The tool balances as far as the numbers allow and shows the actual size range.' },
-      { q: 'Can I get the same groups again next lesson?', a: 'Yes. Keep the seed value and the class list identical, and you get identical groups. Press Reshuffle for a new arrangement.' },
-      { q: 'Is my class list stored anywhere?', a: 'No. Everything happens in your browser — nothing is uploaded, logged or saved, so pasting a real register is safe.' }
+faqs: [
+      { q: 'How do I randomly divide students into groups?', a: 'Paste one student name per line, choose students per group or number of groups, then generate.' },
+      { q: 'Can I keep two students together?', a: 'Yes. Add them as a keep-together pair.' },
+      { q: 'Can I keep two students apart?', a: 'Yes. Add the pair to the keep-apart list.' },
+      { q: 'What happens when the class does not divide evenly?', a: 'The generator distributes students so group sizes are as balanced as possible.' },
+      { q: 'What group size is best?', a: 'It depends on the activity. Evidence reviews of collaborative learning often highlight groups of about three to five students, but the task and classroom constraints should guide the final choice.' },
+      { q: 'What does the seed do?', a: 'It lets the same roster and settings reproduce the same randomized groups.' },
+      { q: 'Should classroom groups always be random?', a: 'No. Random groups are useful for variety. Deliberate grouping is better when the learning objective or support needs require it.' }
     ],
     seo: {
-      title: 'Grouping a class: constraints that are enforced, not just requested',
-      lead: 'This <strong>classroom group generator</strong> splits a class into balanced random groups in one click, with keep-apart and keep-together rules that are genuinely enforced and honest warnings when they cannot be. Below: what group size works, why groups come out uneven, and where your class list goes.',
+      title: 'Classroom Group Generator – Make Balanced Student Groups Quickly',
+      lead: 'Use the Classroom Group Generator above to divide a class into random groups without counting names, rebalancing the last group or manually moving students around.',
       blocks: [
-        {
-          h: 'Random grouping, and why it helps',
-          html: '<p>Letting students pick their own groups produces the same groups every time, leaves someone unpicked, and reinforces exactly the social patterns a mixed activity is meant to disrupt. Assigning groups yourself works but invites negotiation, and the negotiation is with you.</p>' +
-            '<p>A visible random draw does neither. Nobody was chosen last, nobody was placed deliberately, and the answer to "why am I with them" is that the generator decided. That is worth more than the fairness itself — it removes the discussion.</p>',
-          callout: { type: 'tip', text: 'Project the generator and press the button in front of the class. A result that appears on screen is accepted in a way that a list you read out is not, because everyone watched it happen.' }
-        },
-        {
-          h: 'Constraints that are actually enforced',
-          html: '<p>Most group randomisers offer keep-apart rules and quietly ignore them when the arithmetic gets difficult. This one places constrained students first and then fills around them — and when a constraint cannot be satisfied, it says so rather than producing a result that looks fine.</p>',
-          cards: [
-            { t: 'Keep apart', d: 'Named students are never placed in the same group. The common case: two students who cannot work together, or three who reliably stop working when combined.' },
-            { t: 'Keep together', d: 'Named students are placed as a unit. Useful for a peer-support pairing or a shared language.' },
-            { t: 'When it is impossible', d: 'Four students who must all be kept apart cannot fit into three groups. The tool tells you which constraint failed instead of silently dropping one.' },
-            { t: 'Everything else is random', d: 'Constrained students are placed first, then the rest are distributed randomly around them.' }
-          ],
-          callout: { type: 'warn', text: '<strong>Check the warnings before the lesson, not during it.</strong> The generator flags unsatisfiable constraints immediately — but only if someone reads them. A constraint that failed is exactly the one whose failure you will notice within five minutes of the activity starting.' }
-        },
-        {
-          h: 'What group size works best',
-          table: {
-            head: ['Size', 'Works well for', 'Watch for'],
-            rows: [
-              ['2 (pairs)', 'Practice, peer marking, quick discussion. Everyone participates.', 'No spare capacity — one absence leaves someone alone.'],
-              ['3', 'Discussion with more than one perspective. Still hard to hide.', 'Two-against-one dynamics.'],
-              ['4', 'The best general default. Splits into pairs for sub-tasks.', 'One passenger is possible.'],
-              ['5–6', 'Projects with genuinely distinct roles.', 'Passengers become likely without assigned roles.'],
-              ['7+', 'Rarely. Presentations to the group, perhaps.', 'Participation drops sharply.']
-            ]
-          },
-          after: '<p>Four is the sweet spot for most classroom work: large enough for a range of ideas, small enough that nobody can disappear, and it divides neatly into pairs when the task has two halves.</p>'
-        },
-        {
-          h: 'Generating groups',
-          steps: [
-            { t: 'Paste your class list', d: 'One name per line, straight from your register or MIS export.' },
-            { t: 'Choose group size or group count', d: 'Set the size when the activity needs a specific number per group; set the count when you have a fixed number of tables or resources.' },
-            { t: 'Add keep-apart and keep-together rules', d: 'Only where you need them — over-constraining a small class makes a valid arrangement impossible.' },
-            { t: 'Generate and read the warnings', d: 'Any constraint that could not be satisfied is listed explicitly.' },
-            { t: 'Reshuffle if the draw is awkward', d: 'A fresh random arrangement, same constraints.' },
-            { t: 'Print or project', d: 'A group list for the wall, or a display view for the board.' }
-          ]
-        },
-        {
-          h: 'Why groups come out different sizes',
-          html: '<p>Three reasons, and the tool tells you which applies:</p>',
-          list: [
-            '<strong>The class does not divide evenly.</strong> Twenty-nine students into groups of four gives seven groups of four and one of one — so the generator makes six of four and one of five instead, keeping sizes as close as possible.',
-            '<strong>A keep-together group had to be placed whole.</strong> A trio placed as a unit shifts the counts around it.',
-            '<strong>You set a group count rather than a size.</strong> Five groups from twenty-two students is 5, 5, 4, 4, 4 — there is no arrangement that makes them equal.'
-          ],
-          after: '<p>Sizes are always kept within one of each other unless a constraint forces otherwise. A group of six beside a group of two means a keep-together rule is doing something you may not have intended.</p>'
-        },
-        {
-          h: 'Repeating or varying groups',
-          html: '<p>Both are sometimes what you want, and they are opposite settings.</p>' +
-            '<p><strong>To repeat</strong> the same groups next lesson, keep the seed and the class list identical. Useful for a project running over several weeks, where regrouping every lesson wastes the time it takes to settle.</p>' +
-            '<p><strong>To vary</strong>, reshuffle or change the seed. Over a term, varied groups are worth the disruption: students who never work together develop no working relationship, and the same four people every time recreates the self-selected groups you were avoiding.</p>' +
-            '<p>A reasonable pattern is fixed groups within a unit of work and a fresh draw at the start of each unit.</p>'
-        },
-        {
-          h: 'Where your class list goes',
-          html: '<p>Nowhere. Everything runs in your browser — the names you paste are processed on your own machine and never transmitted, stored or logged. You can confirm it in the network tab: after the page loads, the tool makes no requests at all.</p>' +
-            '<p>That is deliberate, because a class list is personal data about children. Anything that uploaded it would put you in the position of having shared pupil information with a third party, which is a conversation with your data protection lead that nobody wants to have over a grouping tool.</p>' +
-            '<p>Closing the tab clears everything. If you need the groups again, print them or save the export.</p>'
-        },
-        {
-          h: 'Related classroom tools',
-          list: [
-            '<a href="/tools/random-student-pair-generator">Random Student Pair Generator</a> — pairs, with odd-number handling.',
-            '<a href="/tools/classroom-seating-chart-generator">Classroom Seating Chart Generator</a> — seat the same class.',
-            '<a href="/tools/presentation-order-generator">Presentation Order Generator</a> — fair speaking order.',
-            '<a href="/tools/random-question-picker">Random Question Picker</a> — cold-call without bias.',
-            '<a href="/tools/team-generator">Team Generator</a> — skill-balanced teams for PE.'
-          ]
-        }
+        { html: '<p>Paste one student name per line, then choose either students per group or number of groups.</p>' +
+            '<p>You can add custom group names, keep specific students apart, keep another pair together and enter a seed when you want the arrangement to be repeatable.</p>' +
+            '<p>The tool aims to create groups that are as even in size as possible.</p>' +
+            '<p>That matters because a common manual mistake is to create several groups of four and discover that the final group contains only one or two students.</p>' +
+            '<p>A generator handles the arithmetic first so you can focus on whether the arrangement works for the lesson.</p>' },
+        { h: 'What Is a Classroom Group Generator?',
+          html: '<p>A classroom group generator divides a student list into smaller teams.</p><p>For example, 24 students could become 6 groups of 4 or 4 groups of 6 depending on the activity.</p>' +
+            '<p>The groups can be randomized so the typed order does not determine who works together.</p><p>This is useful for:</p>',
+          list: ['projects', 'discussion tasks', 'science labs', 'stations', 'jigsaw activities', 'peer review', 'revision challenges', 'classroom games', 'workshop activities'],
+          after: '<p>The generator creates the roster arrangement.</p>' +
+            '<p>The teacher still decides the purpose, roles and task structure.</p>' +
+            '<p>Random grouping saves time, but useful collaboration still needs a clear learning goal.</p>' },
+        { h: 'Choose Students per Group or Number of Groups',
+          html: '<p>These settings solve slightly different planning problems.</p>' +
+            '<p><strong>Students per group</strong> — use this when the activity is designed around a specific group size.</p>' +
+            '<p>Example: "You need groups of four for the lab." Enter <code>4 students per group</code>.</p>' +
+            '<p><strong>Number of groups</strong> — use this when classroom resources determine the number of teams.</p>' +
+            '<p>Example: "There are five activity stations." Enter <code>5 groups</code>.</p>' +
+            '<p>The tool distributes students as evenly as possible.</p>' +
+            '<p>Think about what is fixed in the lesson: team size or number of destinations.</p><p>Choose that as the primary setting.</p>' },
+        { h: 'What Does "Balanced" Mean Here?',
+          html: '<p>For a purely random grouping tool, balanced usually means balanced group size.</p>' +
+            '<p>Suppose there are 26 students and you want six groups.</p>' +
+            '<p>The groups cannot all contain exactly the same number of students because 26 does not divide evenly by 6.</p>' +
+            '<p>A sensible arrangement distributes the remainder rather than placing it all in the final group.</p><p>For example: two groups of 5, four groups of 4.</p>' +
+            '<p>That is more balanced than: five groups of 4, one group of 6.</p>' +
+            '<p>The generator is not claiming to balance attainment, language proficiency, gender or behavior unless those variables are explicitly part of the tool.</p>' },
+        { h: 'Random Groups vs Ability Groups',
+          html: '<p>Random grouping and attainment-based grouping serve different purposes.</p><p>Random groups are useful for:</p>',
+          list: ['mixing social patterns', 'quick collaboration', 'low-stakes activities', 'avoiding obvious teacher preference'],
+          after: '<p>Flexible instructional groups can be more appropriate when students currently share a specific learning need.</p>' +
+            '<p>The Education Endowment Foundation describes flexible grouping as temporary grouping based on current needs, while also recognizing heterogeneous collaborative groups as another valid approach.</p>' +
+            '<p>Avoid turning temporary attainment groups into fixed labels.</p>' +
+            '<p>If students need targeted instruction, group for that purpose.</p>' +
+            '<p>If they simply need partners for a discussion task, randomization may be enough.</p>' },
+        { h: 'Group Size for Collaborative Learning',
+          html: '<p>The ideal group size depends on the task.</p>' +
+            '<p>The Education Endowment Foundation reports that promising collaborative-learning approaches often use groups of around three to five pupils with a shared outcome or goal.</p>' +
+            '<p>That range makes practical sense for many classroom activities because it is large enough for several perspectives but small enough for each student to participate.</p>' +
+            '<p>Still, it is not a universal rule.</p><p>A drama activity may need six.</p>' +
+            '<p>A peer-review task may work better in threes.</p><p>A lab bench may physically fit four.</p>' +
+            '<p>Choose group size from the task design, not from a generic recommendation alone.</p>' },
+        { h: 'Keep-Together Rules',
+          html: '<p>A keep-together rule places two students in the same group.</p><p>This can be useful for:</p>',
+          list: ['language buddies', 'paired support', 'accessibility assistance', 'a planned peer mentor', 'students sharing one project role'],
+          after: '<p>Use the rule intentionally.</p>' +
+            '<p>Do not create permanent dependence where a student never gets the chance to work with other classmates.</p>' +
+            '<p>If the arrangement is a support accommodation, follow the school’s plan and professional guidance.</p>' +
+            '<p>The generator simply honors the pairing constraint where possible.</p>' +
+            '<p>A keep-together pair effectively behaves like a small block that must fit into one group.</p>' +
+            '<p>That can affect how the rest of the class is distributed.</p>' },
+        { h: 'Keep-Apart Rules',
+          html: '<p>Keep-apart rules prevent specified pairs from being placed in the same group.</p><p>Possible reasons include:</p>',
+          list: ['known conflict', 'repeated off-task behavior', 'safeguarding', 'a classroom management plan', 'a need to widen participation'],
+          after: '<p>Do not publish the constraint list.</p><p>Students only need the final group assignments.</p>' +
+            '<p>Also avoid using dozens of keep-apart rules as a substitute for a broader classroom-management decision.</p>' +
+            '<p>Once constraints become extensive, random grouping may no longer be the right tool.</p>' +
+            '<p>A deliberately constructed group plan may be clearer and easier to explain.</p>' },
+        { h: 'What If Keep-Together and Keep-Apart Rules Conflict?',
+          html: '<p>Constraints can contradict one another.</p><p>Example: Amara must stay with Ben. Ben must stay with Chen. Amara must stay apart from Chen.</p>' +
+            '<p>No grouping can satisfy all three instructions.</p><p>Group-size limits can create similar conflicts.</p>' +
+            '<p>If a keep-together cluster contains four students but groups are set to three, the requested arrangement is impossible.</p>' +
+            '<p>When the tool warns that a rule cannot be honored, review the constraints rather than repeatedly reshuffling.</p>' +
+            '<p>Prioritize genuine safety and support requirements.</p>' +
+            '<p>Then simplify lower-priority preferences until a valid arrangement exists.</p>' },
+        { h: 'Custom Group Names',
+          html: '<p>Custom group names are useful when the room already has table colors, station names, lab benches or project themes.</p>' +
+            '<p>Examples: Red, Blue, Green, Yellow, or Station A, Station B, Station C.</p>' +
+            '<p>Names reduce transition time because students can move directly to a known destination.</p>' +
+            '<p>Avoid group names that imply ability.</p><p>Labels such as "Top," "Middle," "Low" can make instructional grouping unnecessarily public.</p>' +
+            '<p>Use neutral names even when the teacher formed the groups deliberately.</p>' },
+        { h: 'Why Use a Seed?',
+          html: '<p>A seed makes the random grouping reproducible.</p><p>Same student list, settings, constraints and seed can reproduce the same result.</p><p>This is useful when:</p>',
+          list: ['planning before class', 'sharing groups with a co-teacher', 'recreating a printed list', 'documenting group assignments', 'returning to the same teams next lesson'],
+          after: '<p>Reshuffling without a fixed seed gives a different arrangement.</p>' +
+            '<p>Use a seed when consistency matters.</p><p>Leave it flexible when the point is to make fresh groups each time.</p>' },
+        { h: 'Random Does Not Mean Perfectly Fair Over Time',
+          html: '<p>One random grouping can be fair in the sense that the teacher did not choose favorites.</p>' +
+            '<p>That does not guarantee every student gets equally varied classmates over several weeks.</p>' +
+            '<p>Pure randomization can produce repeats.</p>' +
+            '<p>If your goal is systematically changing partners, use the <a href="/tools/random-student-pair-generator">Random Student Pair Generator</a>’s no-repeat mode for pair work.</p>' +
+            '<p>For larger groups, track repeated combinations if that matters to the curriculum.</p>' +
+            '<p>You do not need perfect combinatorial fairness for every short classroom activity.</p>' +
+            '<p>The practical goal is usually enough variety to prevent the same social pattern from dominating.</p>' },
+        { h: 'Protect Student Privacy',
+          html: '<p>Use only the information needed to generate the groups.</p>' +
+            '<p>Usually, student names or short teacher-recognizable labels are enough.</p>' +
+            '<p>Do not paste sensitive notes into the roster.</p><p>Avoid entries such as:</p>' +
+            '<pre class="code">Ben - behavior plan\nAmara - dyslexia\nChen - low reader</pre>' +
+            '<p>Those labels do not belong in a random group list and may expose information if the screen is projected.</p>' +
+            '<p>Student names and IDs can be personally identifiable information under education privacy rules.</p>' +
+            '<p>Keep hidden constraints private and display only the final groups.</p>' },
+        { h: 'Common Classroom Grouping Mistakes',
+          html: '<p>Avoid these problems:</p>',
+          list: ['confusing equal group size with equal academic ability', 'creating permanent ability labels', 'using more constraints than the schedule can satisfy',
+                 'displaying keep-apart reasons publicly', 'making groups too large for everyone to participate', 'randomizing a high-stakes project that needs deliberate team design',
+                 'reshuffling repeatedly because someone dislikes the result', 'encoding sensitive student information in the roster',
+                 'forgetting physical station capacity', 'treating generated groups as fixed when attendance changes'],
+          after: '<p>Good grouping supports a specific task. There is no single arrangement that is "best" for every lesson.</p>' }
       ],
-      keywords: [
-        'classroom group generator', 'random group maker', 'split class into groups',
-        'student group randomiser', 'keep students apart groups', 'group size classroom',
-        'team maker for class', 'random groups from list', 'classroom grouping tool',
-        'fair student groups', 'group generator no signup', 'class list splitter'
-      ]
+      keywords: ['classroom group generator', 'random student groups', 'balanced group generator', 'keep apart keep together groups',
+        'classroom group size collaborative learning', 'random groups vs ability groups', 'classroom station groups generator',
+        'group name generator classroom', 'random group generator seed', 'student privacy grouping tool', 'jigsaw group generator', 'classroom team generator']
     }
   });
 })();

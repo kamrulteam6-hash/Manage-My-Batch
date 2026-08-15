@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>Coupon Code Generator — Bulk Unique Discount Codes, Free | Manage My Batch</title>
-<meta name="description" content="Free coupon code generator. Create thousands of unique, hard-to-guess discount codes with readable alphabets, prefixes and brute-force resistance analysis.">
+<title>Coupon Code Generator – Bulk Unique Promo Codes Online</title>
+<meta name="description" content="Generate bulk unique coupon and discount codes with prefixes, readable character sets, custom lengths and guess-resistant random values for ecommerce campaigns.">
 <link rel="canonical" href="https://managemybatch.com/tools/coupon-code-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="Coupon Code Generator — Bulk Unique Discount Codes, Free">
-<meta property="og:description" content="Free coupon code generator. Create thousands of unique, hard-to-guess discount codes with readable alphabets, prefixes and brute-force resistance analysis.">
+<meta property="og:title" content="Coupon Code Generator – Bulk Unique Promo Codes Online">
+<meta property="og:description" content="Generate bulk unique coupon and discount codes with prefixes, readable character sets, custom lengths and guess-resistant random values for ecommerce campaigns.">
 <meta property="og:url" content="https://managemybatch.com/tools/coupon-code-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Coupon Code Generator — Bulk Unique Discount Codes, Free">
-<meta name="twitter:description" content="Free coupon code generator. Create thousands of unique, hard-to-guess discount codes with readable alphabets, prefixes and brute-force resistance analysis.">
+<meta name="twitter:title" content="Coupon Code Generator – Bulk Unique Promo Codes Online">
+<meta name="twitter:description" content="Generate bulk unique coupon and discount codes with prefixes, readable character sets, custom lengths and guess-resistant random values for ecommerce campaigns.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -380,102 +380,131 @@
       '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">And compare case-insensitively. Customers type lowercase no matter what you print.</p></div></div>' +
       '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>Codes are generated with <code>crypto.getRandomValues()</code> using rejection sampling, so every character is uniformly distributed. Nothing is transmitted — you can generate live campaign codes here safely.</span></div>',
     related: ['sku-generator', 'nanoid-generator', 'order-number-generator'],
-    faqs: [
-      { q: 'How long should a coupon code be?', a: 'For public shared codes, 5–8 memorable characters. For unique per-customer codes issued in bulk, at least 10 random characters — and check the Guess resistance tab, because the safe length depends on how many codes you issue.' },
-      { q: 'Why avoid the characters 0, O, 1, I and L?', a: 'They are visually ambiguous. Any code printed on a receipt, flyer or packaging, or read over the phone, will generate support tickets from customers who typed a one instead of an I.' },
-      { q: 'Can someone guess my coupon codes?', a: 'It depends on code length and how many you issue. If 50,000 codes exist in a space of 60 million, roughly one guess in 1,200 succeeds — trivially scriptable. Lengthen the code and rate-limit redemption attempts.' },
-      { q: 'Should coupon codes be case sensitive?', a: 'No. Store them uppercase and uppercase user input before comparing. Case-sensitive matching is the most common reason a genuinely valid code appears not to work.' },
-      { q: 'How do I import these into Shopify or WooCommerce?', a: 'Use the single-column CSV export. Both platforms, and most email marketing tools, accept a plain list of codes for bulk discount creation.' },
-      { q: 'How do I stop unique codes being shared publicly?', a: 'You cannot prevent sharing, but single-use enforcement in your store limits it to one redemption. Without that, a single code posted to a deals site becomes unlimited discounts.' }
+faqs: [
+      { q: 'What is a coupon code?', a: 'It is a text identifier entered at checkout to trigger a discount rule configured in an ecommerce platform.' },
+      { q: 'How long should a coupon code be?', a: 'There is no universal length. Use enough random characters for the number and value of codes you are issuing while keeping customer entry practical.' },
+      { q: 'Should coupon codes be random?', a: 'Public marketing codes can be memorable. Unique or restricted offers benefit from unpredictable random codes.' },
+      { q: 'Can I generate thousands of unique codes?', a: 'Yes. Generate a bulk batch and then create or import those identifiers using the workflow supported by your ecommerce platform.' },
+      { q: 'Does the code itself contain the discount value?', a: 'Not necessarily. The platform determines what discount rule the code triggers.' },
+      { q: 'Can I make one-use coupon codes?', a: 'The generator can create unique identifiers, but redemption limits must be configured in the ecommerce system.' },
+      { q: 'Should I remove O, 0, I and 1?', a: 'That is useful when customers must read or type codes manually because those characters can be confused.' }
     ],
     seo: {
-      title: 'Coupon codes: length, alphabet and how guessable your batch really is',
-      lead: 'This <strong>coupon code generator</strong> creates bulk unique discount codes from a readable alphabet and shows how guessable the batch is before you send it to thousands of customers. Below: how to size a code, which characters to drop, and how to stop unique codes ending up on a deals forum.',
+      title: 'Coupon Code Generator – Create Unique Promo Codes in Bulk',
+      lead: 'Use the Coupon Code Generator above to create one discount code or a large batch of unique promotional codes for ecommerce campaigns, customer rewards, giveaways and limited-use offers.',
       blocks: [
-        {
-          h: 'Why short codes get abused',
-          html: '<p>A coupon batch has a property most people never calculate: the <strong>hit rate</strong>. It is the number of valid codes divided by the total number of possible codes, and it is the probability that a random guess works.</p>' +
-            '<p>Issue 10,000 codes of four characters from a 32-symbol alphabet and there are about a million possibilities — a hit rate of 1 in 100. A script trying a few thousand combinations finds dozens of working codes in seconds. Extend to eight characters and the space is roughly a trillion, so the same 10,000 codes give a hit rate around 1 in 100 million. The batch size did not change; the exposure did.</p>' +
-            '<p>This is why the tool shows the hit rate for your configuration rather than an abstract entropy figure. It is the number that tells you whether a batch is safe to send.</p>',
-          callout: { type: 'warn', text: '<strong>Never generate short codes for a large campaign.</strong> Discount-hunting scripts brute-force checkout endpoints continuously, and a dense code space is found within hours of the first code appearing publicly. Add characters — they cost nothing — and rate-limit your validation endpoint.' }
-        },
-        {
-          h: 'How long should a code be?',
-          table: {
-            head: ['Length', 'Space (32 symbols)', 'Suitable for'],
-            rows: [
-              ['4', '~1 million', 'Nothing bulk. A single shared code at most.'],
-              ['6', '~1 billion', 'Small batches, under 1,000 codes, with rate limiting.'],
-              ['8', '~1 trillion', 'The practical default for most campaigns.'],
-              ['10', '~10<sup>15</sup>', 'Large batches, high-value discounts.'],
-              ['12', '~10<sup>18</sup>', 'Very high value, or codes that live for years.']
-            ]
-          },
-          after: '<p>Add a readable prefix on top — <code>SUMMER-8KQR2M4T</code>. The prefix aids support and marketing without contributing to guessability, since an attacker learns it from the first published code anyway.</p>'
-        },
-        {
-          h: 'Drop the ambiguous characters',
-          html: '<p>Coupon codes get read from a printed card, a podcast, an email on a phone screen, or dictated to a support agent. Five characters cause nearly all transcription failures:</p>',
-          list: [
-            '<strong>0 and O</strong> — indistinguishable in most sans-serif fonts.',
-            '<strong>1, I and l</strong> — three glyphs, one apparent shape.',
-            '<strong>5 and S</strong>, and <strong>2 and Z</strong>, in some typefaces and most handwriting.',
-            '<strong>8 and B</strong> at small sizes or low print quality.'
-          ],
-          after: '<p>Removing them takes a 36-symbol alphabet down to about 31 and costs a fraction of a bit per character — recoverable by adding one character. What it buys is a measurable drop in "this code does not work" support tickets, which is the actual cost centre.</p>',
-          callout: { type: 'tip', text: 'Also strip vowels, or check the batch against a word list. With a full alphabet, a batch of 50,000 eight-character codes will contain something unfortunate, and it will be the one a customer screenshots.' }
-        },
-        {
-          h: 'Generating a batch',
-          steps: [
-            { t: 'Set the prefix', d: 'A campaign name — <code>SUMMER</code>, <code>WELCOME</code>, <code>VIP</code>. Makes the code recognisable and lets you filter redemptions by campaign.' },
-            { t: 'Choose length and alphabet', d: 'Eight characters, no ambiguous glyphs, uppercase only.' },
-            { t: 'Set the quantity', d: 'One per customer for a targeted campaign, or a pool sized to your expected redemption.' },
-            { t: 'Check the guessability panel', d: 'It reports the hit rate for exactly this configuration. If it reads worse than about 1 in a million, add a character.' },
-            { t: 'Export as CSV', d: 'Ready for Shopify, WooCommerce, Klaviyo or a mail merge.' },
-            { t: 'Keep the export', d: 'It is your record of what was issued. Reconciling redemptions later without it is unpleasant.' }
-          ]
-        },
-        {
-          h: 'Case sensitivity',
-          html: '<p>Generate uppercase, store uppercase, and compare case-insensitively. Almost every platform does this by default, and fighting it creates support tickets rather than security.</p>' +
-            '<p>The reasoning: mobile keyboards autocapitalise, some email clients change case in rendering, and a customer reading a code aloud does not convey case at all. Treating <code>summer8kqr</code> and <code>SUMMER8KQR</code> as different codes turns a typo into a failed sale.</p>' +
-            '<p>The security cost is real but small — case-insensitivity halves the effective alphabet for letters, roughly one bit per character. Adding one character to the length more than repays it.</p>'
-        },
-        {
-          h: 'Stopping codes being shared publicly',
-          html: '<p>Unique per-customer codes are leaked constantly. Someone posts theirs to a deals forum, and within an hour a hundred people have tried it. Uniqueness alone does not prevent this — it only means the first person to use it wins.</p>',
-          cards: [
-            { t: 'One redemption per code', d: 'The baseline. A leaked code is spent once, and the intended recipient may be the one who loses out — which is its own support problem.' },
-            { t: 'Bind the code to a customer', d: 'Validate that the redeeming account matches the issued one. The strongest control, and the one that makes leaked codes worthless.' },
-            { t: 'Short expiry', d: 'Seven to fourteen days limits the window in which a leaked batch is worth circulating.' },
-            { t: 'Minimum order value', d: 'Caps the damage from any single misuse and improves campaign economics anyway.' },
-            { t: 'Rate-limit validation', d: 'Cheap, and it defeats brute-forcing regardless of code length.' },
-            { t: 'Monitor redemption rates', d: 'A sudden spike on one campaign means the code is circulating. Alert on it.' }
-          ]
-        },
-        {
-          h: 'Importing into your platform',
-          html: '<p>The CSV export is a plain list, which is what every platform importer expects. Shopify\'s discount import takes a code column and applies one discount configuration across the batch. WooCommerce needs a coupon per code, so a CSV importer plugin or a bulk-generator extension does the work. Most email platforms take a code list as a per-recipient merge field, which is how a unique code reaches a unique customer.</p>' +
-            '<p>Whichever route, set the usage limit to one and the expiry date at import time rather than afterwards. Retrofitting limits onto ten thousand already-live codes is not a job anyone enjoys.</p>'
-        },
-        {
-          h: 'Related commerce tools',
-          list: [
-            '<a href="/tools/sku-generator">SKU Generator</a> — product codes the discount applies to.',
-            '<a href="/tools/order-number-generator">Order Number Generator</a> — customer-facing order references.',
-            '<a href="/tools/nanoid-generator">NanoID Generator</a> — the same maths for URL identifiers.',
-            '<a href="/tools/ticket-number-generator">Ticket Number Generator</a> — codes for events rather than discounts.',
-            '<a href="/tools/receipt-number-generator">Receipt Number Generator</a> — transaction references.'
-          ]
-        }
+        { html: '<p>Choose the length, prefix and character style that fit your campaign, then generate codes that are easy enough for customers to type but difficult enough to guess when unpredictability matters.</p>' +
+            '<p>A public campaign might use a memorable code such as <code>SUMMER20</code>. A one-time campaign may instead use unique values such as <code>VIP-K7M4X2</code>, <code>VIP-P8D6N9</code>, <code>VIP-R4T7C3</code>.</p>' +
+            '<p>The code itself is only the identifier. The actual discount value, eligible products, minimum spend, expiry date, customer eligibility and usage limits are configured inside your ecommerce platform.</p>' },
+        { h: 'What Is a Coupon Code?',
+          html: '<p>A coupon code is a text value that a customer enters at checkout to receive a configured promotion.</p><p>Depending on the store, the promotion might provide:</p>',
+          list: ['percentage discount', 'fixed amount discount', 'free shipping', 'product-specific savings', 'buy-one-get-one offer', 'customer-specific reward', 'partner or affiliate promotion'],
+          after: '<p>The code tells the platform which discount rule to apply.</p><p>It does not contain the discount logic by itself.</p>' +
+            '<p>For example, <code>WELCOME10</code> might be configured inside the store as 10% off a first order.</p>' +
+            '<p>The string WELCOME10 alone does not mathematically mean 10%.</p>' +
+            '<p>Your ecommerce platform decides what happens after the code is entered.</p>' },
+        { h: 'How to Use This Coupon Code Generator',
+          html: '<p>First decide whether the campaign needs one shared code or many unique codes.</p>' +
+            '<p>A shared campaign code is appropriate for broad promotions: <code>SPRING20</code>.</p>' +
+            '<p>A batch of unique codes is better when each customer should receive a separate value.</p><p>Next choose:</p>',
+          list: ['code length', 'prefix', 'suffix if needed', 'allowed characters', 'quantity'],
+          after: '<p>For customer-facing codes, remove characters that are easy to confuse when typed manually.</p>' +
+            '<p>Generate the batch, export it and import or create the corresponding discounts in the system that will actually validate the codes.</p>' +
+            '<p>Before launch, test several codes in a real checkout or staging environment.</p>' },
+        { h: 'Shared Coupon Codes vs Unique Coupon Codes',
+          html: '<p>A shared code is used by many customers.</p><p>Example: <code>BLACKFRIDAY</code>.</p><p>Advantages:</p>',
+          list: ['easy to remember', 'easy to advertise', 'easy to say aloud', 'simple campaign setup'],
+          after: '<p>Disadvantages:</p>' +
+            '<ul style="color:var(--muted);padding-left:18px"><li>easy to share publicly</li><li>difficult to restrict to one recipient</li><li>can spread beyond the intended audience</li></ul>' +
+            '<p>Unique codes assign one value per customer or redemption. Example: <code>LOYAL-K8D4P7</code>.</p><p>Advantages:</p>' +
+            '<ul style="color:var(--muted);padding-left:18px"><li>easier to limit individually</li><li>better for customer-specific campaigns</li><li>harder to share at scale</li><li>useful for offline vouchers and direct mail</li></ul>' +
+            '<p>Choose based on the promotion strategy.</p>' +
+            '<p>Do not generate thousands of unique codes when one public code is all the campaign needs.</p>' },
+        { h: 'How Long Should a Coupon Code Be?',
+          html: '<p>There is no universal perfect length.</p>' +
+            '<p>A longer random code provides more possible combinations but is harder to type.</p>' +
+            '<p>A shorter code is easier for customers but creates a smaller code space.</p><p>The right length depends on:</p>',
+          list: ['number of codes', 'character-set size', 'whether codes are public', 'whether guessing matters', 'whether customers type them manually'],
+          after: '<p>For one public code such as <code>SAVE20</code>, randomness is irrelevant.</p>' +
+            '<p>For 100,000 one-time codes, the available code space matters much more.</p>' +
+            '<p>Generate enough combinations that accidental duplication and easy guessing are unlikely.</p>' +
+            '<p>Your store should also enforce uniqueness when codes are created.</p>' },
+        { h: 'Character Set and Code Space',
+          html: '<p>Suppose your code uses 32 possible characters.</p>' +
+            '<p>An eight-character random body has <code>32^8</code> possible combinations.</p>' +
+            '<p>That is much larger than a numeric-only eight-character code, which has <code>10^8</code> possible values.</p>' +
+            '<p>A larger alphabet gives more combinations per character.</p><p>However, usability matters.</p>' +
+            '<p>A code alphabet that includes uppercase, lowercase and visually similar characters can be frustrating for customers.</p>' +
+            '<p>When codes are entered manually, a reduced human-friendly alphabet is often a better tradeoff.</p>' },
+        { h: 'Avoid Ambiguous Characters',
+          html: '<p>Characters such as these can be difficult to distinguish depending on font and print quality:</p>' +
+            '<p><code>O</code> and <code>0</code></p><p><code>I</code>, <code>l</code> and <code>1</code></p><p><code>S</code> and <code>5</code></p>' +
+            '<p>For codes printed on:</p>',
+          list: ['postcards', 'packaging', 'receipts', 'event cards', 'flyers'],
+          after: '<p>removing ambiguous characters can reduce support problems.</p>' +
+            '<p>A code such as <code>K7MR4P</code> is easier to read than a string containing several visually similar symbols.</p>' +
+            '<p>If codes are copied digitally from an email, ambiguity matters less.</p>' +
+            '<p>Design for how customers will actually receive and enter the value.</p>' },
+        { h: 'Prefixes for Coupon Codes',
+          html: '<p>A prefix can identify the campaign.</p><p>Examples:</p><pre class="code">WELCOME-\nVIP-\nSUMMER-\nINFLUENCER-</pre>' +
+            '<p>This makes exported code lists easier to recognize.</p>' +
+            '<p>For example, <code>VIP-K7M4P8</code> immediately tells staff which campaign issued the code.</p>' +
+            '<p>Keep prefixes reasonably short.</p>' +
+            '<p>The predictable prefix does not add randomness.</p>' +
+            '<p>If every code begins with <code>VIP-</code>, only the random portion contributes to guess resistance.</p>' +
+            '<p>Do not count campaign text as entropy when evaluating the size of the code space.</p>' },
+        { h: 'Human-Readable vs Fully Random Codes',
+          html: '<p>Human-readable codes work well for broad marketing.</p><p>Examples:</p><pre class="code">SAVE15\nFREESHIP\nWELCOME10</pre>' +
+            '<p>Random codes work well for unique redemption.</p><p>Examples:</p><pre class="code">X7P4K9\nM8R2D6</pre>' +
+            '<p>A hybrid can offer both: <code>WELCOME-K7P4</code>.</p>' +
+            '<p>That gives staff campaign context while keeping each customer’s value distinct.</p>' +
+            '<p>Avoid putting personal information into the code.</p>' +
+            '<p>Do not generate <code>JAMES-SMITH-20OFF</code> when a neutral unique value can identify the same promotion.</p>' +
+            '<p>Coupon codes often appear in analytics, screenshots and shared messages.</p>' },
+        { h: 'Coupon Code Guess Resistance',
+          html: '<p>Guess resistance matters when a valid code represents limited value.</p><p>Examples include:</p>',
+          list: ['single-use discounts', 'high-value vouchers', 'invitation-only offers', 'employee promotions', 'partner benefits'],
+          after: '<p>Sequential codes such as <code>VIP0001</code>, <code>VIP0002</code>, <code>VIP0003</code> are easy to enumerate.</p>' +
+            '<p>A customer who receives VIP0042 can reasonably try nearby values.</p>' +
+            '<p>Random codes make systematic guessing more difficult.</p>' +
+            '<p>Still enforce server-side rules.</p><p>The checkout system should verify:</p>' +
+            '<ul style="color:var(--muted);padding-left:18px"><li>code exists</li><li>code is active</li><li>code has not exceeded usage limits</li><li>customer is eligible</li><li>promotion conditions are satisfied</li></ul>' +
+            '<p>Randomness supports the design; validation protects the promotion.</p>' },
+        { h: 'Coupon Codes Are Not Passwords',
+          html: '<p>Even a random coupon code should not be treated like an account password.</p>' +
+            '<p>Customers are expected to share, copy and enter promo codes.</p><p>A code may appear in:</p>',
+          list: ['email', 'SMS', 'browser history', 'affiliate pages', 'screenshots', 'printed marketing'],
+          after: '<p>If misuse would create serious financial exposure, rely on platform controls such as:</p>' +
+            '<ul style="color:var(--muted);padding-left:18px"><li>customer eligibility</li><li>total usage limits</li><li>per-customer usage</li><li>expiry</li><li>minimum purchase</li><li>product restrictions</li></ul>' +
+            '<p>Do not rely only on secrecy.</p><p>A promotional code is fundamentally a redemption identifier.</p>' },
+        { h: 'Usage Limits',
+          html: '<p>Most ecommerce systems let merchants limit how often a discount can be redeemed.</p>' +
+            '<p>Shopify, for example, supports total usage limits and one-use-per-customer restrictions for discount codes.</p>' +
+            '<p>These controls should be configured in the platform.</p>' +
+            '<p>The generator creates the code strings.</p>' +
+            '<p>It cannot enforce whether a code is used once or one thousand times.</p>' +
+            '<p>When generating unique codes for individuals, a one-use rule often makes sense.</p>' +
+            '<p>When creating a public seasonal promotion, a broad total limit may or may not be appropriate.</p>' +
+            '<p>Match the redemption rule to the campaign.</p>' },
+        { h: 'Expiry Dates',
+          html: '<p>Expiry is also a platform setting rather than part of the random string.</p>' +
+            '<p>A code such as <code>SUMMER20</code> does not expire because the word "summer" appears in it.</p>' +
+            '<p>The store must have an actual end date.</p><p>Use an expiry when:</p>',
+          list: ['the campaign is time-limited', 'the offer belongs to an event', 'the voucher should not remain valid indefinitely'],
+          after: '<p>Communicate the deadline clearly to customers.</p>' +
+            '<p>Do not encode a date into the code and assume checkout will understand it automatically.</p>' +
+            '<p>A value such as <code>AUG26-K7P4</code> still needs an actual expiration rule in the ecommerce system.</p>' },
+        { h: 'Common Coupon Code Mistakes',
+          html: '<p>Avoid these problems:</p>',
+          list: ['generating codes without creating them in the ecommerce platform', 'using sequential codes for a high-value private campaign',
+                 'making codes so long customers mistype them', 'using ambiguous characters on printed vouchers', 'assuming a prefix adds randomness',
+                 'treating coupons as passwords', 'forgetting usage limits', 'forgetting expiry',
+                 'publishing a supposedly exclusive shared code publicly', 'confusing coupon codes with stored-value gift-card credentials'],
+          after: '<p>The best coupon system balances marketing usability with the amount of control the promotion actually requires.</p>' }
       ],
-      keywords: [
-        'coupon code generator', 'bulk discount codes', 'unique promo codes',
-        'coupon code length', 'random voucher codes', 'shopify discount code import',
-        'woocommerce bulk coupons', 'guessable coupon codes', 'promo code generator csv',
-        'gift card code generator', 'readable code alphabet', 'one time use coupon'
-      ]
+      keywords: ['coupon code generator', 'bulk promo code generator', 'unique discount code generator', 'ecommerce coupon code format',
+        'coupon code entropy', 'coupon code guess resistance', 'shared vs unique coupon codes', 'coupon code prefix',
+        'coupon code usage limits', 'shopify discount code generator', 'random promo code generator', 'coupon code best practices']
     }
   });
 })();

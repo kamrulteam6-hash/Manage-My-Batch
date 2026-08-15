@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>Barcode Number Generator — EAN-13, UPC-A &amp; GTIN Check Digits | Manage My Batch</title>
-<meta name="description" content="Free barcode number generator and check digit calculator. Create valid EAN-13, UPC-A, EAN-8 and GTIN-14 numbers, validate existing barcodes, and understand GS1 prefixes.">
+<title>Barcode Number Generator – EAN-13, UPC-A, EAN-8 & GTIN-14</title>
+<meta name="description" content="Generate structurally valid EAN-13, UPC-A, EAN-8 and GTIN-14 test numbers with correct GS1 check digits, validation and bulk export.">
 <link rel="canonical" href="https://managemybatch.com/tools/barcode-number-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="Barcode Number Generator — EAN-13, UPC-A &amp; GTIN Check Digits">
-<meta property="og:description" content="Free barcode number generator and check digit calculator. Create valid EAN-13, UPC-A, EAN-8 and GTIN-14 numbers, validate existing barcodes, and understand GS1 prefixes.">
+<meta property="og:title" content="Barcode Number Generator – EAN-13, UPC-A, EAN-8 & GTIN-14">
+<meta property="og:description" content="Generate structurally valid EAN-13, UPC-A, EAN-8 and GTIN-14 test numbers with correct GS1 check digits, validation and bulk export.">
 <meta property="og:url" content="https://managemybatch.com/tools/barcode-number-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Barcode Number Generator — EAN-13, UPC-A &amp; GTIN Check Digits">
-<meta name="twitter:description" content="Free barcode number generator and check digit calculator. Create valid EAN-13, UPC-A, EAN-8 and GTIN-14 numbers, validate existing barcodes, and understand GS1 prefixes.">
+<meta name="twitter:title" content="Barcode Number Generator – EAN-13, UPC-A, EAN-8 & GTIN-14">
+<meta name="twitter:description" content="Generate structurally valid EAN-13, UPC-A, EAN-8 and GTIN-14 test numbers with correct GS1 check digits, validation and bulk export.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -344,93 +344,129 @@
       '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">This tool defaults to that range precisely so the numbers it produces are safe to use internally and obviously unsuitable for retail.</p></div></div>' +
       '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span><strong>The check digit maths is the same for every GTIN length.</strong> Weight digits by 3 and 1 alternately from the right, sum, then take the difference to the next multiple of ten. That single algorithm covers EAN-8, UPC-A, EAN-13 and GTIN-14 — which is why the validator here accepts all four.</span></div>',
     related: ['sku-generator', 'product-code-generator', 'lot-number-generator'],
-    faqs: [
-      { q: 'Can I use these barcode numbers on products I sell?', a: 'Not for retail. Real GTINs must come from a GS1 company prefix licensed to your business — retailers verify this at onboarding, and an invented number may already belong to another product. These are for testing, internal use and check-digit calculation.' },
-      { q: 'How is a barcode check digit calculated?', a: 'Weight each data digit by 3 and 1 alternately starting from the rightmost, sum the results, then subtract from the next multiple of ten. The same algorithm applies to EAN-8, UPC-A, EAN-13 and GTIN-14.' },
-      { q: 'What is the difference between UPC-A and EAN-13?', a: 'A UPC-A is a 12-digit number used mainly in North America; an EAN-13 is the 13-digit global standard. Prefixing a UPC-A with a zero gives the equivalent EAN-13 — they identify the same product.' },
-      { q: 'What are the 20–29 prefixes for?', a: 'GS1 reserves prefixes beginning 02 and 20–29 for in-store use: variable-weight items, deli labels and internal tracking. They are never issued to companies, so they cannot collide with a real product.' },
-      { q: 'What is a GTIN-14?', a: 'A 14-digit number identifying a packaging level — a case or pallet of a retail item rather than the item itself. It starts with a packaging indicator digit and is scanned in the warehouse, not at the till.' },
-      { q: 'How do I get real barcode numbers?', a: 'License a company prefix from your national GS1 organisation. The prefix length determines how many products you can number, and small ranges are available inexpensively for businesses with only a few products.' }
+faqs: [
+      { q: 'What barcode formats can this tool generate?', a: 'It supports structurally valid UPC-A, EAN-13, EAN-8 and GTIN-14 numbers.' },
+      { q: 'What is a GTIN check digit?', a: 'It is the final digit calculated from the preceding digits using the GS1 check-digit algorithm.' },
+      { q: 'Does a valid check digit mean the barcode is registered?', a: 'No. It only confirms the mathematical structure. Real retail GTIN assignment comes through GS1.' },
+      { q: 'Can I generate UPC numbers for Amazon or retail products?', a: 'Use GS1-assigned identifiers when a marketplace or retailer requires legitimate GTINs. Random test numbers should not be presented as assigned retail codes.' },
+      { q: 'What is the difference between UPC and EAN?', a: 'UPC commonly refers to GTIN-12 encoded in UPC-A, while EAN-13 commonly carries GTIN-13.' },
+      { q: 'Can I validate an existing number?', a: 'Yes. Paste the full number to verify the check digit or provide the data digits to calculate the correct final digit.' },
+      { q: 'Should barcode numbers be stored as numbers in a database?', a: 'Treat them as identifier strings so leading zeros are preserved.' }
     ],
     seo: {
-      title: 'Barcode numbers: GTIN structure, check digits and why you cannot invent one',
-      lead: 'This <strong>barcode number generator</strong> produces structurally valid EAN-13, UPC-A, EAN-8 and GTIN-14 numbers with correct GS1 check digits, and validates or repairs numbers you already have. Below: how the check digit is calculated, what the prefixes mean, and how to get numbers you may legally sell under.',
+      title: 'Barcode Number Generator – Create and Validate GTIN Test Numbers',
+      lead: 'Use the Barcode Number Generator above to create structurally valid EAN-13, UPC-A, EAN-8 and GTIN-14 numbers with correctly calculated check digits.',
       blocks: [
-        {
-          h: 'Why you cannot just make up a barcode',
-          html: '<p>A barcode number is a <strong>GTIN</strong> — Global Trade Item Number — and the word global is doing real work. It is a worldwide unique identifier for a product, issued from a company prefix that GS1 licenses to one business and nobody else.</p>' +
-            '<p>Make one up and it is not merely unauthorised; it almost certainly belongs to someone. A structurally perfect EAN-13 beginning with a prefix licensed to a food manufacturer in Belgium will scan at a till as their product, at their price. Retailers reject unlicensed numbers, marketplaces reject them, and the mismatch surfaces as a chargeback rather than an error message.</p>' +
-            '<p>What this tool produces is <em>structurally valid</em> — the right length, the right format, a correct check digit. That is exactly what you need for testing scanners, seeding databases, building label templates and writing validation code. It is not what you need to sell a product.</p>',
-          callout: { type: 'warn', text: '<strong>Do not put a generated number on a product you sell.</strong> To sell through retail or most marketplaces you need GTINs from a GS1 company prefix registered to your business. Generated numbers are for development, testing and documentation only.' }
-        },
-        {
-          h: 'The formats',
-          table: {
-            head: ['Format', 'Digits', 'Used for'],
-            rows: [
-              ['<strong>EAN-13</strong>', '13', 'The global retail standard. Used everywhere outside North America, and increasingly within it.'],
-              ['<strong>UPC-A</strong>', '12', 'North American retail. An EAN-13 with a leading zero is the same number.'],
-              ['<strong>EAN-8</strong>', '8', 'Small packaging where a full EAN-13 will not fit legibly. Prefixes are scarce and expensive.'],
-              ['<strong>GTIN-14</strong>', '14', 'Cases, cartons and pallets. An indicator digit plus the item\'s GTIN.'],
-              ['<strong>ITF-14</strong>', '14', 'The barcode symbology usually used to print a GTIN-14 on corrugated packaging.']
-            ]
-          },
-          after: '<p>All of them are GTINs, and modern systems store them right-aligned in a 14-digit field with leading zeros. That is why a UPC-A and its EAN-13 equivalent are the same product: <code>012345678905</code> and <code>0012345678905</code> normalise identically.</p>'
-        },
-        {
-          h: 'How the check digit works',
-          html: '<p>The final digit of every GTIN is a modulo-10 checksum that catches most single-digit typos and transpositions. The algorithm is the same for every length:</p>',
-          steps: [
-            { t: 'Take the number without its check digit', d: 'Work from the rightmost digit leftwards.' },
-            { t: 'Multiply alternately by 3 and 1', d: 'Starting from the right, the first digit is multiplied by 3, the next by 1, and so on.' },
-            { t: 'Sum the results', d: 'Add every product together.' },
-            { t: 'Subtract from the next multiple of ten', d: 'If the total is 57, the next multiple of ten is 60, so the check digit is 3. If the total is already a multiple of ten, the check digit is 0.' }
-          ],
-          after: '<p>The generator calculates it for you, and the validator tells you not just that a number is wrong but what the correct check digit would be — which is usually enough to identify a mistyped digit elsewhere in the number.</p>'
-        },
-        {
-          h: 'UPC-A and EAN-13',
-          html: '<p>They are the same standard at different lengths. EAN-13 was created to extend UPC-A internationally, and the extension was done by prepending a digit rather than redesigning anything.</p>' +
-            '<p>So <code>0</code> + a UPC-A gives the EAN-13 for the same product, and any EAN-13 starting with <code>0</code> can be printed as a UPC-A. Scanners in North America have read both since 2005, and databases should store the 13- or 14-digit form to avoid a product appearing twice.</p>' +
-            '<p>The leading digits are a <strong>GS1 prefix</strong> identifying the member organisation that issued the company prefix — <code>50</code> for the UK, <code>30–37</code> for France, <code>400–440</code> for Germany. It indicates where the number was <em>issued</em>, not where the product was made, which is a persistent misconception.</p>'
-        },
-        {
-          h: 'Restricted and internal prefixes',
-          cards: [
-            { t: '02, 20–29', d: 'Reserved for in-store use. Variable-weight items — a deli counter label priced by weight — and internal shelf codes. Never leave the retailer, never registered globally.' },
-            { t: '04', d: 'Also restricted to internal distribution within a company.' },
-            { t: '977, 978, 979', d: 'Serials and books — ISSN and ISBN encoded as EAN-13. <code>978</code> is the Bookland prefix.' },
-            { t: '980–999', d: 'Refund receipts, coupons and other special applications.' },
-            { t: '200–299 generally', d: 'The practical choice for internal-only identifiers, because no GS1 member will ever be issued one.' }
-          ],
-          callout: { type: 'tip', text: 'If you need barcodes purely inside your own warehouse — bin locations, internal kits, weighted items — use the 20–29 range deliberately. It is reserved for exactly that, so an internal code can never collide with a real product entering your system.' }
-        },
-        {
-          h: 'Getting real numbers',
-          html: '<p>Two legitimate routes, and one that causes trouble.</p>',
-          list: [
-            '<strong>Join GS1 in your country.</strong> You get a company prefix and a block of GTINs, plus registration in the global registry that retailers and marketplaces check. There is a joining fee and an annual fee scaled to your turnover and the size of the block.',
-            '<strong>Buy a single GTIN from GS1</strong> where the local organisation offers them. Sensible for a business with one or two products.',
-            '<strong>Resold "cheap barcodes"</strong> from third-party sites are numbers issued to a company that has since subdivided them. They usually scan, but they are registered to someone else — Amazon, in particular, matches GTINs against the GS1 registry and suspends listings where the brand does not match.'
-          ],
-          after: '<p>If you sell only through your own channels and never at retail, you may not need a GTIN at all — an internal <a href="/tools/sku-generator">SKU</a> is enough. The requirement comes from the retailer, not from the product.</p>'
-        },
-        {
-          h: 'Related product identification tools',
-          list: [
-            '<a href="/tools/sku-generator">SKU Generator</a> — internal stock codes you control entirely.',
-            '<a href="/tools/product-code-generator">Product Code Generator</a> — model-level codes with category and version segments.',
-            '<a href="/tools/lot-number-generator">Lot Number Generator</a> — batch and traceability codes.',
-            '<a href="/tools/asset-tag-number-generator">Asset Tag Number Generator</a> — identifiers for equipment rather than stock.',
-            '<a href="/tools/batch-number-generator">Batch Number Generator</a> — production run identifiers.'
-          ]
-        }
+        { html: '<p>You can enter a GS1-issued company prefix when you are working with numbers assigned to your business, or generate restricted/internal-use test values when you only need data for software testing, fixtures or scanner workflows.</p>' +
+            '<p>The distinction matters: <strong>a number can have a mathematically correct check digit and still not be assigned to your company.</strong></p>' +
+            '<p>For real retail products, obtain the appropriate GS1 identification capacity through GS1 and assign GTINs according to GS1 rules.</p>' +
+            '<p>This tool calculates structure. It does not grant ownership of retail barcode numbers.</p>' },
+        { h: 'What Is a Barcode Number?',
+          html: '<p>The visible digits under a retail barcode normally represent a standardized identifier.</p>' +
+            '<p>For trade items, that identifier is commonly a GTIN—Global Trade Item Number.</p>' +
+            '<p>GS1 defines several GTIN formats.</p><p>Common examples include:</p>',
+          list: ['GTIN-12', 'GTIN-13', 'GTIN-14'],
+          after: '<p>GTIN-12 is commonly associated with UPC.</p><p>GTIN-13 is commonly associated with EAN.</p>' +
+            '<p>GTIN-14 is commonly used for trade-item groupings and other packaging levels where appropriate.</p>' +
+            '<p>The number identifies the trade item.</p><p>The barcode symbol is the machine-readable graphic that carries that number.</p>' +
+            '<p>Those are related but separate concepts.</p>' },
+        { h: 'How to Use This Barcode Number Generator',
+          html: '<p>Choose the required format.</p><p>Options include:</p>',
+          list: ['UPC-A', 'EAN-13', 'EAN-8', 'GTIN-14'],
+          after: '<p>If you have a GS1-issued company prefix, enter the correct prefix.</p>' +
+            '<p>Then provide the starting item reference and quantity.</p>' +
+            '<p>For GTIN-14, select the packaging indicator where appropriate.</p><p>Generate the numbers.</p>' +
+            '<p>The tool calculates the final check digit automatically.</p>' +
+            '<p>You can also paste an existing barcode number into the validation section to check whether its check digit is correct.</p>' +
+            '<p>If you do not have assigned GS1 capacity, use generated values only for testing or internal workflows where the number is not being presented as a globally assigned retail product identifier.</p>' },
+        { h: 'GTIN-12 and UPC-A',
+          html: '<p>GTIN-12 is a 12-digit GS1 identification key.</p>' +
+            '<p>In North America, it is commonly encoded using the UPC-A barcode symbol.</p><p>A typical structure contains:</p>',
+          list: ['company prefix/item reference allocation', 'check digit'],
+          after: '<p>The exact division between company prefix and item reference depends on the prefix assigned to the organization.</p>' +
+            '<p>Do not assume every UPC contains the same-length company prefix.</p>' +
+            '<p>That is why manually slicing a GTIN based only on visual digit positions can be unreliable.</p>' +
+            '<p>The complete GTIN is the identifier.</p>' +
+            '<p>GS1 assignment records determine who owns the prefix and trade item.</p>' },
+        { h: 'GTIN-13 and EAN-13',
+          html: '<p>GTIN-13 is commonly represented with the EAN-13 barcode symbol.</p>' +
+            '<p>GS1’s own GTIN creation guidance describes the final digit as the check digit.</p>' +
+            '<p>The earlier digits are used to construct the trade-item identifier according to GS1 assignment rules.</p>' +
+            '<p>EAN-13 is widely used outside North America, although GTINs are global identifiers rather than "country-specific barcode numbers."</p>' +
+            '<p>Do not infer product country of origin solely from the first digits of an EAN.</p>' +
+            '<p>GS1 prefix allocation is about number administration, not necessarily where the product was manufactured.</p>' },
+        { h: 'GTIN-14',
+          html: '<p>GTIN-14 is a 14-digit GTIN format.</p><p>It is commonly used to identify trade-item groupings or packaging configurations.</p>' +
+            '<p>A GTIN-14 can include an indicator digit before the underlying item reference structure.</p>' +
+            '<p>For example, different case configurations of a product may need distinct trade-item identifiers.</p>' +
+            '<p>Do not assume the consumer unit and shipping case always use the same GTIN.</p>' +
+            '<p>Packaging-level identification depends on how items are ordered, priced and traded.</p>' +
+            '<p>GS1 provides rules for when a new GTIN is required.</p>' +
+            '<p>The generator can produce structural GTIN-14 values, but business assignment remains your responsibility.</p>' },
+        { h: 'What Is the Check Digit?',
+          html: '<p>The final digit of a GTIN is a check digit.</p><p>It is calculated from the preceding digits.</p><p>The purpose is error detection.</p>' +
+            '<p>The GS1 algorithm applies alternating weights and calculates the digit required to make the weighted total align with the modulus rule.</p>' +
+            '<p>You do not need to perform the arithmetic manually when using the generator.</p>' +
+            '<p>The validator can also check an existing value.</p>' +
+            '<p>A correct check digit proves only that the number is mathematically well formed.</p><p>It does not prove:</p>',
+          list: ['GS1 ownership', 'product assignment', 'company identity', 'authenticity', 'marketplace acceptance'],
+          after: '<p>Those are separate questions.</p>' },
+        { h: 'How the GS1 Check Digit Works',
+          html: '<p>At a high level, the GTIN check-digit calculation works from the rightmost data digit and applies alternating weights of 3 and 1.</p>' +
+            '<p>The weighted values are summed.</p>' +
+            '<p>The check digit is the amount needed to bring the total up to the next multiple of 10.</p><p>Example concept:</p>' +
+            '<pre class="code">weighted sum: 67\nnext multiple of 10: 70\ncheck digit: 3</pre>' +
+            '<p>GS1 provides an official check-digit calculator and manual calculation guidance.</p>' +
+            '<p>Use the official algorithm rather than creating a custom checksum.</p>' +
+            '<p>A marketplace may reject a GTIN immediately if the final digit does not validate.</p>' },
+        { h: 'A Valid Check Digit Does Not Mean a Valid Retail GTIN',
+          html: '<p>This is the most important warning on the page.</p><p>Anyone can calculate a checksum.</p>' +
+            '<p>That does not give them the right to assign a retail GTIN.</p>' +
+            '<p>Suppose you generate <code>5012345678900</code> with a correct final digit.</p>' +
+            '<p>The number may still belong to another company, be unassigned, or have a different product association.</p>' +
+            '<p>For real retail use, obtain GTINs through GS1 and maintain product assignment records.</p><p>Use test-only generated numbers for:</p>',
+          list: ['unit tests', 'database fixtures', 'scanner demos', 'form validation', 'QA', 'barcode rendering tests'],
+          after: '<p>Do not list an invented test GTIN on a marketplace as though it were your assigned product identifier.</p>' },
+        { h: 'GS1 Company Prefix',
+          html: '<p>A GS1 Company Prefix is licensed to an organization and forms part of GS1 identification keys.</p>' +
+            '<p>The prefix length can vary.</p>' +
+            '<p>A longer company prefix leaves fewer digits available for item references.</p>' +
+            '<p>A shorter prefix provides more item-reference capacity.</p>' +
+            '<p>This is why companies with large product catalogs may receive different prefix capacity than smaller businesses.</p>' +
+            '<p>Do not guess your company prefix from a barcode.</p><p>Use the information provided by GS1.</p>' +
+            '<p>The generator allows a prefix field because users with legitimate assigned capacity may need to create the corresponding item references and check digits.</p>' },
+        { h: 'Restricted Circulation Numbers',
+          html: '<p>GS1 reserves certain prefix ranges for restricted-circulation purposes.</p>' +
+            '<p>GS1 documentation identifies prefixes including <code>02</code> and <code>20–29</code> in restricted-circulation contexts.</p>' +
+            '<p>These are useful for local, in-store or closed-system identification according to the relevant GS1 rules.</p>' +
+            '<p>They are not globally unique retail identifiers for normal open supply-chain assignment.</p>' +
+            '<p>That makes restricted ranges useful for certain test or internal scenarios, but do not assume every retailer or scanner will treat them as a universal product identity.</p>' +
+            '<p>Know the scope of the number.</p>' },
+        { h: 'Internal Barcode Numbers vs Retail GTINs',
+          html: '<p>A company can barcode internal data without assigning a retail GTIN.</p>' +
+            '<p>For example, a warehouse may encode <code>SKU-TSH-BLK-M</code> in Code 128.</p>' +
+            '<p>That is an internal barcode workflow.</p>' +
+            '<p>A retail EAN-13 or UPC-A identifying a trade item in the open supply chain is different.</p><p>Use internal identifiers when:</p>',
+          list: ['only your system needs the code', 'the item is not sold through GTIN-requiring channels', 'the barcode is for warehouse operations'],
+          after: '<p>Use an assigned GTIN when trading partners, marketplaces or retail systems require standardized global product identification.</p>' },
+        { h: 'Validate Existing Barcode Numbers',
+          html: '<p>The validation feature is useful when:</p>',
+          list: ['importing a supplier catalog', 'debugging a marketplace rejection', 'checking fixtures', 'testing scanner software', 'cleaning spreadsheet data'],
+          after: '<p>Paste the number.</p><p>If it has the full length, verify the check digit.</p>' +
+            '<p>If it is missing the final digit, calculate the correct one.</p>' +
+            '<p>A passing checksum does not prove ownership, so use GS1 verification services when you need to check company/product information associated with a GTIN.</p>' +
+            '<p>Mathematical validation and assignment verification are separate steps.</p>' },
+        { h: 'Common Barcode Number Mistakes',
+          html: '<p>Avoid these problems:</p>',
+          list: ['assuming a correct checksum means the number belongs to you', 'inventing a UPC for a real marketplace product',
+                 'treating SKU and GTIN as the same thing', 'removing leading zeros', 'assuming EAN prefix digits prove manufacturing country',
+                 'using a GTIN as a lot number', 'generating a new GTIN for every production batch', 'confusing barcode number and barcode image',
+                 'ignoring packaging-level identification', 'using restricted-circulation numbers as globally assigned retail IDs'],
+          after: '<p>A barcode identifier has to be both structurally correct and assigned for the intended use.</p>' }
       ],
-      keywords: [
-        'barcode number generator', 'ean-13 generator', 'upc-a generator', 'gtin generator',
-        'barcode check digit calculator', 'ean 13 check digit', 'gtin-14', 'ean-8 generator',
-        'valid barcode numbers for testing', 'upc vs ean', 'gs1 prefix', 'how to get a barcode'
-      ]
+      keywords: ['barcode number generator', 'ean-13 generator', 'upc-a generator', 'gtin-14 generator',
+        'gs1 check digit calculator', 'barcode check digit validator', 'upc vs ean', 'gs1 company prefix',
+        'gtin test data generator', 'restricted circulation number gs1', 'barcode number validator', 'ean-8 generator']
     }
   });
 })();

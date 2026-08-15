@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>Axios Request Generator — Instances, Interceptors &amp; TypeScript | Manage My Batch</title>
-<meta name="description" content="Free Axios code generator. Build requests, configured instances and interceptors with error handling, timeouts, retries and TypeScript types — from a simple request form.">
+<title>Axios Request Generator – GET, POST, Instances &amp; Interceptors | Manage My Batch</title>
+<meta name="description" content="Generate Axios GET, POST, PUT, PATCH and DELETE requests with headers, params, JSON, auth, timeouts, AbortController, instances and interceptors.">
 <link rel="canonical" href="https://managemybatch.com/tools/axios-request-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="Axios Request Generator — Instances, Interceptors &amp; TypeScript">
-<meta property="og:description" content="Free Axios code generator. Build requests, configured instances and interceptors with error handling, timeouts, retries and TypeScript types — from a simple request form.">
+<meta property="og:title" content="Axios Request Generator – GET, POST, Instances &amp; Interceptors">
+<meta property="og:description" content="Generate Axios GET, POST, PUT, PATCH and DELETE requests with headers, params, JSON, auth, timeouts, AbortController, instances and interceptors.">
 <meta property="og:url" content="https://managemybatch.com/tools/axios-request-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Axios Request Generator — Instances, Interceptors &amp; TypeScript">
-<meta name="twitter:description" content="Free Axios code generator. Build requests, configured instances and interceptors with error handling, timeouts, retries and TypeScript types — from a simple request form.">
+<meta name="twitter:title" content="Axios Request Generator – GET, POST, Instances &amp; Interceptors">
+<meta name="twitter:description" content="Generate Axios GET, POST, PUT, PATCH and DELETE requests with headers, params, JSON, auth, timeouts, AbortController, instances and interceptors.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -461,101 +461,138 @@
       '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">Logging <code>error.message</code> alone collapses all three into "Request failed", which is why so much production debugging starts from nothing. The generated catch block branches on all three.</p></div></div>' +
       '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>Retry only idempotent requests.</strong> Retrying a GET is safe. Retrying a POST that timed out may create a second order, because the timeout tells you nothing about whether the server processed the first one. Restrict automatic retries to GET, PUT and DELETE, or require an idempotency key.</span></div>',
     related: ['fetch-api-request-generator', 'curl-command-generator', 'json-test-data-generator'],
-    faqs: [
-      { q: 'Do I need JSON.stringify with Axios?', a: 'No. Axios serialises plain JavaScript objects automatically and sets <code>Content-Type: application/json</code> for you. Passing an already-stringified value results in a double-encoded body.' },
-      { q: 'How do I handle errors properly in Axios?', a: 'Check <code>axios.isAxiosError(error)</code>, then branch on <code>error.response</code> (server replied with a bad status), <code>error.request</code> (no response — timeout, offline, CORS) and neither (setup failure). The Error handling tab shows the full pattern.' },
-      { q: 'What is an Axios instance for?', a: 'It holds shared configuration — base URL, timeout, default headers — so every call site stays short and changing the API host is a one-line edit. It is also where interceptors are registered.' },
-      { q: 'How do I add an auth token to every request?', a: 'Use a request interceptor. It runs before each call and can read the current token from storage, which means refreshed tokens are picked up automatically without changing any call site.' },
-      { q: 'Should I use Axios or fetch?', a: 'fetch is built in and free. Axios is worth its ~13 KB when you need interceptors, upload progress, automatic JSON handling and errors that throw on 4xx. For a handful of simple calls, fetch with a small wrapper wins.' },
-      { q: 'How do I cancel an Axios request?', a: 'Pass <code>signal</code> from an <code>AbortController</code> and call <code>controller.abort()</code>. Filter the resulting error with <code>axios.isCancel()</code> so a deliberate cancellation is not logged as a failure. The old CancelToken API is deprecated.' }
+faqs: [
+      { q: 'What is Axios used for?', a: 'Axios is a JavaScript HTTP client used to make API and other network requests in browser and server-side environments.' },
+      { q: 'How do I send query parameters with Axios?', a: 'Use the <code>params</code> request configuration for normal query parameters.' },
+      { q: 'Can Axios time out a request?', a: 'Yes. Use the numeric <code>timeout</code> configuration and choose a value appropriate to the service.' },
+      { q: 'How do I cancel an Axios request?', a: 'Use <code>AbortController</code> and pass its signal. The older CancelToken API is deprecated for new code.' },
+      { q: 'What are Axios interceptors?', a: 'They are functions that run around requests or responses, useful for shared concerns such as authentication, logging and error normalization.' },
+      { q: 'Does Axios bypass CORS?', a: 'No. Browser Axios requests are still subject to browser CORS enforcement.' },
+      { q: 'Is Axios better than Fetch?', a: 'Not universally. Fetch is built into the platform; Axios adds a higher-level client abstraction. Choose based on your project’s needs.' }
     ],
     seo: {
-      title: 'Axios requests: instances, interceptors and error handling that works',
-      lead: 'This <strong>Axios request generator</strong> writes requests, configured instances and interceptors with the three-branch error handling most tutorials skip. Below: why <code>error.response</code> is often undefined, what an instance is actually for, and when fetch is the better choice.',
+      title: 'Axios Request Generator – Build API Calls, Instances and Interceptors',
+      lead: 'Use the Axios Request Generator above to create request code for JavaScript or TypeScript without manually assembling every config property.',
       blocks: [
-        {
-          h: 'What Axios does that fetch does not',
-          html: '<p><strong>Axios</strong> is an HTTP client for browsers and Node that wraps the underlying transport and adds the things almost every application ends up writing by hand.</p>',
-          list: [
-            '<strong>Automatic JSON.</strong> Objects are serialised on the way out and parsed on the way in — <code>response.data</code> is already an object.',
-            '<strong>HTTP errors reject.</strong> A 404 or 500 throws, so <code>try/catch</code> and <code>.catch()</code> behave the way you expect.',
-            '<strong>Interceptors.</strong> One place to attach auth headers, log requests, or refresh an expired token.',
-            '<strong>Instances.</strong> A pre-configured client with a base URL, default headers and a timeout.',
-            '<strong>A real timeout option.</strong> One config value instead of an <code>AbortController</code> and a <code>setTimeout</code>.',
-            '<strong>Upload and download progress.</strong> Available natively, unlike with <code>fetch</code>.'
-          ],
-          callout: { type: 'tip', text: 'You never need <code>JSON.stringify</code> with Axios. Pass a plain object as the data argument and Axios serialises it and sets <code>Content-Type: application/json</code> for you. Stringifying first results in a double-encoded string that arrives at the server as a quoted blob.' }
-        },
-        {
-          h: 'Error handling has three branches, not one',
-          html: '<p>This is where most Axios code is wrong. An Axios failure can mean three completely different things, and treating them alike produces the "Network Error" message that tells nobody anything.</p>',
-          cards: [
-            { t: 'error.response exists', d: 'The server answered with a 4xx or 5xx. You have <code>status</code>, <code>headers</code> and <code>data</code> — the error body usually explains exactly what was wrong.' },
-            { t: 'error.request exists, response does not', d: 'The request went out and nothing came back: DNS failure, connection refused, CORS block, or a timeout. Retryable.' },
-            { t: 'Neither exists', d: 'The request was never made — a bug in your config or serialisation. <code>error.message</code> is all you have, and it is your code at fault.' }
-          ],
-          after: '<p>The generated code branches on all three, and adds <code>axios.isAxiosError(error)</code> in TypeScript so the error is typed rather than <code>unknown</code>.</p>'
-        },
-        {
-          h: 'Why instances are the point',
-          html: '<p>Calling <code>axios.get()</code> directly works, but it means the base URL, auth header and timeout are repeated at every call site. An <strong>instance</strong> captures them once:</p>',
-          steps: [
-            { t: 'Create the client', d: '<code>const api = axios.create({ baseURL, timeout: 10000, headers })</code> in one module.' },
-            { t: 'Import it everywhere', d: 'Call sites become <code>api.get(\'/users\')</code> — no host, no headers, no repetition.' },
-            { t: 'Change environments in one place', d: 'Staging versus production is one config value, not a search-and-replace.' },
-            { t: 'Isolate third-party APIs', d: 'A separate instance per upstream service, each with its own auth and timeout, so a Stripe token never leaks into a request to your own backend.' },
-            { t: 'Attach interceptors to the instance', d: 'Not to the global <code>axios</code> object — global interceptors affect every library in your bundle that uses Axios.' }
-          ]
-        },
-        {
-          h: 'Interceptors: auth and token refresh',
-          html: '<p>A <strong>request interceptor</strong> runs before every request leaves. The standard use is reading the current token and setting the <code>Authorization</code> header — reading it per request rather than at module load matters, because a token captured once goes stale on the first refresh.</p>' +
-            '<p>A <strong>response interceptor</strong> runs on the way back. The classic pattern catches a 401, refreshes the token, and retries the original request once. Two details make the difference between a working implementation and an infinite loop:</p>',
-          ol: [
-            'Mark the retried request (<code>config._retry = true</code>) and refuse to refresh a second time for the same request.',
-            'Share a single in-flight refresh promise, so five concurrent 401s trigger one refresh rather than five.',
-            'Never intercept the refresh endpoint itself — a 401 from the refresh call must fail through to a logout, not recurse.'
-          ],
-          callout: { type: 'warn', text: '<strong>Interceptors registered on the global <code>axios</code> object apply to every consumer of Axios in your bundle</strong>, including third-party SDKs. Attaching an <code>Authorization</code> header globally can send your token to an unrelated API. Always register on your own instance.' }
-        },
-        {
-          h: 'Axios or fetch?',
-          table: {
-            head: ['Consideration', 'Axios', 'fetch'],
-            rows: [
-              ['Bundle cost', '~13 KB gzipped.', 'Zero — built in.'],
-              ['HTTP errors', 'Rejects automatically.', 'Resolves; you must check <code>res.ok</code>.'],
-              ['JSON handling', 'Automatic both ways.', 'Manual <code>JSON.stringify</code> and <code>await res.json()</code>.'],
-              ['Timeouts', 'A config option.', '<code>AbortSignal.timeout()</code>, or an AbortController.'],
-              ['Interceptors', 'Built in.', 'A wrapper function you write.'],
-              ['Upload progress', 'Supported.', 'Not supported.'],
-              ['Node support', 'Same API in Node and browser.', 'Native since Node 18.']
-            ]
-          },
-          after: '<p>Practical rule: for a handful of calls, or a bundle-size-sensitive library, use <a href="/tools/fetch-api-request-generator">fetch</a>. For an application with shared auth, retries and consistent error handling across dozens of endpoints, Axios earns its 13 KB.</p>'
-        },
-        {
-          h: 'Cancelling requests',
-          html: '<p>The old <code>CancelToken</code> API is deprecated. Modern Axios uses the standard <code>AbortController</code>, the same primitive as fetch:</p>' +
-            '<p><code>const c = new AbortController(); api.get(\'/search\', { signal: c.signal }); c.abort();</code></p>' +
-            '<p>The two situations that need it are the same in every application: a search-as-you-type field where each keystroke supersedes the last request, and a component that unmounts while a request is still in flight. Aborting on cleanup prevents both a wasted response and a state update on an unmounted component.</p>' +
-            '<p>An aborted request rejects with <code>ERR_CANCELED</code>. Check for it and return early rather than showing an error — a cancellation is not a failure.</p>'
-        },
-        {
-          h: 'Related HTTP tools',
-          list: [
-            '<a href="/tools/fetch-api-request-generator">Fetch API Request Generator</a> — the same request without a dependency.',
-            '<a href="/tools/curl-command-generator">curl Command Generator</a> — reproduce the request on the command line.',
-            '<a href="/tools/json-test-data-generator">JSON Test Data Generator</a> — realistic request bodies and mock responses.',
-            '<a href="/tools/dummy-api-key-generator">Dummy API Key Generator</a> — safe placeholder credentials for examples.'
-          ]
-        }
+        { html: '<p>Enter the endpoint, choose the method, add query parameters, headers, authentication and a request body, then choose whether you want a direct request, an Axios instance or interceptor setup.</p>' +
+            '<p>You can also include production-oriented details such as timeouts, credentials, error handling and request cancellation.</p>' +
+            '<p>Axios is useful when an application has more than one HTTP call and needs consistent behavior across them. Instead of repeating the same base URL, token logic and error transformation everywhere, an Axios instance and interceptors can centralize those concerns.</p>' +
+            '<p>The generator helps create that structure from the beginning.</p>' },
+        { h: 'What Is Axios?',
+          html: '<p>Axios is a promise-based HTTP client for JavaScript.</p><p>It works in browser and server-side JavaScript environments.</p><p>A simple request looks like:</p>' +
+            '<pre class="code">const response = await axios.get("/api/users");</pre>' +
+            '<p>Axios returns a response object containing fields such as:</p>',
+          list: ['<code>data</code>', '<code>status</code>', '<code>statusText</code>', '<code>headers</code>', '<code>config</code>', '<code>request</code>'],
+          after: '<p>Unlike the Fetch API’s <code>Response</code> object, Axios normally gives you the parsed response data on:</p><pre class="code">response.data</pre>' +
+            '<p>The library also provides request configuration, instances, interceptors and cancellation features.</p>' },
+        { h: 'How to Use This Axios Request Generator',
+          html: '<p>Enter the request URL and choose the HTTP method.</p><p>Add query parameters, headers and authentication.</p>' +
+            '<p>If the method sends data, enter the request body.</p><p>Then choose the style of output.</p>' +
+            '<p>A one-off request may only need:</p><pre class="code">axios.get()</pre><p>or:</p><pre class="code">axios.post()</pre>' +
+            '<p>A larger application may benefit from:</p><pre class="code">axios.create()</pre>' +
+            '<p>with a base URL, shared headers and timeout.</p>' +
+            '<p>If authentication or error handling should run across many requests, generate interceptors.</p>' +
+            '<p>Review the output before use, especially around secrets, CORS and error behavior.</p>' },
+        { h: 'Axios GET Request',
+          html: '<p>A basic GET request can use:</p><pre class="code">axios.get(url)</pre>' +
+            '<p>Query parameters can be passed using the <code>params</code> option rather than concatenating them manually into the URL.</p>' +
+            '<p>This is cleaner for dynamic filters and pagination.</p><p>For example, an API may accept:</p>',
+          list: ['page', 'limit', 'search', 'status'],
+          after: '<p>Axios serializes common parameter structures, but complex arrays or nested objects may need a defined serialization convention.</p>' +
+            '<p>The server determines how query parameters should be represented.</p>' +
+            '<p>If an API expects a particular encoding, configure the serializer accordingly instead of relying on assumptions.</p>' },
+        { h: 'POST JSON with Axios',
+          html: '<p>Axios can send JavaScript objects as request data.</p>' +
+            '<p>A typical JSON request passes the object as the second argument to:</p><pre class="code">axios.post()</pre>' +
+            '<p>Axios then handles normal JSON serialization behavior for supported requests.</p>' +
+            '<p>The API still determines which fields are valid.</p><p>A generated request is not a substitute for schema validation.</p>' +
+            '<p>For realistic example bodies, create the data with the <a href="/tools/json-test-data-generator">JSON Test Data Generator</a>, then paste it into the request builder.</p>' +
+            '<p>Keep secrets and real customer information out of examples.</p>' },
+        { h: 'PUT, PATCH and DELETE',
+          html: '<p>Axios provides method helpers for common HTTP verbs.</p>' +
+            '<p>Use PUT for endpoints that define replacement-style updates.</p><p>Use PATCH for partial updates.</p><p>Use DELETE for deletion behavior.</p>' +
+            '<p>Do not infer API semantics from the Axios method name alone.</p>' +
+            '<p>Some APIs use POST for actions that do not fit basic CRUD patterns.</p>' +
+            '<p>Others use DELETE without a request body.</p><p>Always follow the endpoint contract.</p>' +
+            '<p>The generator ensures the client syntax is structured correctly; it cannot decide what the server intended.</p>' },
+        { h: 'Create an Axios Instance',
+          html: '<p>An Axios instance is useful when many requests share configuration.</p><p>For example:</p>',
+          list: ['base URL', 'timeout', 'common headers', 'authentication behavior', 'adapter options'],
+          after: '<p>Instead of repeating:</p><pre class="code">https://api.example.com</pre>' +
+            '<p>on every call, create a client with a base URL and request relative paths.</p>' +
+            '<p>Separate instances can also represent separate services.</p><p>For example:</p><pre class="code">billingApi\nanalyticsApi</pre>' +
+            '<p>can have different hosts, timeouts and interceptors.</p>' +
+            '<p>This keeps service-specific behavior isolated and makes code easier to audit.</p>' },
+        { h: 'Why Set a Timeout?',
+          html: '<p>Axios supports a numeric <code>timeout</code> request option.</p>' +
+            '<p>If the request takes longer than the configured duration, Axios aborts it.</p>' +
+            '<p>Without an explicit timeout, an application may wait much longer than users or background jobs expect.</p>' +
+            '<p>Choose timeouts based on the endpoint.</p>' +
+            '<p>A live search request may need a short limit.</p><p>A large report export may need much longer.</p>' +
+            '<p>Do not apply one arbitrary timeout to every service simply for consistency.</p>' +
+            '<p>Axios instances make per-service timeout policies easier.</p>' },
+        { h: 'Axios Error Handling',
+          html: '<p>Axios rejects the request promise for responses that fall outside the configured successful status behavior.</p>' +
+            '<p>An Axios error can contain information such as:</p>',
+          list: ['message', 'code', 'config', 'request', 'response', 'status-related details'],
+          after: '<p>Use:</p><pre class="code">axios.isAxiosError(error)</pre>' +
+            '<p>when you need to distinguish an Axios error from another exception in TypeScript or JavaScript.</p>' +
+            '<p>Also separate:</p><ul style="color:var(--muted);padding-left:18px"><li>server response errors</li><li>no-response/network problems</li><li>request configuration errors</li><li>cancellation</li><li>timeout</li></ul>' +
+            '<p>Those categories often deserve different logging and user messages.</p>' },
+        { h: 'Cancel Axios Requests with AbortController',
+          html: '<p>Modern Axios supports cancellation using <code>AbortController</code>.</p><p>Create a controller and pass:</p>' +
+            '<pre class="code">signal: controller.signal</pre><p>to the request.</p><p>Then call:</p><pre class="code">controller.abort()</pre>' +
+            '<p>when the request is obsolete.</p>' +
+            '<p>This is useful for search-as-you-type interfaces, route changes and component cleanup.</p>' +
+            '<p>Older Axios examples may use <code>CancelToken</code>.</p><p>That API is deprecated for new code.</p>' +
+            '<p>Prefer <code>AbortController</code> unless you are maintaining legacy code that specifically depends on the older cancellation mechanism.</p>' },
+        { h: 'Request Interceptors',
+          html: '<p>A request interceptor runs before Axios sends a request.</p><p>Common uses include:</p>',
+          list: ['adding an access token', 'adding correlation IDs', 'setting locale headers', 'logging request metadata', 'modifying shared configuration'],
+          after: '<p>Interceptors can reduce duplication.</p><p>They can also hide behavior if overused.</p>' +
+            '<p>A developer reading:</p><pre class="code">api.get("/orders")</pre>' +
+            '<p>should still be able to discover that an interceptor adds authentication.</p>' +
+            '<p>Keep interceptor logic focused and documented.</p>' +
+            '<p>Do not put unrelated application business logic into the HTTP pipeline.</p>' },
+        { h: 'Response Interceptors',
+          html: '<p>A response interceptor runs when Axios processes responses or response errors.</p><p>Common uses include:</p>',
+          list: ['normalizing error objects', 'refreshing authentication', 'logging failures', 'extracting common response wrappers', 'centralizing certain status handling'],
+          after: '<p>Be careful with automatic token refresh.</p>' +
+            '<p>Multiple requests can fail at the same time, and careless refresh logic can trigger several refresh calls or infinite retry loops.</p>' +
+            '<p>A generator can create the interceptor skeleton.</p>' +
+            '<p>Production refresh behavior still needs deliberate concurrency and failure handling.</p>' },
+        { h: 'Shared Authorization Headers',
+          html: '<p>An Axios instance can set a shared Authorization header.</p>' +
+            '<p>This is convenient for server-side clients or browser applications where the token is intentionally available to client code.</p>' +
+            '<p>But an interceptor or instance does not make a secret safe.</p>' +
+            '<p>Anything delivered to browser JavaScript can be inspected by the browser user.</p>' +
+            '<p>Never place a server-only API secret into a public front-end bundle.</p>' +
+            '<p>For browser authentication, use credentials designed for the client architecture.</p>' +
+            '<p>For documentation, use a dummy token. See the <a href="/tools/dummy-api-key-generator">Dummy API Key Generator</a>.</p>' },
+        { h: 'Axios withCredentials',
+          html: '<p>For browser cross-origin requests involving credentials, Axios provides:</p><pre class="code">withCredentials: true</pre>' +
+            '<p>This is only one side of the setup.</p>' +
+            '<p>The server must also permit credentialed cross-origin requests through its CORS configuration.</p>' +
+            '<p>Cookies themselves must satisfy browser cookie policy.</p>' +
+            '<p>Like Fetch, Axios cannot bypass CORS.</p>' +
+            '<p>If an API call works in Node.js or cURL but fails in browser Axios, inspect the browser’s CORS error and server response headers.</p>' },
+        { h: 'Axios vs Fetch',
+          html: '<p>Fetch is built into modern web platforms.</p><p>Axios is a library.</p><p>Fetch may be preferable when:</p>',
+          list: ['you want no additional dependency', 'requests are simple', 'platform-native APIs are sufficient'],
+          after: '<p>Axios may be preferable when:</p><ul style="color:var(--muted);padding-left:18px"><li>you want reusable instances</li><li>you want interceptors</li><li>you want shared defaults</li><li>your project already standardizes on Axios</li><li>you want its response/error conventions</li></ul>' +
+            '<p>Neither library automatically produces good architecture.</p>' +
+            '<p>A poorly designed Axios layer can be harder to maintain than a few clean fetch functions. See the <a href="/tools/fetch-api-request-generator">Fetch API Request Generator</a> for comparison.</p>' },
+        { h: 'Common Axios Mistakes',
+          html: '<p>Avoid these problems:</p>',
+          list: ['Using deprecated CancelToken in new code', 'Forgetting to configure timeouts where they matter', 'Hard-coding server secrets in browser Axios code',
+                 'Assuming withCredentials alone solves CORS', 'Putting too much business logic in interceptors', 'Retrying failed writes without idempotency protection',
+                 'Treating TypeScript types as runtime validation', 'Reusing one global instance for unrelated services with different requirements',
+                 'Swallowing all errors in one response interceptor', 'Copying Fetch-specific behavior assumptions into Axios code'],
+          after: '<p>An Axios request can be only one line, but a maintainable HTTP layer needs clear ownership of authentication, errors, cancellation and shared configuration. For a terminal equivalent, see the <a href="/tools/curl-command-generator">cURL Command Generator</a>.</p>' }
       ],
-      keywords: [
-        'axios request generator', 'axios post json', 'axios interceptors', 'axios instance',
-        'axios error handling', 'axios vs fetch', 'axios bearer token', 'axios timeout',
-        'axios cancel request', 'axios typescript', 'axios refresh token', 'axios network error'
-      ]
+      keywords: ['axios request generator', 'axios post json', 'axios instance create', 'axios interceptors',
+        'axios timeout config', 'axios cancel abortcontroller', 'axios error handling isAxiosError', 'axios withCredentials cors',
+        'axios vs fetch', 'axios params query string', 'axios typescript', 'axios refresh token interceptor']
     }
   });
 })();

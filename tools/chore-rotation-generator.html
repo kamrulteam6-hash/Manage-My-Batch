@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>Chore Rotation Generator — Fair Rotating Chore Charts | Manage My Batch</title>
-<meta name="description" content="Free chore rotation generator. Build a fair rotating chore chart where everyone takes every job in turn, with printable weekly charts and a per-person view.">
+<title>Chore Rotation Generator – Fair Weekly Chore Chart Online</title>
+<meta name="description" content="Create a fair rotating chore schedule for families, roommates or offices so everyone takes each recurring task in turn. Print or reuse the rota easily.">
 <link rel="canonical" href="https://managemybatch.com/tools/chore-rotation-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="Chore Rotation Generator — Fair Rotating Chore Charts">
-<meta property="og:description" content="Free chore rotation generator. Build a fair rotating chore chart where everyone takes every job in turn, with printable weekly charts and a per-person view.">
+<meta property="og:title" content="Chore Rotation Generator – Fair Weekly Chore Chart Online">
+<meta property="og:description" content="Create a fair rotating chore schedule for families, roommates or offices so everyone takes each recurring task in turn. Print or reuse the rota easily.">
 <meta property="og:url" content="https://managemybatch.com/tools/chore-rotation-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Chore Rotation Generator — Fair Rotating Chore Charts">
-<meta name="twitter:description" content="Free chore rotation generator. Build a fair rotating chore chart where everyone takes every job in turn, with printable weekly charts and a per-person view.">
+<meta name="twitter:title" content="Chore Rotation Generator – Fair Weekly Chore Chart Online">
+<meta name="twitter:description" content="Create a fair rotating chore schedule for families, roommates or offices so everyone takes each recurring task in turn. Print or reuse the rota easily.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -361,94 +361,116 @@ Hoovering</textarea>
       '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">Tick boxes are worth adding — they turn the chart from a plan into a record, which is a surprisingly effective nudge.</p></div></div>' +
       '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>Weekly rotation works best for most households. Daily is chaotic for anything beyond washing up, and monthly leaves someone on the bins long enough to resent it.</span></div>',
     related: ['cleaning-schedule-generator', 'work-shift-rotation-generator', 'secret-santa-generator'],
-    faqs: [
-      { q: 'How does the rotation stay fair?', a: 'Each period everyone shifts one place along the chore list, so over a full cycle every person does every job the same number of times. The fairness tab shows the per-person, per-chore totals.' },
-      { q: 'What if I have more people than chores?', a: 'Some people get a period off, and that rest rotates too. Check the fairness table — if the period count is a multiple of the group size, it comes out perfectly even.' },
-      { q: 'How many periods should I generate?', a: 'At least as many as you have chores, so everyone completes a full cycle. A multiple of the number of people makes the totals exactly equal.' },
-      { q: 'How often should chores rotate?', a: 'Weekly suits most households. Daily is impractical for anything except washing up, and monthly leaves someone on an unpopular job long enough to build resentment.' },
-      { q: 'Can I print the chart?', a: 'Yes, with optional tick boxes. Putting it where the chores happen works far better than sharing it in a chat, where it disappears within days.' },
-      { q: 'What does reshuffle change?', a: 'Only who starts on which chore. The rotation pattern and its fairness are unchanged — it just avoids the first person always beginning with the first job listed.' }
+faqs: [
+      { q: 'What is a chore rotation?', a: 'It is a repeating schedule where people cycle through shared chores instead of keeping the same assignment permanently.' },
+      { q: 'Is rotating chores fairer than random assignment?', a: 'Rotation can distribute repeated chores more predictably because everyone takes each job in turn. Actual workload still depends on how difficult the chores are.' },
+      { q: 'Can families use a chore rotation?', a: 'Yes. Choose age-appropriate tasks and keep unsafe work with properly trained or supervised adults.' },
+      { q: 'Can roommates rotate cleaning jobs?', a: 'Yes. Bathrooms, kitchens, bins and common areas are common shared-space rotations.' },
+      { q: 'What if there are more people than chores?', a: 'Rotate off-weeks or split larger jobs rather than forcing meaningless assignments.' },
+      { q: 'What is the difference between a chore rota and a cleaning schedule?', a: 'A chore rota focuses on who does the work. A cleaning schedule focuses on what needs doing and how often.' },
+      { q: 'Should chores ever be swapped?', a: 'Yes. Record temporary swaps while keeping the underlying rotation intact.' }
     ],
     seo: {
-      title: 'Chore rotations: why a rota settles arguments a list never does',
-      lead: 'This <strong>chore rotation generator</strong> builds a chart where everyone genuinely takes every job in turn, with a fairness table that proves it and a printable chart for the fridge. Below: why rotation works where good intentions do not, and how often to rotate.',
+      title: 'Chore Rotation Generator – Share Recurring Tasks More Fairly',
+      lead: 'Use the Chore Rotation Generator above to turn a repeated list of household, roommate or office jobs into a rotating schedule.',
       blocks: [
-        {
-          h: 'Why rotations settle arguments',
-          html: '<p>Household chore disputes are almost never about the chores. They are about the belief that the split is uneven — and without a record, that belief cannot be checked by anyone.</p>' +
-            '<p>A rotation removes the argument in two ways. Every unpleasant job is taken by everyone in turn, so nobody is permanently stuck with the bathroom. And because the schedule is written down in advance, "whose turn is it" has an answer that nobody decided in the moment.</p>' +
-            '<p>That second point is the underrated one. The value is not just fairness; it is that the allocation was made by a process rather than by whoever was willing to have the conversation. The same reason a visible draw works for teams works here.</p>',
-          callout: { type: 'tip', text: 'Print it and put it on the fridge. A rota in someone\'s phone is a rota nobody else can check, and half its value is that everyone can see it without asking.' }
-        },
-        {
-          h: 'How the rotation stays fair',
-          html: '<p>The generator uses a cyclic shift: each period, every person moves to the next chore in the list. Over a full cycle, everyone has done every job exactly once.</p>',
-          table: {
-            head: ['Week', 'Alex', 'Bea', 'Chen'],
-            rows: [
-              ['1', 'Bathroom', 'Kitchen', 'Bins'],
-              ['2', 'Bins', 'Bathroom', 'Kitchen'],
-              ['3', 'Kitchen', 'Bins', 'Bathroom'],
-              ['4', 'Bathroom', 'Kitchen', 'Bins']
-            ]
-          },
-          after: '<p>The fairness table below the chart counts how many times each person has each job. Over complete cycles the counts are identical, which is what "fair" means here and what makes it demonstrable.</p>'
-        },
-        {
-          h: 'More people than chores, or the reverse',
-          cards: [
-            { t: 'More people than chores', d: 'Some people get a period off. The rotation ensures the rest periods circulate too, so nobody has a permanently light role.' },
-            { t: 'More chores than people', d: 'Everyone takes more than one per period. The rotation distributes the extras so the same person is not always doubled up.' },
-            { t: 'Chores of unequal size', d: 'The rotation makes them equal over time, not within a week. Someone has the big job this week and the small one next.' },
-            { t: 'Someone away', d: 'Skip them for that period rather than reassigning the whole cycle — the rotation catches up when they return.' }
-          ],
-          after: '<p>The one case the tool cannot fix is a chore list that is wrong. If one job genuinely takes four times as long as the others, split it into several entries so the rotation deals with realistic units.</p>'
-        },
-        {
-          h: 'How often should chores rotate?',
-          html: '<p>Weekly is the default for a reason: it matches how households already think, and a week is long enough to do a job properly without being long enough to resent it.</p>',
-          list: [
-            '<strong>Weekly</strong> — the standard. Suits cleaning, bins, cooking rotas and shared spaces.',
-            '<strong>Fortnightly</strong> — for jobs that do not need weekly attention, and for households where weekly changes feel like too much administration.',
-            '<strong>Monthly</strong> — for bigger, less frequent tasks. Long enough that people forget whose turn it is, so the printed chart matters more.',
-            '<strong>Daily</strong> — only for genuinely daily jobs such as cooking or dishes. Any longer a list and daily rotation becomes noise.'
-          ],
-          callout: { type: 'warn', text: 'Do not rotate faster than the chore recurs. Rotating a fortnightly job weekly means half the assignments are for a job that does not need doing, and a chart people ignore half the time is a chart people ignore.' }
-        },
-        {
-          h: 'Generating the chart',
-          steps: [
-            { t: 'List the people', d: 'One per line — housemates, family members, team members.' },
-            { t: 'List the chores', d: 'One per line. Split anything unusually large into separate entries.' },
-            { t: 'Set the period and how many to generate', d: 'Weekly for eight weeks is a good starting point — enough to see the cycle, short enough to reprint.' },
-            { t: 'Set a start date', d: 'So each column has a real date rather than "week 3".' },
-            { t: 'Check the fairness table', d: 'It shows the per-person counts. Uneven numbers mean the cycle has been cut mid-way — extend it to a whole number of cycles.' },
-            { t: 'Print', d: 'The chart is laid out for A4 and designed to be readable from a metre away.' }
-          ]
-        },
-        {
-          h: 'What reshuffle does',
-          html: '<p>Reshuffle changes the <em>starting</em> assignment — who has which chore in period one — and then rotates from there. The rotation itself is unchanged, so fairness across a full cycle is preserved either way.</p>' +
-            '<p>It is there for the situation where the first draw is unlucky in a way that matters: someone has the worst job in the week they are hosting, or two people who have just swapped want a different opening arrangement. Press it in front of everyone, for the same reason you generate teams in front of everyone.</p>' +
-            '<p>Generating a fresh chart with the same people and chores also reshuffles. If you want the same chart again, regenerate with the same seed.</p>'
-        },
-        {
-          h: 'Related household tools',
-          list: [
-            '<a href="/tools/cleaning-schedule-generator">Cleaning Schedule Generator</a> — split tasks by room and frequency.',
-            '<a href="/tools/work-shift-rotation-generator">Work Shift Rotation Generator</a> — the same rotation logic for workplaces.',
-            '<a href="/tools/secret-santa-generator">Secret Santa Generator</a> — fair random assignment with exclusions.',
-            '<a href="/tools/random-gift-exchange-generator">Random Gift Exchange Generator</a> — draws for groups.',
-            '<a href="/tools/github-task-list-generator">GitHub Task List Generator</a> — checklists for shared projects.'
-          ]
-        }
+        { html: '<p>Instead of giving one person the same unpleasant chore forever, a rotation moves responsibilities through the group over time.</p><p>For example:</p>' +
+            '<pre class="code">Week 1: Ana — dishes, Ben — bins, Cara — bathroom\nWeek 2: Ana — bathroom, Ben — dishes, Cara — bins\nWeek 3: Ana — bins, Ben — bathroom, Cara — dishes</pre>' +
+            '<p>Across the cycle, everybody experiences each job.</p>' +
+            '<p>That is the core purpose of a chore rotation: predictable responsibility without permanently assigning one person to the least popular task.</p>' },
+        { h: 'What Is a Chore Rotation?',
+          html: '<p>A chore rotation is a recurring assignment system.</p>' +
+            '<p>People and tasks are arranged so responsibilities change from one period to the next.</p><p>The rotation might change:</p>',
+          list: ['daily', 'weekly', 'every two weeks', 'according to another agreed cycle'],
+          after: '<p>A family might rotate dishes, bins, vacuuming.</p><p>Roommates might rotate kitchen, bathroom, common room.</p>' +
+            '<p>An office might rotate dishwasher, meeting-room reset, kitchen check.</p>' +
+            '<p>The exact chores are less important than the rule: everyone knows what they are responsible for and when the assignment changes.</p>' },
+        { h: 'Why Rotate Chores?',
+          html: '<p>Permanent assignments can be convenient.</p>' +
+            '<p>They can also become frustrating when one task is consistently more unpleasant or time-consuming.</p>' +
+            '<p>Rotation spreads that experience.</p>' +
+            '<p>It can also reduce repetitive negotiations such as "Whose turn is it?"</p>' +
+            '<p>The chart becomes the answer.</p><p>A predictable rotation is especially useful when:</p>',
+          list: ['chores recur frequently', 'several people share the space', 'nobody clearly owns the task', 'arguments arise from memory rather than the work itself'],
+          after: '<p>Rotation is not the only fair system.</p>' +
+            '<p>Some households prefer permanent chores based on preference.</p>' +
+            '<p>The useful question is whether everyone considers the arrangement reasonable.</p>' },
+        { h: 'Fair Does Not Always Mean Every Chore Is Equal',
+          html: '<p>Taking every job once sounds perfectly fair, but chores differ.</p><p>Compare:</p>',
+          list: ['taking out one small bin', 'deep-cleaning a bathroom', 'mowing a large lawn', 'washing dishes for six people'],
+          after: '<p>One task may take five minutes. Another may take forty.</p>' +
+            '<p>A simple rotation provides turn fairness.</p><p>It does not automatically provide equal workload.</p>' +
+            '<p>If the chores vary dramatically, consider combining several small tasks, splitting one large task, rotating heavy chores less frequently, adding a second person, or compensating with another responsibility.</p>' +
+            '<p>The schedule should support a fair arrangement, not become an excuse to ignore obvious workload differences.</p>' },
+        { h: 'Chore Rotation for Families',
+          html: '<p>A family chore chart can make expectations visible.</p><p>Useful recurring jobs may include:</p>',
+          list: ['setting the table', 'clearing dishes', 'taking out rubbish', 'feeding pets', 'tidying shared spaces', 'laundry sorting'],
+          after: '<p>Match chores to age and ability.</p>' +
+            '<p>A young child and an adult should not automatically receive the same responsibilities.</p>' +
+            '<p>Adults remain responsible for safety.</p><p>Tasks involving hazardous chemicals, hot appliances, heavy lifting or sharp tools need appropriate supervision or should remain adult-only.</p>' +
+            '<p>A rotation can organize suitable jobs. It does not decide whether a task is safe for a particular child.</p>' },
+        { h: 'Chore Rotation for Roommates',
+          html: '<p>Roommates often benefit from rotating shared-space chores while leaving personal spaces to each person.</p><p>Typical shared jobs include:</p>',
+          list: ['bathroom', 'kitchen', 'bins', 'floors', 'common room'],
+          after: '<p>Agree on what "done" means.</p>' +
+            '<p>"Clean the kitchen" can mean very different things to different people.</p>' +
+            '<p>A short task definition can prevent conflict.</p>' +
+            '<p>For example, Kitchen: wipe counters, clean sink, sweep floor, empty food waste.</p>' +
+            '<p>The rotation identifies ownership. The shared standard defines completion.</p>' +
+            '<p>Without both, the chart may only move the argument from "Who should do it?" to "Did you actually do it?"</p>' },
+        { h: 'Chore Rotation for Offices',
+          html: '<p>Small offices often have shared tasks that are too minor for a dedicated facilities role but still need ownership.</p><p>Examples include:</p>',
+          list: ['unload dishwasher', 'reset meeting room', 'restock tea station', 'water office plants', 'bring bins to collection point'],
+          after: '<p>Keep the schedule appropriate to employment roles and workplace policy.</p>' +
+            '<p>Staff should not be assigned unsafe or inappropriate cleaning duties simply because a generator can rotate names.</p>' +
+            '<p>For substantial cleaning, hazardous materials or regulated environments, use trained staff and proper procedures.</p>' +
+            '<p>A simple chore rota is best for light shared responsibilities.</p>' },
+        { h: 'Rotation vs Random Assignment',
+          html: '<p>Randomly drawing chores each week creates variety.</p><p>A rotation creates predictability.</p>' +
+            '<p>Suppose three people and three chores are randomized independently every Monday.</p>' +
+            '<p>By chance, one person might receive the bathroom several weeks in a row.</p>' +
+            '<p>That may feel unfair even though each draw was random.</p>' +
+            '<p>A rotation deliberately cycles assignments so everyone takes each task in turn.</p>' +
+            '<p>Use random assignment when surprise is part of the activity.</p>' +
+            '<p>Use rotation when balanced exposure over time matters more than randomness.</p>' +
+            '<p>For recurring housework, rotation is usually easier to explain and audit.</p>' },
+        { h: 'More People Than Chores, or More Chores Than People',
+          html: '<p>If five people share three recurring jobs, not everyone needs a task in every period.</p><p>Possible approaches include:</p>',
+          list: ['some people have an off week', 'split larger jobs', 'add additional useful chores', 'rotate responsibility so the rest weeks move too'],
+          after: '<p>Avoid inventing meaningless tasks just to make the chart look full.</p>' +
+            '<p>When tasks outnumber people, one person may need more than one assignment.</p>' +
+            '<p>That can work if the workloads are reasonable.</p>' +
+            '<p>Try to combine chores intelligently, for example Person A: dishes + wipe counters; Person B: bathroom; Person C: bins + vacuum hall.</p>' +
+            '<p>The number of task labels does not equal the amount of work.</p>' +
+            '<p>Two quick chores can be easier than one large job.</p>' },
+        { h: 'Keep the Chore List Stable Enough to Learn the Routine',
+          html: '<p>If the list changes completely every week, the rotation becomes hard to follow.</p>' +
+            '<p>Create a core set of recurring responsibilities and add occasional tasks separately.</p>' +
+            '<p>Core rotation: kitchen, bathroom, bins, floors.</p>' +
+            '<p>Occasional: clean oven, wash windows, reorganize storage.</p>' +
+            '<p>The <a href="/tools/cleaning-schedule-generator">Cleaning Schedule Generator</a> is better suited to mixed frequencies such as daily, weekly, monthly and quarterly cleaning tasks.</p>' +
+            '<p>Use the Chore Rotation Generator when the main problem is "Who takes this recurring job next?"</p>' +
+            '<p>Use the cleaning tool when the main problem is "When does each cleaning task need doing?"</p>' },
+        { h: 'Rotation and Personal Preferences',
+          html: '<p>Fairness does not require ignoring preference.</p>' +
+            '<p>Suppose Ana hates vacuuming but enjoys dishes, and Ben prefers vacuuming.</p>' +
+            '<p>If both genuinely agree, permanent specialization may make more sense than forcing a rotation.</p>' +
+            '<p>Rotation is most useful when preferences are similar, nobody wants the unpopular chore, or previous informal arrangements felt uneven.</p>' +
+            '<p>You can also rotate only selected chores while leaving mutually preferred responsibilities fixed.</p>' +
+            '<p>A fair system is one participants accept after understanding the workload.</p>' +
+            '<p>Do not confuse symmetry with fairness.</p>' },
+        { h: 'Common Chore Rotation Mistakes',
+          html: '<p>Avoid these problems:</p>',
+          list: ['assuming equal turns always means equal workload', 'rotating unsafe tasks to children', 'changing assignments so frequently nobody remembers them',
+                 'using random draws when the goal is predictable fairness', 'assigning several heavy tasks to one person because the item count looks equal',
+                 'rebuilding the entire rota for one swap', 'failing to define what completion means',
+                 'using one chart for mixed daily, monthly and quarterly cleaning when a cleaning schedule would be clearer',
+                 'ignoring preferences everyone actually agrees on', 'silently covering repeated missed chores'],
+          after: '<p>A useful chore rotation makes responsibility obvious while leaving enough flexibility for real life.</p>' }
       ],
-      keywords: [
-        'chore rotation generator', 'chore chart maker', 'housemate chore rota',
-        'family chore schedule', 'printable chore chart', 'fair chore split',
-        'weekly chore rotation', 'shared house cleaning rota', 'chore wheel alternative',
-        'roommate chores schedule', 'task rotation chart', 'who does what chart'
-      ]
+      keywords: ['chore rotation generator', 'fair chore chart maker', 'weekly chore rotation online', 'roommate chore schedule generator',
+        'family chore chart generator', 'chore rotation vs random', 'office chore rotation tool', 'chore rota fairness',
+        'chore rotation vs cleaning schedule', 'printable chore chart', 'household task rotation generator', 'chore swap schedule']
     }
   });
 })();

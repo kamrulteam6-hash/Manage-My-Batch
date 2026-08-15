@@ -12,8 +12,8 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>SKU Generator — Free SKU Code Creator &amp; Format Builder | Manage My Batch</title>
-<meta name="description" content="Free SKU generator. Build readable SKU codes from product attributes and create the full size/colour variant matrix in one click. SKU format examples and CSV export.">
+<title>SKU Generator – Create Product & Variant SKU Codes Online</title>
+<meta name="description" content="Generate clear unique SKUs for products and variant combinations. Build codes from product, color and size attributes, remove unsafe characters and export CSV.">
 <meta name="keywords" content="sku generator, sku code generator, how to create skus, sku format, sku number generator, product sku generator, sku examples, inventory sku codes, variant sku">
 <link rel="canonical" href="https://managemybatch.com/tools/sku-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
@@ -21,12 +21,12 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="SKU Generator — Free Structured SKU Builder with Variant Matrix">
-<meta property="og:description" content="Free SKU generator. Build readable, structured stock keeping units from product attributes and generate the full size/colour variant matrix in one click. CSV export.">
+<meta property="og:title" content="SKU Generator – Create Product & Variant SKU Codes Online">
+<meta property="og:description" content="Generate clear unique SKUs for products and variant combinations. Build codes from product, color and size attributes, remove unsafe characters and export CSV.">
 <meta property="og:url" content="https://managemybatch.com/tools/sku-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="SKU Generator — Free Structured SKU Builder with Variant Matrix">
-<meta name="twitter:description" content="Free SKU generator. Build readable, structured stock keeping units from product attributes and generate the full size/colour variant matrix in one click. CSV export.">
+<meta name="twitter:title" content="SKU Generator – Create Product & Variant SKU Codes Online">
+<meta name="twitter:description" content="Generate clear unique SKUs for products and variant combinations. Build codes from product, color and size attributes, remove unsafe characters and export CSV.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -350,104 +350,138 @@ XL: Extra large</textarea>
       '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>Never start a SKU with a digit.</strong> Excel and Google Sheets treat it as a number, strip leading zeros and sometimes convert to scientific notation. A SKU of <code>0012345</code> arrives at your supplier as <code>12345</code>, and this quietly corrupts more product imports than anything else on this list.</span></div>' +
       '<div class="note note-info" style="margin-top:12px">' + GTI.info + '<span>A SKU is not a barcode. If you sell through retail or major marketplaces you will also need a real GTIN from a GS1 prefix — see the <a href="/tools/barcode-number-generator">barcode number generator</a> for how that differs.</span></div>',
     related: ['barcode-number-generator', 'product-code-generator', 'coupon-code-generator'],
-    faqs: [
-      { q: 'What is a SKU?', a: 'A Stock Keeping Unit: an internal code you assign to each distinct stocked item. Unlike a barcode number it is yours to design, so it can encode meaning that helps staff identify products at a glance.' },
-      { q: 'What is the difference between a SKU and a barcode number?', a: 'A SKU is internal and free to invent. A barcode number such as an EAN-13 must be globally unique and is issued from a GS1 company prefix you license. Retailers scan the barcode; your warehouse reads the SKU.' },
-      { q: 'How long should a SKU be?', a: 'Under 20 characters. Amazon, eBay and most label printers either cap or truncate beyond that, and long SKUs stop being readable at a glance — which defeats their purpose.' },
-      { q: 'Should SKUs contain letters or just numbers?', a: 'Letters, because they carry meaning. Always start with a letter too — a SKU beginning with a digit gets mangled by spreadsheets, which strip leading zeros and convert long values to scientific notation.' },
-      { q: 'Do I need a separate SKU for every size and colour?', a: 'Yes, if you count them separately in stock. That is exactly what a stock keeping unit means — anything picked, counted or sold independently needs its own code.' },
-      { q: 'Can I put the price in a SKU?', a: 'No. Prices change and SKUs cannot, since they appear on labels and in every historical sales record. Keep price as a field in your catalogue.' }
+faqs: [
+      { q: 'What does SKU stand for?', a: 'SKU stands for Stock Keeping Unit.' },
+      { q: 'Is a SKU the same as a barcode?', a: 'No. A SKU is an internal inventory identifier. A barcode is a machine-readable representation of data and may encode a SKU or a standardized product number.' },
+      { q: 'Is a SKU the same as UPC or EAN?', a: 'No. SKUs are created internally by the seller. UPC/EAN values are part of standardized GS1 product identification.' },
+      { q: 'Should every product variant have a unique SKU?', a: 'Yes, when variants are tracked as separate inventory items. Each color/size combination should have its own SKU.' },
+      { q: 'How long should a SKU be?', a: 'Keep it as short as practical. Shopify recommends concise SKUs and suggests no more than about 16 characters as a best-practice target, while platform limits vary.' },
+      { q: 'Should SKUs contain spaces?', a: 'Avoid spaces and problematic special characters when possible because they can create search and integration issues.' },
+      { q: 'Can I generate all color and size combinations?', a: 'Yes. Use the variant matrix mode to create a SKU for every combination of the selected variant axes.' }
     ],
     seo: {
-      title: 'SKU Generator: how to create SKU codes that actually work',
-      lead: 'This <strong>free SKU generator</strong> builds structured, readable stock keeping units from your own product attributes — and generates the complete size × colour <strong>variant matrix</strong> in a single click. Below: SKU format examples, a naming system you can adopt today, and the mistakes that corrupt product imports.',
+      title: 'SKU Generator – Create Product and Variant Codes That Scale',
+      lead: 'Use the SKU Generator above to create readable Stock Keeping Unit codes for individual products or complete variant combinations.',
       blocks: [
-        {
-          h: 'What is a SKU?',
-          html: '<p>A <strong>SKU</strong> — Stock Keeping Unit — is an internal code you assign to every distinct product variant you hold in stock. It is the identifier your warehouse, your inventory system and your staff use to refer to one specific item: not "the black t-shirt" but "the medium black t-shirt", which is a different SKU from the large black one.</p>' +
-            '<p>The defining feature of a SKU is that <strong>you control it</strong>. Unlike a barcode number, which must be globally unique and issued from a licensed GS1 prefix, a SKU is yours to design. That freedom is the entire point: a well-designed SKU code carries meaning, so a picker glancing at <code>TSH-BLK-M</code> knows exactly what to fetch without opening a system.</p>' +
-            '<p>Anything you count separately in stock needs its own SKU. Size and colour almost always warrant separate codes. Packaging changes that do not affect picking usually do not.</p>'
-        },
-        {
-          h: 'SKU format examples',
-          html: '<p>There is no universal <strong>SKU format</strong> — the best structure depends on what you sell. These patterns cover most retail and ecommerce catalogues.</p>',
-          table: {
-            head: ['SKU structure', 'Example', 'Suits'],
-            rows: [
-              ['Category–Product–Size', '<code>TSH-BLK-M</code>', 'Apparel. The most common structure in clothing and footwear.'],
-              ['Brand–Category–Sequence', '<code>ACM-TL-1040</code>', 'Tools, hardware and multi-brand catalogues.'],
-              ['Category–Product–Variant–Size', '<code>SHO-RUN-NVY-42</code>', 'Deep catalogues where product line and colour both matter.'],
-              ['Type–Material–Dimension', '<code>TBL-OAK-160</code>', 'Furniture and made-to-size goods.'],
-              ['Category–Sequence', '<code>ELEC-00412</code>', 'Wide catalogues where attributes vary too much to encode.'],
-              ['Supplier–Model–Variant', '<code>SUP1-X200-RED</code>', 'Resellers carrying manufacturer product lines.']
-            ]
-          },
-          after: '<div class="seo-callout warn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m21.7 18-8-14a2 2 0 0 0-3.4 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3z"/><path d="M12 9v4M12 17h.01"/></svg><span><strong>Never start a SKU with a digit.</strong> Excel and Google Sheets treat it as a number, strip leading zeros and sometimes convert long values to scientific notation. A SKU of <code>0012345</code> arrives at your supplier as <code>12345</code>. This silently corrupts more product imports than any other single cause.</span></div>'
-        },
-        {
-          h: 'How to create SKUs with this generator',
-          steps: [
-            { t: 'Define your segments', d: 'Enter each attribute as <code>CODE: Meaning</code>. Three characters per segment is the sweet spot — long enough to be readable, short enough to keep the whole SKU scannable.' },
-            { t: 'Order them broad to narrow', d: 'Category, then product, then colour, then size. This makes an alphabetical sort genuinely useful: everything in a category groups together, then by product, then by variant.' },
-            { t: 'Switch to variant matrix mode', d: 'Enter a base product code and two variant axes — typically colour and size. The tool generates every combination as a readable grid.' },
-            { t: 'Check the validation warnings', d: 'The tool flags SKUs that start with a digit, exceed marketplace length limits, or contain characters that break CSV imports and URLs.' },
-            { t: 'Export to your store', d: 'CSV with attributes imports directly into Shopify, WooCommerce, Amazon Seller Central or a spreadsheet.' }
-          ]
-        },
-        {
-          h: 'SKU vs barcode vs product code',
-          html: '<p>These three identifiers get used interchangeably and should not be. Understanding the difference prevents a painful catalogue migration later.</p>',
-          cards: [
-            { t: 'SKU', d: 'Internal, yours to invent, identifies a stocked variant. Used for picking, counting and stock control. Free.' },
-            { t: 'Barcode / GTIN', d: 'Global, issued from a licensed GS1 company prefix, identifies the item worldwide. Scanned at retail tills. Cannot be invented.' },
-            { t: 'Product code', d: 'Identifies a model rather than a variant. One product code may have many SKUs — bare tool, with case, with two batteries.' }
-          ],
-          after: '<p>Most catalogues need all three. See the <a href="/tools/barcode-number-generator">barcode number generator</a> for GS1 check digits and the <a href="/tools/product-code-generator">product code generator</a> for model-level identifiers.</p>'
-        },
-        {
-          h: 'SKU naming best practices',
-          list: [
-            '<strong>Start with a letter.</strong> Prevents spreadsheet mangling — the single most important rule.',
-            '<strong>Keep it under 20 characters.</strong> Amazon, eBay and most label printers truncate or reject longer values.',
-            '<strong>Use fixed-width segments</strong> where you can, so columns align and sorting is predictable.',
-            '<strong>Uppercase only.</strong> Avoids case-sensitivity mismatches between systems that compare differently.',
-            '<strong>Letters and digits only.</strong> Spaces, slashes, accents and ampersands break CSV imports, URLs and barcode symbologies.',
-            '<strong>Never encode price</strong> — it changes, the SKU cannot, and it would appear in every historical sales record.',
-            '<strong>Never encode supplier</strong> — you may switch or dual-source the same item.',
-            '<strong>Avoid season or year</strong> unless you genuinely retire the product annually.',
-            '<strong>Do not encode stock location</strong> — the same item moves between bins and warehouses.'
-          ]
-        },
-        {
-          h: 'Managing SKUs for variants',
-          html: '<p>Variants are where SKU systems either scale or collapse. A t-shirt in four colours and five sizes is twenty SKUs, and typing those by hand invites inconsistency — <code>TSH-BLK-M</code> in one row and <code>TSH-BLACK-MED</code> in another.</p>' +
-            '<p>The <strong>variant matrix</strong> mode solves this. Define the base product once, list your colour codes and size codes, and every combination is generated with identical structure. The result is a grid you can read at a glance and a CSV you can import directly.</p>' +
-            '<p>Two conventions worth adopting: keep size codes consistent across your whole catalogue (<code>S</code>, <code>M</code>, <code>L</code>, <code>XL</code> or numeric, but not both), and use the same colour abbreviations everywhere — <code>BLK</code> should mean black in every product line.</p>',
-          callout: { type: 'tip', text: '<strong>Adding a trailing sequence makes SKUs unique but meaningless.</strong> If <code>TSH-BLK-M-001</code> and <code>TSH-BLK-M-002</code> are different products, your attribute codes are not specific enough. Fix the segments rather than appending numbers — a SKU that needs a lookup table has become a slower barcode.' }
-        },
-        {
-          h: 'SKUs for Shopify, Amazon and WooCommerce',
-          html: '<p><strong>Shopify</strong> accepts any SKU string per variant and uses it for inventory tracking and reporting. Keep them unique across your store — Shopify will not stop you duplicating one, but your stock reports will become unreliable.</p>' +
-            '<p><strong>Amazon</strong> uses your SKU as the seller-side identifier separate from the ASIN. It is effectively permanent: once a listing exists, changing the SKU means creating a new listing and losing its history. Design carefully before you first list.</p>' +
-            '<p><strong>WooCommerce</strong> enforces SKU uniqueness by default and exposes it in product search, so readable SKUs make admin faster. The CSV export from this tool matches the WooCommerce importer\'s expected columns closely enough to map in one step.</p>'
-        },
-        {
-          h: 'Related ecommerce tools',
-          list: [
-            '<a href="/tools/barcode-number-generator">Barcode Number Generator</a> — valid EAN-13, UPC-A and GTIN-14 numbers with GS1 check digits.',
-            '<a href="/tools/product-code-generator">Product Code Generator</a> — model and article numbers with category and version segments.',
-            '<a href="/tools/coupon-code-generator">Coupon Code Generator</a> — bulk discount codes with guess-resistance analysis.',
-            '<a href="/tools/order-number-generator">Order Number Generator</a> — customer-facing order references that resist enumeration.',
-            '<a href="/tools/shipping-reference-generator">Shipping Reference Generator</a> — consignment and parcel references.'
-          ]
-        }
+        { html: '<p>For one item, define the segments you want to use. For a product with color and size variants, enter the base product code and each variant axis. The tool can generate every combination automatically.</p>' +
+            '<p>For example: Product T-Shirt, Color Black, Size Medium → SKU <code>TSH-BLK-M</code>.</p>' +
+            '<p>Turn on uppercase formatting for consistency, strip vowels when you want shorter auto-derived codes, remove unsafe punctuation and add a trailing sequence when necessary for uniqueness.</p>' +
+            '<p>The goal is not to create a clever code. A good SKU should help people and software identify the exact inventory item without guessing.</p>' },
+        { h: 'What Is a SKU?',
+          html: '<p>SKU stands for Stock Keeping Unit.</p>' +
+            '<p>It is an internal code created by a business to identify an inventory item.</p><p>A SKU can represent:</p>',
+          list: ['one product', 'one size', 'one color', 'one pack size', 'one material', 'one model variation'],
+          after: '<p>For example, a black medium T-shirt and a white medium T-shirt should normally have different SKUs if they are tracked as separate inventory variants.</p>' +
+            '<p>Shopify recommends assigning unique SKUs to products and variants so inventory can be managed accurately.</p>' +
+            '<p>SKUs are business-controlled identifiers.</p>' +
+            '<p>Unlike GTINs, UPCs or EANs, they are not assigned from a global GS1 numbering system.</p>' },
+        { h: 'How to Use This SKU Generator',
+          html: '<p>Choose the mode.</p><p><strong>Single product</strong> — enter the SKU segments you want to combine.</p><p>For example:</p>' +
+            '<pre class="code">TSH: T-Shirt\nBLK: Black\nM: Medium</pre><p>The generated SKU becomes:</p><pre class="code">TSH-BLK-M</pre>' +
+            '<p><strong>Variant matrix</strong> — enter a base product code, then one or two variant axes.</p><p>Example:</p>' +
+            '<pre class="code">Colors: BLK: Black, WHT: White\nSizes: S: Small, M: Medium, L: Large</pre>' +
+            '<p>The generator creates every color/size combination.</p>' +
+            '<p>Export the results and assign each code to the matching product variant in your inventory or ecommerce platform.</p>' },
+        { h: 'SKU vs UPC',
+          html: '<p>A SKU is internal.</p><p>A UPC is a standardized retail barcode identifier used within the GS1 system.</p>' +
+            '<p>You create your own SKU.</p><p>A legitimate retail GTIN/UPC is assigned according to GS1 rules.</p><p>Example:</p>' +
+            '<pre class="code">SKU: TSH-BLK-M\nUPC: a numeric GS1 identification value assigned to the trade item</pre>' +
+            '<p>The two can coexist.</p><p>A warehouse picker may recognize the readable SKU.</p>' +
+            '<p>A retail scanner may use the UPC barcode.</p>' +
+            '<p>Do not create a random 12-digit number and assume it is a valid retail UPC assigned to your company.</p>' +
+            '<p>Use the <a href="/tools/barcode-number-generator">Barcode Number Generator</a> only for structural testing unless you have the appropriate GS1 company prefix or assigned numbers.</p>' },
+        { h: 'SKU vs Product Code',
+          html: '<p>The terms can overlap.</p>' +
+            '<p>Some businesses use "product code," "item code" and "SKU" interchangeably.</p><p>A useful distinction is:</p>' +
+            '<p><strong>Product code</strong> — identifies the model or base product.</p>' +
+            '<p><strong>SKU</strong> — identifies the exact stock-tracked sellable variant.</p><p>Example:</p>' +
+            '<pre class="code">Product: Classic T-Shirt\nProduct code: TSH100\nVariant SKUs: TSH100-BLK-S, TSH100-BLK-M, TSH100-WHT-M</pre>' +
+            '<p>If your catalog has no variants, one product code and one SKU may be the same value.</p>' +
+            '<p>Use whatever terminology your inventory platform uses consistently.</p>' },
+        { h: 'Every Variant Should Have Its Own SKU',
+          html: '<p>If size, color or another attribute creates separately tracked inventory, each combination needs its own identifier.</p>' +
+            '<p>Suppose one product has 3 colors and 4 sizes.</p><p>That creates <code>3 × 4 = 12</code> inventory variants.</p>' +
+            '<p>Each should have a unique SKU.</p><p>Otherwise stock counts become ambiguous.</p>' +
+            '<p>You cannot reliably answer "How many black medium shirts remain?" if all colors and sizes share <code>TSH-001</code>.</p>' +
+            '<p>Variant-level SKUs support accurate:</p>',
+          list: ['picking', 'replenishment', 'returns', 'sales reporting', 'stock transfers'],
+          after: '<p>The variant matrix mode automates these combinations.</p>' },
+        { h: 'Keep SKUs Short',
+          html: '<p>Shopify’s current SKU guidance recommends keeping SKUs as short as practical, with an example best-practice ceiling around 16 characters.</p>' +
+            '<p>Short codes are easier to:</p>',
+          list: ['type', 'scan visually', 'fit on labels', 'search', 'export', 'read over the phone'],
+          after: '<p>Do not treat 16 as a universal technical limit for every ecommerce system.</p>' +
+            '<p>Different platforms have different field constraints.</p><p>Before finalizing a scheme, check:</p>' +
+            '<ul style="color:var(--muted);padding-left:18px"><li>ecommerce platform</li><li>ERP</li><li>WMS</li><li>marketplace feeds</li><li>POS</li><li>accounting software</li></ul>' +
+            '<p>Use the shortest format that still distinguishes inventory clearly.</p>' },
+        { h: 'Avoid Spaces and Problematic Symbols',
+          html: '<p>Shopify advises avoiding spaces, special characters and symbols that can cause search problems.</p>' +
+            '<p>Dashes and underscores are useful separators.</p><p>A clean SKU <code>TSH-BLK-M</code> is usually safer across systems than <code>T-Shirt / Black / Medium #1</code>.</p>' +
+            '<p>Characters such as slashes can also cause trouble when SKUs appear in:</p>',
+          list: ['URLs', 'filenames', 'CSV exports', 'integrations'],
+          after: '<p>The generator can remove unsafe characters automatically.</p>' +
+            '<p>Choose one allowed character policy before your catalog grows.</p>' +
+            '<p>Cleaning 50 SKUs is easy. Cleaning 50,000 is not.</p>' },
+        { h: 'Use Uppercase Consistently',
+          html: '<p>Case differences can create subtle integration problems.</p>' +
+            '<p>These may look like the same SKU to a person: <code>tsh-blk-m</code> and <code>TSH-BLK-M</code>, but some systems compare them differently.</p>' +
+            '<p>A consistent uppercase convention avoids that ambiguity.</p>' +
+            '<p>The generator can normalize output automatically.</p>' +
+            '<p>If your existing store already uses lowercase SKUs, do not migrate everything simply because uppercase is popular.</p>' +
+            '<p>Consistency is the objective.</p>' +
+            '<p>One catalog should not contain accidental duplicates that differ only by case.</p>' },
+        { h: 'Avoid Ambiguous Characters',
+          html: '<p>Shopify specifically warns about confusing <code>0</code> and <code>O</code>, <code>1</code> and <code>I</code>.</p>' +
+            '<p>This matters when staff type SKUs manually.</p><p>For example, <code>B01I</code> can be hard to read on:</p>',
+          list: ['small labels', 'packing slips', 'low-resolution screens'],
+          after: '<p>If possible, design human-created attribute codes to avoid ambiguous combinations.</p>' +
+            '<p>You do not need to ban those characters from every SKU.</p>' +
+            '<p>A model number supplied by a manufacturer may legitimately contain them.</p>' +
+            '<p>The goal is to avoid unnecessary confusion in the parts of the code you control.</p>' },
+        { h: 'Meaningful SKU Segments',
+          html: '<p>Readable SKUs can speed warehouse work.</p><p>Example: <code>TSH-BLK-M</code> tells a trained picker:</p>',
+          list: ['product family: T-shirt', 'color: black', 'size: medium'],
+          after: '<p>Another business may prefer a neutral sequence <code>SKU-104821</code> because product attributes change too often.</p>' +
+            '<p>Both are valid strategies.</p>' +
+            '<p>Use meaningful segments when the codes remain stable and genuinely help staff.</p>' +
+            '<p>Do not encode attributes that are frequently renamed.</p>' +
+            '<p>A SKU should not need to change because marketing changes "Midnight Blue" to "Navy."</p>' +
+            '<p>Use stable internal attribute codes.</p>' },
+        { h: 'Should SKUs Include Price?',
+          html: '<p>No.</p><p>Price changes.</p><p>A SKU should remain stable while the item is repriced.</p>' +
+            '<p>Do not create <code>TSH-BLK-M-2999</code> to mean a $29.99 product.</p><p>The price belongs in the product record.</p>' +
+            '<p>The same principle applies to:</p>',
+          list: ['sale status', 'stock quantity', 'warehouse bin', 'current supplier cost'],
+          after: '<p>Those are changing attributes.</p><p>A SKU identifies the inventory item.</p>' +
+            '<p>It should not need to change every time the business updates operational data.</p>' },
+        { h: 'Never Reuse Old SKUs Casually',
+          html: '<p>Suppose <code>TSH-BLK-M</code> was discontinued.</p>' +
+            '<p>Two years later a completely different product launches.</p>' +
+            '<p>Do not assign it the old SKU simply because the old item is no longer sold.</p>' +
+            '<p>Historical orders, returns and reports still reference that code.</p>' +
+            '<p>SKU reuse can make old sales appear to belong to the new item.</p>' +
+            '<p>Keep retired SKUs in historical records and issue a new identifier for a genuinely different inventory item.</p>' +
+            '<p>If a product returns unchanged, your catalog policy can decide whether reactivation of the same SKU is appropriate.</p>' },
+        { h: 'SKU and Barcode Labels',
+          html: '<p>A warehouse label can display the SKU as text and barcode.</p>' +
+            '<p>For example, <code>TSH-BLK-M</code> can be encoded in Code 128 for internal scanning.</p>' +
+            '<p>This does not turn the SKU into a GTIN.</p>' +
+            '<p>Internal barcode encodes your SKU for warehouse use.</p>' +
+            '<p>Retail barcode encodes a GS1-assigned product identifier where required.</p>' +
+            '<p>Keep those concepts separate.</p><p>Many businesses print both:</p>',
+          list: ['SKU for internal fulfillment', 'EAN/UPC for retail/product identification'],
+          after: '<p>The scanner workflow determines which data should be encoded.</p>' },
+        { h: 'Common SKU Mistakes',
+          html: '<p>Avoid these problems:</p>',
+          list: ['giving every variant the same SKU', 'using prices or stock quantities in the code', 'mixing uppercase and lowercase inconsistently',
+                 'using spaces and problematic punctuation', 'creating codes so long staff cannot read them', 'making abbreviations no one understands',
+                 'reusing discontinued SKUs for unrelated new products', 'confusing SKU with UPC/EAN/GTIN',
+                 'depending on supplier SKU as your only internal key without a policy', 'changing SKUs casually after integrations and historical orders depend on them'],
+          after: '<p>A scalable SKU system is intentionally boring: short, unique, consistent and documented.</p>' }
       ],
-      keywords: [
-        'sku generator', 'sku code generator', 'how to create skus', 'sku format',
-        'sku number generator', 'product sku generator', 'sku examples',
-        'sku naming convention', 'inventory sku codes', 'variant sku',
-        'sku vs barcode', 'shopify sku', 'amazon sku format', 'what is a sku'
-      ]
+      keywords: ['sku generator', 'product variant sku generator', 'sku vs upc', 'sku vs product code',
+        'sku naming convention', 'variant matrix sku', 'ecommerce sku format', 'sku barcode label',
+        'sku best practices shopify', 'sku character restrictions', 'sku generator csv export', 'unique sku generator online']
     }
   });
 })();

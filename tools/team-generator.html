@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>Team Generator — Balanced Random Teams with Skill Ratings | Manage My Batch</title>
-<meta name="description" content="Free team generator. Split players into balanced random teams, optionally by skill rating, with captains, team names and keep-apart rules. Printable team sheets.">
+<title>Team Generator – Random or Skill-Balanced Teams Online</title>
+<meta name="description" content="Split players into random or skill-balanced teams by team count or players per team. Add ratings, captains, keep-apart rules and reproducible seeds.">
 <link rel="canonical" href="https://managemybatch.com/tools/team-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="Team Generator — Balanced Random Teams with Skill Ratings">
-<meta property="og:description" content="Free team generator. Split players into balanced random teams, optionally by skill rating, with captains, team names and keep-apart rules. Printable team sheets.">
+<meta property="og:title" content="Team Generator – Random or Skill-Balanced Teams Online">
+<meta property="og:description" content="Split players into random or skill-balanced teams by team count or players per team. Add ratings, captains, keep-apart rules and reproducible seeds.">
 <meta property="og:url" content="https://managemybatch.com/tools/team-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Team Generator — Balanced Random Teams with Skill Ratings">
-<meta name="twitter:description" content="Free team generator. Split players into balanced random teams, optionally by skill rating, with captains, team names and keep-apart rules. Printable team sheets.">
+<meta name="twitter:title" content="Team Generator – Random or Skill-Balanced Teams Online">
+<meta name="twitter:description" content="Split players into random or skill-balanced teams by team count or players per team. Add ratings, captains, keep-apart rules and reproducible seeds.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -433,98 +433,123 @@ Omar</textarea>
       '<div><h4 style="font-size:14.5px;margin-bottom:8px">When to skip ratings</h4><p style="color:var(--muted);font-size:13.8px">For a PE warm-up, a social kickabout or any situation where the point is mixing rather than competing, random is the right choice — and it lets you use keep-apart and keep-together rules, which skill balancing cannot honour.</p></div></div>' +
       '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>Whichever mode you use, generate the teams in front of the group. A visible draw settles the "that\'s not fair" conversation before it starts, because the outcome is demonstrably nobody\'s choice.</span></div>',
     related: ['classroom-group-generator', 'tournament-bracket-generator', 'round-robin-schedule-generator'],
-    faqs: [
-      { q: 'How do I make teams fair?', a: 'Add a rough skill rating after each name (<code>Amara: 8</code>) and turn on skill balancing. The snake draft deals players out in reversing order so no team accumulates all the strongest players.' },
-      { q: 'What is a snake draft?', a: 'Players are picked in order 1, 2, 3 then 3, 2, 1 then 1, 2, 3 again. Reversing each pass means the team that picked last gets the next best player, which keeps team totals much closer than straight dealing.' },
-      { q: 'Do ratings need to be accurate?', a: 'No. A rough 1–10 scale from memory works fine. The aim is to avoid stacking one side, not to measure ability precisely.' },
-      { q: 'Can I keep two players apart?', a: 'Yes, in random mode — list them under keep apart. It does not work with skill balancing, because the draft order is fixed by rating; the tool warns you if you set both.' },
-      { q: 'Why are my teams different sizes?', a: 'Because the player count does not divide evenly, or a keep-together pair had to be placed as a unit. Sizes are kept as close as the numbers allow.' },
-      { q: 'Can I get the same teams again?', a: 'Yes — keep the seed and the player list identical. Press Reshuffle for a new arrangement.' }
+faqs: [
+      { q: 'Can I create completely random teams?', a: 'Yes. Enter names without ratings and generate the teams.' },
+      { q: 'Can I balance teams by skill?', a: 'Yes. Add a numeric rating after each name and enable skill balancing.' },
+      { q: 'How does the skill balancing work?', a: 'The tool uses a snake-draft style distribution designed to keep team rating totals close.' },
+      { q: 'Can I choose players per team instead of number of teams?', a: 'Yes. Use whichever split method matches the activity.' },
+      { q: 'Can I keep two players apart?', a: 'Yes. Add them to the keep-apart list.' },
+      { q: 'Can I keep two players together?', a: 'Yes. Add them to the keep-together list.' },
+      { q: 'Can I reproduce the same teams later?', a: 'Yes. Keep the same player list, settings and seed.' }
     ],
     seo: {
-      title: 'Making fair teams: snake drafts, skill ratings and keep-apart rules',
-      lead: 'This <strong>team generator</strong> splits players into teams that are actually balanced — snake-draft skill ratings, captains, keep-apart rules and printable team sheets. Below: why purely random teams feel unfair, how a snake draft fixes it, and when random is the right answer after all.',
+      title: 'Team Generator – Create Random or Skill-Balanced Teams',
+      lead: 'Use the Team Generator above to split a player list into teams without manually counting names or arguing over who should go where.',
       blocks: [
-        {
-          h: 'Random is unbiased, not balanced',
-          html: '<p>These are different properties and conflating them is why "we picked randomly" rarely settles an argument.</p>' +
-            '<p><strong>Unbiased</strong> means nobody was favoured in the process. <strong>Balanced</strong> means the resulting teams are of similar strength. A fair coin is unbiased, and it will still land heads four times in a row often enough to notice.</p>' +
-            '<p>With fourteen players and two teams, chance regularly puts the four strongest on the same side. The draw was perfectly fair and the game is over in ten minutes. Everyone can see it, and "it was random" does not help.</p>',
-          callout: { type: 'tip', text: 'Whichever mode you use, generate the teams <em>in front of the group</em>. A visible draw settles the "that\'s not fair" conversation before it starts, because the outcome is demonstrably nobody\'s choice. Doing it privately and announcing the result invites exactly the suspicion the generator exists to remove.' }
-        },
-        {
-          h: 'How a snake draft works',
-          html: '<p>Players are sorted by rating and dealt out in order, but the direction reverses on each pass:</p>',
-          table: {
-            head: ['Pass', 'Order', 'Effect'],
-            rows: [
-              ['1', 'Team 1, 2, 3', 'Team 1 gets the strongest player.'],
-              ['2', 'Team 3, 2, 1', 'Team 3 picks first, compensating.'],
-              ['3', 'Team 1, 2, 3', 'And so on, alternating.'],
-              ['4', 'Team 3, 2, 1', 'Cumulative totals stay close.']
-            ]
-          },
-          after: '<p>Straight dealing gives team 1 the best player in every round, which compounds. Reversing means the team that picked last gets the next best player, and total team strength converges. It is the same mechanism sports drafts use, for the same reason.</p>'
-        },
-        {
-          h: 'Rating players',
-          steps: [
-            { t: 'Add a rating after each name', d: 'Write <code>Amara: 8</code>. Anything on a consistent scale works — 1 to 10 is plenty.' },
-            { t: 'Rate from memory, roughly', d: 'The goal is to avoid stacking one side, not to model ability precisely. Approximate ratings beat random by a wide margin.' },
-            { t: 'Rate everyone or nobody', d: 'Unrated players are treated as the lowest, so a half-rated list produces worse teams than an unrated one.' },
-            { t: 'Use the same scale each week', d: 'A rating that means 8 one week and 5 the next is noise.' },
-            { t: 'Keep ratings private', d: 'The tool prints team sheets without them. A visible rating list is a conversation nobody enjoys.' }
-          ],
-          callout: { type: 'warn', text: '<strong>Ratings are judgements about people.</strong> Handle the list the way you would handle any other assessment — keep it to the organiser, do not print it, and do not project it. The value is in the balanced teams, not in the numbers that produced them.' }
-        },
-        {
-          h: 'When to skip ratings',
-          cards: [
-            { t: 'PE and school groups', d: 'The point is mixing, not competing. Random is appropriate and visibly neutral.' },
-            { t: 'Social games', d: 'Where nobody is keeping score seriously, balancing adds process for no benefit.' },
-            { t: 'When you need keep-apart rules', d: 'Keep-apart and keep-together constraints work in random mode; skill balancing fixes the draft order and cannot honour them.' },
-            { t: 'New groups', d: 'You do not know anyone\'s ability yet, and guessing produces confidently wrong teams.' }
-          ]
-        },
-        {
-          h: 'Keep-apart and keep-together',
-          html: '<p>Constraints that matter in practice: two players who cannot be on the same side, a pair who arrived together and want to play together, siblings who should be separated for everyone\'s sake.</p>' +
-            '<p>These work in random mode. The generator places constrained players first, then fills the remaining slots randomly around them. Keep-together pairs are placed as a unit, which is why they sometimes make team sizes uneven — a pair cannot be split to even up the numbers.</p>' +
-            '<p>They do not work with skill balancing, because the snake draft order is determined entirely by rating. Setting both produces a warning rather than a silently ignored constraint. If you need both, the workable approach is to rate the group, generate balanced teams, then swap two players of similar rating by hand.</p>'
-        },
-        {
-          h: 'Uneven team sizes',
-          html: '<p>Teams come out different sizes for exactly three reasons, and the tool tells you which applies:</p>',
-          list: [
-            '<strong>The player count does not divide evenly.</strong> Thirteen players into three teams is 5, 4, 4. Nothing can change that.',
-            '<strong>A keep-together pair had to be placed as a unit.</strong> The pair goes somewhere whole, and the counts shift around it.',
-            '<strong>You set a team size rather than a team count.</strong> Requesting teams of four from fourteen players gives three full teams and one of two.'
-          ],
-          after: '<p>Sizes are kept as close as the numbers allow. Where a difference is unavoidable, give the extra player to the team with the lower total rating — it is the one adjustment that improves balance rather than compromising it.</p>'
-        },
-        {
-          h: 'Reproducing the same teams',
-          html: '<p>Keep the seed and the player list identical and you get identical teams. Change either and you get a new arrangement.</p>' +
-            '<p>This matters more than it sounds for a recurring game. Recording the seed lets you reproduce last week\'s teams exactly — useful when a session is rained off and resumed, or when someone disputes what the teams were. Press reshuffle for a genuinely new draw.</p>' +
-            '<p>The printable team sheets carry the seed in the footer, so the record travels with the paper.</p>'
-        },
-        {
-          h: 'Related team tools',
-          list: [
-            '<a href="/tools/classroom-group-generator">Classroom Group Generator</a> — the same problem with teaching constraints.',
-            '<a href="/tools/tournament-bracket-generator">Tournament Bracket Generator</a> — seed the teams into a draw.',
-            '<a href="/tools/round-robin-schedule-generator">Round Robin Generator</a> — everyone plays everyone.',
-            '<a href="/tools/random-student-pair-generator">Random Student Pair Generator</a> — pairs rather than teams.',
-            '<a href="/tools/league-schedule-generator">League Schedule Generator</a> — a full season for the teams you built.'
-          ]
-        }
+        { html: '<p>Paste one player per line, then choose either the number of teams or the number of players per team.</p>' +
+            '<p>For pure random teams, names alone are enough.</p><p>For skill balancing, add a rating after each player: <code>Amara: 8</code>, <code>Ben: 5</code>, <code>Chen: 7</code>.</p>' +
+            '<p>The generator uses those ratings in a snake-draft style allocation designed to keep team rating totals reasonably close.</p>' +
+            '<p>You can also name captains, create custom team names, keep specific players apart or together and use a seed when you want to reproduce the same draw.</p>' },
+        { h: 'What Is a Random Team Generator?',
+          html: '<p>A random team generator divides a list of people into smaller teams.</p><p>For example: 14 players split into 2 teams of 7, or approximately 3 balanced-size teams depending on the selected mode.</p>' +
+            '<p>Randomization removes the need for one person to visibly choose every player.</p><p>That can reduce arguments over favoritism in:</p>',
+          list: ['pickup sports', 'PE lessons', 'office games', 'club sessions', 'gaming events', 'social competitions'],
+          after: '<p>Random teams are not automatically equal in ability.</p>' +
+            '<p>If skill differences matter to the activity, add ratings and use the balancing option rather than assuming randomness will produce close teams.</p>' },
+        { h: 'How to Use This Team Generator',
+          html: '<p>Paste one player per line.</p><p>Then choose how to split the list.</p>' +
+            '<p><strong>Number of teams</strong> — use this when the event requires a fixed number of teams. Example: 24 players → 4 teams.</p>' +
+            '<p><strong>Players per team</strong> — use this when each team has a target size. Example: 5 players per team.</p>' +
+            '<p>Next, choose automatic or custom team names.</p>' +
+            '<p>If balancing by skill, add a numeric rating after each name and enable the skill option.</p><p>Then add any:</p>',
+          list: ['keep-apart pairs', 'keep-together pairs', 'captain option'],
+          after: '<p>Enter a seed if reproducibility matters.</p><p>Generate, review the teams, then print or export them.</p>' },
+        { h: 'Random Teams vs Balanced Teams',
+          html: '<p>These are different goals.</p>' +
+            '<p><strong>Random teams</strong> — every player is assigned through the random draw without using skill information. Useful when players are broadly similar, the activity is casual, perceived neutrality matters, or no reliable ratings exist.</p>' +
+            '<p><strong>Skill-balanced teams</strong> — the generator uses supplied ratings to distribute stronger and weaker players across teams. Useful when competitive balance matters, skill differences are large, or organizers know the players reasonably well.</p>' +
+            '<p>A random team can be lucky or unlucky.</p>' +
+            '<p>A skill-balanced team is only as good as the ratings supplied.</p>' +
+            '<p>Neither method can guarantee a perfectly even match.</p>' },
+        { h: 'Adding Skill Ratings',
+          html: '<p>Use a simple scale that makes sense to your group.</p>' +
+            '<p>For example, 1–10 where 1 = beginner and 10 = strongest player.</p>' +
+            '<p>The exact scale matters less than consistency.</p>' +
+            '<p>Do not rate one player based on speed, another on experience and another on how much you like playing with them.</p>' +
+            '<p>Define what the rating means.</p>' +
+            '<p>For football, you might rate overall game contribution.</p>' +
+            '<p>For a trivia night, the "skill" concept may be completely different.</p>' +
+            '<p>If ratings are uncertain, keep the scale broad.</p>' +
+            '<p>Pretending that one player is exactly 7.4 and another 7.6 creates false precision when the estimates are subjective.</p>' },
+        { h: 'How Snake-Draft Balancing Works',
+          html: '<p>The live tool uses a snake-draft approach when skill balancing is enabled.</p>' +
+            '<p>Imagine three teams and players ranked from strongest to weakest.</p>' +
+            '<p>An ordinary repeating draft might allocate: Team A: 1st, 4th, 7th; Team B: 2nd, 5th, 8th; Team C: 3rd, 6th, 9th.</p>' +
+            '<p>A snake draft reverses direction on alternating passes: first pass A → B → C, second C → B → A, then repeats.</p>' +
+            '<p>That tends to distribute high-rated players more evenly.</p>' +
+            '<p>The goal is to keep total rating sums close.</p>' +
+            '<p>It is a practical balancing method, not a mathematical guarantee that the teams will perform equally.</p>' },
+        { h: 'Why Equal Rating Totals Do Not Guarantee Equal Teams',
+          html: '<p>Two teams can have the same total rating and still play very differently.</p>' +
+            '<p>Example: Team A has one elite player plus several beginners; Team B has several medium-strength players.</p>' +
+            '<p>Both totals may equal 25.</p><p>Their actual performance can differ because of:</p>',
+          list: ['position needs', 'communication', 'chemistry', 'fitness', 'specialist skills', 'matchup effects'],
+          after: '<p>Research on competitive team games also shows that aggregating individual skill into one team number can miss important team dynamics.</p>' +
+            '<p>Use ratings as a useful approximation.</p>' +
+            '<p>For serious competition, review team composition after generation rather than treating the total score as objective truth.</p>' },
+        { h: 'Number of Teams vs Players per Team',
+          html: '<p>Choose the setting that reflects the fixed constraint.</p>' +
+            '<p>If you have 20 players and exactly 4 courts, you may want 4 teams.</p>' +
+            '<p>If the sport requires 5 players per side, choose players per team.</p>' +
+            '<p>When the numbers do not divide evenly, some teams may need one extra player.</p>' +
+            '<p>That is normal arithmetic.</p>' +
+            '<p>Do not force equal headcounts by removing someone from participation.</p>' +
+            '<p>Instead, decide whether the event can use rotating substitutes, one slightly larger team, or scheduled rest rotations.</p>' +
+            '<p>The generator handles distribution, but the activity rules determine how unequal roster sizes should be managed.</p>' },
+        { h: 'Team Captains',
+          html: '<p>The tool can name a captain for each team.</p>' +
+            '<p>When skill ratings are present, the highest-rated player can serve as captain.</p>' +
+            '<p>Without ratings, the captain may come from the draw order.</p><p>A captain can help with:</p>',
+          list: ['organizing positions', 'communicating rules', 'reporting scores', 'collecting equipment'],
+          after: '<p>Do not assume the strongest player is always the best leader.</p>' +
+            '<p>For recurring sessions, rotating captaincy may be more inclusive.</p>' +
+            '<p>Use the feature when a named point of contact is useful.</p>' +
+            '<p>If captaincy has no operational role, leaving it off keeps the team sheet simpler.</p>' },
+        { h: 'Keep-Apart and Keep-Together Rules',
+          html: '<p>Keep-apart constraints are useful when two players should not be placed on the same team.</p><p>Possible reasons include:</p>',
+          list: ['known conflict', 'repeated overpowered partnership', 'organizational restrictions', 'family/team separation in a social event'],
+          after: '<p>Keep-together constraints place selected players on the same team.</p><p>Useful cases include:</p>' +
+            '<ul style="color:var(--muted);padding-left:18px"><li>parent + young child</li><li>support partner</li><li>paired registration</li><li>required doubles partnership</li><li>shared transport arrangement</li></ul>' +
+            '<p>A keep-together pair behaves like a small block in the allocation.</p>' +
+            '<p>That can make skill totals harder to balance.</p>' +
+            '<p>Be aware that many restrictions can make balancing difficult or impossible.</p>' +
+            '<p>Prioritize genuinely necessary constraints over cosmetic preferences.</p>' },
+        { h: 'When Constraints Conflict',
+          html: '<p>Imagine Amara must stay with Ben. Ben must stay with Chen. Amara must stay apart from Chen.</p>' +
+            '<p>No team allocation can satisfy all three rules.</p>' +
+            '<p>Team-size limits can also conflict with large keep-together groups.</p>' +
+            '<p>When the requested rules cannot all be satisfied, do not keep clicking reshuffle.</p>' +
+            '<p>Change the instructions.</p><p>A useful priority order is:</p>',
+          ol: ['safety or required support', 'fixed participation rules', 'team-size requirements', 'competitive balance', 'preference'],
+          after: '<p>A computer cannot resolve contradictory rules without someone deciding which one matters more.</p>' },
+        { h: 'Use a Seed for Reproducible Teams',
+          html: '<p>A seed lets the same inputs recreate the same randomized result.</p><p>That is useful when teams are:</p>',
+          list: ['announced in advance', 'shared with coaches', 'printed', 'used across several sessions'],
+          after: '<p>If the team draw has already been accepted, reproducibility prevents accidental changes.</p>' +
+            '<p>When you intentionally want fresh teams next week, use a different seed or reshuffle.</p>' +
+            '<p>Do not repeatedly rerun a supposedly random draw until the organizer gets a preferred result.</p>' +
+            '<p>That turns randomization into hidden manual selection.</p>' },
+        { h: 'Common Team Generator Mistakes',
+          html: '<p>Avoid these problems:</p>',
+          list: ['assuming random teams are automatically equal in ability', 'using inconsistent skill-rating criteria', 'treating rating totals as perfect predictions',
+                 'forcing equal team sizes by excluding a participant', 'adding so many constraints that no useful allocation remains',
+                 'keeping two strongest players together while demanding identical totals', 'naming skill-balanced groups in ways that publicly rank players',
+                 'repeatedly regenerating until a preferred result appears', 'ignoring specialist positions', 'treating captain as synonymous with highest skill in every context'],
+          after: '<p>The best team generator produces a good starting point quickly and leaves room for sensible human review.</p>' }
       ],
-      keywords: [
-        'team generator', 'random team picker', 'balanced teams generator',
-        'snake draft team maker', 'split players into teams', 'fair team selection',
-        'team randomiser', 'skill balanced teams', 'keep players apart teams',
-        'printable team sheets', 'pick teams online', 'group splitter'
-      ]
+      keywords: ['team generator', 'random team generator online', 'skill balanced team generator', 'snake draft team balancer',
+        'team generator keep apart', 'team captain generator', 'players per team generator', 'random team picker for sports',
+        'team generator seed reproducible', 'fair team balancing tool', 'pe class team generator', 'sports team randomizer']
     }
   });
 })();

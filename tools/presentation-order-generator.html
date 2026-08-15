@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>Presentation Order Generator — Random Order with Timed Schedule | Manage My Batch</title>
-<meta name="description" content="Free presentation order generator. Randomise speaking order and build a timed schedule across lessons or days, with slot times, breaks and printable running order.">
+<title>Presentation Order Generator – Random Speaking Order & Schedule</title>
+<meta name="description" content="Randomize student presentation order and build timed speaking schedules with start times, changeovers, breaks, multiple sessions and reproducible seeds.">
 <link rel="canonical" href="https://managemybatch.com/tools/presentation-order-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="Presentation Order Generator — Random Order with Timed Schedule">
-<meta property="og:description" content="Free presentation order generator. Randomise speaking order and build a timed schedule across lessons or days, with slot times, breaks and printable running order.">
+<meta property="og:title" content="Presentation Order Generator – Random Speaking Order & Schedule">
+<meta property="og:description" content="Randomize student presentation order and build timed speaking schedules with start times, changeovers, breaks, multiple sessions and reproducible seeds.">
 <meta property="og:url" content="https://managemybatch.com/tools/presentation-order-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Presentation Order Generator — Random Order with Timed Schedule">
-<meta name="twitter:description" content="Free presentation order generator. Randomise speaking order and build a timed schedule across lessons or days, with slot times, breaks and printable running order.">
+<meta name="twitter:title" content="Presentation Order Generator – Random Speaking Order & Schedule">
+<meta name="twitter:description" content="Randomize student presentation order and build timed speaking schedules with start times, changeovers, breaks, multiple sessions and reproducible seeds.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -391,91 +391,123 @@ Jonas</textarea>
       '<div><h4 style="font-size:14.5px;margin-bottom:8px">The changeover maths</h4><p style="color:var(--muted);font-size:13.8px">Twenty five-minute presentations is not 100 minutes. With one minute of changeover each it is 119, and with a ten-minute break in the middle it is 129 — over two hours. Schedules that ignore transitions are the reason presentation days routinely run into the next lesson.</p>' +
       '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">The timed mode accounts for all of it and shows the true finish time.</p></div></div>',
     related: ['random-student-pair-generator', 'classroom-group-generator', 'student-roll-number-generator'],
-    faqs: [
-      { q: 'Why randomise presentation order?', a: 'Because order affects the experience and often the mark — early presenters have less preparation time, late ones face a tired audience. Drawing it randomly in front of the class removes any perception of favouritism.' },
-      { q: 'Can I schedule presentations across several lessons?', a: 'Yes. Session mode splits the list evenly across as many lessons, days or weeks as you need, and labels each block so students know when they are on.' },
-      { q: 'Does the schedule account for changeover time?', a: 'Yes. Set a changeover in minutes and it is added between every slot. Twenty presentations with one minute each adds nearly twenty minutes, which is why schedules without it overrun.' },
-      { q: 'How often should I schedule breaks?', a: 'Every 8–10 presentations, or roughly every 45 minutes. Beyond that, audience attention drops sharply and the students presenting last get a materially worse experience.' },
-      { q: 'Can I use this for group presentations?', a: 'Yes — enter each group name on its own line instead of individual students, and set the slot length to suit a group.' },
-      { q: 'Will the same student always go first?', a: 'Only if you keep the same seed. Change it, or press Reshuffle, between assignments so the advantage rotates across the class.' }
+faqs: [
+      { q: 'How do I randomize presentation order?', a: 'Paste one presenter or group per line and generate the order.' },
+      { q: 'Can I create start times automatically?', a: 'Yes. Choose timed slots and set the start time, minutes per presentation and changeover time.' },
+      { q: 'Can presentations be split across several lessons?', a: 'Yes. Use the across-sessions option and choose the number of sessions.' },
+      { q: 'What does the seed do?', a: 'It lets you reproduce the same randomized order later.' },
+      { q: 'Can I add breaks?', a: 'Yes. Choose how often breaks occur and how long they should last.' },
+      { q: 'What if a student is absent?', a: 'You can skip the slot, move later speakers or schedule a makeup presentation depending on the classroom policy.' },
+      { q: 'Should I reshuffle if students want different positions?', a: 'Usually no. If you need a neutral random order, generate it once and handle legitimate swaps or accommodations separately.' }
     ],
     seo: {
-      title: 'Presentation order: why the running order is not neutral',
-      lead: 'This <strong>presentation order generator</strong> randomises the running order and turns it into a real schedule — slot times, changeovers, breaks, or split evenly across several lessons. Below: the position effects that make order matter, and how to build a timetable that does not overrun.',
+      title: 'Presentation Order Generator – Randomize Speakers and Build a Timed Schedule',
+      lead: 'Use the Presentation Order Generator above to decide who presents first, second and last without drawing names manually.',
       blocks: [
-        {
-          h: 'Presentation order is not neutral',
-          html: '<p>Where you appear in a running order affects how you are received, and the effects are well documented in assessment research. Two work against each other.</p>',
-          cards: [
-            { t: 'Primacy', d: 'Early presenters are remembered more clearly and set the reference point. They are also marked before the assessor has calibrated, which can go either way.' },
-            { t: 'Recency', d: 'The last presentations are freshest in mind at the moment marks are finalised — an advantage when everything is judged at the end.' },
-            { t: 'The middle', d: 'The genuinely disadvantaged position. Neither memorable by novelty nor by recency, and it is where attention is lowest.' },
-            { t: 'Fatigue', d: 'By the twelfth presentation of the afternoon, everyone in the room is less attentive. This is usually larger than any of the above.' }
-          ],
-          after: '<p>None of this can be eliminated. What a random order does is ensure that nobody was <em>placed</em> in a disadvantageous slot — the position was assigned by a process, not by a person, which is both fairer and defensible.</p>'
-        },
-        {
-          h: 'Why randomise rather than use the register',
-          html: '<p>Alphabetical order is the default in most classrooms, and it is quietly unfair in a way that compounds.</p>' +
-            '<p>The same students go first every single time. Over a school career, a student whose surname begins with A presents first in dozens of assessed activities, and a student whose surname begins with W presents last — every time, in every subject. Whatever the position effect is, they receive it repeatedly.</p>' +
-            '<p>A random order distributes it. Generating it in front of the class also removes the suspicion that the order reflects your expectations of who will do well, which is the other reason a visible draw is worth the thirty seconds.</p>',
-          callout: { type: 'tip', text: 'Draw the order in front of the class and print it. A running order on the wall stops the "when am I on" question repeating for the rest of the lesson, and it gives people who need to prepare a known position.' }
-        },
-        {
-          h: 'Building the schedule',
-          steps: [
-            { t: 'Paste the names or group titles', d: 'One per line — individuals or teams.' },
-            { t: 'Set the presentation length', d: 'The nominal time each slot allows.' },
-            { t: 'Add changeover time', d: 'One to two minutes per slot. This is the setting people forget and it is why schedules overrun.' },
-            { t: 'Set the start time and session length', d: 'The tool fills the session and tells you what does not fit.' },
-            { t: 'Add breaks', d: 'Every 45 to 60 minutes, or after a set number of presentations.' },
-            { t: 'Split across sessions if needed', d: 'The schedule divides evenly across lessons rather than cramming the first one full.' }
-          ]
-        },
-        {
-          h: 'Changeover time is the thing that breaks schedules',
-          html: '<p>A five-minute presentation does not take five minutes. It takes five minutes plus getting to the front, plus connecting a laptop or finding a file, plus questions, plus settling.</p>',
-          table: {
-            head: ['Presentation length', 'Realistic changeover', 'Actual slot'],
-            rows: [
-              ['3 minutes', '1–2 minutes', '4–5 minutes'],
-              ['5 minutes', '2 minutes', '7 minutes'],
-              ['10 minutes', '2–3 minutes', '12–13 minutes'],
-              ['10 minutes + questions', '2–3 minutes plus 3 for questions', '15–16 minutes']
-            ]
-          },
-          after: '<p>Twenty five-minute presentations in a 60-minute lesson is arithmetically impossible once changeover is counted — it needs 140 minutes. The schedule shows the real total, which is usually the moment a plan gets revised.</p>',
-          callout: { type: 'warn', text: '<strong>Never schedule the last presentation to end exactly when the session does.</strong> One overrun early pushes everything back, and the student in the final slot is the one who loses their time. Leave a slot\'s worth of slack at the end.' }
-        },
-        {
-          h: 'Breaks',
-          html: '<p>Every 45 to 60 minutes for adults, more often for younger students. A five-minute break costs one presentation slot and recovers the attention of everyone in the room for the ones that follow.</p>' +
-            '<p>Place breaks between presentations rather than at a fixed clock time, so nobody is interrupted mid-delivery. And use them as natural session boundaries when splitting across several lessons — a break is a better division point than an arbitrary count.</p>' +
-            '<p>Where the schedule runs a full day, a longer break in the middle is worth more than several short ones. Presentations immediately after lunch are the worst slot in any running order, which is a good reason to schedule something else there.</p>'
-        },
-        {
-          h: 'Across several lessons',
-          html: '<p>Splitting a class of thirty across three lessons raises a fairness question that a single running order does not: students presenting in a later session have had extra preparation time.</p>' +
-            '<p>Two honest ways to handle it. Set the deadline at the start of the first session for everyone, so preparation time is equal regardless of position. Or accept the difference and randomise the session allocation as well, so it was not assigned to anyone deliberately.</p>' +
-            '<p>The generator does the second by default: it distributes evenly across the sessions you specify, in the randomised order, so both position and session are drawn rather than chosen.</p>'
-        },
-        {
-          h: 'Related classroom tools',
-          list: [
-            '<a href="/tools/random-student-pair-generator">Random Student Pair Generator</a> — pair students for the work behind the presentation.',
-            '<a href="/tools/classroom-group-generator">Classroom Group Generator</a> — form the presenting groups.',
-            '<a href="/tools/student-roll-number-generator">Student Roll Number Generator</a> — number the register.',
-            '<a href="/tools/random-question-picker">Random Question Picker</a> — draw questions for the Q&amp;A.',
-            '<a href="/tools/classroom-seating-chart-generator">Classroom Seating Chart Generator</a> — arrange the room for an audience.'
-          ]
-        }
+        { html: '<p>Paste one presenter or group name per line, choose whether you need only a randomized order or a full timed schedule, then set the start time, minutes per presentation, changeover time and breaks.</p>' +
+            '<p>For presentations spread across several lessons or days, use the across-sessions mode.</p>' +
+            '<p>A seed lets you regenerate the same order later.</p>' +
+            '<p>That is useful when the running order needs to be shared in advance, printed or reopened without changing the result.</p>' +
+            '<p>The tool is designed for classrooms, workshops, pitch sessions, oral assessments and any event where everyone needs a clear turn.</p>' },
+        { h: 'What Is a Presentation Order Generator?',
+          html: '<p>A presentation order generator shuffles a list of presenters and returns a running order.</p><p>Example:</p>' +
+            '<pre class="code">1. Chen\n2. Amara\n3. Farah\n4. Ben\n5. Diego</pre>' +
+            '<p>Instead of the teacher deciding who goes first, the list is randomized.</p><p>That can reduce arguments about favoritism.</p>' +
+            '<p>The tool can go further by turning the order into a timetable.</p><p>For example:</p>' +
+            '<pre class="code">9:00 — Chen\n9:08 — Amara\n9:16 — Farah</pre>' +
+            '<p>when each slot includes presentation and changeover time.</p>' +
+            '<p>This is useful when a class must finish within a fixed lesson period.</p>' },
+        { h: 'How to Use the Presentation Order Generator',
+          html: '<p>Enter one presenter per line.</p><p>For group presentations, enter the group name as one item.</p><p>Then choose:</p>' +
+            '<p><strong>Order only</strong> — use this when you just need the sequence.</p>' +
+            '<p><strong>Timed slots</strong> — use this when every presenter needs an assigned start time.</p>' +
+            '<p><strong>Across sessions</strong> — use this when the presentations span several lessons or days.</p>' +
+            '<p>For a timed schedule, set:</p>',
+          list: ['start time', 'minutes each', 'changeover time', 'break interval', 'break length'],
+          after: '<p>Enter a seed if the result must be reproducible.</p><p>Generate the schedule, then print, copy or export it.</p>' },
+        { h: 'Why Randomize Presentation Order?',
+          html: '<p>Presentation order can affect how students perceive fairness.</p>' +
+            '<p>If the teacher always chooses the first speaker, students may believe the decision is personal even when it is not.</p>' +
+            '<p>Randomization provides a neutral process.</p><p>It can also prevent predictable patterns such as:</p>',
+          list: ['alphabetical order every time', 'same confident student first', 'volunteers always going before reluctant speakers'],
+          after: '<p>That does not mean every presentation should be randomized.</p>' +
+            '<p>There are valid reasons to choose an order deliberately, including accessibility, scheduling or assessment logistics.</p>' +
+            '<p>Use randomization when order does not need to reflect another educational requirement.</p>' },
+        { h: 'Random Order vs Volunteer Order',
+          html: '<p>Letting students volunteer can feel friendly, but it creates predictable behavior.</p>' +
+            '<p>Confident presenters often go early.</p><p>Anxious presenters may wait until the end.</p>' +
+            '<p>That can create a long final cluster of students who are all reluctant to speak.</p>' +
+            '<p>A randomized published order gives everyone advance clarity.</p><p>Another option is controlled choice:</p>',
+          list: ['randomize the order', 'allow limited swaps', 'require swaps to be agreed before the session'],
+          after: '<p>This preserves fairness while accommodating genuine scheduling needs.</p>' +
+            '<p>Whatever rule you choose, explain it before presentations begin.</p>' },
+        { h: 'Why Use a Seed?',
+          html: '<p>A seed makes the shuffled order reproducible.</p>' +
+            '<p>Suppose you create the schedule on Monday and tell students their positions.</p>' +
+            '<p>On Wednesday, you reopen the tool.</p><p>Without a seed, a fresh shuffle could change the order.</p>' +
+            '<p>With the same presenter list, settings and seed, you can reproduce the same schedule.</p>' +
+            '<p>This makes the randomization auditable and practical.</p><p>A seed is especially useful when:</p>',
+          list: ['students need advance notice', 'several teachers share the schedule', 'the order is printed', 'the event spans multiple sessions'],
+          after: '<p>Random does not have to mean disposable.</p>' },
+        { h: 'Timed Presentation Slots',
+          html: '<p>A timed schedule answers two questions: What order are we presenting? When should each presentation begin?</p>' +
+            '<p>Suppose each speaker has 5 minutes presenting plus 2 minutes for questions/changeover.</p>' +
+            '<p>Each slot effectively consumes 7 minutes.</p><p>Ten speakers therefore need roughly 70 minutes before any longer break.</p>' +
+            '<p>That arithmetic matters.</p>' +
+            '<p>A class can easily schedule twelve "five-minute presentations" into a 60-minute lesson and forget that transitions take time.</p>' +
+            '<p>Use the changeover setting realistically.</p>' +
+            '<p>Walking to the front, loading slides and exchanging feedback all consume minutes.</p>' },
+        { h: 'Changeover Time',
+          html: '<p>Changeover time is the gap between presentations.</p><p>Even 60 seconds can make a schedule much more realistic.</p><p>Use changeover for:</p>',
+          list: ['switching laptops', 'loading slides', 'moving groups', 'teacher scoring', 'resetting equipment', 'short audience questions'],
+          after: '<p>If everyone presents from the same device with slides preloaded, the changeover can be short.</p>' +
+            '<p>If groups need to rearrange equipment, allow longer.</p>' +
+            '<p>Do not make the timetable mathematically perfect but operationally impossible.</p>' +
+            '<p>A schedule is useful only when the physical classroom can keep up with it.</p>' },
+        { h: 'Adding Breaks',
+          html: '<p>Long presentation blocks are tiring for both presenters and audience.</p>' +
+            '<p>The generator can add a break after a chosen number of presentations.</p><p>For example: break after every 5 presenters, break length 10 minutes.</p>' +
+            '<p>This is useful for:</p>',
+          list: ['half-day events', 'oral exams', 'project showcases', 'conference-style sessions'],
+          after: '<p>In a normal classroom lesson, the end of the period may serve as the natural break.</p>' +
+            '<p>Do not insert a formal break simply because the option exists.</p>' +
+            '<p>Use it when the total schedule genuinely benefits from one.</p>' },
+        { h: 'Presentations Across Several Sessions',
+          html: '<p>Some classes have too many speakers for one lesson.</p>' +
+            '<p>Across-sessions scheduling distributes the randomized order across the chosen number of sessions.</p>' +
+            '<p>That creates a clearer plan than manually cutting the list.</p><p>Example:</p>' +
+            '<pre class="code">Session 1: Students 1–8\nSession 2: Students 9–16\nSession 3: Students 17–24</pre>' +
+            '<p>Consider whether session position creates an advantage.</p>' +
+            '<p>Students presenting later may have more preparation time.</p>' +
+            '<p>If the assessment is high stakes, make sure the scheduling policy is transparent and any extra preparation opportunity is understood.</p>' +
+            '<p>Randomization can distribute order fairly, but it cannot make different calendar dates identical conditions.</p>' },
+        { h: 'Group Presentations',
+          html: '<p>Enter each group as one presenter.</p><p>Example:</p><pre class="code">Group Alpha\nGroup Beta\nGroup Gamma</pre>' +
+            '<p>The schedule then assigns one slot per group rather than one slot per student.</p>' +
+            '<p>Make sure the presentation duration reflects group size.</p>' +
+            '<p>A five-person group may need longer than an individual presentation.</p>' +
+            '<p>If every group receives the same time, communicate whether that time includes:</p>',
+          list: ['setup', 'presentation', 'questions', 'feedback'],
+          after: '<p>Clear timing expectations reduce disputes on the day.</p>' },
+        { h: 'Presentation Order and Anxiety',
+          html: '<p>Some students prefer early slots because they want the task finished.</p>' +
+            '<p>Others prefer later slots because they want more preparation time.</p>' +
+            '<p>There is no single order that removes presentation anxiety for everyone.</p>' +
+            '<p>Randomization can remove the perception that the teacher chose someone to go first as a punishment.</p>' +
+            '<p>For students with documented accommodations or genuine support needs, follow the school’s plan.</p>' +
+            '<p>Fairness does not always mean identical treatment.</p>' +
+            '<p>A transparent random process can be the default while reasonable accommodations remain possible.</p>' },
+        { h: 'Common Presentation Scheduling Mistakes',
+          html: '<p>Avoid these problems:</p>',
+          list: ['forgetting changeover time', 'scheduling more minutes than the lesson contains', 'reshuffling because someone dislikes the result',
+                 'changing published times after one absence without warning', 'assuming every group needs the same duration as an individual',
+                 'ignoring formal assessment rules', 'sharing unnecessary student data', 'using random order when accessibility requires a deliberate slot',
+                 'adding breaks without accounting for their duration', 'forgetting that students in later sessions may receive more preparation time'],
+          after: '<p>A good presentation schedule feels calm because the order and timing were solved before the first speaker stands up.</p>' }
       ],
-      keywords: [
-        'presentation order generator', 'random speaking order', 'presentation schedule maker',
-        'randomise presentation order', 'class presentation timetable', 'changeover time scheduling',
-        'presentation running order', 'fair presentation order', 'split presentations across lessons',
-        'timed presentation slots', 'order of speakers randomiser', 'classroom presentation planner'
-      ]
+      keywords: ['presentation order generator', 'random speaking order generator', 'presentation schedule maker', 'timed presentation slots generator',
+        'classroom presentation timetable', 'presentation changeover time', 'random order generator seed', 'presentation order across sessions',
+        'group presentation scheduler', 'oral exam order generator', 'presentation order fairness', 'presentation timer schedule generator']
     }
   });
 })();

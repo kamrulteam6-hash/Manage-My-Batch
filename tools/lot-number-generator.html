@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>Lot Number Generator — GS1-Aware Traceability Codes | Manage My Batch</title>
-<meta name="description" content="Free lot number generator for food, cosmetics and pharma. Build GS1-compatible lot codes with expiry linkage, date codes and AI (10) application identifier output.">
+<title>Lot Number Generator – Food, Cosmetics & Pharma Lot Codes</title>
+<meta name="description" content="Generate traceable lot numbers with production dates, Julian codes, facility codes, sequences and shelf-life dates. Create GS1 AI (10) batch/lot data.">
 <link rel="canonical" href="https://managemybatch.com/tools/lot-number-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="Lot Number Generator — GS1-Aware Traceability Codes">
-<meta property="og:description" content="Free lot number generator for food, cosmetics and pharma. Build GS1-compatible lot codes with expiry linkage, date codes and AI (10) application identifier output.">
+<meta property="og:title" content="Lot Number Generator – Food, Cosmetics & Pharma Lot Codes">
+<meta property="og:description" content="Generate traceable lot numbers with production dates, Julian codes, facility codes, sequences and shelf-life dates. Create GS1 AI (10) batch/lot data.">
 <meta property="og:url" content="https://managemybatch.com/tools/lot-number-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Lot Number Generator — GS1-Aware Traceability Codes">
-<meta name="twitter:description" content="Free lot number generator for food, cosmetics and pharma. Build GS1-compatible lot codes with expiry linkage, date codes and AI (10) application identifier output.">
+<meta name="twitter:title" content="Lot Number Generator – Food, Cosmetics & Pharma Lot Codes">
+<meta name="twitter:description" content="Generate traceable lot numbers with production dates, Julian codes, facility codes, sequences and shelf-life dates. Create GS1 AI (10) batch/lot data.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -386,92 +386,126 @@
       '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">If your sector regulates one of the terms specifically, follow that definition rather than a general convention. What matters practically is that the code on the pack resolves to a record precise enough to scope a recall.</p></div></div>' +
       '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>Check the 20-character limit before committing to a format.</strong> GS1 application identifier (10) caps the batch/lot field at 20 alphanumeric characters. A scheme that exceeds it cannot be encoded in a GS1-128 or DataMatrix symbol — and that is usually discovered after the label artwork is signed off.</span></div>',
     related: ['batch-number-generator', 'asset-tag-number-generator', 'receipt-number-generator'],
-    faqs: [
-      { q: 'What is a lot number?', a: 'A code identifying a specific quantity of product that shares production characteristics. Combined with a date, it allows a recall to be scoped precisely and lets anyone holding the product check whether theirs is affected.' },
-      { q: 'What is the difference between a lot number and a batch number?', a: 'They are frequently used interchangeably. Where distinguished, a batch is one production run under uniform conditions and a lot is a distribution grouping that may combine batches. Follow your sector\'s regulated definition if one exists.' },
-      { q: 'How long can a GS1 lot number be?', a: 'Application identifier (10) allows up to 20 alphanumeric characters. Because it is variable length it must appear last in a GS1-128 element string, or be terminated with a separator character.' },
-      { q: 'Should the expiry date be part of the lot number?', a: 'No. Expiry belongs in GS1 AI (17) and in the printed best-before date. Encoding it in the lot code creates a second source of truth that will disagree with the first after any shelf-life revision.' },
-      { q: 'Why use a Julian date code in a lot number?', a: 'It is always five characters, sorts correctly, and cannot be misread across regions the way a numeric day/month date can. That predictability matters when the code is printed small on packaging.' },
-      { q: 'Does every product need a lot number?', a: 'Requirements vary by market and product type, but food, cosmetics and pharmaceuticals are generally expected to carry a lot identifier so that traceability and recall are possible. Check the rules for your specific product and markets.' }
+faqs: [
+      { q: 'What is a lot number?', a: 'It is an identifier assigned to a defined quantity or production grouping so products can be connected to manufacturing and traceability records.' },
+      { q: 'Is a lot number the same as a batch number?', a: 'Often, but not always. Organizations may define them differently; GS1 AI (10) covers "batch or lot number."' },
+      { q: 'What is GS1 AI (10)?', a: 'It is the GS1 Application Identifier for batch or lot number data.' },
+      { q: 'How long can a GS1 batch/lot value be?', a: 'GS1 defines the AI (10) data field as variable-length alphanumeric data up to 20 characters.' },
+      { q: 'Can a lot number include the production date?', a: 'Yes. Date segments are common, provided the format is documented and the complete code remains unique within the required scope.' },
+      { q: 'Can this generator calculate expiry?', a: 'It can calculate a date from production date plus a shelf-life interval. The shelf life itself must come from your approved product specification.' },
+      { q: 'Should lot numbers be reused?', a: 'Avoid reuse because historical product, quality, complaint and distribution records may continue to reference the original lot.' }
     ],
     seo: {
-      title: 'Lot numbers: GS1 application identifiers, expiry dates and the 20-character limit',
-      lead: 'This <strong>lot number generator</strong> builds codes for food, cosmetics and pharmaceutical products — with expiry calculation, GS1 application-identifier output, and validation against the AI (10) length limit. Below: what the regulations actually require, and why the expiry date belongs in its own field.',
+      title: 'Lot Number Generator – Create Traceable Production Lot Codes',
+      lead: 'Use the Lot Number Generator above to create lot identifiers for food, cosmetics, pharmaceuticals and other traceable products.',
       blocks: [
-        {
-          h: 'The lot number is the recall key',
-          html: '<p>A <strong>lot number</strong> identifies a quantity of product manufactured, packed or handled as a single unit under uniform conditions. It is the reference a recall notice quotes, and the only thing standing between "withdraw this lot" and "withdraw everything".</p>' +
-            '<p>For most consumer goods it is a legal requirement. Food, cosmetics, medical devices and pharmaceuticals all carry lot-marking obligations in the EU, UK, US and most other markets — with the general principle being that any prepackaged product must bear a mark identifying the lot to which it belongs.</p>' +
-            '<p>The regulations are mostly silent on <em>format</em>. They require that a lot be identifiable, that the mark be indelible and legible, and — in the EU — that it be preceded by the letter <code>L</code> where it could otherwise be confused with other markings. The design is yours.</p>'
-        },
-        {
-          h: 'GS1 application identifiers',
-          html: '<p>In a GS1-128 or DataMatrix barcode, each data element is preceded by an <strong>application identifier</strong> telling the scanner what follows. The ones that matter for lot marking:</p>',
-          table: {
-            head: ['AI', 'Meaning', 'Format'],
-            rows: [
-              ['<code>(01)</code>', 'GTIN', '14 digits, fixed.'],
-              ['<code>(10)</code>', 'Batch or lot number', 'Up to 20 alphanumeric characters, variable.'],
-              ['<code>(11)</code>', 'Production date', '<code>YYMMDD</code>, 6 digits.'],
-              ['<code>(15)</code>', 'Best before date', '<code>YYMMDD</code>, 6 digits.'],
-              ['<code>(17)</code>', 'Expiration date', '<code>YYMMDD</code>, 6 digits.'],
-              ['<code>(21)</code>', 'Serial number', 'Up to 20 characters, variable.']
-            ]
-          },
-          after: '<p>A full encoded string looks like <code>(01)05012345678900(10)L26222A(17)271231</code>. The brackets are printed for humans and are not encoded in the barcode itself.</p>',
-          callout: { type: 'warn', text: '<strong>AI (10) is capped at 20 characters.</strong> A longer lot code cannot be encoded, and some printer software truncates silently rather than erroring — producing a scannable barcode carrying the wrong lot. The generator enforces the limit; verify your label software does too.' }
-        },
-        {
-          h: 'Lot number or batch number?',
-          html: '<p>Used interchangeably in practice. Where a distinction exists, "batch" is the manufacturing unit and "lot" is the traceability unit — one batch of bulk product might be packed into three lots on different days, or three small batches combined into one lot for distribution.</p>' +
-            '<p>Which term to use is largely determined by your regulator and your customers. Food and cosmetics regulation says lot; manufacturing and pharmaceutical GMP documentation more often says batch. Pick one, define it in your quality system, and use it consistently — the harm comes from two departments meaning different things by the same word. See the <a href="/tools/batch-number-generator">batch number generator</a> for the production-side view.</p>'
-        },
-        {
-          h: 'Keep the expiry date out of the lot code',
-          html: '<p>It is tempting to embed the expiry date in the lot number so the label carries one string instead of two. Resist it.</p>',
-          list: [
-            '<strong>The barcode already has a field for it.</strong> AI (17) for expiration, (15) for best-before. Scanners, warehouse systems and pharmacy software read those fields specifically.',
-            '<strong>Duplication creates conflict.</strong> When the printed expiry and the embedded one disagree — after a shelf-life revalidation, say — nobody can tell which is authoritative.',
-            '<strong>It wastes lot-code characters.</strong> Six of your twenty, spent on data that has its own field.',
-            '<strong>Shelf life can change.</strong> A stability study can extend or shorten it; the lot identity should not change when it does.'
-          ],
-          after: '<p>Encode the production date in the lot code if you want date visibility — that is fixed forever — and let the expiry live in its own field, calculated from production date plus shelf life. The generator does exactly this.</p>'
-        },
-        {
-          h: 'Structuring the code',
-          steps: [
-            { t: 'Start with L where required', d: 'EU food labelling asks for the lot mark to be preceded by <code>L</code> unless it is clearly distinguishable from other markings.' },
-            { t: 'Add the production date', d: 'Julian (<code>26222</code>) is compact; <code>YYMMDD</code> is more readable. Both are unambiguous, unlike regional date formats.' },
-            { t: 'Add line, shift or site if you have them', d: 'One character each. This is what narrows a recall from a day\'s output to a shift\'s.' },
-            { t: 'Add a sequence for multiple runs', d: 'Distinguishes two lots of the same product produced on the same day and line.' },
-            { t: 'Stay within 20 characters', d: 'And ideally well within — long codes print small and read badly on curved or flexible packaging.' },
-            { t: 'Uppercase, alphanumeric, no spaces', d: 'Spaces and punctuation cause encoding problems and transcription errors alike.' }
-          ],
-          callout: { type: 'tip', text: 'Julian date codes are popular in lot marking for a reason beyond compactness: <code>26222</code> is unambiguous everywhere, while <code>08/10/26</code> means August in the US and October in most of Europe. On a product that crosses borders, that ambiguity is a genuine recall risk.' }
-        },
-        {
-          h: 'Does everything need a lot number?',
-          html: '<p>Most prepackaged consumer goods do. The main statutory exemptions in the EU and UK cover products where a durability date including day and month is already given, agricultural produce sold direct, packaging below a size threshold, and products sold loose or packed at the customer\'s request.</p>' +
-            '<p>Beyond the legal minimum, the practical test is whether you could ever need to withdraw a subset of production. If the answer is yes — and for anything with an ingredient, a process step or a supplier it usually is — lot marking is worth doing regardless of whether it is required.</p>' +
-            '<p>Requirements differ by market and product class, and this is not legal advice. Confirm the specific obligation for your product and your destination markets before finalising a labelling format.</p>'
-        },
-        {
-          h: 'Related traceability tools',
-          list: [
-            '<a href="/tools/batch-number-generator">Batch Number Generator</a> — production-side codes with line and shift.',
-            '<a href="/tools/barcode-number-generator">Barcode Number Generator</a> — the GTIN that accompanies AI (10).',
-            '<a href="/tools/shipping-reference-generator">Shipping Reference Generator</a> — track where a lot was distributed.',
-            '<a href="/tools/sku-generator">SKU Generator</a> — the stock codes lots are produced against.',
-            '<a href="/tools/purchase-order-number-generator">Purchase Order Number Generator</a> — incoming raw material references.'
-          ]
-        }
+        { html: '<p>Choose an industry-oriented starting preset, then configure the prefix, date code, sequence length, production site and starting number. Enter the production date and shelf life when you need to calculate a related expiry date for your records.</p>' +
+            '<p>You can also build a custom lot pattern or create GS1 batch/lot data using Application Identifier <code>(10)</code>.</p>' +
+            '<p>A compact lot might look like <code>L26221001</code>. A site-aware format could look like <code>L-P1-26221-001</code>.</p>' +
+            '<p>There is no universal lot-number structure for every product. The important requirement is that the code reliably identifies the lot and connects it to the records required by your business, customers and regulators.</p>' },
+        { h: 'What Is a Lot Number?',
+          html: '<p>A lot number is an identifier assigned to a defined quantity of product or material.</p><p>It supports traceability by connecting physical product to records such as:</p>',
+          list: ['production date', 'facility', 'raw materials', 'ingredients', 'packaging', 'quality results', 'release decisions', 'expiry or best-before data', 'distribution'],
+          after: '<p>A company may put the lot number on:</p>' +
+            '<ul style="color:var(--muted);padding-left:18px"><li>product packaging</li><li>cartons</li><li>cases</li><li>labels</li><li>certificates</li><li>shipping documents</li><li>recall notices</li></ul>' +
+            '<p>The value of the lot code comes from the records behind it.</p>' +
+            '<p>A random-looking number with no retrievable history provides little traceability.</p>' },
+        { h: 'How to Use This Lot Number Generator',
+          html: '<p>Choose the industry preset closest to your use case.</p><p>Then set:</p>',
+          list: ['prefix', 'separator', 'date code', 'sequence length', 'facility or site code', 'starting number', 'production date', 'shelf life'],
+          after: '<p>Preview the result.</p>' +
+            '<p>If your organization already has a controlled lot-number procedure, use the custom pattern to reproduce that format rather than creating a new competing scheme.</p>' +
+            '<p>Generate the required lot numbers and export them.</p>' +
+            '<p>For regulated manufacturing, issuance should be recorded in the validated or controlled system that owns production records.</p>' +
+            '<p>The online generator can help create or test values; it is not a substitute for your quality system.</p>' },
+        { h: 'Lot Number vs Batch Number',
+          html: '<p>The words are frequently used together.</p>' +
+            '<p>GS1 explicitly labels Application Identifier <code>(10)</code> as "batch or lot number."</p>' +
+            '<p>Some manufacturers use the terms interchangeably.</p><p>Others define them differently.</p><p>For example:</p>' +
+            '<pre class="code">Batch: one manufacturing run\nLot: a quantity grouped for packaging, release or distribution</pre>' +
+            '<p>There is no benefit in arguing about vocabulary if the organization has not documented its actual process.</p><p>Define:</p>',
+          list: ['what creates a new batch', 'what creates a new lot', 'whether one batch can produce several lots', 'how the records link'],
+          after: '<p>Then make the identifier scheme reflect that traceability model.</p>' },
+        { h: 'GS1 Application Identifier (10)',
+          html: '<p>GS1 AI <code>(10)</code> identifies a batch or lot number.</p>' +
+            '<p>The GS1 reference data defines the batch/lot field as variable length with up to 20 alphanumeric characters.</p>' +
+            '<p>This lets a manufacturer carry its own batch/lot value alongside other GS1 data.</p><p>For example, a GS1 barcode may include:</p>',
+          list: ['GTIN', 'batch/lot', 'production date', 'expiry date'],
+          after: '<p>Each data element has its own Application Identifier.</p>' +
+            '<p>Do not combine everything into AI <code>(10)</code> merely because the lot code contains room for text.</p>' +
+            '<p>Use GS1 data fields according to their defined meanings.</p>' },
+        { h: 'Lot Number and GTIN Are Different',
+          html: '<p>A GTIN identifies the trade item.</p><p>A lot number identifies a particular production grouping.</p><p>Example:</p>' +
+            '<p>All identical 250 g packages of one product can share a GTIN.</p>' +
+            '<p>Units produced on Monday may belong to <code>LOT-A</code>.</p><p>Units produced on Tuesday may belong to <code>LOT-B</code>.</p>' +
+            '<p>The GTIN stays the same because the trade item is still the same.</p>' +
+            '<p>The lot changes because the manufacturing grouping changed.</p>' +
+            '<p>Traceability systems often need both values.</p>' +
+            '<p>Do not create a new GTIN every time you create a new lot.</p>' },
+        { h: 'Production Date Codes',
+          html: '<p>A lot number can include the production date.</p><p>Common options include:</p>',
+          list: ['year', 'year + month', 'full compact date', 'Julian day-of-year code'],
+          after: '<p>A date segment helps people recognize when the lot was made.</p>' +
+            '<p>It does not replace the actual structured production-date field in your records.</p>' +
+            '<p>If the date code is <code>26221</code>, staff should know exactly how to decode it.</p>' +
+            '<p>Document whether it means <code>YYJJJ</code> and how leap years are handled.</p>' +
+            '<p>Do not rely on institutional memory.</p>' +
+            '<p>A lot code may still need to be interpreted years after the employees who designed it have left.</p>' },
+        { h: 'Facility Codes',
+          html: '<p>A site code can help trace production back to a location.</p><p>Example:</p><pre class="code">L-MAN-26221-001</pre>' +
+            '<p>This is useful when the same product is made at several plants.</p><p>Keep facility codes stable.</p>' +
+            '<p>If a plant changes its marketing name, the old code should still decode correctly.</p>' +
+            '<p>Maintain a reference table for historical site codes.</p>' +
+            '<p>Do not reuse an old facility code for a new unrelated location if historical product still exists in the market.</p>' +
+            '<p>The complete lot number needs an unambiguous traceability path.</p>' },
+        { h: 'Shelf Life and Expiry',
+          html: '<p>The generator can use a production date plus shelf-life interval to calculate an associated expiry date.</p>' +
+            '<p>That can be convenient for planning and records.</p><p>But shelf life must come from the actual product specification.</p>' +
+            '<p>Do not guess it.</p><p>Food, cosmetic and pharmaceutical shelf life can depend on:</p>',
+          list: ['formulation', 'packaging', 'storage', 'stability data', 'opening conditions', 'regulation'],
+          after: '<p>A lot-number tool can perform date arithmetic.</p>' +
+            '<p>It cannot determine scientifically how long your product remains safe or effective.</p>' +
+            '<p>Enter only an approved shelf-life value.</p>' },
+        { h: 'Food Traceability Lot Codes',
+          html: '<p>The FDA Food Traceability Rule defines a traceability lot code as a descriptor, often alphanumeric, used to uniquely identify a traceability lot within the records of the traceability lot code source.</p>' +
+            '<p>The rule applies to certain foods and specified traceability events.</p>' +
+            '<p>It does not mean every food business can become compliant simply by printing a lot number.</p>' +
+            '<p>Compliance involves required records and key data elements.</p><p>If your food is in scope:</p>',
+          list: ['determine when a TLC must be assigned', 'maintain the traceability plan', 'preserve required data', 'link the code to the appropriate source', 'test record retrieval'],
+          after: '<p>The identifier is one part of the system.</p>' },
+        { h: 'Can Lot Numbers Be Reused?',
+          html: '<p>Avoid reusing an old lot identifier for a new unrelated lot.</p><p>Old lot codes may remain in:</p>',
+          list: ['customer records', 'distributor systems', 'complaint files', 'retained samples', 'certificates', 'laboratory results', 'recall documentation'],
+          after: '<p>Reusing a code makes later investigations ambiguous.</p>' +
+            '<p>If the identifier format has limited capacity, redesign the future format before the space is exhausted.</p>' +
+            '<p>Do not recycle history.</p>' +
+            '<p>A lot number should continue to point to the same production grouping for as long as relevant records or products exist.</p>' },
+        { h: 'Lot Numbers and Recalls',
+          html: '<p>Lot identification can make recalls more targeted.</p>' +
+            '<p>When a defect is traced to one production grouping, the lot code helps identify affected inventory and distribution records.</p>' +
+            '<p>A good recall process should answer:</p><p><strong>Where did this lot come from?</strong></p><p>and:</p><p><strong>Where did this lot go?</strong></p>' +
+            '<p>The lot number is the join key between those records.</p>' +
+            '<p>Run mock recalls periodically when your quality system requires or benefits from them.</p>' +
+            '<p>A code format is only proven useful when people can use it quickly under pressure.</p>' },
+        { h: 'GS1-128 Lot Data',
+          html: '<p>If you use GS1-128, AI <code>(10)</code> can carry the lot value along with other data.</p>' +
+            '<p>The encoded string must follow GS1 syntax, including correct handling of variable-length fields.</p>' +
+            '<p>The ManageMyBatch tool can help build the batch/lot element when a GTIN is provided.</p>' +
+            '<p>Still validate the complete barcode with the packaging and scanning systems you actually use.</p>' +
+            '<p>A correct text element does not guarantee:</p>',
+          list: ['sufficient print quality', 'correct barcode size', 'scanner compatibility', 'regulatory label placement'],
+          after: '<p>Data and print execution are separate quality checks.</p>' },
+        { h: 'Common Lot Number Mistakes',
+          html: '<p>Avoid these problems:</p>',
+          list: ['treating lot and GTIN as the same identifier', 'claiming one lot format applies to all industries', 'guessing shelf life',
+                 'treating best-before and expiry as universal synonyms', 'reusing old lot codes', 'changing facility codes without preserving historical meaning',
+                 'printing lot codes that staff cannot decode', 'assuming a GS1-compatible field creates full regulatory compliance',
+                 'using a date code without documenting the format', 'generating lots outside the controlled production system without recording them'],
+          after: '<p>Traceability depends on both the identifier and the records that identifier unlocks.</p>' }
       ],
-      keywords: [
-        'lot number generator', 'gs1 application identifier 10', 'lot code format',
-        'lot number vs batch number', 'expiry date barcode ai 17', 'food lot marking',
-        'julian lot code', 'cosmetics lot number', 'gs1-128 lot number',
-        'lot number 20 character limit', 'traceability lot code', 'pharmaceutical lot number'
-      ]
+      keywords: ['lot number generator', 'gs1 ai 10 batch lot', 'food traceability lot code', 'pharma lot number format',
+        'lot number vs gtin', 'julian date lot code', 'cosmetics lot number', 'lot number shelf life expiry',
+        'facility code lot number', 'lot number recall', 'gs1-128 lot data', 'lot number generator online']
     }
   });
 })();

@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>League Schedule Generator — Full Season Home &amp; Away Fixtures | Manage My Batch</title>
-<meta name="description" content="Free league schedule generator. Build a full home-and-away season with match weeks, dates, a fairness report and a printable fixture grid. Handles odd team counts.">
+<title>League Schedule Generator – Home & Away Season Fixtures</title>
+<meta name="description" content="Create full home-and-away league schedules with match weeks, dates, byes and fairness checks. Generate a printable season fixture list for any sport.">
 <link rel="canonical" href="https://managemybatch.com/tools/league-schedule-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="League Schedule Generator — Full Season Home &amp; Away Fixtures">
-<meta property="og:description" content="Free league schedule generator. Build a full home-and-away season with match weeks, dates, a fairness report and a printable fixture grid. Handles odd team counts.">
+<meta property="og:title" content="League Schedule Generator – Home & Away Season Fixtures">
+<meta property="og:description" content="Create full home-and-away league schedules with match weeks, dates, byes and fairness checks. Generate a printable season fixture list for any sport.">
 <meta property="og:url" content="https://managemybatch.com/tools/league-schedule-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="League Schedule Generator — Full Season Home &amp; Away Fixtures">
-<meta name="twitter:description" content="Free league schedule generator. Build a full home-and-away season with match weeks, dates, a fairness report and a printable fixture grid. Handles odd team counts.">
+<meta name="twitter:title" content="League Schedule Generator – Home & Away Season Fixtures">
+<meta name="twitter:description" content="Create full home-and-away league schedules with match weeks, dates, byes and fairness checks. Generate a printable season fixture list for any sport.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -365,91 +365,111 @@ Eastvale</textarea>
       '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">Send captains the grid and the CSV; pin the week-by-week list on the noticeboard.</p></div></div>' +
       '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span>Decide on a mid-season break <strong>before</strong> publishing. Adding one afterwards shifts every subsequent date, and by then those dates are in people\'s calendars.</span></div>',
     related: ['match-fixture-generator', 'round-robin-schedule-generator', 'tournament-bracket-generator'],
-    faqs: [
-      { q: 'How long is a home-and-away season?', a: 'Twice the number of teams minus two, in match weeks — eight teams gives 14 weeks and 56 matches. Add any mid-season break on top.' },
-      { q: 'Does every team get the same number of home games?', a: 'In a home-and-away season, yes, exactly. In a single round it is close but not equal, which is why the tool warns you if venue advantage matters.' },
-      { q: 'Why does the fairness report show a longest run?', a: 'Because equal totals can still hide four consecutive away fixtures. Runs are what teams actually complain about, and they are invisible in a home/away total.' },
-      { q: 'Can I add a mid-season break?', a: 'Yes — set the week to break after and the length. Every subsequent date shifts, so decide before publishing rather than after.' },
-      { q: 'What happens with an odd number of teams?', a: 'One team is idle each week. Byes are distributed evenly across the season, and the tool names the resting team in each match week.' },
-      { q: 'Can I export the schedule?', a: 'Yes — download a CSV with week, date, home and away as separate columns, which imports directly into a spreadsheet or a calendar tool.' }
+faqs: [
+      { q: 'What is a league schedule generator?', a: 'It creates a season fixture list showing which teams play each other across organized match weeks and dates.' },
+      { q: 'What is a home-and-away league?', a: 'Each team plays every opponent twice, normally once at home and once away.' },
+      { q: 'How many matches are in a double round robin?', a: 'With n teams, the league contains n(n - 1) matches.' },
+      { q: 'How many games does each team play?', a: 'Each team plays 2(n - 1) matches in a double round robin.' },
+      { q: 'What happens with an odd number of teams?', a: 'One team has a bye in each round, rotated across the full schedule.' },
+      { q: 'What does the fairness report check?', a: 'It helps review structural issues such as home/away balance, streaks and bye patterns.' },
+      { q: 'Should I use this or the round robin generator?', a: 'Use this tool for a full dated home-and-away season. Use the Round Robin Schedule Generator for a simpler all-play-all pairing schedule.' }
     ],
     seo: {
-      title: 'League schedules: home and away seasons, breaks and fairness checks',
-      lead: 'This <strong>league schedule generator</strong> builds a full home-and-away season with dated match weeks, a mid-season break, a lookup grid and a fairness report that catches long away runs before you publish. Below: how a double round robin works, and what makes a fixture list feel fair.',
+      title: 'League Schedule Generator – Build a Full Home-and-Away Season',
+      lead: 'Use the League Schedule Generator above when you need more than an opponent list—you need a complete season.',
       blocks: [
-        {
-          h: 'How long a home-and-away season is',
-          html: '<p>A league season where every team plays every other twice — once at home, once away — is a <strong>double round robin</strong>. The arithmetic is fixed:</p>',
-          table: {
-            head: ['Teams', 'Match weeks', 'Matches per team', 'Total matches'],
-            rows: [
-              ['6', '10', '10', '30'],
-              ['8', '14', '14', '56'],
-              ['10', '18', '18', '90'],
-              ['12', '22', '22', '132'],
-              ['16', '30', '30', '240'],
-              ['20', '38', '38', '380']
-            ]
-          },
-          after: '<p>With <em>n</em> teams: 2(<em>n</em>&nbsp;−&nbsp;1) match weeks and <em>n</em>(<em>n</em>&nbsp;−&nbsp;1) matches. The 20-team, 38-week figure is exactly why most national football leagues look the way they do.</p>'
-        },
-        {
-          h: 'The second half mirrors the first',
-          html: '<p>The standard construction runs a single round robin for the first half of the season, then repeats it with home and away reversed. Week 20 of a 38-week season is the reverse of week 1.</p>' +
-            '<p>The advantages are real: every pairing happens exactly twice with venues swapped, the schedule is easy to verify, and teams get a return fixture at a predictable interval.</p>' +
-            '<p>Some leagues deliberately reshuffle the second half instead, so that the reverse fixture does not fall in a fixed relationship to the original. It avoids two teams meeting twice within a short window when the mirror lands awkwardly, at the cost of a schedule that is harder to check by hand. The generator mirrors by default, which is what most leagues do.</p>'
-        },
-        {
-          h: 'What makes a schedule feel fair',
-          html: '<p>Every team plays the same number of matches, so fairness is not about the count. It is about the <em>distribution</em>, and there are four things people notice.</p>',
-          cards: [
-            { t: 'Alternation', d: 'Home, away, home, away is what everyone expects. Long runs either way feel like a punishment, whichever direction they run.' },
-            { t: 'Longest run', d: 'Three consecutive away fixtures is noticeable; four generates complaints. The fairness report shows the worst run in the schedule so you can see it before publishing.' },
-            { t: 'Start and end', d: 'Opening and closing the season at home is a small advantage, and doing both is conspicuous. Rotate it between seasons.' },
-            { t: 'Break symmetry', d: 'A mid-season break that leaves one team with five home games before it and one with five after looks arbitrary — because it is.' }
-          ],
-          callout: { type: 'warn', text: '<strong>An odd number of match weeks makes perfect balance impossible.</strong> Someone will have one more home game in each half or an uneven run somewhere. This is arithmetic, not a bug — the fix is to distribute the imbalance differently each season and to say so publicly.' }
-        },
-        {
-          h: 'Building the season',
-          steps: [
-            { t: 'Enter your teams', d: 'One per line. The order does not matter — the rotation handles pairing.' },
-            { t: 'Set the start date and interval', d: 'Weekly, fortnightly or a custom cadence. Each match week gets a real date.' },
-            { t: 'Add a mid-season break', d: 'A gap of one or more weeks at a chosen round. Dates after it shift automatically.' },
-            { t: 'Exclude blackout dates', d: 'Holidays, cup weekends, venue closures. The schedule skips them rather than clashing.' },
-            { t: 'Read the fairness report', d: 'Home/away counts per team, longest consecutive run, and any team opening and closing at the same venue.' },
-            { t: 'Export', d: 'CSV for a spreadsheet, or a printable grid for the noticeboard.' }
-          ]
-        },
-        {
-          h: 'Odd numbers of teams',
-          html: '<p>With an odd number, one team sits out each match week. The schedule adds a phantom opponent, and whoever is drawn against it has a bye.</p>' +
-            '<p>Two consequences worth planning for. The season becomes <em>n</em> weeks per half rather than <em>n</em>&nbsp;−&nbsp;1, because every team needs a week off. And every team has played a different number of matches at most points during the season, so a mid-season league table ranked on total points is misleading — rank on points per game, or publish "games played" prominently.</p>',
-          callout: { type: 'tip', text: 'If you can, recruit or drop a team to reach an even number. An odd-numbered league produces a bye every week, a table that needs explaining all season, and a final-round bye that can decide the title. Nothing about the format is broken; it is just permanently slightly awkward.' }
-        },
-        {
-          h: 'The lookup grid',
-          html: '<p>Alongside the chronological fixture list, the generator produces a <strong>grid</strong>: teams down the side, teams across the top, and the match week in each cell.</p>' +
-            '<p>It answers the question a fixture list answers badly — "when do we play them?" — without scanning 38 rows. Secretaries and captains use it constantly, and it is the format that belongs on a clubhouse wall.</p>' +
-            '<p>It is also the fastest way to verify a schedule by eye. Every cell should be filled exactly once in each triangle, the diagonal should be empty, and any duplicate or gap is immediately visible in a way it never is in a list.</p>'
-        },
-        {
-          h: 'Related scheduling tools',
-          list: [
-            '<a href="/tools/round-robin-schedule-generator">Round Robin Generator</a> — single round robins and pool stages.',
-            '<a href="/tools/match-fixture-generator">Match Fixture Generator</a> — venues, kick-off times and match numbers.',
-            '<a href="/tools/tournament-bracket-generator">Tournament Bracket Generator</a> — cup competitions alongside the league.',
-            '<a href="/tools/team-generator">Team Generator</a> — build the squads.',
-            '<a href="/tools/work-shift-rotation-generator">Work Shift Rotation Generator</a> — the same fairness reasoning for rotas.'
-          ]
-        }
+        { html: '<p>The tool creates full home-and-away league fixtures, organizes them into match weeks, attaches dates and provides a fairness report so the schedule can be reviewed before publication.</p>' +
+            '<p>In a typical double round robin, every team plays every other team at home, every team plays every other team away, odd team counts create bye weeks, and the second set of fixtures reverses the venue relationship.</p>' +
+            '<p>This is the right format for football, soccer, basketball, hockey, volleyball and many other league competitions where standings are built from results across an entire season.</p>' },
+        { h: 'What Is a League Schedule?',
+          html: '<p>A league schedule is the full set of fixtures that determines who plays whom and when across a season.</p>' +
+            '<p>Unlike a knockout tournament, teams are not eliminated after one loss.</p>' +
+            '<p>They continue playing through the fixture list and accumulate results.</p><p>A league schedule normally needs:</p>',
+          list: ['teams', 'rounds or match weeks', 'home/away designation', 'dates', 'bye handling', 'season order'],
+          after: '<p>A simple round robin can form the mathematical base.</p>' +
+            '<p>The league schedule adds the calendar and home/away structure needed to run a season.</p>' +
+            '<p>The tool also reports scheduling fairness so organizers can inspect patterns before publishing.</p>' },
+        { h: 'Double Round Robin League Format',
+          html: '<p>Many home-and-away leagues use double round robin.</p><p>If there are n teams, each team plays <code>2(n - 1)</code> matches. Total matches: <code>n(n - 1)</code>.</p>' +
+            '<p>For 10 teams: each team 18 matches, total 90 matches.</p>' +
+            '<p>For 20 teams: each team 38 matches, total 380 matches.</p>' +
+            '<p>League size therefore has a major effect on season length.</p>' +
+            '<p>Adding only two teams does more than add two games.</p>' +
+            '<p>It creates new matchups between those teams and every existing team.</p>' +
+            '<p>Calculate the full match volume before deciding the competition calendar.</p>' },
+        { h: 'Single vs Double Round Robin',
+          html: '<p>A single round robin has one meeting between each pair.</p><p>A double round robin has two.</p>' +
+            '<p><strong>Single</strong> — fewer matches. Useful when season is short, venues are neutral, travel is expensive, or competition is recreational.</p>' +
+            '<p><strong>Double</strong> — usually supports one home and one away meeting. Useful when home venue matters, season length allows it, or organizers want symmetrical pairings.</p>' +
+            '<p>The League Schedule Generator is especially useful for full home-and-away seasons.</p>' +
+            '<p>For a simple all-play-all tournament with no dates, the <a href="/tools/round-robin-schedule-generator">Round Robin Schedule Generator</a> is a lighter option.</p>' },
+        { h: 'How Many Match Weeks Are Needed?',
+          html: '<p>With an even number of teams in a single round robin, the schedule normally requires <code>n - 1</code> logical rounds.</p>' +
+            '<p>A double round robin therefore needs <code>2(n - 1)</code> match weeks if every team plays one league match per round.</p>' +
+            '<p>For 10 teams: single 9 match weeks, double 18 match weeks.</p>' +
+            '<p>For 20 teams: single 19, double 38.</p>' +
+            '<p>An odd number of teams creates a bye each round and changes the round count.</p>' +
+            '<p>The generator handles this pairing structure.</p>' +
+            '<p>Your real calendar may still contain additional empty weeks for holidays, cups, weather, international breaks or facility closures.</p>' },
+        { h: 'Why Home and Away Balance Matters',
+          html: '<p>Home advantage can matter in many sports.</p><p>The causes vary and may include:</p>',
+          list: ['travel', 'familiarity', 'crowd', 'venue conditions', 'routine'],
+          after: '<p>A double round robin reduces one obvious schedule imbalance because each pair can meet once at each venue.</p>' +
+            '<p>But fairness is not only the final total of home and away games.</p><p>Sequence matters too.</p>' +
+            '<p>A team could technically finish with equal totals while experiencing four straight away matches, five straight home matches or unusually clustered travel.</p>' +
+            '<p>That is why a fairness report is useful.</p>' +
+            '<p>It helps organizers inspect the pattern rather than looking only at season totals.</p>' },
+        { h: 'What a Fairness Report Should Help You Review',
+          html: '<p>A schedule fairness review can highlight issues such as:</p>',
+          list: ['home/away totals', 'long home streaks', 'long away streaks', 'bye distribution', 'repeated venue patterns'],
+          after: '<p>A generator can measure these structural properties.</p><p>It cannot decide every form of competitive fairness.</p>' +
+            '<p>For example, it may not know derby policing constraints, travel distance, shared stadiums, television requests, team strength or cup commitments.</p>' +
+            '<p>Treat the fairness report as a diagnostic.</p>' +
+            '<p>If it identifies a long streak, decide whether that streak matters enough to change.</p>' +
+            '<p>Do not promise "perfect fairness" simply because one metric is balanced.</p>' },
+        { h: 'Bye Weeks in Odd-Team Leagues',
+          html: '<p>If a league has an odd number of teams, one team cannot be paired in each match week.</p>' +
+            '<p>That team receives a bye.</p><p>For nine teams, each round contains 4 matches plus 1 bye.</p>' +
+            '<p>Across a complete single round robin, every team should receive one bye.</p>' +
+            '<p>Across a double round robin, each team will normally have two idle rounds across the full mirrored cycle.</p>' +
+            '<p>The timing of those byes can matter.</p><p>A late-season bye may feel different from an early one.</p>' +
+            '<p>Review the pattern if competitive stakes are high.</p>' +
+            '<p>Do not create fake fixtures against a "bye team" in official results unless your software specifically uses that representation.</p>' },
+        { h: 'Match Weeks and Home/Away Reversal',
+          html: '<p>A match week groups fixtures belonging to the same league round.</p>' +
+            '<p>Match weeks make a season easier to understand than one long chronological list.</p><p>They are useful for:</p>',
+          list: ['standings discussion', 'referee appointments', 'media schedules', 'team planning', 'postponements'],
+          after: '<p>In a mirrored double round robin, the second meeting reverses the first.</p>' +
+            '<p>This provides symmetrical pairings.</p>' +
+            '<p>However, copying the first-half order exactly and simply swapping venues can create repeated sequence patterns.</p>' +
+            '<p>Some leagues deliberately reorder the second half.</p>' +
+            '<p>If your governing body specifies how reverse fixtures must be ordered, follow those rules.</p>' },
+        { h: 'Home and Away Streaks',
+          html: '<p>A home/away streak occurs when one team receives several consecutive fixtures with the same venue designation.</p>' +
+            '<p>Example: H, H, H, H or A, A, A, A.</p><p>A short streak may be unavoidable.</p><p>Longer streaks can create:</p>',
+          list: ['travel concentration', 'venue revenue imbalance', 'fan inconvenience', 'facility pressure'],
+          after: '<p>Review the fairness report for unusually long sequences.</p>' +
+            '<p>If you manually move fixtures later, re-check the streaks.</p>' +
+            '<p>One swap can solve one problem and create another.</p>' +
+            '<p>League scheduling is a constraint problem, which is why a clean initial schedule is so valuable.</p>' },
+        { h: 'Checking the Season Before Publication',
+          html: '<p>Before publishing, review every team.</p><p>Confirm:</p>',
+          list: ['expected number of matches', 'correct opponents', 'home/away totals', 'bye count', 'long home/away streaks', 'known venue conflicts', 'holiday conflicts', 'shared-ground conflicts', 'opening and closing dates'],
+          after: '<p>For n teams in a double round robin, each team should play <code>2(n - 1)</code> league fixtures.</p>' +
+            '<p>The full league should contain <code>n(n - 1)</code> matches.</p>' +
+            '<p>Use those totals as a basic structural check.</p>' +
+            '<p>Then use the fairness report for sequence-level review.</p>' },
+        { h: 'Common League Scheduling Mistakes',
+          html: '<p>Avoid these problems:</p>',
+          list: ['underestimating how many matches a larger league creates', 'confusing a round robin pairing list with a full season schedule',
+                 'ignoring home/away streaks', 'forgetting bye weeks for odd team counts', 'assuming equal home totals guarantee perfect fairness',
+                 'publishing before checking holidays', 'ignoring shared venues', 'regenerating the entire schedule after one postponement',
+                 'assuming the generator knows travel geography or TV constraints', 'choosing full league-management software when only a printable fixture list is needed'],
+          after: '<p>A strong league schedule provides a fair structural starting point and enough clarity that every club can plan its season.</p>' }
       ],
-      keywords: [
-        'league schedule generator', 'home and away fixtures', 'double round robin',
-        'football fixture generator', 'season schedule maker', 'league fixture list',
-        'fixture grid', 'mid season break scheduling', 'home away balance fairness',
-        'sports league planner', 'odd number of teams league', 'export fixtures csv'
-      ]
+      keywords: ['league schedule generator', 'home and away season fixtures', 'double round robin league generator', 'league fairness report',
+        'match week schedule generator', 'league bye weeks odd teams', 'home away streak scheduling', 'league schedule vs round robin',
+        'season fixture list generator', 'sports league scheduling tool', 'printable league schedule maker', 'league schedule csv export']
     }
   });
 })();

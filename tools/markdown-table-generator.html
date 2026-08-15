@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>Markdown Table Generator — CSV to GitHub Tables, Free | Manage My Batch</title>
-<meta name="description" content="Free Markdown table generator. Convert CSV, TSV or Excel data into aligned GitHub-flavored Markdown tables with per-column alignment, pipe escaping and a live preview.">
+<title>Markdown Table Generator – Convert CSV or TSV to GFM Tables</title>
+<meta name="description" content="Convert CSV, TSV or pasted spreadsheet data into clean GitHub Flavored Markdown tables with alignment, escaped pipes, pretty formatting and live preview.">
 <link rel="canonical" href="https://managemybatch.com/tools/markdown-table-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="Markdown Table Generator — CSV to GitHub Tables, Free">
-<meta property="og:description" content="Free Markdown table generator. Convert CSV, TSV or Excel data into aligned GitHub-flavored Markdown tables with per-column alignment, pipe escaping and a live preview.">
+<meta property="og:title" content="Markdown Table Generator – Convert CSV or TSV to GFM Tables">
+<meta property="og:description" content="Convert CSV, TSV or pasted spreadsheet data into clean GitHub Flavored Markdown tables with alignment, escaped pipes, pretty formatting and live preview.">
 <meta property="og:url" content="https://managemybatch.com/tools/markdown-table-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Markdown Table Generator — CSV to GitHub Tables, Free">
-<meta name="twitter:description" content="Free Markdown table generator. Convert CSV, TSV or Excel data into aligned GitHub-flavored Markdown tables with per-column alignment, pipe escaping and a live preview.">
+<meta name="twitter:title" content="Markdown Table Generator – Convert CSV or TSV to GFM Tables">
+<meta name="twitter:description" content="Convert CSV, TSV or pasted spreadsheet data into clean GitHub Flavored Markdown tables with alignment, escaped pipes, pretty formatting and live preview.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -440,94 +440,123 @@ Price,$0,$19,Custom</textarea>
       '<p style="color:var(--muted);font-size:13.8px;margin-top:10px"><strong>Compact</strong> uses minimal widths. Diffs stay tiny and edits touch one line, at the cost of an unreadable source. For tables that change often — a status matrix, a changelog — compact is usually the better trade.</p></div></div>' +
       '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>Paste an existing Markdown table back into the input and it will be parsed and reformatted. That is the quickest way to realign a table that has drifted after editing, or to switch a whole file from padded to compact.</span></div>',
     related: ['html-table-generator', 'github-task-list-generator', 'csv-test-data-generator'],
-    faqs: [
-      { q: 'How do I create a table in Markdown?', a: 'Write a header row of pipe-separated cells, then a separator row of dashes, then your data rows. The separator row is mandatory — without it nothing renders as a table.' },
-      { q: 'How do I align columns?', a: 'Put colons in the separator row: <code>:---</code> for left, <code>:---:</code> for centre, <code>---:</code> for right. This generator writes them for you, and detects numeric columns to right-align automatically.' },
-      { q: 'How do I put a pipe character inside a cell?', a: 'Escape it as <code>\\|</code>. Keep the escaping option enabled and it is handled automatically — essential when your table documents shell commands or regular expressions.' },
-      { q: 'Can I have multiple lines inside one cell?', a: 'Not as real line breaks — a table row must be a single line. Use <code>&lt;br&gt;</code> instead, which GitHub and most other renderers honour inside cells.' },
-      { q: 'Can I put a list or code block in a cell?', a: 'No. Only inline formatting works: bold, italics, inline code, links and images. Block-level elements break the table.' },
-      { q: 'Do Markdown tables work everywhere?', a: 'They are a GitHub-flavored Markdown extension, supported by GitHub, GitLab, Obsidian, Notion, Docusaurus and most static site generators — but not by a strict CommonMark renderer.' }
+faqs: [
+      { q: 'How do I make a table in GitHub Markdown?', a: 'Create a header row, a delimiter row using hyphens and then the data rows. Pipes separate the cells.' },
+      { q: 'How do I center a Markdown table column?', a: 'Use colons on both sides of the delimiter, such as <code>:---:</code>.' },
+      { q: 'How do I right-align a Markdown column?', a: 'Use a trailing colon in the delimiter cell, such as <code>---:</code>.' },
+      { q: 'How do I put a pipe character inside a Markdown table cell?', a: 'Escape it with a backslash, for example <code>\\|</code>, so it is treated as cell content instead of a separator.' },
+      { q: 'Can I convert Excel data to Markdown?', a: 'Yes. Copy the spreadsheet range, paste it into the generator and use the tab-delimited input.' },
+      { q: 'Does Markdown support merged cells?', a: 'Standard GitHub Flavored Markdown table syntax does not provide normal rowspan or colspan features. Use an HTML table when you need complex merged cells.' },
+      { q: 'Are Markdown tables part of basic CommonMark?', a: 'Tables are an extension in GitHub Flavored Markdown rather than a core CommonMark table syntax.' }
     ],
     seo: {
-      title: 'Markdown tables: syntax, alignment, escaping and where they run out',
-      lead: 'This <strong>Markdown table generator</strong> turns pasted spreadsheet or CSV data into clean, aligned GitHub-flavored tables with pipe escaping handled. Below: the syntax, how alignment works, what you cannot put in a cell, and which platforms support tables at all.',
+      title: 'Markdown Table Generator – Create Clean GitHub-Flavored Tables',
+      lead: 'Use the Markdown Table Generator above to turn pasted CSV, TSV or spreadsheet data into a clean GitHub Flavored Markdown table without hand-aligning pipes and dashes.',
       blocks: [
-        {
-          h: 'The syntax',
-          html: '<p>A Markdown table is a header row, a delimiter row, and any number of body rows, with cells separated by pipes:</p>' +
-            '<p><code>| Name | Role |</code><br><code>| --- | --- |</code><br><code>| Ada | Engineer |</code></p>' +
-            '<p>The <strong>delimiter row is mandatory</strong> — without it, the block is just paragraphs containing pipe characters. It must have the same number of cells as the header, and each cell needs at least three dashes in most parsers.</p>' +
-            '<p>Leading and trailing pipes are optional and column widths need not line up; the parser does not care. Humans reading the raw file do, which is why the generator pads every column to a consistent width.</p>'
-        },
-        {
-          h: 'Alignment',
-          html: '<p>Colons in the delimiter row control per-column alignment:</p>',
-          table: {
-            head: ['Delimiter', 'Alignment', 'Use for'],
-            rows: [
-              ['<code>---</code>', 'Default (left in every renderer).', 'Text.'],
-              ['<code>:---</code>', 'Left, stated explicitly.', 'Text, when the rest of the table is aligned.'],
-              ['<code>:---:</code>', 'Centre.', 'Status marks, short flags, yes/no columns.'],
-              ['<code>---:</code>', 'Right.', 'Numbers, prices, dates, counts.']
-            ]
-          },
-          after: '<p>Right-aligning numeric columns is the single change that most improves a data table: digits line up by place value, so magnitudes are comparable at a glance.</p>',
-          callout: { type: 'tip', text: 'Alignment is applied by the renderer, not by the raw text. A table that looks perfectly aligned in your editor may render left-aligned everywhere if you padded with spaces instead of using colons.' }
-        },
-        {
-          h: 'Escaping pipes',
-          html: '<p>A literal <code>|</code> inside a cell splits it in two. Escape it with a backslash: <code>\\|</code>.</p>' +
-            '<p>This bites most often with keyboard shortcuts (<code>Ctrl\\|C</code>), shell commands, regex alternations and union types in code examples. The generator escapes pipes in your data automatically, which matters when you are pasting a column of shell one-liners.</p>' +
-            '<p>Inside inline code the rule still applies in GitHub-flavored Markdown — <code>`a | b`</code> in a cell breaks the row, and it must be written <code>`a \\| b`</code>. This is the most commonly reported "Markdown table bug" and it is specified behaviour.</p>'
-        },
-        {
-          h: 'What you cannot put in a cell',
-          html: '<p>Markdown tables have a hard structural limit: <strong>one line per cell</strong>. The row ends at the newline, so nothing that requires its own line works.</p>',
-          cards: [
-            { t: 'No line breaks', d: 'Use <code>&lt;br&gt;</code> for a soft break inside a cell. It works in GitHub and most renderers, at the cost of being HTML in your Markdown.' },
-            { t: 'No lists', d: 'A bullet list needs line breaks. Approximate with <code>&lt;br&gt;• item</code>, or restructure so each item is a row.' },
-            { t: 'No fenced code blocks', d: 'Inline code with backticks works; a fenced block does not. Long snippets belong below the table with a reference from it.' },
-            { t: 'No nested tables', d: 'Not expressible. If you need one, the data wants a different shape.' },
-            { t: 'No column or row spans', d: 'Every row has the same number of cells. Merged headers require HTML.' }
-          ],
-          after: '<p>When you hit two or more of these, stop fighting the syntax and use an <a href="/tools/html-table-generator">HTML table</a> — Markdown renderers pass raw HTML through, so you can embed one directly in the document.</p>'
-        },
-        {
-          h: 'Building a table from data',
-          steps: [
-            { t: 'Paste from a spreadsheet or CSV', d: 'Tab-separated data straight from Excel, Sheets or Numbers is detected automatically.' },
-            { t: 'Confirm the header row', d: 'The first row becomes the header. Toggle it off if your data has none and you want generic headings.' },
-            { t: 'Set alignment per column', d: 'Right for numeric, centre for status, left for everything else.' },
-            { t: 'Choose padded or compact output', d: 'Padded is far more readable in the raw file and diffs cleanly. Compact is smaller and fine when nobody edits the source by hand.' },
-            { t: 'Check the preview, then copy', d: 'The preview renders exactly what GitHub will show, including escaped pipes.' }
-          ]
-        },
-        {
-          h: 'Where tables are supported',
-          html: '<p>Tables are not part of original Markdown. They come from <strong>GitHub-flavored Markdown</strong> and the CommonMark tables extension, so support varies more than people expect.</p>',
-          list: [
-            '<strong>Works:</strong> GitHub, GitLab, Bitbucket, Obsidian, Notion, Discord (in some contexts), VS Code preview, MkDocs, Docusaurus, Jekyll with kramdown, Pandoc.',
-            '<strong>Needs a plugin:</strong> some static site generators using strict CommonMark, and older Python-Markdown installs without the <code>tables</code> extension.',
-            '<strong>Does not work:</strong> plain CommonMark with no extensions, several comment systems, and most chat clients — where a table becomes a wall of pipes.'
-          ],
-          callout: { type: 'warn', text: 'Before committing a table to a docs site, render it in that site — not in your editor. VS Code\'s preview uses GitHub-flavored Markdown and will happily show a table your production generator does not support.' }
-        },
-        {
-          h: 'Related formatting tools',
-          list: [
-            '<a href="/tools/html-table-generator">HTML Table Generator</a> — accessible markup with spans, captions and scope attributes.',
-            '<a href="/tools/github-task-list-generator">GitHub Task List Generator</a> — nested checklists for issues and PRs.',
-            '<a href="/tools/csv-test-data-generator">CSV Test Data Generator</a> — sample data to tabulate.',
-            '<a href="/tools/html-select-option-generator">HTML Select Option Generator</a> — turn the same list into a dropdown.'
-          ]
-        }
+        { html: '<p>Paste your rows, choose the delimiter, decide whether the first row is the header, set column alignment and generate the result. The tool can format the source for readability, escape pipe characters that would otherwise split a cell and show a rendered preview before you copy or download the Markdown.</p>' +
+            '<p>Markdown tables look simple until the data contains punctuation, uneven columns or different alignment requirements. A generator removes the repetitive syntax while still producing readable plain text that works well in README files, documentation, issue descriptions and Markdown-based knowledge bases.</p>' },
+        { h: 'What Is a Markdown Table?',
+          html: '<p>A Markdown table is a plain-text representation of rows and columns.</p>' +
+            '<p>GitHub Flavored Markdown uses a header row, a delimiter row and zero or more data rows.</p><p>A basic table looks like:</p>' +
+            '<pre class="code">| Name | Role |\n| --- | --- |\n| Maya | Developer |\n| Omar | Designer |</pre>' +
+            '<p>The first row contains the column headings.</p>' +
+            '<p>The second row tells the Markdown renderer that the block is a table.</p>' +
+            '<p>The remaining rows contain the data.</p>' +
+            '<p>GitHub Flavored Markdown extends CommonMark with table syntax, which is why tables work in GitHub even though basic original Markdown did not define a dedicated table format.</p>' },
+        { h: 'How to Use This Markdown Table Generator',
+          html: '<p>Paste your source data into the tool.</p><p>You can use content copied from:</p>',
+          list: ['Excel', 'Google Sheets', 'CSV files', 'TSV files', 'database exports', 'plain-text lists'],
+          after: '<p>Choose the delimiter if it is not detected automatically.</p><p>Mark the first row as a header when appropriate.</p>' +
+            '<p>Then set the alignment for each column.</p>' +
+            '<p>For example, text columns may be left aligned while prices or quantities may be right aligned.</p>' +
+            '<p>Generate the table and inspect the preview.</p>' +
+            '<p>If a cell contains a literal pipe character, confirm it has been escaped in the Markdown output.</p>' +
+            '<p>Then copy the Markdown into the target document.</p>' },
+        { h: 'The Header Row Is Required in GFM Tables',
+          html: '<p>A GitHub Flavored Markdown table requires a header row.</p>' +
+            '<p>Even if your source data does not naturally have headings, the table syntax still needs that first row followed by the delimiter row.</p>' +
+            '<p>For example:</p><pre class="code">| Item | Value |\n| --- | --- |\n| A | 10 |</pre>' +
+            '<p>The GFM specification requires the header row and delimiter row to contain the same number of cells.</p>' +
+            '<p>If the header has three columns but the delimiter row has only two, the block may not be recognized as a table.</p>' +
+            '<p>This is an easy mistake when writing Markdown manually and one reason generated output is useful.</p>' },
+        { h: 'What Is the Markdown Table Delimiter Row?',
+          html: '<p>The delimiter row appears directly below the header.</p><p>A basic delimiter cell contains hyphens:</p><pre class="code">---</pre>' +
+            '<p>Alignment is indicated with colons.</p><p>Left aligned:</p><pre class="code">:---</pre>' +
+            '<p>Centered:</p><pre class="code">:---:</pre><p>Right aligned:</p><pre class="code">---:</pre>' +
+            '<p>A three-column table might use:</p><pre class="code">| :--- | :---: | ---: |</pre>' +
+            '<p>The first column is left aligned, the second centered and the third right aligned.</p>' +
+            '<p>The generator builds these markers automatically from your alignment settings.</p>' +
+            '<p>That is much less error-prone than editing punctuation by hand across a wide table.</p>' },
+        { h: 'Column Alignment in Markdown',
+          html: '<p>Alignment is most useful when the data has a clear visual type.</p>' +
+            '<p>Text such as names and descriptions is usually easiest to scan when left aligned.</p>' +
+            '<p>Numbers often read better when right aligned.</p><p>Short statuses may work well centered.</p><p>Example:</p>' +
+            '<pre class="code">| Product | Status | Price |\n| :--- | :---: | ---: |</pre>' +
+            '<p>This does not change the underlying data.</p>' +
+            '<p>It only communicates how compatible Markdown renderers should display the cells.</p>' +
+            '<p>Not every Markdown platform implements every extension identically, so preview the table in the system where it will actually be published.</p>' +
+            '<p>For GitHub, use GFM-compatible syntax.</p>' },
+        { h: 'Escaping Pipe Characters Inside Cells',
+          html: '<p>The pipe character:</p><pre class="code">|</pre><p>normally separates columns.</p>' +
+            '<p>If a cell itself needs a literal pipe, it must be escaped so the parser does not treat it as another column boundary.</p>' +
+            '<p>For example:</p><pre class="code">A \\| B</pre><p>represents text containing a pipe within one cell.</p>' +
+            '<p>This matters in technical documentation because pipe characters appear in:</p>',
+          list: ['shell commands', 'regular expressions', 'programming examples', 'union-type notation', 'formulas', 'option lists'],
+          after: '<p>A generator should escape these values automatically.</p>' +
+            '<p>Otherwise one innocent character can shift every remaining value into the wrong column.</p>' },
+        { h: 'Markdown Tables from CSV',
+          html: '<p>CSV is a convenient source format because it already represents rows and columns.</p>' +
+            '<p>However, proper CSV can contain quoted commas and line breaks inside fields.</p>' +
+            '<p>A naive conversion that simply splits every line on commas can produce the wrong result.</p><p>For example:</p>' +
+            '<pre class="code">"Smith, Jane",Engineering</pre><p>contains two fields, not three.</p>' +
+            '<p>When converting CSV, use a parser that respects CSV quoting.</p>' +
+            '<p>If you are generating difficult input to test a parser, use the <a href="/tools/csv-test-data-generator">CSV Test Data Generator</a> first, then convert the result.</p>' +
+            '<p>The raw structure matters more than how the file happens to look in a text editor.</p>' },
+        { h: 'Markdown Tables from TSV and Spreadsheets',
+          html: '<p>Copying cells from Excel or Google Sheets often produces tab-separated text.</p><p>That makes TSV a practical input for Markdown generation.</p>' +
+            '<p>Tabs are less likely than commas to appear inside normal cell text, which makes pasted spreadsheet ranges easier to interpret.</p>' +
+            '<p>A typical workflow is:</p>',
+          ol: ['select a range in the spreadsheet', 'copy it', 'paste it into the generator', 'choose tab as the delimiter', 'review the table', 'copy the Markdown'],
+          after: '<p>This is faster than retyping each value and avoids the common mistake of missing a pipe or delimiter row.</p>' },
+        { h: 'Pretty Markdown vs Compact Markdown',
+          html: '<p>Markdown does not require every source column to line up visually.</p><p>Both of these can render as the same table:</p>' +
+            '<pre class="code">| Name | Price |\n| --- | ---: |\n| Pen | 2 |</pre>' +
+            '<p>and a padded version where spaces are added to align the raw source.</p>' +
+            '<p>Pretty formatting is helpful when humans will edit the Markdown directly.</p>' +
+            '<p>Compact formatting produces shorter source.</p><p>Choose based on the document workflow.</p>' +
+            '<p>For a README that developers maintain by hand, readable source is valuable.</p>' +
+            '<p>For machine-generated Markdown, compact output may be perfectly acceptable.</p>' },
+        { h: 'Markdown Tables Do Not Support Every HTML Table Feature',
+          html: '<p>GFM tables are intentionally simple.</p><p>They are not a good fit for every tabular layout.</p>' +
+            '<p>Standard GFM table syntax does not provide straightforward native syntax for:</p>',
+          list: ['<code>rowspan</code>', '<code>colspan</code>', 'multi-level headers', 'complex cell grouping', 'rich block content inside cells'],
+          after: '<p>When the structure becomes complicated, an HTML table may be the better choice.</p>' +
+            '<p>Use the <a href="/tools/html-table-generator">HTML Table Generator</a> when you need semantic header scopes, captions or more control over markup.</p>' +
+            '<p>Markdown works best when the table is genuinely simple.</p>' },
+        { h: 'Tables in GitHub README Files',
+          html: '<p>Markdown tables are common in GitHub READMEs because they make comparison information easy to scan.</p><p>Good uses include:</p>',
+          list: ['feature matrices', 'environment variables', 'command options', 'browser support', 'package versions', 'API fields', 'project status', 'benchmark summaries'],
+          after: '<p>Keep headings concise.</p><p>If a cell contains several paragraphs of prose, the information may belong outside the table.</p>' +
+            '<p>Tables are strongest when the reader can compare values across rows and columns quickly.</p>' +
+            '<p>A giant table is not automatically clearer than well-structured headings and lists.</p>' },
+        { h: 'Tables in Issues and Pull Requests',
+          html: '<p>A small table can make a bug report or pull request easier to review.</p><p>For example:</p>',
+          table: { head: ['Environment', 'Result'], rows: [['Chrome', 'Pass'], ['Firefox', 'Fail']] },
+          after: '<p>This is useful for compatibility tests, rollout status or before/after comparisons.</p>' +
+            '<p>If you are tracking individual tasks rather than comparing data, use a GitHub task list instead.</p>' +
+            '<p>Tables answer “how do these values compare?”</p><p>Task lists answer “what work remains?”</p>' +
+            '<p>Choosing the correct structure makes collaborative documents easier to scan. See the <a href="/tools/github-task-list-generator">GitHub Task List Generator</a>.</p>' },
+        { h: 'Common Markdown Table Mistakes',
+          html: '<p>Watch for these problems:</p>',
+          list: ['forgetting the delimiter row', 'using a different number of header and delimiter cells', 'failing to escape a pipe inside a cell',
+                 'parsing quoted CSV with a simple comma split', 'assuming raw column spacing affects rendered alignment', 'using Markdown for a table that needs rowspan or colspan',
+                 'creating a huge table that is harder to read than normal prose', 'forgetting that different Markdown platforms may support different extensions',
+                 'turning every list of information into a table', 'failing to preview after pasting spreadsheet data'],
+          after: '<p>The goal is not merely valid Markdown. The result should remain useful when rendered and understandable in source form.</p>' }
       ],
-      keywords: [
-        'markdown table generator', 'markdown table syntax', 'markdown table alignment',
-        'csv to markdown table', 'excel to markdown', 'github flavored markdown table',
-        'markdown table escape pipe', 'markdown table line break', 'markdown table example',
-        'readme table', 'markdown table formatter', 'multiline markdown table cell'
-      ]
+      keywords: ['markdown table generator', 'csv to markdown table', 'gfm table syntax', 'markdown table alignment',
+        'markdown table escape pipe', 'excel to markdown table', 'markdown table delimiter row', 'tsv to markdown',
+        'markdown table vs html table', 'github readme table', 'markdown table centered right aligned', 'pretty markdown table formatter']
     }
   });
 })();

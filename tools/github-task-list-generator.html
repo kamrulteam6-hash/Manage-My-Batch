@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>GitHub Task List Generator — Nested Checklists for Issues &amp; PRs | Manage My Batch</title>
-<meta name="description" content="Free GitHub task list generator. Build nested markdown checklists with progress counts, templates for PR and release checklists, and live preview of the rendered result.">
+<title>GitHub Task List Generator – Nested Markdown Checklists Online</title>
+<meta name="description" content="Generate GitHub Markdown task lists with nested checkboxes, progress counts, headings, assignee placeholders, issue references and collapsible checklists.">
 <link rel="canonical" href="https://managemybatch.com/tools/github-task-list-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="GitHub Task List Generator — Nested Checklists for Issues &amp; PRs">
-<meta property="og:description" content="Free GitHub task list generator. Build nested markdown checklists with progress counts, templates for PR and release checklists, and live preview of the rendered result.">
+<meta property="og:title" content="GitHub Task List Generator – Nested Markdown Checklists Online">
+<meta property="og:description" content="Generate GitHub Markdown task lists with nested checkboxes, progress counts, headings, assignee placeholders, issue references and collapsible checklists.">
 <meta property="og:url" content="https://managemybatch.com/tools/github-task-list-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="GitHub Task List Generator — Nested Checklists for Issues &amp; PRs">
-<meta name="twitter:description" content="Free GitHub task list generator. Build nested markdown checklists with progress counts, templates for PR and release checklists, and live preview of the rendered result.">
+<meta name="twitter:title" content="GitHub Task List Generator – Nested Markdown Checklists Online">
+<meta name="twitter:description" content="Generate GitHub Markdown task lists with nested checkboxes, progress counts, headings, assignee placeholders, issue references and collapsible checklists.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -358,104 +358,132 @@ Ship
       '<div><h4 style="font-size:14.5px;margin-bottom:8px">Getting more out of them</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>Reference real issue numbers and GitHub shows each one\'s title and open/closed state inline.</li><li>Keep lists under about twenty items — beyond that, split into linked issues.</li><li>Put a checklist in your pull request template so it appears automatically on every PR.</li><li>Wrap very long lists in <code>&lt;details&gt;</code>, accepting that GitHub then stops counting them in the progress bar.</li></ul></div></div>' +
       '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>Paste an existing checklist back into the input — including one copied from a GitHub issue with its <code>- [x]</code> markers — and it will be parsed, renumbered and reformatted. Turn off “ignore existing x markers” to keep the completed state.</span></div>',
     related: ['markdown-table-generator', 'html-table-generator', 'json-array-generator'],
-    faqs: [
-      { q: 'How do I create a checklist in GitHub?', a: 'Write list items in the form <code>- [ ] task</code> for unchecked and <code>- [x] task</code> for checked. In issues, pull requests and comments the boxes become clickable for anyone with write access.' },
-      { q: 'Why is my checkbox not rendering?', a: 'The syntax is exact: a list marker, a space, then brackets containing exactly one space or an x. <code>-[ ]</code> and <code>- []</code> both fail and render as literal text.' },
-      { q: 'How do I nest subtasks?', a: 'Indent by two spaces per level. This generator handles the indentation for you and normalises any level jumps that would otherwise break the nesting.' },
-      { q: 'Does GitHub track checklist progress?', a: 'Yes. An issue or PR whose body contains task list items shows a completed/total counter in issue lists and project boards, updated as boxes are ticked.' },
-      { q: 'Can I link tasks to issues?', a: 'Yes — include an issue reference like <code>#42</code> in the task text and GitHub renders the linked issue\'s title and state. You can also convert any task line into a new linked issue from the rendered view.' },
-      { q: 'Do task lists work in a README?', a: 'They render, but they are not interactive — clicking does nothing outside issues, pull requests and comments. In a README they are display-only.' }
+faqs: [
+      { q: 'How do I create a checkbox in GitHub Markdown?', a: 'Use <code>- [ ]</code> before an incomplete task and <code>- [x]</code> before a completed task.' },
+      { q: 'Can GitHub task lists be nested?', a: 'Yes. Indent child list items beneath a parent task to create nested checklists.' },
+      { q: 'Can I use task lists in issues?', a: 'Yes. GitHub supports task-list Markdown in issues, pull requests, comments and other Markdown contexts.' },
+      { q: 'Does uppercase X work for completed tasks?', a: 'The GFM task-list definition permits <code>x</code> or <code>X</code> inside the checkbox marker.' },
+      { q: 'Can I mention a user inside a task?', a: 'Yes. Normal GitHub mention syntax such as <code>@username</code> can be included in the task text.' },
+      { q: 'Can I link a task to another issue?', a: 'Yes. Add a GitHub issue or pull-request reference such as <code>#123</code> where the repository context supports it.' },
+      { q: 'Should I use a task list or a table?', a: 'Use a task list for actionable work and a table for comparing structured values.' }
     ],
     seo: {
-      title: 'GitHub task lists: syntax, nesting, progress tracking and issue links',
-      lead: 'This <strong>GitHub task list generator</strong> builds nested checklists from plain text, with progress counts and PR and release templates. Below: the exact syntax GitHub requires, why a checkbox sometimes renders as literal brackets, and what task lists unlock beyond a tidy issue.',
+      title: 'GitHub Task List Generator – Build Nested Markdown Checklists',
+      lead: 'Use the GitHub Task List Generator above to turn a plain list of work into properly formatted GitHub Markdown checkboxes.',
       blocks: [
-        {
-          h: 'The syntax',
-          html: '<p>A task list is a Markdown list where each item begins with a bracketed space or <code>x</code>:</p>' +
-            '<p><code>- [ ] Not done yet</code><br><code>- [x] Done</code></p>' +
-            '<p>Three details are mandatory and all three are easy to get wrong:</p>',
-          ol: [
-            'A list marker first — <code>-</code>, <code>*</code> or <code>1.</code>. Brackets alone are not a task list.',
-            'A space between the marker and the opening bracket.',
-            'Exactly one character between the brackets: a space for unchecked, <code>x</code> or <code>X</code> for checked. <code>[]</code> with nothing inside does not render.'
-          ],
-          after: '<p>Get all three right and GitHub renders an interactive checkbox that anyone with write access can tick directly in the issue — which updates the underlying Markdown.</p>'
-        },
-        {
-          h: 'Why your checkbox renders as literal brackets',
-          table: {
-            head: ['What you wrote', 'Problem'],
-            rows: [
-              ['<code>[ ] Task</code>', 'No list marker. Add <code>- </code> in front.'],
-              ['<code>-[ ] Task</code>', 'No space after the dash.'],
-              ['<code>- [] Task</code>', 'Empty brackets. Needs a space inside.'],
-              ['<code>- [ x] Task</code>', 'Extra space. Exactly one character between the brackets.'],
-              ['<code>- [✓] Task</code>', 'Only <code>x</code> or <code>X</code> is recognised.'],
-              ['Inside a code fence', 'Code blocks render literally by design.'],
-              ['In a table cell', 'Task lists do not work inside tables. Use an emoji or a plain marker.']
-            ]
-          },
-          callout: { type: 'tip', text: 'If a list renders but the checkboxes are not clickable, you are looking at a rendered file rather than an issue — task lists are interactive in issues, pull requests, discussions and comments, but read-only in a README or any other Markdown file in the repository.' }
-        },
-        {
-          h: 'Nesting subtasks',
-          html: '<p>Indent a child item under its parent. GitHub is stricter than most Markdown renderers about how much:</p>' +
-            '<p><code>- [ ] Parent task</code><br><code>&nbsp;&nbsp;- [ ] Subtask</code><br><code>&nbsp;&nbsp;&nbsp;&nbsp;- [ ] Sub-subtask</code></p>' +
-            '<p>Two spaces per level with <code>-</code> markers, or four if you mix in ordered lists. Tabs work but mixing tabs and spaces in one list breaks the nesting, and it is invisible in the editor.</p>' +
-            '<p>Checking a parent does not check its children, and checking every child does not check the parent — the hierarchy is presentational. Progress counts, however, do include nested items.</p>',
-          callout: { type: 'warn', text: 'Keep nesting to two levels. Three levels of subtasks in one issue is a sign the issue should be several issues, and GitHub\'s progress count stops being meaningful when the tree is deep.' }
-        },
-        {
-          h: 'Progress tracking',
-          html: '<p>GitHub counts checked items automatically wherever the list appears, and surfaces the total in several places:</p>',
-          list: [
-            '<strong>Issue lists</strong> show <code>3 of 8</code> beside the title, so progress is visible without opening anything.',
-            '<strong>Pull requests</strong> show the same count, which makes a checklist an effective merge gate.',
-            '<strong>Project boards</strong> display a progress bar per card.',
-            '<strong>The issue itself</strong> shows a running total above the list.'
-          ],
-          after: '<p>Only the first task list block in the body is counted in some views, so keep one canonical checklist per issue rather than several scattered through the description.</p>'
-        },
-        {
-          h: 'Linking tasks to issues',
-          html: '<p>An item whose text is an issue URL or reference becomes a <strong>tracked task</strong> rather than a plain checkbox:</p>' +
-            '<p><code>- [ ] https://github.com/org/repo/issues/42</code><br><code>- [ ] #42</code></p>' +
-            '<p>GitHub renders the issue title, its state and its labels inline, and — importantly — ticks the box automatically when the referenced issue closes. The relationship appears on the child issue too, so a contributor arriving there can see what it is part of.</p>',
-          steps: [
-            { t: 'Use a full URL for cross-repository tracking', d: '<code>#42</code> only resolves within the same repository.' },
-            { t: 'Let closure drive the checkbox', d: 'Do not tick a tracked task by hand — closing the issue does it, and manual ticks get overwritten.' },
-            { t: 'Mix freely with plain items', d: 'A list can contain both tracked issues and ordinary checkboxes.' },
-            { t: 'Keep an epic to a readable size', d: 'Twenty tracked issues in one list is a roadmap, not a task.' }
-          ]
-        },
-        {
-          h: 'Where task lists earn their keep',
-          cards: [
-            { t: 'Pull request checklists', d: 'Tests added, docs updated, migration written, screenshots attached. In a PR template it becomes the review contract.' },
-            { t: 'Release checklists', d: 'Version bumped, changelog written, tag pushed, announcement drafted. The same list every time means nothing is remembered wrong.' },
-            { t: 'Epics', d: 'A parent issue tracking child issues, with progress that updates itself as work closes.' },
-            { t: 'Onboarding', d: 'A per-person issue from a template, with the setup steps as tickable items.' },
-            { t: 'Incident follow-ups', d: 'Action items from a postmortem, visible and countable rather than buried in prose.' }
-          ],
-          after: '<p>The generator includes templates for the first three, so a PR or release checklist is a paste rather than a memory exercise.</p>'
-        },
-        {
-          h: 'Related documentation tools',
-          list: [
-            '<a href="/tools/markdown-table-generator">Markdown Table Generator</a> — tables for the same documents.',
-            '<a href="/tools/html-table-generator">HTML Table Generator</a> — when Markdown tables run out.',
-            '<a href="/tools/json-array-generator">JSON Array Generator</a> — turn a list into structured data.',
-            '<a href="/tools/chore-rotation-generator">Chore Rotation Generator</a> — recurring task assignment away from the repository.'
-          ]
-        }
+        { html: '<p>Enter one task per line, indent subtasks, mark completed items with <code>x</code>, then choose whether you want progress text, top-level headings, assignee placeholders, issue references or a collapsible <code>&lt;details&gt;</code> block.</p>' +
+            '<p>The generator is useful for issue descriptions, pull requests, release checklists, launch plans and recurring team workflows.</p>' +
+            '<p>GitHub task-list syntax is small, but long nested lists become surprisingly easy to mis-indent. A generator keeps the source consistent while giving you a rendered preview of the checklist before you paste it into GitHub.</p>' },
+        { h: 'What Is a GitHub Task List?',
+          html: '<p>A GitHub task list is a Markdown list whose items begin with checkbox markers.</p><p>Unchecked:</p><pre class="code">- [ ] Write documentation</pre>' +
+            '<p>Checked:</p><pre class="code">- [x] Write documentation</pre>' +
+            '<p>GitHub renders these markers as task checkboxes in supported contexts.</p>' +
+            '<p>Task lists are useful because they combine readable plain-text source with visible completion state.</p>' +
+            '<p>They can appear in issues, pull requests, comments and Markdown files.</p>' +
+            '<p>The GitHub Flavored Markdown specification defines task list items as an extension to normal list syntax.</p>' },
+        { h: 'How to Use This GitHub Task List Generator',
+          html: '<p>Enter one task per line.</p><p>For example:</p><pre class="code">Design review\nBuild API\nTesting\nShip</pre>' +
+            '<p>Indent a line beneath another task to make it a subtask.</p><p>Prefix a task with:</p><pre class="code">x </pre>' +
+            '<p>when you want it generated as completed.</p><p>Then choose optional features.</p><p>You can add:</p>',
+          list: ['a progress line', 'headings', 'assignee placeholders', 'issue-reference placeholders', 'a collapsible details wrapper'],
+          after: '<p>Generate the checklist and inspect the preview.</p>' +
+            '<p>The preview helps catch nesting mistakes before you paste the Markdown into an issue or pull request.</p>' },
+        { h: 'GitHub Task List Syntax',
+          html: '<p>The core syntax is:</p><pre class="code">- [ ] Task</pre><p>for an incomplete task.</p><p>Use:</p><pre class="code">- [x] Task</pre>' +
+            '<p>for a completed task.</p><p>GitHub also accepts uppercase <code>X</code> in the marker.</p>' +
+            '<p>The important spacing is the space after the list marker and the checkbox syntax.</p><p>A normal list item such as:</p>' +
+            '<pre class="code">- Write tests</pre><p>is a bullet, not a task checkbox.</p>' +
+            '<p>Task-list syntax builds on normal list parsing, so indentation and surrounding Markdown still matter.</p>' },
+        { h: 'Nested GitHub Task Lists',
+          html: '<p>Task lists can be nested.</p><p>For example:</p>' +
+            '<pre class="code">- [ ] Build checkout\n  - [x] Create form\n  - [ ] Add validation\n  - [ ] Add payment flow</pre>' +
+            '<p>GitHub Flavored Markdown supports nested task items.</p>' +
+            '<p>Indentation tells the parser that the child task belongs under the parent.</p>' +
+            '<p>The exact number of spaces needed can depend on the width of the parent list marker and surrounding structure.</p>' +
+            '<p>For ordinary bullet task lists, consistent indentation makes the hierarchy much easier to maintain.</p>' +
+            '<p>The generator uses a predictable indentation width so your source remains readable.</p>' },
+        { h: 'Why Nested Checklists Are Useful',
+          html: '<p>A flat checklist works for short work.</p><p>A nested checklist works better when one deliverable contains several steps.</p><p>For example:</p>' +
+            '<p><strong>Release</strong></p>',
+          list: ['QA', 'docs', 'deployment', 'monitoring'],
+          after: '<p>This helps reviewers see both the high-level milestone and the detailed work required to finish it.</p><p>Nested tasks are useful for:</p>' +
+            '<ul style="color:var(--muted);padding-left:18px"><li>release plans</li><li>feature implementation</li><li>onboarding</li><li>incident follow-up</li><li>QA plans</li><li>launch checklists</li></ul>' +
+            '<p>Do not create six levels of nesting just because the syntax allows it.</p>' +
+            '<p>If the hierarchy becomes hard to scan, split the work into separate issues or sections.</p>' },
+        { h: 'Mark Completed Tasks',
+          html: '<p>Use <code>[x]</code> for completed items.</p><p>Example:</p><pre class="code">- [x] Database migration tested</pre>' +
+            '<p>This creates a visible record of progress while preserving the original task.</p>' +
+            '<p>Deleting completed work may make the list shorter, but it also removes context.</p>' +
+            '<p>For launch and release checklists, leaving completed items visible can help reviewers understand what has already been verified.</p>' +
+            '<p>For a personal scratch list, deleting finished items may be fine.</p>' +
+            '<p>Choose based on whether the checklist is also serving as a project record.</p>' },
+        { h: 'Add a Progress Count',
+          html: '<p>A progress line gives readers an immediate summary.</p><p>Example:</p><pre class="code">7 / 12 complete</pre>' +
+            '<p>This is especially useful when the checklist is long enough that readers cannot estimate completion at a glance.</p>' +
+            '<p>A progress bar or count is informational text generated from the checkbox state.</p>' +
+            '<p>Remember that a manually pasted progress count will not necessarily update itself later unless the surrounding tool or workflow recalculates it.</p>' +
+            '<p>If people edit checkboxes directly on GitHub, the text count may become stale.</p>' +
+            '<p>Use it as a helpful snapshot, not as a guaranteed live project metric.</p>' },
+        { h: 'Use Top-Level Tasks as Headings',
+          html: '<p>For structured checklists, top-level lines can act as section headings.</p><p>Example:</p><pre class="code">### Design</pre>' +
+            '<p>followed by task items.</p><p>This can improve readability when a checklist covers several phases such as:</p>',
+          list: ['Design', 'Development', 'QA', 'Launch'],
+          after: '<p>Headings are better than fake “task” items when the line is a category rather than work that can actually be completed.</p>' +
+            '<p>Do not add a checkbox to a section title unless completing that section as a whole is meaningful.</p>' +
+            '<p>Good structure distinguishes categories from actions.</p>' },
+        { h: 'Add Assignee Placeholders',
+          html: '<p>GitHub mentions use the:</p><pre class="code">@username</pre><p>syntax.</p>' +
+            '<p>A generated placeholder can remind the author to assign responsibility to a task.</p><p>For example:</p>' +
+            '<pre class="code">- [ ] Review accessibility @username</pre>' +
+            '<p>Mentions can notify people when used in supported GitHub contexts.</p>' +
+            '<p>Do not add real usernames automatically when you are preparing a reusable template unless the ownership is always the same.</p>' +
+            '<p>A placeholder is safer for generic checklists.</p>' +
+            '<p>Responsibility should be explicit enough that readers know who owns the next action.</p>' },
+        { h: 'Add Issue or Pull Request References',
+          html: '<p>GitHub recognizes references such as:</p><pre class="code">#123</pre><p>within the appropriate repository context.</p>' +
+            '<p>These references can connect checklist items to separate issues or pull requests.</p><p>Example:</p>' +
+            '<pre class="code">- [ ] Update API docs #123</pre>' +
+            '<p>This is useful when the checklist is a high-level tracker and detailed work lives elsewhere.</p>' +
+            '<p>Do not create placeholders if the final checklist will never use issue references.</p>' +
+            '<p>Extra symbols make source harder to read when they serve no purpose.</p>' +
+            '<p>Use references when they help connect planning to tracked work.</p>' },
+        { h: 'Task Lists in Issues',
+          html: '<p>Task lists are particularly useful in issue descriptions.</p><p>A feature issue can contain:</p>',
+          list: ['acceptance criteria', 'implementation steps', 'QA checks', 'rollout tasks'],
+          after: '<p>This gives contributors one place to see what remains.</p><p>Keep each task actionable.</p><p>Weak:</p>' +
+            '<pre class="code">- [ ] Backend</pre><p>Better:</p><pre class="code">- [ ] Add rate-limit validation to the create-order endpoint</pre>' +
+            '<p>A checkbox works best when someone can clearly decide whether the item is done.</p>' +
+            '<p>Vague categories make completion subjective.</p>' },
+        { h: 'Task Lists in Pull Requests',
+          html: '<p>A pull request checklist can remind authors and reviewers about repeatable quality checks.</p><p>Examples include:</p>',
+          list: ['tests added', 'lint passed', 'screenshots attached', 'migration reviewed', 'documentation updated', 'accessibility checked'],
+          after: '<p>A PR template can contain the same checklist for every contribution.</p>' +
+            '<p>The generator is useful for drafting the original Markdown or building a specialized one-off checklist.</p>' +
+            '<p>Avoid creating dozens of boxes that authors tick mechanically.</p>' +
+            '<p>A checklist should protect against real omissions, not become ceremony.</p>' },
+        { h: 'Release Checklists',
+          html: '<p>Releases are a strong use case because the sequence repeats and forgotten steps can be expensive.</p><p>A release checklist might cover:</p>',
+          list: ['version bump', 'changelog', 'automated tests', 'manual QA', 'deployment', 'monitoring', 'rollback readiness', 'documentation'],
+          after: '<p>Use nested tasks under each release phase.</p><p>For recurring releases, save the generated Markdown as a template.</p>' +
+            '<p>A checklist becomes more valuable when the team improves it after incidents or near misses.</p>' +
+            '<p>If a release failed because one validation step was missing, add that step to the next template.</p>' },
+        { h: 'Collapsible details Checklists',
+          html: '<p>Long GitHub comments can become difficult to scan.</p>' +
+            '<p>GitHub supports useful HTML such as <code>&lt;details&gt;</code> and <code>&lt;summary&gt;</code> in Markdown contexts.</p>' +
+            '<p>A checklist can be wrapped so readers see a short summary and expand it when needed.</p><p>This is useful for:</p>',
+          list: ['large QA matrices', 'secondary checks', 'deployment notes', 'archived completed tasks'],
+          after: '<p>Do not collapse the few tasks people must see immediately.</p><p>Critical actions should remain visible.</p>' +
+            '<p>Use collapsing to reduce noise, not to hide responsibilities.</p>' },
+        { h: 'Common GitHub Task List Mistakes',
+          html: '<p>Avoid these problems:</p>',
+          list: ['forgetting the space in [ ]', 'inconsistent indentation', 'using headings as fake tasks', 'making tasks too vague to have a clear done state',
+                 'creating excessive nesting', 'leaving a manually written progress count stale', 'adding real assignee mentions to a reusable template unintentionally',
+                 'putting every project detail into one giant checklist', 'assuming a checked box proves the action happened', 'hiding critical tasks inside collapsed sections'],
+          after: '<p>A useful checklist reduces uncertainty. Every item should make it easier to answer: “What is left, who owns it and how do we know it is complete?” For comparing structured values instead, see the <a href="/tools/markdown-table-generator">Markdown Table Generator</a>.</p>' }
       ],
-      keywords: [
-        'github task list generator', 'github checklist markdown', 'markdown checkbox',
-        'github task list syntax', 'nested task list github', 'pull request checklist template',
-        'release checklist template', 'github tracked issues', 'markdown to do list',
-        'checkbox not rendering github', 'github issue progress bar', 'epic issue github'
-      ]
+      keywords: ['github task list generator', 'markdown checkbox syntax', 'nested github checklist', 'github task list progress',
+        'pull request checklist template', 'release checklist markdown', 'github issue task list', 'collapsible details markdown',
+        'markdown assignee mention', 'github issue reference checklist', 'markdown checklist generator', 'gfm task list']
     }
   });
 })();

@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>Fetch API Request Generator — async/await, Types &amp; Error Handling | Manage My Batch</title>
-<meta name="description" content="Free fetch() code generator. Build modern JavaScript or TypeScript requests with async/await, proper error handling, timeouts via AbortSignal, React hooks and Node examples.">
+<title>Fetch API Request Generator – Modern JavaScript fetch() Code | Manage My Batch</title>
+<meta name="description" content="Generate JavaScript or TypeScript fetch() requests with headers, JSON bodies, auth, query params, error handling, timeouts, AbortController and async/await.">
 <link rel="canonical" href="https://managemybatch.com/tools/fetch-api-request-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="Fetch API Request Generator — async/await, Types &amp; Error Handling">
-<meta property="og:description" content="Free fetch() code generator. Build modern JavaScript or TypeScript requests with async/await, proper error handling, timeouts via AbortSignal, React hooks and Node examples.">
+<meta property="og:title" content="Fetch API Request Generator – Modern JavaScript fetch() Code">
+<meta property="og:description" content="Generate JavaScript or TypeScript fetch() requests with headers, JSON bodies, auth, query params, error handling, timeouts, AbortController and async/await.">
 <meta property="og:url" content="https://managemybatch.com/tools/fetch-api-request-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Fetch API Request Generator — async/await, Types &amp; Error Handling">
-<meta name="twitter:description" content="Free fetch() code generator. Build modern JavaScript or TypeScript requests with async/await, proper error handling, timeouts via AbortSignal, React hooks and Node examples.">
+<meta name="twitter:title" content="Fetch API Request Generator – Modern JavaScript fetch() Code">
+<meta name="twitter:description" content="Generate JavaScript or TypeScript fetch() requests with headers, JSON bodies, auth, query params, error handling, timeouts, AbortController and async/await.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -466,94 +466,139 @@
       '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">The middle path — a small <code>apiRequest</code> wrapper like the one generated above — usually beats both for an internal API.</p></div></div>' +
       '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>Any token in browser code is public.</strong> Environment variables in a frontend bundle are inlined at build time and readable in DevTools. If a credential must stay secret, the request has to be proxied through a server you control.</span></div>',
     related: ['axios-request-generator', 'curl-command-generator', 'json-test-data-generator'],
-    faqs: [
-      { q: 'Why does fetch not throw on a 404?', a: 'By design — the promise reflects whether the HTTP transfer completed, not whether the server was happy. A 404 is a successful transfer of an error response, so you must check <code>response.ok</code> or <code>response.status</code> yourself.' },
-      { q: 'How do I add a timeout to fetch?', a: 'Pass <code>signal: AbortSignal.timeout(10000)</code> in the options. It is supported in modern browsers and Node 18+. For older targets, create an <code>AbortController</code> and call <code>abort()</code> from a <code>setTimeout</code>.' },
-      { q: 'Why is my FormData upload failing?', a: 'Almost always because <code>Content-Type</code> was set manually. The browser must set it itself so it can include the multipart boundary — delete that header and the upload works.' },
-      { q: 'Do I still need node-fetch?', a: 'No. Node 18 and later ship a global fetch based on undici. Remove the dependency; the API is the same, including the absence of a default timeout.' },
-      { q: 'fetch or Axios?', a: 'fetch for most cases — zero dependencies and available in every modern runtime. Axios when you want interceptors, upload progress events, automatic JSON parsing and errors that throw on 4xx without extra code.' },
-      { q: 'How do I send cookies with fetch?', a: 'Set <code>credentials: "include"</code> for cross-origin requests. The server must reply with <code>Access-Control-Allow-Credentials: true</code> and a specific origin — a wildcard origin is rejected when credentials are involved.' }
+faqs: [
+      { q: 'Does fetch throw on HTTP 404?', a: 'Not simply because of the 404 response. Check <code>response.ok</code> or <code>response.status</code> and handle HTTP errors explicitly.' },
+      { q: 'How do I send JSON with fetch?', a: 'Serialize the body with <code>JSON.stringify()</code> and normally send <code>Content-Type: application/json</code>.' },
+      { q: 'How do I cancel a fetch request?', a: 'Use <code>AbortController</code> and pass its signal to the request.' },
+      { q: 'Does fetch support cookies?', a: 'Yes. Use the appropriate <code>credentials</code> option and ensure the server and cookie policy allow the request.' },
+      { q: 'Why does my cURL request work but fetch fails?', a: 'Browser fetch is subject to CORS and other browser security rules that do not apply to cURL.' },
+      { q: 'Should I use fetch or Axios?', a: 'Fetch is built in and is often enough for straightforward requests. Axios can be useful for shared client configuration, instances, interceptors and other application-wide HTTP behavior.' },
+      { q: 'Can fetch return text instead of JSON?', a: 'Yes. Use the response parser appropriate to the endpoint, such as <code>.text()</code>, <code>.blob()</code> or <code>.arrayBuffer()</code>.' }
     ],
     seo: {
-      title: 'The Fetch API: status checks, timeouts, aborts and error bodies',
-      lead: 'This <strong>fetch generator</strong> writes JavaScript or TypeScript that handles everything <code>fetch()</code> leaves to you — <code>res.ok</code> checks, timeouts, readable error bodies and aborts. Below: why a 404 does not throw, how to add a timeout properly, and the FormData mistake that breaks uploads.',
+      title: 'Fetch API Request Generator – Create Modern JavaScript Requests',
+      lead: 'Use the Fetch API Request Generator above to build clean <code>fetch()</code> code for browser or modern JavaScript projects without assembling the options object by hand.',
       blocks: [
-        {
-          h: 'What fetch leaves for you to do',
-          html: '<p><code>fetch()</code> is built into every modern browser and into Node since version 18. It is deliberately low-level: it gives you a response and gets out of the way. Four things it does not do, which almost every application needs:</p>',
-          list: [
-            '<strong>It does not throw on HTTP errors.</strong> A 500 is a successful fetch — the network worked.',
-            '<strong>It has no timeout.</strong> A hung request stays pending until the browser or OS gives up, which can be minutes.',
-            '<strong>It does not parse JSON.</strong> You call <code>await res.json()</code>, and it throws on an empty body.',
-            '<strong>It does not send cookies cross-origin</strong> unless you ask with <code>credentials: \'include\'</code>.'
-          ],
-          after: '<p>None of these are bugs; they are the cost of a primitive rather than a framework. The generated code adds each one explicitly so nothing is implicit.</p>'
-        },
-        {
-          h: 'Why fetch does not throw on a 404',
-          html: '<p>The promise returned by <code>fetch()</code> rejects only when the request itself fails — DNS failure, connection refused, CORS block, abort. An HTTP error response is a completed request, so the promise resolves normally with <code>res.ok === false</code>.</p>' +
-            '<p>This means the naive pattern is silently broken:</p>' +
-            '<p><code>const data = await fetch(url).then(r =&gt; r.json());</code></p>' +
-            '<p>On a 500 returning an HTML error page, <code>r.json()</code> throws a parse error and you get "Unexpected token &lt;" instead of the actual status. The fix is one check:</p>' +
-            '<p><code>if (!res.ok) throw new Error(`HTTP ${res.status}`);</code></p>',
-          callout: { type: 'warn', text: '<strong>Read the error body before throwing.</strong> APIs put the useful part of a failure in the response body — which field was invalid, which limit was hit. Throwing on <code>!res.ok</code> without first reading <code>await res.text()</code> discards the only information that would have told you what went wrong.' }
-        },
-        {
-          h: 'Adding a timeout',
-          steps: [
-            { t: 'Use AbortSignal.timeout()', d: '<code>fetch(url, { signal: AbortSignal.timeout(5000) })</code>. One line, supported in current browsers and Node 18+.' },
-            { t: 'Fall back to AbortController', d: 'For older targets: create a controller, <code>setTimeout(() =&gt; controller.abort(), 5000)</code>, pass <code>controller.signal</code>.' },
-            { t: 'Always clear the timer', d: 'In a <code>finally</code> block. A leftover timer fires after a fast response and can abort a subsequent request sharing the controller.' },
-            { t: 'Distinguish a timeout from a failure', d: 'A timeout rejects with an <code>AbortError</code>. Check <code>err.name === \'TimeoutError\'</code> or <code>\'AbortError\'</code> and report it as a timeout rather than a generic network error.' },
-            { t: 'Combine signals if you need both', d: '<code>AbortSignal.any([controller.signal, AbortSignal.timeout(5000)])</code> handles user cancellation and a deadline together.' }
-          ]
-        },
-        {
-          h: 'Sending bodies',
-          table: {
-            head: ['Body type', 'How to send', 'Content-Type'],
-            rows: [
-              ['JSON', '<code>body: JSON.stringify(obj)</code>', 'Set it yourself: <code>application/json</code>.'],
-              ['Form fields', '<code>body: new URLSearchParams(obj)</code>', 'Set automatically to <code>x-www-form-urlencoded</code>.'],
-              ['File upload', '<code>body: formData</code>', '<strong>Do not set it</strong> — the browser adds the multipart boundary.'],
-              ['Plain text', '<code>body: str</code>', '<code>text/plain</code> by default.'],
-              ['Binary', '<code>body: blob</code> or an <code>ArrayBuffer</code>', 'Taken from the Blob\'s type, or set it manually.']
-            ]
-          },
-          callout: { type: 'warn', text: '<strong>Never set <code>Content-Type: multipart/form-data</code> manually.</strong> The header must include a generated boundary parameter; setting it by hand omits the boundary and the server cannot parse a single field. Omit the header entirely and let the browser write it. This is the most common cause of a FormData upload failing with no useful error.' }
-        },
-        {
-          h: 'Cookies and credentials',
-          html: '<p>The <code>credentials</code> option controls whether cookies and HTTP auth travel with the request:</p>',
-          cards: [
-            { t: 'same-origin', d: 'The default. Cookies are sent to your own origin, and never cross-origin.' },
-            { t: 'include', d: 'Cookies are sent cross-origin too. Required for a session-cookie API on a different subdomain.' },
-            { t: 'omit', d: 'No cookies at all. Appropriate for a purely token-authenticated public API.' }
-          ],
-          after: '<p>Using <code>include</code> requires the server to cooperate: it must return <code>Access-Control-Allow-Credentials: true</code> and an explicit origin — a wildcard <code>*</code> is rejected by the browser when credentials are involved. Modern browsers also require <code>SameSite=None; Secure</code> on the cookie itself for cross-site sending.</p>'
-        },
-        {
-          h: 'fetch in Node',
-          html: '<p>Since Node 18, <code>fetch</code> is global and no import is needed. <code>node-fetch</code> is only necessary on Node 16 or older, and if you are still on 16 the more pressing issue is that it is out of support.</p>' +
-            '<p>Two differences from the browser worth knowing. There is no same-origin policy in Node, so CORS is irrelevant — a request that fails in the browser with a CORS error will succeed from a server. And there is no cookie jar: <code>credentials: \'include\'</code> does nothing, so you manage <code>Cookie</code> headers yourself.</p>',
-          callout: { type: 'tip', text: 'Wrap fetch once in your own <code>request()</code> helper — status check, timeout, JSON parse, typed error — and call that everywhere. The alternative is the same six lines of boilerplate at forty call sites, five of which will be missing the <code>res.ok</code> check. If your helper starts growing interceptors and retries, <a href="/tools/axios-request-generator">Axios</a> already implements them.' }
-        },
-        {
-          h: 'Related HTTP tools',
-          list: [
-            '<a href="/tools/axios-request-generator">Axios Request Generator</a> — instances, interceptors and automatic JSON.',
-            '<a href="/tools/curl-command-generator">curl Command Generator</a> — the same request from a terminal.',
-            '<a href="/tools/json-test-data-generator">JSON Test Data Generator</a> — mock responses and request bodies.',
-            '<a href="/tools/dummy-api-key-generator">Dummy API Key Generator</a> — placeholder credentials for examples.'
-          ]
-        }
+        { html: '<p>Enter the endpoint, choose GET, POST, PUT, PATCH or DELETE, add query parameters, headers, authentication and a request body, then choose the output style you want.</p>' +
+            '<p>The generator can produce modern async/await code, response parsing, HTTP-status checks, timeout or cancellation handling and TypeScript-friendly output.</p>' +
+            '<p>The most important detail is one many short examples leave out: <code>fetch()</code> does not reject its promise merely because a server returns HTTP 404 or 500. You normally need to inspect <code>response.ok</code> or <code>response.status</code> yourself.</p>' +
+            '<p>A reliable example should account for that.</p>' },
+        { h: 'What Is the Fetch API?',
+          html: '<p>The Fetch API is a web platform interface for network requests.</p><p>A basic request looks like:</p>' +
+            '<pre class="code">const response = await fetch("/api/users");</pre>' +
+            '<p>The promise resolves to a <code>Response</code> object. You can inspect status, headers, URL and response type, then read the body using methods such as:</p>',
+          list: ['<code>response.json()</code>', '<code>response.text()</code>', '<code>response.blob()</code>', '<code>response.arrayBuffer()</code>', '<code>response.formData()</code>'],
+          after: '<p>Fetch is built into modern browsers and current server-side JavaScript runtimes.</p>' },
+        { h: 'How to Use This Fetch Request Generator',
+          html: '<p>Enter the target URL.</p><p>Choose the HTTP method.</p><p>Add query parameters and headers where needed.</p>' +
+            '<p>For POST, PUT or PATCH, choose the body format and enter the request data.</p>' +
+            '<p>If the endpoint requires authentication, add the appropriate header or use an environment/configuration placeholder in generated code.</p>' +
+            '<p>Then choose code options such as:</p>',
+          list: ['async/await', 'error handling', 'response parsing', 'TypeScript types', 'credentials', 'timeout or abort behavior'],
+          after: '<p>Generate the request and read the output rather than copying it blindly.</p>' +
+            '<p>The API contract determines which headers, body format and method are correct.</p>' },
+        { h: 'Basic GET Request',
+          html: '<p>A simple GET request is straightforward:</p><pre class="code">const response = await fetch(url);</pre>' +
+            '<p>Then parse the body.</p><p>For JSON:</p><pre class="code">const data = await response.json();</pre>' +
+            '<p>But that example is incomplete when errors matter.</p><p>A stronger pattern checks:</p><pre class="code">response.ok</pre>' +
+            '<p>before parsing the successful response.</p>' +
+            '<p><code>Response.ok</code> is true for HTTP statuses in the successful 200–299 range.</p>' +
+            '<p>If it is false, throw or return an application-specific error.</p>' +
+            '<p>That prevents an error body from being processed as normal data.</p>' },
+        { h: 'Fetch Does Not Reject on HTTP 404 or 500',
+          html: '<p>This behavior surprises many developers.</p>' +
+            '<p>Fetch rejects for certain request failures, such as network errors or invalid request conditions.</p>' +
+            '<p>It does <strong>not</strong> reject simply because the server sent an HTTP error response.</p>' +
+            '<p>A 404 is still an HTTP response.</p><p>A 500 is still an HTTP response.</p>' +
+            '<p>That means a <code>try/catch</code> block alone does not handle every HTTP error.</p>' +
+            '<p>Check:</p><pre class="code">if (!response.ok)</pre><p>and handle the status explicitly.</p>' +
+            '<p>This distinction is one of the most important differences between network failure and application-level HTTP failure.</p>' },
+        { h: 'POST JSON with fetch()',
+          html: '<p>When sending JSON, the request normally needs:</p><pre class="code">method: "POST"</pre>' +
+            '<p>a JSON body:</p><pre class="code">body: JSON.stringify(data)</pre>' +
+            '<p>and a content type:</p><pre class="code">Content-Type: application/json</pre>' +
+            '<p>The server must also be prepared to parse JSON.</p>' +
+            '<p>Do not set JSON Content-Type when you are actually sending FormData, plain text or another body type.</p>' +
+            '<p>Also remember that <code>JSON.stringify()</code> converts a JavaScript value into JSON text.</p>' +
+            '<p>If the data contains unsupported values or circular references, serialization can fail or produce something different from what you expect.</p>' +
+            '<p>Validate the body against the API contract.</p>' },
+        { h: 'Request Headers',
+          html: '<p>Headers carry metadata and negotiation information.</p><p>Common examples include:</p>' +
+            '<pre class="code">Accept: application/json\nContent-Type: application/json\nAuthorization: Bearer ...</pre>' +
+            '<p>Only send headers the endpoint expects.</p>' +
+            '<p>Custom headers can also affect CORS preflight behavior in browsers.</p>' +
+            '<p>For cross-origin requests, the server—not your JavaScript—must return the required CORS response headers. Adding <code>mode: "cors"</code> does not grant permission by itself.</p>' },
+        { h: 'Bearer Authentication',
+          html: '<p>A bearer token is commonly sent in the <code>Authorization</code> header.</p>' +
+            '<p>Do not hard-code production tokens into browser bundles.</p>' +
+            '<p>Anything shipped to client-side JavaScript can be inspected by the user.</p>' +
+            '<p>Browser applications should only contain credentials that are safe for the client environment.</p>' +
+            '<p>Server-side secrets belong on a trusted server.</p>' +
+            '<p>For documentation or examples, use an obvious dummy key rather than a real credential.</p>' +
+            '<p>If your API relies on a session cookie rather than a bearer token, credential handling is different.</p>' +
+            '<p>Match the authentication design of the API.</p>' },
+        { h: 'Cookies and credentials',
+          html: '<p>Fetch uses the <code>credentials</code> option to control credential behavior.</p><p>Common values include:</p>',
+          list: ['<code>same-origin</code>', '<code>include</code>', '<code>omit</code>'],
+          after: '<p>For cross-origin cookie requests, both the browser request configuration and the server’s CORS policy must allow credentialed requests.</p>' +
+            '<p>Setting:</p><pre class="code">credentials: "include"</pre><p>does not override the server.</p>' +
+            '<p>The server needs an allowed origin and appropriate credential response headers.</p>' +
+            '<p>Also consider cookie attributes such as SameSite and Secure.</p>' +
+            '<p>Cross-origin authentication is a browser security topic, not merely a fetch syntax option.</p>' },
+        { h: 'FormData Requests',
+          html: '<p>Use <code>FormData</code> for multipart form-style requests, especially file uploads.</p>' +
+            '<p>In browser code, do not manually write the multipart boundary.</p>' +
+            '<p>When a <code>FormData</code> object is used as the body, the browser can construct the correct <code>Content-Type</code> boundary.</p>' +
+            '<p>Manually setting <code>Content-Type: multipart/form-data</code> without the boundary can break the request.</p>' +
+            '<p>This differs from a JSON request, where explicitly setting <code>application/json</code> is normal.</p>' +
+            '<p>Body type and headers should agree.</p>' },
+        { h: 'Abort a Fetch Request',
+          html: '<p>Fetch supports cancellation through <code>AbortController</code>.</p>' +
+            '<p>Create a controller, pass:</p><pre class="code">controller.signal</pre><p>to the request, and call:</p><pre class="code">controller.abort()</pre>' +
+            '<p>when the request should stop.</p><p>This is useful when:</p>',
+          list: ['a component unmounts', 'a user starts a newer search', 'a route changes', 'a timeout expires', 'a cancel button is pressed'],
+          after: '<p>Cancellation prevents obsolete work from continuing unnecessarily.</p>' +
+            '<p>It also helps avoid race conditions where an older request finishes after a newer one and overwrites current UI state.</p>' },
+        { h: 'Add a Request Timeout',
+          html: '<p>Fetch historically does not use an Axios-style numeric <code>timeout</code> option in the basic request configuration.</p>' +
+            '<p>A common pattern is to abort the request after a timer.</p>' +
+            '<p>Modern environments may also support timeout-oriented AbortSignal helpers.</p>' +
+            '<p>Whatever pattern you use, distinguish:</p>',
+          list: ['timeout', 'user cancellation', 'network failure', 'HTTP error'],
+          after: '<p>They may need different UI messages or retry behavior.</p>' +
+            '<p>Do not show “server error” when the user simply navigated away and intentionally aborted the request.</p>' },
+        { h: 'Parse the Right Response Type',
+          html: '<p>Not every endpoint returns JSON.</p><p>Use:</p><pre class="code">response.json()</pre><p>for JSON.</p>' +
+            '<p>Use:</p><pre class="code">response.text()</pre><p>for text.</p>' +
+            '<p>Use:</p><pre class="code">response.blob()</pre><p>for browser binary/blob workflows.</p>' +
+            '<p>Use:</p><pre class="code">response.arrayBuffer()</pre><p>for raw binary data.</p>' +
+            '<p>Trying to parse an empty 204 response as JSON can also fail.</p><p>Check the API behavior.</p>' +
+            '<p>A good request generator should make response parsing explicit rather than attaching <code>.json()</code> to every endpoint automatically.</p>' },
+        { h: 'Fetch and CORS',
+          html: '<p>CORS is enforced by the browser.</p><p>If JavaScript on:</p><pre class="code">https://app.example.com</pre><p>requests:</p><pre class="code">https://api.example.com</pre>' +
+            '<p>the API must permit that cross-origin interaction when CORS rules require it.</p>' +
+            '<p>A request working in cURL does not prove it will work with browser fetch.</p>' +
+            '<p>cURL is not enforcing the browser’s CORS security model.</p><p>When debugging:</p>',
+          ol: ['confirm the HTTP request works', 'inspect the browser console', 'inspect the preflight request if present', 'inspect the server’s CORS response headers'],
+          after: '<p>Do not try to solve a server CORS configuration problem by adding random client headers.</p>' },
+        { h: 'Fetch vs Axios',
+          html: '<p>Fetch is built into the platform and needs no third-party HTTP library in supported environments.</p>' +
+            '<p>Axios provides a higher-level client abstraction with features such as:</p>',
+          list: ['instances', 'interceptors', 'configuration defaults', 'standardized Axios errors', 'built-in timeout configuration'],
+          after: '<p>Fetch is often enough for simple applications.</p>' +
+            '<p>Axios can be convenient when many requests share authentication, base URLs, error transformation or other cross-cutting behavior.</p>' +
+            '<p>The right choice depends on the application architecture, not on which syntax is shorter in one example. Compare with the <a href="/tools/axios-request-generator">Axios Request Generator</a>.</p>' },
+        { h: 'Common Fetch API Mistakes',
+          html: '<p>Avoid these problems:</p>',
+          list: ['Assuming 404 or 500 rejects the fetch promise', 'Parsing every response as JSON', 'Hard-coding production secrets in browser code',
+                 'Setting multipart Content-Type manually for browser FormData', 'Treating CORS as a client-side permission switch', 'Forgetting to cancel obsolete requests',
+                 'Concatenating query parameters without encoding', 'Reading the same response body twice', 'Treating an aborted request as a server failure',
+                 'Sending cookies cross-origin without coordinating server CORS and cookie policy'],
+          after: '<p>A short fetch snippet can be syntactically valid while still missing the behavior a real application needs. For a terminal equivalent, see the <a href="/tools/curl-command-generator">cURL Command Generator</a>.</p>' }
       ],
-      keywords: [
-        'fetch api generator', 'javascript fetch post json', 'fetch timeout',
-        'fetch error handling', 'fetch res.ok', 'fetch abortcontroller',
-        'fetch formdata upload', 'fetch credentials include', 'fetch vs axios',
-        'node fetch 18', 'fetch typescript', 'fetch cors error'
-      ]
+      keywords: ['fetch api request generator', 'fetch post json', 'fetch response.ok error handling', 'fetch abortcontroller cancel',
+        'fetch credentials cookies', 'fetch formdata upload', 'fetch vs axios', 'fetch cors error',
+        'fetch timeout abortsignal', 'javascript fetch typescript', 'fetch response.json vs text', 'fetch async await example']
     }
   });
 })();

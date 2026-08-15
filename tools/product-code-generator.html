@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>Product Code Generator — Model &amp; Article Number Builder | Manage My Batch</title>
-<meta name="description" content="Free product code generator. Build internal product, model and article numbers with category, range and version segments — plus bulk generation from a product list.">
+<title>Product Code Generator – Model & Article Number Builder</title>
+<meta name="description" content="Generate internal product, model and article codes with brand, category, sequence and revision segments. Create numbered series or codes from product names.">
 <link rel="canonical" href="https://managemybatch.com/tools/product-code-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="Product Code Generator — Model &amp; Article Number Builder">
-<meta property="og:description" content="Free product code generator. Build internal product, model and article numbers with category, range and version segments — plus bulk generation from a product list.">
+<meta property="og:title" content="Product Code Generator – Model & Article Number Builder">
+<meta property="og:description" content="Generate internal product, model and article codes with brand, category, sequence and revision segments. Create numbered series or codes from product names.">
 <meta property="og:url" content="https://managemybatch.com/tools/product-code-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Product Code Generator — Model &amp; Article Number Builder">
-<meta name="twitter:description" content="Free product code generator. Build internal product, model and article numbers with category, range and version segments — plus bulk generation from a product list.">
+<meta name="twitter:title" content="Product Code Generator – Model & Article Number Builder">
+<meta name="twitter:description" content="Generate internal product, model and article codes with brand, category, sequence and revision segments. Create numbered series or codes from product names.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -336,95 +336,139 @@ Angle Grinder 115mm</textarea>
       '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span><strong>Leave gaps in your numbering.</strong> A catalogue numbered 100, 110, 120 can absorb a new mid-range model at 105 forever. One numbered 100, 101, 102 forces you to either append it at the end — breaking the logical order — or renumber, which invalidates every printed reference.</span></div>' +
       '<div class="note note-warn" style="margin-top:12px">' + GTI.warn + '<span>Resist putting the launch year in a product code. It makes a current, well-selling product look obsolete on every price list the moment the year changes.</span></div>',
     related: ['sku-generator', 'barcode-number-generator', 'asset-tag-number-generator'],
-    faqs: [
-      { q: 'What is the difference between a product code and a SKU?', a: 'A product code identifies a model; a SKU identifies a stocked variant of that model. One drill product code might have three SKUs — bare tool, with case, with two batteries.' },
-      { q: 'Why should I increment by 10 instead of 1?', a: 'It leaves room to insert related models later. Adding a mid-range product between 100 and 110 is trivial; between 100 and 101 it is impossible without renumbering or appending it out of order.' },
-      { q: 'Should product codes include the year?', a: 'No. It dates the product on every spec sheet and price list, and makes a perfectly current item appear obsolete once the year turns over.' },
-      { q: 'How do I code product revisions?', a: 'Use a version suffix such as MK2 or V2 when the same product is genuinely revised. Do not use it for colours or sizes — those are variants and belong in the SKU.' },
-      { q: 'Can I generate codes from my product names?', a: 'Yes. Switch to “From product names”, paste your list, and each code is built from the product initials plus a sequence that keeps them unique.' },
-      { q: 'How long should a product code be?', a: 'Under about 15 characters. Product codes appear on packaging, labels, quotes and spec sheets, where longer codes wrap awkwardly and get mistyped.' }
+faqs: [
+      { q: 'What is a product code?', a: 'It is an internal identifier used to distinguish a product, model, article or catalog item.' },
+      { q: 'Is a product code the same as a SKU?', a: 'Sometimes organizations use the terms interchangeably. A useful distinction is that a product code identifies a base product while a SKU identifies an exact stock-tracked variant.' },
+      { q: 'Is a product code the same as UPC or EAN?', a: 'No. UPC/EAN values are standardized GS1 trade-item identifiers. An internal product code is controlled by your business.' },
+      { q: 'Can I generate product codes from names?', a: 'Yes. The tool can derive mnemonic codes from product names and add sequence data to keep them unique.' },
+      { q: 'Should product codes contain categories?', a: 'They can when categories are stable and useful to staff. Avoid category segments if your classification changes frequently.' },
+      { q: 'Can I add revision letters?', a: 'Yes. Use revision suffixes when your product lifecycle genuinely treats revisions as distinct controlled versions.' },
+      { q: 'Should old product codes be reused?', a: 'Avoid reuse because historical orders, manuals, returns and service records may still reference them.' }
     ],
     seo: {
-      title: 'Product codes: designing a model numbering system that lasts',
-      lead: 'This <strong>product code generator</strong> builds internal model and article codes with category, range and version segments — as a numbered series or derived from your product names. Below: how a product code differs from a SKU, why you should increment by ten, and what never to encode.',
+      title: 'Product Code Generator – Create Model and Article Number Series',
+      lead: 'Use the Product Code Generator above to create consistent internal product, model and article numbers.',
       blocks: [
-        {
-          h: 'Product code, SKU or barcode?',
-          html: '<p>These three identify different things, and using one where another belongs is the root of most catalogue mess.</p>',
-          cards: [
-            { t: 'Product code', d: 'Identifies a <em>model</em> — the thing your catalogue and your marketing talk about. One product code, many variants.' },
-            { t: 'SKU', d: 'Identifies a <em>stocked variant</em> — this model, in blue, in medium. What the warehouse picks and counts.' },
-            { t: 'Barcode / GTIN', d: 'A globally unique number licensed from GS1, scanned at retail. Cannot be invented.' }
-          ],
-          after: '<p>A drill might be product code <code>PWR-DR-1400</code>, with SKUs for the bare tool, the one-battery kit and the two-battery kit, each carrying its own GTIN. Collapse the levels and you lose the ability to say "this is the same drill" — which is exactly the question your website, your catalogue and your support team ask most often.</p>'
-        },
-        {
-          h: 'Structuring a code',
-          table: {
-            head: ['Structure', 'Example', 'Suits'],
-            rows: [
-              ['Category–Sequence', '<code>DR-1400</code>', 'Simple catalogues with clear product families.'],
-              ['Brand–Category–Sequence', '<code>PWR-DR-1400</code>', 'Multi-brand ranges under one company.'],
-              ['Category–Range–Sequence', '<code>DR-PRO-1400</code>', 'Where a good/better/best tier matters commercially.'],
-              ['Category–Sequence–Version', '<code>DR-1400-R2</code>', 'Products that get revised without becoming new products.'],
-              ['Type–Capacity', '<code>BAT-5000</code>', 'Ranges where a specification is the differentiator.']
-            ]
-          },
-          after: '<p>Three or four characters per segment is the practical sweet spot: long enough to be readable as an abbreviation, short enough that the whole code fits on a label and in a conversation.</p>'
-        },
-        {
-          h: 'Increment by ten, not by one',
-          html: '<p>The most useful convention in product numbering, and the least obvious. Number your first products <code>1000</code>, <code>1010</code>, <code>1020</code> rather than <code>1000</code>, <code>1001</code>, <code>1002</code>.</p>' +
-            '<p>The gaps are the point. When a product arrives that belongs <em>between</em> two existing ones — a mid-range model between the entry and the professional, a variant that logically sits beside its sibling — there is room. The catalogue stays in a sensible order without renumbering anything.</p>' +
-            '<p>Renumbering is what you are buying insurance against. Once a code is printed on packaging, quoted in a purchase order and stored in a customer\'s system, it is permanent. A numbering scheme with no room to insert forces new products to the end of the list, and within two years the sequence tells you nothing about the range.</p>',
-          callout: { type: 'tip', text: 'Increment by 10 within a family and start each family at a round hundred or thousand. <code>1000–1090</code> for drills, <code>1100–1190</code> for drivers. You get insertion room and a readable block structure from the same decision.' }
-        },
-        {
-          h: 'What not to encode',
-          list: [
-            '<strong>Price.</strong> It changes; the code cannot. And the old price stays visible in every historical record and on every piece of printed packaging.',
-            '<strong>The year.</strong> Only if you genuinely retire the product annually. Otherwise a perfectly current product looks obsolete from 1 January.',
-            '<strong>Supplier.</strong> You may dual-source or switch, and the code would then be a lie.',
-            '<strong>Stock location.</strong> Items move between bins and warehouses constantly.',
-            '<strong>Colour and size.</strong> Those are variant attributes and belong in the <a href="/tools/sku-generator">SKU</a>, not the product code.',
-            '<strong>Internal project names.</strong> They leak, and they date badly.'
-          ],
-          after: '<p>The test is simple: if the attribute can change while the product stays the same product, it does not belong in the code.</p>'
-        },
-        {
-          h: 'Coding revisions',
-          html: '<p>A revision is a change that does not make the product a different product — a new firmware baseline, a component substitution, a moulding change. Customers still order "the 1400".</p>',
-          steps: [
-            { t: 'Add a suffix, do not change the base', d: '<code>DR-1400</code> becomes <code>DR-1400-R2</code>. The relationship stays visible and the old code still resolves.' },
-            { t: 'Keep the base code orderable', d: 'Where fit and function are unchanged, orders for <code>DR-1400</code> should ship the current revision.' },
-            { t: 'Issue a new base code for breaking changes', d: 'If a spare part no longer fits or a certification differs, it is a new product. A suffix hides that and generates returns.' },
-            { t: 'Record the revision in the record, not only the code', d: 'A date and a change note in your PIM is what anyone investigating a fault will actually need.' }
-          ],
-          callout: { type: 'warn', text: '<strong>Never reuse a retired product code.</strong> Somewhere there is a customer\'s reorder template, a distributor\'s catalogue and a service manual with the old code in it. Reusing it means a customer confidently orders the wrong item and both sides believe they are right.' }
-        },
-        {
-          h: 'Generating codes from product names',
-          html: '<p>Derivation mode builds a code from each name automatically: it strips filler words, abbreviates the significant ones, uppercases, and appends a sequence to guarantee uniqueness. "Professional Cordless Drill 1400W" becomes something like <code>PRO-CRD-DRL-1400</code>.</p>' +
-            '<p>It is a starting point rather than an answer. Automatic abbreviation collides — "Cordless" and "Corded" both want <code>CRD</code> — and the tool flags collisions for you to resolve rather than silently disambiguating with a number. Review the output before adopting it, particularly for the products you sell most, because those codes will be typed thousands of times.</p>',
-          after: '<p>For a small catalogue, choosing the abbreviations by hand and generating only the numeric part is usually the better trade.</p>'
-        },
-        {
-          h: 'Related identification tools',
-          list: [
-            '<a href="/tools/sku-generator">SKU Generator</a> — variant-level stock codes and the full size × colour matrix.',
-            '<a href="/tools/barcode-number-generator">Barcode Number Generator</a> — GTIN numbers with valid check digits.',
-            '<a href="/tools/asset-tag-number-generator">Asset Tag Number Generator</a> — codes for equipment you own rather than sell.',
-            '<a href="/tools/lot-number-generator">Lot Number Generator</a> — traceability for production runs.',
-            '<a href="/tools/purchase-order-number-generator">Purchase Order Number Generator</a> — the procurement side of the same catalogue.'
-          ]
-        }
+        { html: '<p>Choose a brand or range prefix, add a category code, define the separator and numeric length, then generate a numbered series from a starting value. You can also paste product names and let the tool derive short mnemonic codes before adding a sequence for uniqueness.</p>' +
+            '<p>For example: Brand ACM, Category TL, Sequence 100 → Result <code>ACM-TL-100</code>.</p>' +
+            '<p>A revision suffix can distinguish a controlled model revision when your business genuinely treats the revision as part of the product identifier.</p>' +
+            '<p>Product codes are internal business identifiers. They should not be confused with standardized retail GTINs, UPCs or EANs.</p>' },
+        { h: 'What Is a Product Code?',
+          html: '<p>A product code is an internal identifier assigned to a product or model.</p><p>Businesses use product codes to make catalog records easier to:</p>',
+          list: ['search', 'order', 'quote', 'document', 'service', 'stock', 'export', 'integrate'],
+          after: '<p>The term is broad.</p><p>Depending on the company, similar identifiers may be called:</p>' +
+            '<ul style="color:var(--muted);padding-left:18px"><li>model number</li><li>article number</li><li>item code</li><li>part number</li><li>catalog number</li><li>product ID</li></ul>' +
+            '<p>There is no single worldwide structure for an internal product code.</p><p>The company defines the scheme.</p>' +
+            '<p>What matters is consistency, uniqueness and long-term stability.</p>' },
+        { h: 'How to Use This Product Code Generator',
+          html: '<p>Choose between <strong>numbered series</strong> or <strong>from product names</strong>.</p>' +
+            '<p>For a numbered series, define:</p>',
+          list: ['brand or range prefix', 'category', 'separator', 'starting number', 'number length', 'increment', 'optional revision'],
+          after: '<p>For product-name mode, paste one product name per line.</p>' +
+            '<p>The generator derives mnemonic initials and adds sequence data where needed to keep results distinct.</p>' +
+            '<p>Review the output before assigning codes to real products.</p>' +
+            '<p>A generated code becomes useful only when your catalog system records which product owns it.</p>' +
+            '<p>Do not create a second parallel code series if your ERP already manages the authoritative identifiers.</p>' },
+        { h: 'Product Code vs SKU',
+          html: '<p>These terms are sometimes used interchangeably, but a useful distinction is:</p>' +
+            '<p><strong>Product code</strong> — identifies a model or base product.</p>' +
+            '<p><strong>SKU</strong> — identifies the exact inventory-tracked variant.</p><p>Example:</p>' +
+            '<pre class="code">Base product: Classic T-Shirt\nProduct code: TSH100\nVariant SKUs: TSH100-BLK-S, TSH100-BLK-M, TSH100-WHT-M</pre>' +
+            '<p>If the product has no variants, the product code and SKU may be the same value.</p>' +
+            '<p>Use your software’s terminology consistently.</p>' +
+            '<p>Do not force a separate product-code layer when it provides no operational benefit.</p>' },
+        { h: 'Product Code vs GTIN',
+          html: '<p>An internal product code is controlled by your company.</p>' +
+            '<p>A GTIN is part of the GS1 system and is used to uniquely identify trade items in supply chains.</p><p>GTINs include formats commonly represented as:</p>',
+          list: ['UPC / GTIN-12', 'EAN / GTIN-13', 'GTIN-14'],
+          after: '<p>You cannot create a globally assigned retail GTIN simply by inventing a numeric product code.</p>' +
+            '<p>If retailers, marketplaces or trading partners require a GS1-issued identifier, follow the GS1 assignment process.</p>' +
+            '<p>Your internal code can still exist alongside it.</p><p>For example:</p>' +
+            '<pre class="code">Internal product code: ACM-TL-100\nGTIN: a separate GS1 identification number</pre>' },
+        { h: 'Product Code vs Manufacturer Part Number',
+          html: '<p>A manufacturer part number, or MPN, is assigned by the manufacturer to identify its product or component.</p>' +
+            '<p>If you are the manufacturer, your internal product code may also serve as the MPN.</p>' +
+            '<p>If you are a reseller, keep the manufacturer’s identifier separate from your own catalog code.</p><p>Example:</p>' +
+            '<pre class="code">Your item code: TOOL-00482\nManufacturer part: DCD796N-XE\nGTIN: another identifier</pre>' +
+            '<p>Storing each field separately makes supplier changes and integrations easier.</p>' +
+            '<p>Do not overwrite the manufacturer’s code with your own simply because both identify the same current item.</p>' },
+        { h: 'Brand or Range Prefixes',
+          html: '<p>A prefix helps staff identify the product family.</p><p>Examples:</p><pre class="code">ACM-\nPRO-\nHOME-</pre>' +
+            '<p>A short range prefix is useful when several catalogs share one database.</p><p>Keep the code stable.</p>' +
+            '<p>If a product moves from one marketing collection to another, changing its core identifier can break:</p>',
+          list: ['historic orders', 'quotes', 'manuals', 'support records', 'integrations'],
+          after: '<p>Choose prefixes based on durable product structure rather than temporary campaigns.</p>' +
+            '<p>A marketing collection such as "Summer Picks" usually does not belong inside a permanent product ID.</p>' },
+        { h: 'Category Codes',
+          html: '<p>Category segments can make product codes easier to understand.</p><p>Examples:</p>' +
+            '<p><code>TL</code> — tools</p><p><code>AUD</code> — audio</p><p><code>LGT</code> — lighting</p><p><code>ACC</code> — accessories</p>' +
+            '<p>A code such as <code>ACM-AUD-120</code> gives staff immediate context.</p>' +
+            '<p>Category codes work best when the taxonomy is stable.</p>' +
+            '<p>If items are frequently recategorized, a category-neutral product sequence may be safer.</p>' +
+            '<p>Do not automatically change the code when merchandising changes the website category.</p>' +
+            '<p>The catalog can store current category membership separately.</p>' },
+        { h: 'Numeric Series',
+          html: '<p>A simple numeric sequence provides guaranteed internal structure.</p><p>Example:</p><pre class="code">ACM-TL-100\nACM-TL-110\nACM-TL-120</pre>' +
+            '<p>The generator supports custom increments.</p>' +
+            '<p>Stepping by 10 can leave room for related models: 100, 110, 120.</p>' +
+            '<p>Later, a related model can be inserted at 115 without renumbering the entire catalog.</p>' +
+            '<p>This is an old but practical catalog-design technique.</p>' +
+            '<p>Do not over-plan every possible future product.</p>' +
+            '<p>If the code begins behaving like a hierarchical database schema, simplify it.</p>' },
+        { h: 'Generate Codes from Product Names',
+          html: '<p>Mnemonic codes help people recognize items.</p><p>Examples:</p>' +
+            '<pre class="code">Cordless Drill: CD-100\nImpact Driver: ID-110\nCircular Saw: CS-120</pre>' +
+            '<p>The generator can derive initials automatically and add a sequence so repeated initials remain unique.</p>' +
+            '<p>Do not trust initials alone.</p><p>Different products can produce the same abbreviation.</p>' +
+            '<p>Examples: Compact Saw, Circular Saw — both may become <code>CS</code>.</p>' +
+            '<p>The sequence or another controlled segment must distinguish them.</p>' +
+            '<p>Always validate final uniqueness before importing the codes.</p>' },
+        { h: 'Version and Revision Suffixes',
+          html: '<p>A revision segment can distinguish materially different model revisions.</p>' +
+            '<p>Example: <code>ACM-TL-100-A</code>, then <code>ACM-TL-100-B</code>.</p>' +
+            '<p>Use revision identifiers only when the business genuinely needs to distinguish those versions.</p>' +
+            '<p>A minor documentation correction should not necessarily create a new product code.</p>' +
+            '<p>A hardware revision that changes compatibility may justify one.</p>' +
+            '<p>Define what triggers a revision in your product lifecycle process.</p>' +
+            '<p>Otherwise staff will create inconsistent versions based on personal judgment.</p>' },
+        { h: 'When Should a New Product Code Be Created?',
+          html: '<p>Create a new code when the business needs to treat the item as a distinct product record.</p><p>Examples may include:</p>',
+          list: ['new model', 'materially different specification', 'incompatible revision', 'separately ordered item', 'independently priced product'],
+          after: '<p>Do not create a new code merely because:</p>' +
+            '<ul style="color:var(--muted);padding-left:18px"><li>price changed</li><li>marketing title changed</li><li>stock moved warehouse</li><li>website category changed</li><li>product temporarily went on sale</li></ul>' +
+            '<p>Changing attributes should live in product fields.</p><p>Identifiers should remain stable.</p>' },
+        { h: 'Product Codes and Ecommerce',
+          html: '<p>An ecommerce platform may contain several identifiers:</p>',
+          list: ['internal product ID', 'SKU', 'barcode/GTIN', 'vendor or MPN', 'product handle', 'product code'],
+          after: '<p>Do not collapse them into one field unless their roles truly match.</p>' +
+            '<p>For example, the database’s internal numeric ID may be meaningless to warehouse staff.</p>' +
+            '<p>The SKU may identify a variant.</p><p>The GTIN may be required by a marketplace.</p>' +
+            '<p>The product code may identify the model family.</p>' +
+            '<p>Clear data modeling prevents integrations from using the wrong identifier.</p>' },
+        { h: 'Avoid Price and Status in Product Codes',
+          html: '<p>Do not encode values that change frequently.</p><p>Avoid <code>TOOL-99USD-001</code> or <code>SALE-AUD-100</code>.</p>' +
+            '<p>Price and sale status are product attributes.</p>' +
+            '<p>If the price changes tomorrow, the product should not suddenly need a new identity.</p><p>The same applies to:</p>',
+          list: ['inventory quantity', 'warehouse location', 'campaign', 'availability status'],
+          after: '<p>Permanent identifiers should describe identity, not current state.</p>' },
+        { h: 'Do Not Reuse Retired Product Codes',
+          html: '<p>Historical product codes may remain in:</p>',
+          list: ['invoices', 'customer records', 'manuals', 'warranties', 'returns', 'service tickets', 'supplier files'],
+          after: '<p>Reusing an old code for a different product creates confusion.</p>' +
+            '<p>Mark the original product discontinued or archived.</p><p>Give the new product a new identifier.</p>' +
+            '<p>Code space is inexpensive. Historical ambiguity is expensive.</p>' +
+            '<p>If a product returns unchanged, the business can decide whether reactivating the original record and code is appropriate.</p>' },
+        { h: 'Common Product Code Mistakes',
+          html: '<p>Avoid these problems:</p>',
+          list: ['confusing internal codes with GS1 GTINs', 'giving two products the same code', 'using unstable marketing categories in permanent IDs',
+                 'relying on initials without uniqueness checks', 'putting price or sale status in the code', 'changing identifiers after routine metadata updates',
+                 'reusing retired codes', 'inventing a parallel numbering system when ERP already owns the catalog',
+                 'making codes too long for customer and warehouse use', 'creating a scheme so complicated only one employee understands it'],
+          after: '<p>A strong product code remains useful long after the person who designed the format has left the company.</p>' }
       ],
-      keywords: [
-        'product code generator', 'model number generator', 'product numbering system',
-        'article number generator', 'product code vs sku', 'product code format',
-        'catalogue numbering', 'product code best practices', 'increment by 10 numbering',
-        'product revision coding', 'internal product codes', 'generate codes from product names'
-      ]
+      keywords: ['product code generator', 'model number generator', 'article number generator', 'product code vs sku',
+        'product code vs gtin', 'brand prefix product code', 'mnemonic product code generator', 'catalog numbering scheme',
+        'manufacturer part number vs product code', 'product revision suffix', 'category code product number', 'bulk product code generator']
     }
   });
 })();

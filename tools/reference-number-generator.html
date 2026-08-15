@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>Reference Number Generator — Luhn &amp; Mod-97 Check Digits | Manage My Batch</title>
-<meta name="description" content="Free reference number generator with real check digits. Build payment, remittance and correspondence references using Luhn, mod-97 (ISO 11649) or mod-11 validation.">
+<title>Reference Number Generator – Luhn & MOD 97 Check Digits</title>
+<meta name="description" content="Generate payment, case and correspondence reference numbers with prefixes, sequences, random segments and optional Luhn or MOD 97 check digits.">
 <link rel="canonical" href="https://managemybatch.com/tools/reference-number-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="Reference Number Generator — Luhn &amp; Mod-97 Check Digits">
-<meta property="og:description" content="Free reference number generator with real check digits. Build payment, remittance and correspondence references using Luhn, mod-97 (ISO 11649) or mod-11 validation.">
+<meta property="og:title" content="Reference Number Generator – Luhn & MOD 97 Check Digits">
+<meta property="og:description" content="Generate payment, case and correspondence reference numbers with prefixes, sequences, random segments and optional Luhn or MOD 97 check digits.">
 <meta property="og:url" content="https://managemybatch.com/tools/reference-number-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Reference Number Generator — Luhn &amp; Mod-97 Check Digits">
-<meta name="twitter:description" content="Free reference number generator with real check digits. Build payment, remittance and correspondence references using Luhn, mod-97 (ISO 11649) or mod-11 validation.">
+<meta name="twitter:title" content="Reference Number Generator – Luhn & MOD 97 Check Digits">
+<meta name="twitter:description" content="Generate payment, case and correspondence reference numbers with prefixes, sequences, random segments and optional Luhn or MOD 97 check digits.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -343,97 +343,128 @@
       '<div><h4 style="font-size:14.5px;margin-bottom:8px">Reference vs invoice number</h4><p style="color:var(--muted);font-size:13.8px">They are often the same thing for small businesses, and separating them is worthwhile once volume grows. The invoice number is a legal identifier bound by gapless-sequence rules. The payment reference is an operational key you can design freely — including adding a check digit, which you may not want to bolt onto a compliant invoice series.</p></div></div>' +
       '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>Check digits are not security.</strong> The algorithms are public and anyone can compute a valid one. They catch accidental errors, never deliberate forgery — for that you need a random component and a server-side lookup.</span></div>',
     related: ['invoice-number-generator', 'ticket-number-generator', 'purchase-order-number-generator'],
-    faqs: [
-      { q: 'What is a check digit?', a: 'One or two extra characters computed from the rest of a number. If any character is mistyped, the computed value no longer matches and the error is detected immediately rather than downstream.' },
-      { q: 'Which check digit scheme should I use?', a: 'Luhn (mod 10) is the sensible default — widely understood, one extra digit, catches virtually all single-character typos and adjacent transpositions. Use mod-97 if your bank supports ISO 11649 structured creditor references.' },
-      { q: 'What is an ISO 11649 RF reference?', a: 'A structured creditor reference beginning <code>RF</code> followed by two mod-97 check characters and your own reference. It is designed for automated reconciliation and is recognised by banks across Europe.' },
-      { q: 'Is a payment reference the same as an invoice number?', a: 'Often, but they need not be. The invoice number is a legal identifier subject to gapless-sequence rules; the payment reference is operational, so you can freely add a check digit and optimise it for bank entry.' },
-      { q: 'Do check digits make references secure?', a: 'No. The algorithms are public, so anyone can produce a valid reference. They protect against typing mistakes only. Security requires unpredictability and a server-side check.' },
-      { q: 'Why should payment references avoid spaces and lowercase?', a: 'Many banking systems strip spaces, reject punctuation or uppercase the whole field in transit. A reference that changes shape on its way to you will not match on import.' }
+faqs: [
+      { q: 'What is a reference number?', a: 'It is an identifier used to locate or distinguish a payment, case, application, correspondence item or other record.' },
+      { q: 'Should reference numbers be random or sequential?', a: 'Either can work. Sequences are readable and sortable; random values reduce predictability. Choose based on the workflow and enforce uniqueness.' },
+      { q: 'What is a Luhn check digit?', a: 'It is a checksum digit calculated from the other numeric digits to help detect common input errors.' },
+      { q: 'What is MOD 97?', a: 'MOD 97 is used in standardized check-character methods, including ISO/IEC 7064 MOD 97-10, to detect transcription errors.' },
+      { q: 'Does a valid check digit mean the reference exists?', a: 'No. It only means the value passes the checksum rule. The system must still look up and validate the actual record.' },
+      { q: 'Should a reference contain customer data?', a: 'Avoid it. Use a neutral identifier and keep personal information in protected record fields.' },
+      { q: 'Can I generate references in bulk?', a: 'Yes. Choose the format, sequence or random settings and optional checksum, then generate the required batch.' }
     ],
     seo: {
-      title: 'Reference numbers and check digits: Luhn, mod-97 and ISO 11649',
-      lead: 'This <strong>reference number generator</strong> creates payment and correspondence references with real check digits — Luhn, mod-97 or mod-11 — plus a verifier that catches a mistyped reference instantly. Below: how each scheme works, which to choose, and what a check digit does not do.',
+      title: 'Reference Number Generator – Create Payment and Case References',
+      lead: 'Use the Reference Number Generator above to create structured reference numbers for payments, correspondence, cases, applications, internal records and other workflows that need a stable human-readable identifier.',
       blocks: [
-        {
-          h: 'The cheapest reliability upgrade available',
-          html: '<p>A <strong>check digit</strong> is one or two extra characters computed from the rest of the reference. Change any single digit, or swap two adjacent ones, and the arithmetic no longer works — so the error is caught at the point of entry rather than in a reconciliation report three weeks later.</p>' +
-            '<p>The two most common human errors are exactly the two that check digits target: a single wrong digit, and a transposition (<code>...45...</code> typed as <code>...54...</code>). Together they account for the large majority of manual entry mistakes.</p>' +
-            '<p>The cost is one character. The saving is every payment that would otherwise arrive unmatched and need a human to trace it — which for anything at volume is the entire justification.</p>'
-        },
-        {
-          h: 'The schemes',
-          table: {
-            head: ['Scheme', 'Check size', 'Catches', 'Used by'],
-            rows: [
-              ['<strong>Luhn (mod 10)</strong>', '1 digit', 'All single-digit errors, most transpositions (not 09↔90).', 'Payment cards, IMEI numbers, many loyalty schemes.'],
-              ['<strong>Mod 97-10 (ISO 7064)</strong>', '2 digits', 'All single-digit and all transposition errors. Strongest of the three.', 'IBAN, ISO 11649 creditor references.'],
-              ['<strong>Mod 11</strong>', '1 digit or X', 'All single and transposition errors, but can produce a check value of 10.', 'ISBN-10, some national ID and bank schemes.'],
-              ['<strong>Verhoeff / Damm</strong>', '1 digit', 'All single and transposition errors with a single digit.', 'Rare, but the mathematically neat option.']
-            ]
-          },
-          after: '<p>The awkwardness of mod-11 is that a check value of 10 needs a non-digit — ISBN-10 used <code>X</code>. If your reference must be all-numeric, that rules it out or forces you to skip those references.</p>'
-        },
-        {
-          h: 'Which one to use',
-          cards: [
-            { t: 'Payments and banking', d: 'Mod 97-10. It is what IBAN and ISO 11649 use, it catches every transposition, and banks already understand it.' },
-            { t: 'General business references', d: 'Luhn. One digit, trivially implemented in any language, and adequate for the error rates involved.' },
-            { t: 'Numeric-only legacy systems', d: 'Luhn again — mod 11 risks the <code>X</code> problem and mod 97 needs two characters.' },
-            { t: 'No check digit at all', d: 'Acceptable when the reference is scanned rather than typed, or always copied and pasted. Add one anyway if a human ever reads it aloud.' }
-          ]
-        },
-        {
-          h: 'ISO 11649 creditor references',
-          html: '<p><strong>ISO 11649</strong> defines the structured creditor reference used across European payments — the RF reference. It looks like <code>RF18 5390 0754 7034</code>: the literal <code>RF</code>, two mod-97 check digits, then up to 21 characters of your own reference.</p>' +
-            '<p>Its value is automatic reconciliation. A payment carrying an RF reference can be matched to an invoice by software with no human involvement, because the check digits guarantee the reference was not mistyped and the format guarantees it will not be confused with free-text payment notes.</p>',
-          steps: [
-            { t: 'Start with your own reference', d: 'An invoice number or customer account code, alphanumeric, up to 21 characters.' },
-            { t: 'Append RF00 and convert', d: 'Move <code>RF00</code> to the end and convert letters to numbers (A=10 … Z=35).' },
-            { t: 'Compute 98 minus the remainder mod 97', d: 'That two-digit result replaces the <code>00</code>.' },
-            { t: 'Present in groups of four', d: 'Spaces improve readability and are ignored on input.' }
-          ],
-          callout: { type: 'tip', text: 'If you invoice European business customers, printing an RF reference on the invoice measurably improves how many payments reconcile automatically. It costs nothing to generate and removes a manual matching step at both ends.' }
-        },
-        {
-          h: 'Payment reference or invoice number?',
-          html: '<p>They can be the same value and often should not be.</p>' +
-            '<p>An <strong>invoice number</strong> is an internal accounting sequence, usually strictly sequential for audit purposes, and it appears on the document. A <strong>payment reference</strong> is what the payer types into their banking app. It needs a check digit, needs to survive being read from a printed page, and may need to encode a customer account so that a part-payment or a payment on account can still be allocated.</p>' +
-            '<p>The common pattern is a payment reference derived from the invoice number plus a check digit — related enough to be traceable, distinct enough to serve its own purpose. See the <a href="/tools/invoice-number-generator">invoice number generator</a> for the accounting sequence itself.</p>'
-        },
-        {
-          h: 'What a check digit does not do',
-          html: '<p>It detects accidental error. It provides no security whatsoever.</p>',
-          list: [
-            '<strong>Anyone can compute a valid reference.</strong> The algorithms are public and take four lines of code. A check digit stops typos, not forgery.',
-            '<strong>It does not prevent enumeration.</strong> If your references are sequential with a Luhn digit, every valid neighbouring reference is trivially derivable.',
-            '<strong>It does not authorise anything.</strong> A valid reference must never be sufficient to view or modify a record.',
-            '<strong>It catches most errors, not all.</strong> Luhn misses the 09↔90 transposition; two compensating errors defeat any single-digit scheme.'
-          ],
-          callout: { type: 'warn', text: 'If a reference must be unguessable — a payment link, a document access code — add a random block alongside the check digit. The check digit handles typos; only entropy handles guessing.' }
-        },
-        {
-          h: 'Formatting for entry',
-          html: '<p>Uppercase, no lowercase, no spaces in the stored form. The reasons are practical: banking systems commonly uppercase input, some strip spaces and others do not, and lowercase letters introduce <code>l</code>/<code>1</code> and <code>o</code>/<code>0</code> confusion that a check digit will catch but a customer will have to retype.</p>' +
-            '<p>Display with grouping — <code>RF18 5390 0754 7034</code> — because grouped digits are transcribed far more accurately. Accept input in any form and normalise before comparing: strip whitespace and punctuation, uppercase, then validate.</p>'
-        },
-        {
-          h: 'Related reference tools',
-          list: [
-            '<a href="/tools/invoice-number-generator">Invoice Number Generator</a> — sequential billing references.',
-            '<a href="/tools/ticket-number-generator">Ticket Number Generator</a> — support and admission references.',
-            '<a href="/tools/purchase-order-number-generator">Purchase Order Number Generator</a> — structured procurement references.',
-            '<a href="/tools/order-number-generator">Order Number Generator</a> — customer-facing order references.',
-            '<a href="/tools/barcode-number-generator">Barcode Number Generator</a> — GTIN check digits.'
-          ]
-        }
+        { html: '<p>Choose a prefix, sequence or random component, number length and separator. When users will type references manually, add a Luhn or MOD 97-style check digit to help detect input errors.</p>' +
+            '<p>A payment reference might look like <code>PAY-2026-004821-7</code>. A case reference could be <code>CASE-104821</code>. A neutral correspondence ID might be <code>REF-26-K7P4-0082</code>.</p>' +
+            '<p>The best structure depends on what the number identifies and how it will be used.</p>' +
+            '<p>A reference number should be unique within its intended scope, stable after issuance and easy to validate without exposing unnecessary information.</p>' },
+        { h: 'What Is a Reference Number?',
+          html: '<p>"Reference number" is a broad term.</p><p>It can identify:</p>',
+          list: ['a payment', 'a bank transfer', 'a case', 'an application', 'a letter', 'a complaint', 'a booking', 'a claim', 'an internal record', 'a customer request', 'a shipment'],
+          after: '<p>Unlike an invoice number or purchase order number, a generic reference does not have one universal meaning.</p>' +
+            '<p>That makes format design more flexible.</p><p>It also means you should document the purpose.</p>' +
+            '<p>A prefix such as <code>PAY-</code> or <code>CASE-</code> can immediately tell staff what system should be searched.</p>' },
+        { h: 'How to Use This Reference Number Generator',
+          html: '<p>Start by deciding the scope.</p><p>Ask: "What exactly does one reference identify?"</p><p>Then choose a format.</p><p>Set:</p>',
+          list: ['prefix', 'sequence length', 'starting number', 'separator', 'optional date component', 'random segment', 'check-digit method'],
+          after: '<p>Generate a sample batch.</p><p>Check whether the values are:</p>' +
+            '<ul style="color:var(--muted);padding-left:18px"><li>unique</li><li>easy to read</li><li>compatible with downstream systems</li><li>long enough for expected volume</li><li>free of personal data</li></ul>' +
+            '<p>If the references already exist in another application, do not begin an overlapping sequence.</p>' +
+            '<p>Use the existing system as the source of truth or migrate carefully.</p>' },
+        { h: 'Sequential Reference Numbers',
+          html: '<p>A simple sequence is easy to operate.</p><p>Example:</p><pre class="code">REF-100001\nREF-100002\nREF-100003</pre>' +
+            '<p>Sequential references are useful when:</p>',
+          list: ['staff frequently search by number', 'chronology matters', 'volume disclosure does not matter', 'the system can enforce uniqueness'],
+          after: '<p>They are predictable.</p><p>That is not automatically a security problem.</p>' +
+            '<p>A predictable reference becomes dangerous when an application treats knowledge of the number as permission.</p>' +
+            '<p>If <code>/cases/100002</code> contains sensitive information, the server must verify access regardless of whether the public reference is sequential or random.</p>' +
+            '<p>Identifiers and authorization solve different problems.</p>' },
+        { h: 'Random Reference Numbers',
+          html: '<p>Random segments reduce predictability.</p><p>Example:</p><pre class="code">REF-K7P4-X82M</pre><p>This can be useful when:</p>',
+          list: ['references are public', 'neighboring sequence values should not be obvious', 'users receive one-time correspondence codes', 'the visible number should reveal less operational volume'],
+          after: '<p>Randomness introduces collision considerations.</p>' +
+            '<p>The application must have enough possible values for expected volume and should enforce uniqueness.</p>' +
+            '<p>A short four-digit random number has only 10,000 possibilities.</p>' +
+            '<p>That may be fine for a temporary local queue and completely inadequate for a large long-lived customer-reference system.</p>' +
+            '<p>Choose length based on scale.</p>' },
+        { h: 'What Is a Check Digit?',
+          html: '<p>A check digit is an extra character calculated from the rest of an identifier.</p><p>Its purpose is to detect errors.</p>' +
+            '<p>Suppose a user types <code>4839201</code> but intended <code>4839207</code>.</p>' +
+            '<p>A check algorithm may detect that the resulting reference is invalid.</p><p>Check digits are useful for:</p>',
+          list: ['payment references', 'account references', 'customer service numbers', 'printed forms', 'manually entered IDs'],
+          after: '<p>They are not encryption.</p><p>They are not passwords.</p>' +
+            '<p>They do not stop attackers from constructing a syntactically valid value.</p>' +
+            '<p>They simply help reject mistyped references before a lookup or transaction proceeds.</p>' },
+        { h: 'Luhn Check Digit',
+          html: '<p>The Luhn algorithm is a widely used checksum method for numeric identifiers.</p>' +
+            '<p>It processes the digits according to a defined weighting rule and produces a check digit.</p>' +
+            '<p>Its main value is detecting common data-entry errors.</p>' +
+            '<p>Luhn is familiar because it appears in several identifier systems.</p>' +
+            '<p>That does <strong>not</strong> mean any Luhn-valid number is a valid credit card, account or official identifier.</p>' +
+            '<p>A checksum only validates arithmetic structure.</p>' +
+            '<p>For a custom reference system, Luhn can be a convenient lightweight option when the base reference is numeric.</p>' +
+            '<p>If the business needs a different published standard, use that standard instead.</p>' },
+        { h: 'MOD 97 Check Digits',
+          html: '<p>MOD 97-style check systems use division by 97 as part of the validation process.</p>' +
+            '<p>ISO/IEC 7064 defines check-character systems designed to protect strings against errors introduced during copying or typing, including MOD 97-10.</p>' +
+            '<p>MOD 97 is also familiar from financial identifier schemes.</p>' +
+            '<p>This makes it useful when your workflow benefits from a stronger structured check than a bare sequence.</p>' +
+            '<p>Do not claim a custom MOD 97 reference is automatically an IBAN or another regulated financial identifier.</p>' +
+            '<p>The algorithm is only one component.</p>' +
+            '<p>A standards-compliant banking identifier has many additional format and assignment rules.</p>' },
+        { h: 'Luhn vs MOD 97',
+          html: '<p>Both are error-detection methods.</p><p>They are not interchangeable standards.</p><p>Use Luhn when:</p>',
+          list: ['your internal system already uses it', 'you need a familiar single-digit checksum', 'the identifier is numeric and compact'],
+          after: '<p>Use MOD 97 when:</p>' +
+            '<ul style="color:var(--muted);padding-left:18px"><li>your organization specifies it</li><li>you want a check system aligned with a published MOD 97 method</li><li>the reference format is designed around that validation rule</li></ul>' +
+            '<p>Do not choose based on which algorithm sounds more secure.</p>' +
+            '<p>These checks are primarily about transcription errors, not cryptographic security.</p>' +
+            '<p>If tamper resistance matters, use an authenticated design rather than a simple checksum.</p>' },
+        { h: 'Payment References',
+          html: '<p>Payment references help match incoming money to the correct account, invoice or order.</p>' +
+            '<p>A useful payment reference should be:</p>',
+          list: ['unambiguous', 'easy to quote', 'stable', 'accepted by the banking/payment field', 'mapped to one internal record'],
+          after: '<p>Check the character and length restrictions of the payment rail you actually use.</p>' +
+            '<p>Do not assume every banking system accepts the same punctuation or reference length.</p>' +
+            '<p>If a payment provider already issues a required reference format, use that format instead of inventing a parallel code.</p>' +
+            '<p>Generated references are most useful where your business controls the field.</p>' },
+        { h: 'Correspondence References',
+          html: '<p>Government offices, insurers, law firms, support teams and other organizations often put a reference on letters or email.</p>' +
+            '<p>Example:</p><pre class="code">CASE-2026-008421</pre>' +
+            '<p>The recipient can quote that number later.</p>' +
+            '<p>This is useful because names are not unique and subject lines change.</p>' +
+            '<p>Keep the reference stable through the case lifecycle.</p>' +
+            '<p>Do not include sensitive case details in the code.</p>' +
+            '<p>A neutral case number is safer than <code>BENEFITS-FRAUD-SMITH-2026-41</code>.</p>' +
+            '<p>The reference may appear on envelopes, email subjects and shared documents.</p>' },
+        { h: 'Reference Numbers in URLs',
+          html: '<p>A reference may also appear in a URL.</p><p>Example:</p><pre class="code">/track/REF-K7P4X82M</pre>' +
+            '<p>If the URL reveals account or case details, do not rely on the reference being difficult to guess.</p>' +
+            '<p>Authorize access or use a deliberately high-entropy access token designed for bearer access.</p>' +
+            '<p>A normal customer-service reference should be treated as public-ish metadata.</p><p>It may be shared in:</p>',
+          list: ['emails', 'screenshots', 'phone calls', 'PDFs'],
+          after: '<p>Design application security with that assumption.</p>' },
+        { h: 'Avoid Personal Data in References',
+          html: '<p>Do not encode:</p>',
+          list: ['full name', 'birth date', 'phone number', 'email', 'national identifier', 'medical information'],
+          after: '<p>A reference number should reduce the need to expose personal data, not become another copy of it.</p>' +
+            '<p>For example, <code>CASE-104821</code> is preferable to <code>SMITH-19800105-104821</code> when both can identify the same internal record.</p>' +
+            '<p>The system can map the neutral reference to protected customer data after authorization.</p>' +
+            '<p>This supports cleaner data handling and makes the identifier stable if personal details change.</p>' },
+        { h: 'Common Reference Number Mistakes',
+          html: '<p>Avoid these problems:</p>',
+          list: ['treating a check digit as a security feature', 'using too little random space for expected volume', 'encoding personal data',
+                 'allowing duplicate references', 'inventing a new format when a bank or platform already specifies one',
+                 'making the reference so long users mistype it constantly', 'relying on predictability or unpredictability for authorization',
+                 'reusing a historical reference for a different record', 'using several formats without documenting which system owns each one',
+                 'claiming a checksum makes a custom reference an official banking identifier'],
+          after: '<p>A good reference number has a clear scope and one stable meaning.</p>' }
       ],
-      keywords: [
-        'reference number generator', 'check digit calculator', 'luhn algorithm generator',
-        'mod 97 check digit', 'iso 11649 rf reference', 'payment reference format',
-        'mod 11 check digit', 'creditor reference generator', 'validate reference number',
-        'transposition error detection', 'structured payment reference', 'unique reference number'
-      ]
+      keywords: ['reference number generator', 'luhn check digit generator', 'mod 97 check digit', 'payment reference number',
+        'case reference number generator', 'correspondence reference id', 'random reference number', 'sequential reference number',
+        'check digit validation', 'reference number vs invoice number', 'bulk reference number generator', 'iso 7064 mod 97-10']
     }
   });
 })();

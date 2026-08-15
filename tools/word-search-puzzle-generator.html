@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>Word Search Puzzle Generator — Printable with Solution Key | Manage My Batch</title>
-<meta name="description" content="Free word search generator. Build printable puzzles in up to 8 directions with adjustable grid size, difficulty levels, a word bank and a highlighted solution key.">
+<title>Word Search Puzzle Generator – Printable Puzzles With Solution</title>
+<meta name="description" content="Create printable word search puzzles from your own word list with adjustable difficulty, grid size, directions, word bank, lowercase text and solution key.">
 <link rel="canonical" href="https://managemybatch.com/tools/word-search-puzzle-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="Word Search Puzzle Generator — Printable with Solution Key">
-<meta property="og:description" content="Free word search generator. Build printable puzzles in up to 8 directions with adjustable grid size, difficulty levels, a word bank and a highlighted solution key.">
+<meta property="og:title" content="Word Search Puzzle Generator – Printable Puzzles With Solution">
+<meta property="og:description" content="Create printable word search puzzles from your own word list with adjustable difficulty, grid size, directions, word bank, lowercase text and solution key.">
 <meta property="og:url" content="https://managemybatch.com/tools/word-search-puzzle-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Word Search Puzzle Generator — Printable with Solution Key">
-<meta name="twitter:description" content="Free word search generator. Build printable puzzles in up to 8 directions with adjustable grid size, difficulty levels, a word bank and a highlighted solution key.">
+<meta name="twitter:title" content="Word Search Puzzle Generator – Printable Puzzles With Solution">
+<meta name="twitter:description" content="Create printable word search puzzles from your own word list with adjustable difficulty, grid size, directions, word bank, lowercase text and solution key.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -463,90 +463,119 @@ crater</textarea>
       '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">The tool calculates this for you and flags it in both directions, so you can adjust the grid size rather than guessing.</p></div></div>' +
       '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>The solution page highlights every word in the grid <em>and</em> lists its starting row, column and direction — which is much faster to check against than a highlighted grid alone when a child is convinced a word is missing.</span></div>',
     related: ['bingo-card-generator', 'spelling-word-scramble-generator', 'vocabulary-quiz-generator'],
-    faqs: [
-      { q: 'Why could one of my words not be placed?', a: 'Either it is longer than the grid, or the grid became too crowded for it to fit in any direction. The tool tells you which words failed and why — it never drops them silently. Increase the grid size or remove a few words.' },
-      { q: 'How big should the grid be?', a: 'Large enough for your longest word, and sized so roughly a quarter to a half of the squares hold real letters. The tool reports the density and warns when the puzzle is too sparse or too crowded.' },
-      { q: 'How do I make the puzzle harder?', a: 'Enable all eight directions including backwards, draw filler letters from your own words so nothing stands out, and hide the word bank so students must recall the vocabulary first.' },
-      { q: 'Does it include a solution?', a: 'Yes. The solution page highlights every word in the grid and lists each one\'s starting row, column and direction, which is far quicker for checking than a highlighted grid alone.' },
-      { q: 'Should words run backwards?', a: 'Only for older or more confident students — and tell them. Children who assume words read forwards will scan past reversed words entirely and think the puzzle is faulty.' },
-      { q: 'Can I use lowercase letters?', a: 'Yes. Early readers are usually more fluent with lowercase than block capitals, so it is worth switching on for infant classes.' }
+faqs: [
+      { q: 'Can I make a word search from my own words?', a: 'Yes. Paste one word per line and generate the puzzle.' },
+      { q: 'Can words appear diagonally or backwards?', a: 'Yes. Direction options depend on the selected difficulty level.' },
+      { q: 'Can I change the grid size?', a: 'Yes. Use a grid large enough to fit the longest words without making the puzzle unnecessarily difficult.' },
+      { q: 'Can I hide the word bank?', a: 'Yes. Hiding it creates a much harder puzzle.' },
+      { q: 'Can I make the grid lowercase?', a: 'Yes. Lowercase can be useful for younger learners who are more familiar with lowercase reading.' },
+      { q: 'Does the tool create a solution?', a: 'Yes. Enable the solution page to see every hidden word location.' },
+      { q: 'Can I create another puzzle from the same words?', a: 'Yes. Change the seed or generate a new puzzle to rearrange the same word list.' }
     ],
     seo: {
-      title: 'Word search puzzles: placement, grid size and words that will not fit',
-      lead: 'This <strong>word search generator</strong> places your whole word list using longest-first placement, produces a real solution key, and tells you honestly when a word cannot be fitted. Below: why other generators drop words silently, how to size the grid, and how to make a puzzle genuinely harder.',
+      title: 'Word Search Puzzle Generator – Create Printable Puzzles From Your Own Words',
+      lead: 'Use the Word Search Puzzle Generator above to turn your own vocabulary or spelling list into a printable puzzle with a solution key.',
       blocks: [
-        {
-          h: 'Why some generators drop your words silently',
-          html: '<p>Placing words in a grid is a constraint problem, and a greedy algorithm can paint itself into a corner. Place the short words first and they scatter across the grid, leaving no clear run of eleven cells for <code>photosynthesis</code>.</p>' +
-            '<p>Many generators handle this by giving up quietly. The puzzle is produced, the word list is printed underneath, and one word is not in the grid at all. A class spends ten minutes hunting for something that was never there — and the child who searches most carefully is the one who suffers.</p>' +
-            '<p>Two things fix it. <strong>Longest-first placement</strong> puts the hardest words in while the grid is empty and space is plentiful. And when a word still cannot be placed, the tool says so explicitly rather than printing an impossible puzzle.</p>',
-          callout: { type: 'warn', text: '<strong>Always check the solution key against your word list before photocopying.</strong> If a generator does not offer a solution, that is the reason to distrust it — a solution key is also the only proof that every word is actually in the grid.' }
-        },
-        {
-          h: 'Sizing the grid',
-          html: '<p>The grid must be at least as wide as your longest word, and comfortably larger if the puzzle is to be interesting.</p>',
-          table: {
-            head: ['Grid', 'Words', 'Suits'],
-            rows: [
-              ['10 × 10', '8–10 short words', 'Infants, quick starters, words up to 8 letters.'],
-              ['12 × 12', '10–14 words', 'The general-purpose classroom size.'],
-              ['15 × 15', '15–20 words', 'Upper primary and secondary topic vocabulary.'],
-              ['20 × 20', '20–30 words', 'Long lists and long words. Needs a full page.'],
-              ['25 × 25+', '30+ words', 'Homework and cover work. Prints small — check legibility.']
-            ]
-          },
-          after: '<p>A useful rule of thumb: the total letters in your word list should be roughly a quarter to a third of the grid\'s cells. Much less and the words float in a sea of random letters; much more and they overlap so heavily that the puzzle becomes trivially easy to spot.</p>'
-        },
-        {
-          h: 'Making it harder',
-          steps: [
-            { t: 'Add diagonal directions', d: 'The single biggest jump in difficulty. Horizontal and vertical only is a puzzle for young children.' },
-            { t: 'Allow backwards words', d: 'Doubles the directions to search. Appropriate once reading is fluent.' },
-            { t: 'Increase the grid without increasing the words', d: 'More filler letters, longer search.' },
-            { t: 'Use a themed filler alphabet', d: 'Filling with letters drawn from the word list itself makes false leads far more common than random filler does.' },
-            { t: 'Remove the word list', d: 'Give a topic and a count instead — "find 12 words about the water cycle". Far harder, and much better vocabulary practice.' },
-            { t: 'Allow overlaps', d: 'Words sharing letters are harder to isolate visually.' }
-          ]
-        },
-        {
-          h: 'Backwards words',
-          cards: [
-            { t: 'Ages 4–6', d: 'No. Reversed words work against the left-to-right reading being established, which matters more than puzzle difficulty.' },
-            { t: 'Ages 7–9', d: 'Horizontal backwards is fine. Vertical upwards is a reasonable next step.' },
-            { t: 'Ages 10+', d: 'All eight directions. This is the standard adult word search.' },
-            { t: 'Spelling practice specifically', d: 'Consider leaving them off. Repeated exposure to correctly ordered letters is part of what a spelling activity is doing.' }
-          ]
-        },
-        {
-          h: 'Case and characters',
-          html: '<p>Traditional word searches use uppercase throughout, and there is a practical reason beyond convention: uppercase letters are uniform in height and width, so the grid aligns and every cell is the same size. Lowercase introduces ascenders and descenders that make columns look uneven and cells harder to scan.</p>' +
-            '<p>Lowercase is nonetheless the right choice for early readers, who have usually met lowercase first and read it more fluently. The generator supports both.</p>' +
-            '<p>Spaces, hyphens and apostrophes are removed before placement — <code>ice cream</code> becomes <code>ICECREAM</code> in the grid. Print the word list with its normal punctuation so children know what they are looking for, and be aware that accented characters are stripped to their base letter, which matters for a languages worksheet.</p>',
-          callout: { type: 'tip', text: 'For a vocabulary lesson, print the word list on the reverse rather than beneath the grid. Children complete the search from memory of the topic first, then turn over to check — which turns a copying exercise into a recall one.' }
-        },
-        {
-          h: 'What a word search is good for',
-          html: '<p>Honestly: less than its popularity suggests. Finding <code>PHOTOSYNTHESIS</code> in a grid requires letter matching, not meaning — a child can complete a word search perfectly without knowing what a single word means.</p>' +
-            '<p>Where it genuinely helps is <strong>orthographic familiarity</strong>: repeated exposure to a word\'s letter pattern supports spelling and later recognition. It is also a legitimate settling activity, and it works as cover work because it is self-explanatory.</p>' +
-            '<p>To make it do more, pair it with meaning. Ask for a definition beside each found word, or supply definitions instead of the word list. The searching is then a route into the vocabulary rather than the whole task — and the <a href="/tools/vocabulary-quiz-generator">vocabulary quiz generator</a> covers the meaning side directly.</p>'
-        },
-        {
-          h: 'Related puzzle tools',
-          list: [
-            '<a href="/tools/bingo-card-generator">Bingo Card Generator</a> — unique cards from the same word list.',
-            '<a href="/tools/spelling-word-scramble-generator">Spelling Word Scramble Generator</a> — anagram practice.',
-            '<a href="/tools/vocabulary-quiz-generator">Vocabulary Quiz Generator</a> — six quiz formats with automatic distractors.',
-            '<a href="/tools/random-question-picker">Random Question Picker</a> — draw words for oral practice.',
-            '<a href="/tools/math-worksheet-generator">Math Worksheet Generator</a> — printable practice for the other half of the timetable.'
-          ]
-        }
+        { html: '<p>Paste one word per line, choose the difficulty and grid size, then decide whether to include a word bank and solution page. You can also switch the grid to lowercase for younger learners and control the filler-letter style.</p>' +
+            '<p>The tool can place words in multiple directions depending on the chosen difficulty.</p>' +
+            '<p>That lets you create an easier left-to-right review for beginners or a more demanding puzzle using vertical, diagonal and reverse placements.</p>' +
+            '<p>Word searches work best as reinforcement for words learners have already encountered.</p>' +
+            '<p>They are useful for familiarity and attention to letter patterns, but they should not replace explicit vocabulary or spelling instruction.</p>' },
+        { h: 'What Is a Word Search Puzzle?',
+          html: '<p>A word search is a grid of letters containing hidden target words.</p><p>The remaining cells are filled with unrelated letters.</p>' +
+            '<p>Students scan the grid to locate each word.</p><p>A basic puzzle may hide words left to right, top to bottom.</p><p>A harder puzzle can also use:</p>',
+          list: ['diagonal directions', 'reverse directions', 'overlapping letters'],
+          after: '<p>The generator creates the placement automatically.</p>' +
+            '<p>This is much faster than trying to fit a dozen words into a grid manually while avoiding accidental layout problems.</p>' +
+            '<p>A solution page shows exactly where every hidden word appears.</p>' },
+        { h: 'How to Use This Word Search Generator',
+          html: '<p>Enter one target word per line.</p><p>Choose the difficulty.</p><p>Then adjust the grid size.</p>' +
+            '<p>A small grid is easier to scan but may not fit long words.</p>' +
+            '<p>A large grid provides more placement space but also creates more filler letters.</p>' +
+            '<p>Choose how filler letters should be generated.</p>' +
+            '<p>The tool notes that filler based on letters from your own word list can make the puzzle harder because the background resembles the target vocabulary.</p><p>Then choose whether to:</p>',
+          list: ['include a word bank', 'include the solution', 'use lowercase letters'],
+          after: '<p>Set the title and seed, generate the puzzle and preview it before printing.</p>' },
+        { h: 'Difficulty Levels',
+          html: '<p>Word-search difficulty depends on several factors.</p>' +
+            '<p><strong>Easier puzzles</strong> may use:</p>',
+          list: ['horizontal words', 'forward directions', 'shorter word list', 'smaller grid', 'visible word bank', 'lowercase for learners who read lowercase more fluently'],
+          after: '<p><strong>Harder puzzles</strong> may use:</p>' +
+            '<ul style="color:var(--muted);padding-left:18px"><li>vertical words</li><li>diagonal words</li><li>backwards words</li><li>larger grid</li><li>no word bank</li><li>filler letters similar to the target words</li></ul>' +
+            '<p>Difficulty should serve the activity.</p>' +
+            '<p>A puzzle does not become more educational merely because students spend longer searching.</p>' +
+            '<p>The goal is useful engagement with the target words.</p>' },
+        { h: 'Grid Size',
+          html: '<p>The grid must be large enough to hold the longest word.</p>' +
+            '<p>If the target list contains <code>photosynthesis</code>, a tiny 8 × 8 grid cannot fit the word in a straight line.</p>' +
+            '<p>Larger grids also allow more overlap and placement directions.</p>' +
+            '<p>However, larger is not always better.</p>' +
+            '<p>A 25 × 25 grid filled with short five-letter words can become tedious.</p>' +
+            '<p>Choose the smallest grid that comfortably supports the list and desired difficulty.</p>' +
+            '<p>For younger students or larger print, reduce the number of words rather than shrinking letters until the puzzle is hard to read.</p>' },
+        { h: 'Horizontal, Vertical, Diagonal and Backwards Words',
+          html: '<p>Left-to-right horizontal placement is the easiest common direction.</p>' +
+            '<p>Students scan rows similarly to normal reading.</p><p>This is useful for:</p>',
+          list: ['younger learners', 'first puzzle experience', 'early spelling review', 'students needing simpler visual search'],
+          after: '<p>Vertical words require students to scan up or down columns.</p>' +
+            '<p>Diagonal words add another visual-search demand.</p>' +
+            '<p>These placements make the puzzle harder without changing the vocabulary itself.</p>' +
+            '<p>Reverse placement increases difficulty further. For example, <code>PLANET</code> might appear as <code>TENALP</code> within the grid.</p>' +
+            '<p>This demands visual reversal rather than normal reading.</p>' +
+            '<p>Backwards words can be fun for older learners and puzzle enthusiasts.</p>' +
+            '<p>They are not always appropriate for beginning readers or students who struggle with letter orientation.</p>' +
+            '<p>If the objective is assessing vocabulary knowledge, a quiz is more valid than a difficult word search.</p>' },
+        { h: 'Why Filler Letters Matter',
+          html: '<p>Filler letters occupy cells not used by hidden words.</p>' +
+            '<p>Purely random filler can create obvious contrast when the target words contain unusual letter patterns.</p>' +
+            '<p>Filler based on the letters found in the target list makes the background look more similar to the hidden words.</p>' +
+            '<p>For example, if the vocabulary contains many <code>a, t, r, e, n</code> characters, using those letters frequently in the filler makes scanning more demanding.</p>' +
+            '<p>The ManageMyBatch tool specifically offers this harder style.</p>' +
+            '<p>Use it when you want challenge without changing the actual word list.</p>' +
+            '<p>For early readers, ordinary filler may be more appropriate.</p>' },
+        { h: 'Include or Hide the Word Bank',
+          html: '<p>A word bank tells students exactly what they are looking for.</p><p>That supports:</p>',
+          list: ['spelling review', 'topic vocabulary review', 'younger learners', 'independent work'],
+          after: '<p>Hiding the word bank creates a much harder puzzle because students must determine the hidden vocabulary from context or prior instruction.</p>' +
+            '<p>That only makes sense when they already know the target set.</p>' +
+            '<p>For example, after a science unit, a no-word-bank puzzle can ask students to recall likely terms as they scan.</p>' +
+            '<p>Do not hide the list if the puzzle then becomes impossible to distinguish from random letter hunting.</p>' +
+            '<p>Difficulty should remain purposeful.</p>' },
+        { h: 'Lowercase vs Uppercase',
+          html: '<p>Uppercase letters are common in traditional word searches because they create a uniform grid.</p>' +
+            '<p>Lowercase may be easier or more relevant for younger children who encounter words primarily in lowercase text.</p>' +
+            '<p>The tool supports lowercase grids for that reason.</p>' +
+            '<p>Use the case that matches the learning goal.</p>' +
+            '<p>If students are practising proper nouns, capitalization matters in normal writing even if the puzzle uses a uniform case.</p>' +
+            '<p>A word search simplifies visual presentation.</p>' +
+            '<p>It should not teach that normal spelling ignores capitalization rules.</p>' +
+            '<p>Follow up with writing when correct case is part of the objective.</p>' },
+        { h: 'Word Searches for Vocabulary',
+          html: '<p>Vocabulary word searches work best when paired with meaning.</p>' +
+            '<p>A weak activity asks students only to find <code>ecosystem</code>.</p>' +
+            '<p>A stronger follow-up asks "What does ecosystem mean?" or "Use ecosystem in a sentence."</p>' +
+            '<p>You can also give definitions separately and ask learners to decide which words belong in the hidden list.</p>' +
+            '<p>The puzzle then becomes one stage of retrieval rather than the entire task.</p>' +
+            '<p>Use the <a href="/tools/vocabulary-quiz-generator">Vocabulary Quiz Generator</a> when you need direct assessment of meaning.</p>' +
+            '<p>The word search is better viewed as review, warm-up or reinforcement.</p>' },
+        { h: 'Solution Pages',
+          html: '<p>A solution page highlights the hidden words.</p><p>It is useful for:</p>',
+          list: ['teacher checking', 'student self-check', 'substitute lessons', 'homework', 'independent stations'],
+          after: '<p>For low-stakes review, allowing students to check their own puzzle can save time.</p>' +
+            '<p>If a learner cannot find one word after genuine effort, the solution prevents endless unproductive searching.</p>' +
+            '<p>The goal is review, not proving who can stare at a letter grid the longest.</p>' +
+            '<p>Use the answer page to close the activity and then return attention to the meaning or spelling of the words.</p>' },
+        { h: 'Common Word Search Mistakes',
+          html: '<p>Avoid these problems:</p>',
+          list: ['choosing a grid too small for the longest word', 'making the grid unnecessarily huge', 'using reverse words with learners who are not ready for that visual demand',
+                 'treating puzzle difficulty as vocabulary difficulty', 'hiding the word bank without a realistic reason',
+                 'assuming finding a word proves the learner knows its meaning', 'using word searches as the only spelling practice',
+                 'adding too many terms', 'ignoring capitalization or phrase-handling issues', 'printing without checking the solution page'],
+          after: '<p>A good word search creates focused exposure to useful words without letting the puzzle mechanics take over the lesson.</p>' }
       ],
-      keywords: [
-        'word search generator', 'printable word search', 'custom word search maker',
-        'word search with answers', 'word search grid size', 'make your own word search',
-        'vocabulary word search', 'word search solution key', 'spelling word search',
-        'free word search puzzle maker', 'diagonal word search', 'classroom word search'
-      ]
+      keywords: ['word search puzzle generator', 'printable word search maker', 'custom word search from word list', 'word search difficulty levels',
+        'word search solution key generator', 'vocabulary word search generator', 'word search grid size', 'diagonal backwards word search',
+        'lowercase word search puzzle', 'word bank word search', 'spelling word search generator', 'classroom word search printable']
     }
   });
 })();

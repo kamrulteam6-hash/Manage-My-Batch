@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>Batch Number Generator — Manufacturing Traceability Codes | Manage My Batch</title>
-<meta name="description" content="Free batch number generator for manufacturing. Build traceable batch codes with Julian or calendar date codes, line and shift identifiers, and check digits.">
+<title>Batch Number Generator – Manufacturing Batch Codes Online</title>
+<meta name="description" content="Generate traceable manufacturing batch numbers with production dates, Julian codes, line, shift, sequence, custom patterns and optional check digits.">
 <link rel="canonical" href="https://managemybatch.com/tools/batch-number-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="Batch Number Generator — Manufacturing Traceability Codes">
-<meta property="og:description" content="Free batch number generator for manufacturing. Build traceable batch codes with Julian or calendar date codes, line and shift identifiers, and check digits.">
+<meta property="og:title" content="Batch Number Generator – Manufacturing Batch Codes Online">
+<meta property="og:description" content="Generate traceable manufacturing batch numbers with production dates, Julian codes, line, shift, sequence, custom patterns and optional check digits.">
 <meta property="og:url" content="https://managemybatch.com/tools/batch-number-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Batch Number Generator — Manufacturing Traceability Codes">
-<meta name="twitter:description" content="Free batch number generator for manufacturing. Build traceable batch codes with Julian or calendar date codes, line and shift identifiers, and check digits.">
+<meta name="twitter:title" content="Batch Number Generator – Manufacturing Batch Codes Online">
+<meta name="twitter:description" content="Generate traceable manufacturing batch numbers with production dates, Julian codes, line, shift, sequence, custom patterns and optional check digits.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -344,90 +344,119 @@
       '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">Use the Decode tab to convert in either direction — it is genuinely useful when a customer reads a code over the phone.</p></div></div>' +
       '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>Keep the code short and the batch record complete. Raw material lots, equipment, operators and QC results belong in the record keyed by this number, not encoded into the number itself.</span></div>',
     related: ['lot-number-generator', 'asset-tag-number-generator', 'purchase-order-number-generator'],
-    faqs: [
-      { q: 'What is a batch number?', a: 'A code identifying a specific production run — units made under uniform conditions on one line during one period. It is the key that links physical product back to production and quality records.' },
-      { q: 'What is a Julian date code?', a: 'A compact date format written as <code>YYJJJ</code>: the last two digits of the year plus the day of year from 001 to 366. <code>26221</code> means day 221 of 2026. It is fixed width and avoids month/day ambiguity between regions.' },
-      { q: 'What is the difference between a batch number and a lot number?', a: 'Usage varies and the terms are often interchangeable. Broadly, a batch is one production run under uniform conditions, while a lot is a quantity grouped for distribution that may combine batches. Follow your sector\'s definition where one is regulated.' },
-      { q: 'Should the batch number include the production line?', a: 'Yes if you have more than one. When a fault traces to a specific machine, a line code lets you recall that line\'s output rather than everything made that day.' },
-      { q: 'How long should a batch code be?', a: 'Under about 14 characters. Codes are printed by inkjet or laser onto moving, often curved packaging — longer codes smear, wrap around seams or become illegible.' },
-      { q: 'Do batch numbers need check digits?', a: 'They help wherever codes are typed manually from packaging into a system, since printed codes are frequently smudged or partly obscured. They are less important where scanning is reliable.' }
+faqs: [
+      { q: 'What is a batch number?', a: 'It is an identifier assigned to a defined production batch so the finished product can be linked to manufacturing and quality records.' },
+      { q: 'Is a batch number the same as a lot number?', a: 'Sometimes. Organizations define the terms differently, and GS1 uses one AI (10) field for batch or lot number.' },
+      { q: 'What is a YYJJJ date code?', a: 'It combines a two-digit year with a three-digit day-of-year value.' },
+      { q: 'Can a batch number contain letters?', a: 'Yes. Many internal batch systems use alphanumeric codes, and GS1 AI (10) supports an alphanumeric batch/lot field.' },
+      { q: 'Does a batch code tell me the expiry date?', a: 'Not automatically. Production date, shelf life and expiry are separate concepts unless your documented system explicitly connects them.' },
+      { q: 'Can I put a batch number in a GS1 barcode?', a: 'Yes, where the relevant GS1 barcode/data carrier is used, AI (10) identifies batch or lot data.' },
+      { q: 'Should batch numbers be unique?', a: 'They should uniquely identify the production grouping within the scope required by your quality and traceability system.' }
     ],
     seo: {
-      title: 'Batch numbers: Julian date codes, line identifiers and recall-driven design',
-      lead: 'This <strong>batch number generator</strong> builds traceable manufacturing codes with Julian dates, line and shift segments, and decodes a Julian code back to a real date. Below: how to design the code around a recall rather than around paperwork, and what each segment buys you.',
+      title: 'Batch Number Generator – Create Traceable Manufacturing Codes',
+      lead: 'Use the Batch Number Generator above to create consistent production batch codes from a date, line, shift and running sequence.',
       blocks: [
-        {
-          h: 'Design the code around the recall',
-          html: '<p>A batch number exists for one moment: the day something is wrong and you have to work out exactly what to withdraw. Every design decision should be judged against that moment.</p>' +
-            '<p>The question a recall asks is <em>how narrowly can you scope it?</em> If your batch code identifies only the day, you recall a day\'s production. If it identifies the day, the line and the shift, you recall a shift on one line — perhaps an eighth of the volume. The difference is measured directly in money, and the cost of the extra characters is zero.</p>' +
-            '<p>The second question is <em>how fast can you scope it?</em> A code that requires a database lookup to interpret slows every conversation. A code where a quality manager can read the date and line straight off the packaging does not.</p>',
-          callout: { type: 'warn', text: '<strong>Never recycle batch codes.</strong> A code reused a year later means a recall notice matches two production runs, and you either withdraw both or cannot prove which is affected. Include the year in the code, or keep a counter that never resets.' }
-        },
-        {
-          h: 'What is a Julian date code?',
-          html: '<p>A <strong>Julian date code</strong> encodes a date as the day of the year — 1 to 365, or 366 in a leap year — usually with a year digit in front. 10 August 2026 is day 222, so the code is <code>6222</code> for a single-digit year or <code>26222</code> for two.</p>' +
-            '<p>It is used across food, pharmaceutical and industrial manufacturing for practical reasons: it is compact, it is unambiguous across regions (unlike <code>08/10</code>, which is two different dates depending on the reader), and it sorts correctly as plain digits.</p>',
-          table: {
-            head: ['Date', '1-digit year', '2-digit year', 'Notes'],
-            rows: [
-              ['1 January 2026', '<code>6001</code>', '<code>26001</code>', 'Pad the day to three digits always.'],
-              ['10 August 2026', '<code>6222</code>', '<code>26222</code>', 'Day 222 of the year.'],
-              ['31 December 2026', '<code>6365</code>', '<code>26365</code>', '365 in a non-leap year.'],
-              ['31 December 2028', '<code>8366</code>', '<code>28366</code>', 'Leap year — day 366 exists.']
-            ]
-          },
-          after: '<p>Use two year digits unless label space genuinely forbids it. A single digit repeats every ten years, and product with a long shelf life outlives that.</p>'
-        },
-        {
-          h: 'Batch number or lot number?',
-          html: '<p>In everyday use they are interchangeable, and most regulations treat them as synonyms. Where a distinction is drawn, it is one of scope:</p>',
-          cards: [
-            { t: 'Batch', d: 'A quantity produced in one continuous run under uniform conditions — one mix, one line, one shift. Manufacturing language.' },
-            { t: 'Lot', d: 'A quantity handled as a unit for traceability, which may be one batch, part of a batch, or several batches combined for packing. Regulatory and distribution language.' },
-            { t: 'In practice', d: 'One code usually serves both. Problems arise only when one batch is split across several packing runs, at which point the lot is the narrower unit.' }
-          ],
-          after: '<p>If you are subject to food, cosmetic or pharmaceutical labelling rules, the regulated term is normally "lot" — see the <a href="/tools/lot-number-generator">lot number generator</a> for GS1 application identifiers and expiry handling.</p>'
-        },
-        {
-          h: 'Segments worth including',
-          steps: [
-            { t: 'Date, always', d: 'Julian or <code>YYMMDD</code>. Without it the code is just a serial number and the recall scope is whatever your records say.' },
-            { t: 'Production line, usually', d: 'A single character. If a fault is mechanical — a worn seal, a mis-set filler — it is line-specific, and the line segment is what confines the recall.' },
-            { t: 'Shift, if you run more than one', d: 'Faults often correlate with a shift changeover or a specific crew. Another single character.' },
-            { t: 'Site, if you have several', d: 'Two or three characters. Essential the moment the same product is made in two plants.' },
-            { t: 'Sequence within the day', d: 'Distinguishes multiple runs of the same product on the same line.' },
-            { t: 'Not the product', d: 'The product is already identified by its own code and its GTIN. Repeating it lengthens the batch code for nothing.' }
-          ]
-        },
-        {
-          h: 'How long, and does it need a check digit?',
-          html: '<p>Eight to twelve characters covers date, line, shift and sequence with room to read. Beyond about fourteen, the code stops being printed legibly on small packaging and starts being transcribed wrongly.</p>' +
-            '<p>Check digits are usually unnecessary. Batch codes are read from a label and typed rarely — most systems scan them as part of a GS1-128 barcode, where the symbology already carries error detection. The exception is manual goods-in entry, where a warehouse operator keys the batch code from a printed label into a receiving screen; there, a <a href="/tools/reference-number-generator">Luhn digit</a> catches the common transposition errors.</p>',
-          callout: { type: 'tip', text: 'Print the code in a fixed position and a fixed format on every product. Recall notices are read under pressure by people who have never looked at your packaging before, and "the code is somewhere on the base" costs hours across thousands of retail sites.' }
-        },
-        {
-          h: 'Recording what the code cannot carry',
-          html: '<p>The code is an index, not a record. What makes traceability work is the data behind it: which raw material lots went into that batch, which equipment was used, which operators ran it, what the in-process checks recorded, and where the finished goods were despatched.</p>' +
-            '<p>Both directions matter. Backward traceability answers "what went into this" when a customer complains; forward traceability answers "where did this go" when a supplier notifies you of a contaminated ingredient. Most traceability failures are forward failures — the batch is identified correctly and nobody can say which distributors received it.</p>' +
-            '<p>Keep records for at least the product\'s shelf life plus a margin, and longer where regulation specifies. The batch code is worthless if the records behind it have been archived past retrieval.</p>'
-        },
-        {
-          h: 'Related traceability tools',
-          list: [
-            '<a href="/tools/lot-number-generator">Lot Number Generator</a> — GS1 lot codes with expiry calculation.',
-            '<a href="/tools/barcode-number-generator">Barcode Number Generator</a> — GTINs for the products themselves.',
-            '<a href="/tools/shipping-reference-generator">Shipping Reference Generator</a> — where the batch went.',
-            '<a href="/tools/asset-tag-number-generator">Asset Tag Number Generator</a> — identify the equipment that produced it.',
-            '<a href="/tools/purchase-order-number-generator">Purchase Order Number Generator</a> — the raw materials that went in.'
-          ]
-        }
+        { html: '<p>Choose a prefix and separator, select a date-code style, add the production line or shift where useful, set the starting number and generate a batch of identifiers. You can also decode Julian-style production dates when a compact <code>YYJJJ</code> code needs to be converted back to a calendar date.</p>' +
+            '<p>A typical code might look like <code>B26221001</code> or <code>B-26221-L1-001</code>.</p>' +
+            '<p>The correct batch format is the one that traces a product back to the production records that matter. There is no universal format for every industry.</p>' },
+        { h: 'What Is a Batch Number?',
+          html: '<p>A batch number is an identifier assigned to a defined production batch.</p><p>The batch may represent material produced:</p>',
+          list: ['in one production run', 'during one shift', 'on one line', 'from one formulation', 'from one raw-material set', 'within a defined time window'],
+          after: '<p>The number links goods to manufacturing records.</p><p>Depending on the industry, those records may include:</p>' +
+            '<ul style="color:var(--muted);padding-left:18px"><li>ingredients or components</li><li>operators</li><li>equipment</li><li>production date</li><li>line</li><li>quality tests</li><li>cleaning records</li><li>process parameters</li><li>packaging records</li><li>release status</li></ul>' +
+            '<p>The batch number should enable traceability without encoding every record field.</p>' },
+        { h: 'How to Use This Batch Number Generator',
+          html: '<p>Choose the date-code style first.</p><p>Then enter a short prefix if your process uses one.</p>' +
+            '<p>Add the production line and shift where those segments help identify the manufacturing run.</p>' +
+            '<p>Set the starting sequence and number length.</p><p>Preview the format.</p><p>For example:</p>' +
+            '<pre class="code">Prefix: B\nDate: 26221\nLine: L1\nSequence: 001</pre><p>could become:</p><pre class="code">B26221L1001</pre>' +
+            '<p>Generate the required batch numbers and export them.</p>' +
+            '<p>If your manufacturing or ERP system already owns batch assignment, do not independently create a second overlapping series.</p>' +
+            '<p>Use this generator for format design, controlled batches, test data or workflows where you genuinely control issuance.</p>' },
+        { h: 'Batch Number vs Lot Number',
+          html: '<p>The terms "batch" and "lot" are often used closely and sometimes interchangeably.</p><p>A company may define:</p>' +
+            '<p><strong>Batch</strong> — a quantity produced together under one manufacturing run.</p>' +
+            '<p><strong>Lot</strong> — a traceable grouping of product released, packaged or distributed together.</p>' +
+            '<p>In another organization, both terms may mean the same thing.</p>' +
+            '<p>GS1 uses one data element—Application Identifier <code>(10)</code>—for "batch or lot number."</p>' +
+            '<p>The important issue is not the vocabulary.</p><p>Define what your code represents in your traceability procedure.</p>' +
+            '<p>If one batch is later split into several packaging lots, decide whether the downstream lot code should preserve the link to the original manufacturing batch.</p>' },
+        { h: 'Julian Date Codes',
+          html: '<p>A Julian-style manufacturing code commonly represents the day of the year.</p>' +
+            '<p>For example, the 221st day of a non-leap year corresponds to a calendar date in August.</p>' +
+            '<p>A compact format uses <code>YYJJJ</code> where <code>YY</code> = two-digit year and <code>JJJ</code> = day of year from 001 through 365 or 366.</p>' +
+            '<p>A code such as <code>26221</code> therefore identifies year 2026 plus day 221.</p><p>This format offers:</p>',
+          list: ['fixed width', 'compact printing', 'no month/day order ambiguity', 'easy machine generation'],
+          after: '<p>It is less human-readable, so decoding support helps.</p>' },
+        { h: 'Julian Date Is Not an Expiry Date',
+          html: '<p>A production-date code shows when the batch was produced.</p><p>It does not automatically tell you when the product expires.</p>' +
+            '<p>Shelf life can depend on:</p>',
+          list: ['formulation', 'packaging', 'storage temperature', 'stability testing', 'regulatory requirements'],
+          after: '<p>Do not infer an expiry date from a batch number unless your documented product rules explicitly define that relationship.</p>' +
+            '<p>If expiry must be printed or encoded, store and calculate it as a separate controlled field.</p>' +
+            '<p>For GS1 data, production, best-before and expiration dates have their own Application Identifiers.</p>' },
+        { h: 'Production Line Codes',
+          html: '<p>A line segment can improve root-cause investigation.</p><p>Example:</p><pre class="code">B-26221-L2-004</pre>' +
+            '<p>If a defect is later associated with Line 2, staff can quickly identify candidate records.</p>' +
+            '<p>However, the code should still link to the manufacturing record rather than serve as the only source of production history.</p>' +
+            '<p>Lines can be renamed or equipment can move.</p><p>Keep the coding convention documented.</p>' +
+            '<p>If a factory has only one line, including <code>L1</code> in every batch code may add no useful information.</p>' +
+            '<p>Add segments because they improve traceability, not because more segments look more professional.</p>' },
+        { h: 'Sequential Batch Numbers',
+          html: '<p>A running sequence prevents two batches with the same date and line segments from receiving the same complete number.</p>' +
+            '<p>For example:</p><pre class="code">B26221L1001\nB26221L1002\nB26221L1003</pre>' +
+            '<p>Define when the sequence resets.</p><p>Possible rules include:</p>',
+          list: ['never', 'every year', 'every day', 'per production line', 'per product'],
+          after: '<p>Any reset rule can work operationally if the complete code remains unique within the required traceability scope.</p>' +
+            '<p>Do not reset a sequence simply because the number is getting long.</p>' +
+            '<p>Historical production records can remain relevant for years.</p>' },
+        { h: 'Batch Codes and GS1',
+          html: '<p>GS1 Application Identifier <code>(10)</code> represents a batch or lot number.</p>' +
+            '<p>The GS1 data field for AI <code>(10)</code> allows a variable-length alphanumeric value of up to 20 characters.</p>' +
+            '<p>That means an internal batch code can often be carried within a GS1-128, GS1 DataMatrix or other appropriate GS1 data carrier when your packaging workflow uses GS1 standards.</p>' +
+            '<p>The parentheses are normally human-readable notation.</p><p>The encoded barcode follows GS1 data rules.</p>' +
+            '<p>Do not invent a GTIN or other GS1 identification key merely because you have created a batch number.</p>' +
+            '<p>Product identification and batch identification are different data elements.</p>' },
+        { h: 'A Batch Number Is Not a GTIN',
+          html: '<p>A GTIN identifies a trade item.</p><p>A batch number identifies a production grouping of that item.</p><p>For example:</p>' +
+            '<pre class="code">Product: a 500 mL bottle of one formulation\nGTIN: identifies that trade item definition\nBatch: identifies one production run of those bottles</pre>' +
+            '<p>Many units can share the same GTIN while belonging to different batches.</p>' +
+            '<p>During a recall, the affected scope may be defined by the product plus the batch/lot.</p>' +
+            '<p>Keep these concepts separate in your database and barcode design.</p>' },
+        { h: 'Batch Traceability',
+          html: '<p>A batch number becomes valuable only when it connects to records.</p>' +
+            '<p>At minimum, define what someone can retrieve after looking up the code.</p><p>For manufacturing, that may include:</p>',
+          list: ['production date/time', 'product', 'quantity', 'line', 'raw materials', 'quality checks', 'disposition', 'downstream lots'],
+          after: '<p>A printed code disconnected from production records does not create traceability.</p><p>Test the reverse process:</p>' +
+            '<p>"If a customer gives us this batch code, can we find the relevant manufacturing history quickly?"</p>' +
+            '<p>If the answer is no, fix the record system rather than making the identifier more complicated.</p>' },
+        { h: 'Batch Numbers and Recalls',
+          html: '<p>Batch-level identification allows a company to narrow investigations and corrective actions.</p>' +
+            '<p>Instead of treating every unit ever produced as potentially affected, quality teams may be able to identify a specific production run.</p>' +
+            '<p>The actual recall scope depends on:</p>',
+          list: ['root cause', 'distribution', 'product risk', 'regulatory requirements', 'traceability quality'],
+          after: '<p>The batch number supports that process.</p><p>It does not determine the recall by itself.</p>' +
+            '<p>During a mock recall, test whether staff can move both directions: trace back to ingredients or components and trace forward to customers or distribution records.</p>' },
+        { h: 'Batch Numbers in Food Production',
+          html: '<p>Food manufacturers may need batch or lot codes to support internal quality control, customer requirements and regulatory traceability.</p>' +
+            '<p>Requirements depend on the product and jurisdiction.</p>' +
+            '<p>In the United States, certain foods covered by FDA’s Food Traceability Rule have specific traceability lot-code requirements.</p>' +
+            '<p>Do not assume every food product everywhere follows the same rule.</p><p>If your product falls under a regulated traceability system:</p>',
+          list: ['identify the applicable regulation', 'maintain the traceability plan', 'preserve required data', 'link the code to the appropriate source', 'test record retrieval'],
+          after: '<p>A generator can create the identifier format, but compliance depends on the complete traceability process.</p>' },
+        { h: 'Common Batch Number Mistakes',
+          html: '<p>Avoid these problems:</p>',
+          list: ['claiming one format is a universal manufacturing standard', 'treating a production date as an expiry date',
+                 'using employee initials as a permanent traceability segment', 'resetting sequences in a way that creates duplicate full codes',
+                 'encoding too much production data in the identifier', 'confusing batch numbers with GTINs',
+                 'generating codes outside the ERP without recording issuance', 'printing codes that cannot be decoded later',
+                 'reusing an old batch code for a new production run', 'having a code without records that support traceability'],
+          after: '<p>A good batch number is short enough to print, unique enough to trace and documented well enough to decode years later.</p>' }
       ],
-      keywords: [
-        'batch number generator', 'julian date code', 'batch code format',
-        'manufacturing traceability codes', 'julian date decoder', 'production batch numbering',
-        'batch vs lot number', 'recall traceability', 'shift and line codes',
-        'food batch code', 'batch code length', 'gs1-128 batch'
-      ]
+      keywords: ['batch number generator', 'manufacturing batch code', 'julian date code generator', 'batch number vs lot number',
+        'gs1 ai 10 batch lot', 'production line batch code', 'batch traceability', 'food traceability lot code',
+        'batch number recall', 'yyjjj date format', 'sequential batch numbers', 'batch code generator online']
     }
   });
 })();

@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>Tournament Bracket Generator — Seeded Knockout Brackets, Free | Manage My Batch</title>
-<meta name="description" content="Free tournament bracket generator. Build seeded single-elimination brackets with correct bye placement, printable tree diagrams and a match list. Any number of entrants.">
+<title>Tournament Bracket Generator – Seeded Single-Elimination Draw</title>
+<meta name="description" content="Create printable single-elimination tournament brackets with seeded or random draws, automatic byes, seed numbers, third-place match and round-one list.">
 <link rel="canonical" href="https://managemybatch.com/tools/tournament-bracket-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="Tournament Bracket Generator — Seeded Knockout Brackets, Free">
-<meta property="og:description" content="Free tournament bracket generator. Build seeded single-elimination brackets with correct bye placement, printable tree diagrams and a match list. Any number of entrants.">
+<meta property="og:title" content="Tournament Bracket Generator – Seeded Single-Elimination Draw">
+<meta property="og:description" content="Create printable single-elimination tournament brackets with seeded or random draws, automatic byes, seed numbers, third-place match and round-one list.">
 <meta property="og:url" content="https://managemybatch.com/tools/tournament-bracket-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Tournament Bracket Generator — Seeded Knockout Brackets, Free">
-<meta name="twitter:description" content="Free tournament bracket generator. Build seeded single-elimination brackets with correct bye placement, printable tree diagrams and a match list. Any number of entrants.">
+<meta name="twitter:title" content="Tournament Bracket Generator – Seeded Single-Elimination Draw">
+<meta name="twitter:description" content="Create printable single-elimination tournament brackets with seeded or random draws, automatic byes, seed numbers, third-place match and round-one list.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -325,95 +325,128 @@ Hartwell Town</textarea>
       '<div><h4 style="font-size:14.5px;margin-bottom:8px">Choosing a format</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li><strong>Single elimination</strong> — fastest. Half the field is out after one match.</li><li><strong>Round robin</strong> — everyone plays everyone. Fairest, but grows quadratically.</li><li><strong>Groups then knockout</strong> — the usual compromise for larger events.</li></ul>' +
       '<p style="color:var(--muted);font-size:13.8px;margin-top:10px">If your priority is that everyone gets several games, a <a href="/tools/round-robin-schedule-generator">round robin</a> is the better starting point.</p></div></div>',
     related: ['round-robin-schedule-generator', 'league-schedule-generator', 'team-generator'],
-    faqs: [
-      { q: 'How are byes decided?', a: 'They go to the top seeds. When the entry count is not a power of two, the highest-ranked entrants skip round one — this is the standard tournament convention and it keeps the bracket balanced.' },
-      { q: 'What is proper tournament seeding?', a: 'A recursive arrangement where seed 1 and seed 2 are in opposite halves, seeds 3 and 4 in opposite quarters, and so on. In an eight-bracket the first-round matches are 1v8, 4v5, 2v7, 3v6 — not 1v2, 3v4.' },
-      { q: 'Can I run a tournament with 11 or 13 entrants?', a: 'Yes. The bracket rounds up to the next power of two and the extra slots become byes for the top seeds. The tool shows exactly how many byes there are and who receives them.' },
-      { q: 'Should I include a third-place play-off?', a: 'It is optional. It gives the losing semi-finalists one more match, which some tournaments want and others skip. Decide before the draw so nobody feels it was added or dropped to suit a result.' },
-      { q: 'What if I want everyone to play several games?', a: 'Single elimination knocks out half the field immediately. Use a round robin, or a group stage feeding a smaller knockout bracket, if game count matters more than speed.' },
-      { q: 'Can I print the bracket?', a: 'Yes — the print view produces the bracket as a vector diagram, so it stays sharp at any size, along with a round-one match list that is easier to read aloud.' }
+faqs: [
+      { q: 'What is a single-elimination bracket?', a: 'It is a knockout tournament in which the winner advances and the loser is eliminated from the championship bracket.' },
+      { q: 'What is seeding?', a: 'Seeding ranks entrants before placement so the strongest seeds are separated through the early bracket.' },
+      { q: 'What happens if I have 10 teams?', a: 'The bracket expands to the next power-of-two structure and uses byes so the knockout tree remains valid.' },
+      { q: 'How many matches does a single-elimination tournament need?', a: 'With n entrants, it needs n - 1 matches to determine a champion, excluding an optional third-place play-off.' },
+      { q: 'Can I make a random bracket?', a: 'Yes. Use the random seeding/draw option when entrants should not follow a ranking.' },
+      { q: 'Can I add a third-place match?', a: 'Yes. Enable the third-place play-off when the event needs a bronze or third-place result.' },
+      { q: 'Can I print the bracket?', a: 'Yes. Generate the bracket, choose the desired width and use the print/PDF option.' }
     ],
     seo: {
-      title: 'Tournament brackets: seeding, byes and the bit most generators get wrong',
-      lead: 'This <strong>tournament bracket generator</strong> builds seeded single-elimination draws with byes placed the way real tournaments place them — top seeds first, strongest entrants kept apart until the final. Below: how proper seeding works, what to do with 11 or 13 entrants, and when a bracket is the wrong format.',
+      title: 'Tournament Bracket Generator – Build a Seeded Knockout Draw',
+      lead: 'Use the Tournament Bracket Generator above to create a printable single-elimination bracket from your team or player list.',
       blocks: [
-        {
-          h: 'What seeding is actually for',
-          html: '<p><strong>Seeding</strong> arranges a draw so that the strongest entrants cannot meet until as late as possible. It is not a reward for the top seed; it is a guarantee for the spectators and for the integrity of the result.</p>' +
-            '<p>The standard pattern places 1 and 2 in opposite halves, 3 and 4 in opposite quarters from each other and from 1 and 2, and so on. In a 16-draw, seed 1 faces seed 16, and the bracket is built so 1 versus 2 can only happen in the final.</p>' +
-            '<p>Get it wrong and the tournament peaks early: the two best entrants meet in round two, one goes home, and the final is between the fourth and seventh best. That is the failure that seeding exists to prevent, and it is what a random draw produces roughly half the time.</p>',
-          table: {
-            head: ['Draw size', 'First-round pairings (by seed)'],
-            rows: [
-              ['4', '1 v 4, 2 v 3'],
-              ['8', '1 v 8, 4 v 5, 3 v 6, 2 v 7'],
-              ['16', '1 v 16, 8 v 9, 5 v 12, 4 v 13, 3 v 14, 6 v 11, 7 v 10, 2 v 15'],
-              ['32', 'Same recursive pattern — each half mirrors the other.']
-            ]
-          },
-          after: '<p>The rule underneath: in every match, the two seed numbers sum to one more than the draw size. That is what makes the structure recursive and provably correct at any size.</p>'
-        },
-        {
-          h: 'The bit most bracket generators get wrong',
-          html: '<p><strong>Bye placement.</strong> When the entrant count is not a power of two, some competitors skip the first round. Where those byes go decides whether the seeding means anything.</p>' +
-            '<p>The correct rule is that byes go to the <strong>top seeds, in order</strong>. With 11 entrants in a 16-draw, there are 5 byes, and they go to seeds 1 through 5. Seeds 6 through 11 play the first round.</p>' +
-            '<p>Generators that distribute byes randomly, or place them at the bottom of the bracket, hand a free round to a weak entrant while the top seed plays an extra match. Every subsequent round is then distorted, and the seeding you carefully worked out has been discarded.</p>',
-          callout: { type: 'warn', text: '<strong>Never randomise byes.</strong> A bye is a competitive advantage — one fewer match, more rest, less injury risk. Awarding them by seed is how the advantage is justified. Awarding them randomly means the draw, not the field, decides who benefits.' }
-        },
-        {
-          h: 'Running 11 or 13 entrants',
-          steps: [
-            { t: 'Round up to the next power of two', d: '11 entrants go into a 16-draw; 13 into a 16-draw; 20 into a 32-draw.' },
-            { t: 'Count the byes', d: 'Draw size minus entrants. 16 − 11 = 5 byes.' },
-            { t: 'Assign byes to the top seeds', d: 'Seeds 1 to 5 receive them, in order.' },
-            { t: 'Place the remaining entrants by the seeding pattern', d: 'The standard positions, with the bye slots left empty.' },
-            { t: 'Check the round-two structure', d: 'Every seed with a bye should enter in round two against the winner of their designated first-round match.' }
-          ],
-          after: '<p>An 11-entrant tournament therefore has 3 first-round matches, then a normal 8-entrant bracket. Total matches is always entrants minus one — 10 matches for 11 entrants — regardless of how the byes fall.</p>'
-        },
-        {
-          h: 'Third-place play-offs',
-          cards: [
-            { t: 'Include one when placings matter', d: 'Qualification, prize money, ranking points or a trophy for third. Then the match has stakes and deserves to be played.' },
-            { t: 'Skip it for casual events', d: 'Two teams who have just lost a semi-final rarely want another match. Attendance and effort both drop noticeably.' },
-            { t: 'Consider it for scheduling', d: 'At a one-day event it gives the finalists a rest gap and the venue a filler slot before the final.' },
-            { t: 'Decide before the draw', d: 'Announcing a third-place match after the semi-finals looks like an afterthought, because it is.' }
-          ]
-        },
-        {
-          h: 'When a bracket is the wrong format',
-          html: '<p>Single elimination has one significant flaw: half the field plays once and goes home. For a competitive cup, that is the point. For a club night, a school event or anything where people have travelled, it is a poor use of the day.</p>',
-          list: [
-            '<strong>Pools then knockout.</strong> Groups of four playing a <a href="/tools/round-robin-schedule-generator">round robin</a>, top two advancing. Everyone gets three matches minimum and the knockout still produces a clean winner. This is what most real tournaments do.',
-            '<strong>Double elimination.</strong> Two losses to be out, so an early upset does not end anyone\'s day. Roughly twice the matches and a bracket that takes explaining.',
-            '<strong>Swiss system.</strong> Fixed number of rounds, paired against opponents on a similar score. Everyone plays every round, and no bracket is needed.',
-            '<strong>Full round robin.</strong> Best for small fields where time allows — up to about eight entrants.'
-          ],
-          callout: { type: 'tip', text: 'For a one-day event with 12 to 24 entrants, pools followed by a knockout is almost always the right answer. It guarantees everyone a set of games, fills the venue evenly all day, and still ends with a final that means something.' }
-        },
-        {
-          h: 'Printing and running the draw',
-          html: '<p>Print the bracket before the event and put it on a wall. A visible bracket that people can see filling in does more for the atmosphere of a small tournament than any amount of announcing, and it removes the constant "who am I playing next" question.</p>' +
-            '<p>Two practical details. Leave space for scores as well as names — a bracket with results on it is a record, not just a plan. And number the matches, so a schedule can refer to "match 7 on court 2" rather than describing the fixture.</p>' +
-            '<p>The generator\'s print layout scales the bracket to the paper size and keeps the lines legible, which matters at 32 entrants where a naive print produces text nobody can read from a metre away.</p>'
-        },
-        {
-          h: 'Related tournament tools',
-          list: [
-            '<a href="/tools/round-robin-schedule-generator">Round Robin Generator</a> — pool stages where everyone plays everyone.',
-            '<a href="/tools/league-schedule-generator">League Schedule Generator</a> — full seasons rather than one-day events.',
-            '<a href="/tools/match-fixture-generator">Match Fixture Generator</a> — assign courts, times and match numbers.',
-            '<a href="/tools/team-generator">Team Generator</a> — build the teams that enter the draw.',
-            '<a href="/tools/presentation-order-generator">Presentation Order Generator</a> — fair ordering for non-sporting events.'
-          ]
-        }
+        { html: '<p>Enter one entrant per line and decide whether the draw should follow seed order or be randomized. The tool can show seed numbers, include a round-one match list, add a third-place play-off and automatically place byes when the number of entrants does not fit a complete power-of-two bracket.</p>' +
+            '<p>For seeded tournaments, list the strongest entrant first.</p>' +
+            '<p>A correct bracket is more than a list of random pairings.</p>' +
+            '<p>Seeding determines where strong entrants are placed so top seeds are separated through the early rounds, while byes must be positioned so the structure remains valid.</p>' },
+        { h: 'What Is a Single-Elimination Tournament?',
+          html: '<p>Single elimination is a knockout format.</p><p>The winner of each match advances.</p><p>The loser is eliminated.</p>' +
+            '<p>The process continues until one entrant remains as champion.</p><p>For example, an eight-team tournament has:</p>' +
+            '<pre class="code">Quarterfinals: 8 teams → 4 winners\nSemifinals: 4 teams → 2 winners\nFinal: 2 teams → 1 champion</pre>' +
+            '<p>Challonge’s current format guidance describes single elimination in the same basic way: winners advance and losing participants leave the bracket.</p>' +
+            '<p>This format is popular because it reaches a winner quickly.</p>' +
+            '<p>The tradeoff is that one loss ends a participant’s title run.</p>' },
+        { h: 'How to Use This Tournament Bracket Generator',
+          html: '<p>Paste one team or player per line.</p><p>If the tournament is seeded, type entrants from strongest seed to weakest.</p>' +
+            '<p>Then choose the seeding mode.</p><p>Depending on your event, you may want:</p>',
+          list: ['seeded bracket', 'randomized draw'],
+          after: '<p>Choose whether to include:</p>' +
+            '<ul style="color:var(--muted);padding-left:18px"><li>seed numbers</li><li>third-place play-off</li><li>round-one match list</li></ul>' +
+            '<p>Set the bracket width for printing.</p>' +
+            '<p>Enter a draw seed when you want a randomized bracket that can be reproduced.</p>' +
+            '<p>Generate the bracket and inspect the opening matches.</p>' +
+            '<p>Then print the bracket or copy the match list.</p>' },
+        { h: 'What Does Tournament Seeding Mean?',
+          html: '<p>Seeding ranks entrants before the bracket is drawn.</p>' +
+            '<p>Seed 1 is normally considered the strongest or highest-ranked entrant.</p><p>Seed 2 is next.</p>' +
+            '<p>The purpose of seeding is to keep the strongest entrants from meeting too early.</p>' +
+            '<p>In a standard seeded bracket, Seeds 1 and 2 are placed in opposite halves.</p>' +
+            '<p>That means they cannot meet before the final if both continue winning.</p>' +
+            '<p>Other high seeds are distributed through the bracket so the strongest players or teams are separated.</p>' +
+            '<p>Seeding does not guarantee they will advance.</p>' +
+            '<p>It only determines the route through the bracket.</p>' },
+        { h: 'Seeded vs Random Tournament Draw',
+          html: '<p>Use a seeded draw when you have a legitimate ranking source.</p><p>Examples include:</p>',
+          list: ['league standings', 'qualifying results', 'ranking points', 'previous-stage performance'],
+          after: '<p>Use a random draw when entrants should have equal draw status.</p>' +
+            '<p>Do not invent rankings merely because a seeded bracket looks more official.</p>' +
+            '<p>A transparent random draw may be fairer when teams have no reliable prior ranking.</p>' +
+            '<p>If the tournament has rules about how seeds are determined, follow those rules.</p>' +
+            '<p>The generator can place seeds correctly, but it does not decide who deserves Seed 1.</p>' },
+        { h: 'Why Bracket Sizes Are Powers of Two',
+          html: '<p>Complete single-elimination brackets naturally fit entrant counts such as 2, 4, 8, 16, 32, 64.</p>' +
+            '<p>These are powers of two.</p><p>That works because every round halves the field.</p>' +
+            '<p>For example: <code>16 → 8 → 4 → 2 → 1</code>.</p>' +
+            '<p>If the number of entrants is not a power of two, the bracket needs byes or preliminary matches.</p>' +
+            '<p>The generator handles this structure automatically.</p>' +
+            '<p>You do not need to manually draw an uneven tree and guess which entrants skip the first round.</p>' },
+        { h: 'What Is a Bye?',
+          html: '<p>A bye allows an entrant to advance without playing in that round.</p>' +
+            '<p>Suppose 10 teams enter.</p><p>The next complete bracket size is 16.</p>' +
+            '<p>That means six first-round positions need byes so the field can reach eight active entrants for the next full stage.</p>' +
+            '<p>A seeded event generally assigns byes in a way that benefits the highest seeds according to the tournament’s seeding structure.</p>' +
+            '<p>A random unseeded event can allocate them according to the draw rules.</p>' +
+            '<p>Do not count a bye as a played match.</p><p>It is advancement caused by bracket structure.</p>' },
+        { h: 'How Many Matches Are in Single Elimination?',
+          html: '<p>Without a third-place play-off, a single-elimination tournament with <code>n</code> entrants requires <code>n - 1</code> matches to determine the champion.</p>' +
+            '<p>Why? Every match eliminates one entrant.</p>' +
+            '<p>To go from n entrants to one champion, exactly n - 1 entrants must be eliminated.</p><p>Examples:</p>' +
+            '<pre class="code">8 entrants: 7 matches\n10 entrants: 9 matches\n16 entrants: 15 matches</pre>' +
+            '<p>Byes do not change this total.</p>' +
+            '<p>They change when some entrants begin playing, but the same number of competitors ultimately must be eliminated through matches.</p>' },
+        { h: 'Correct Seed Placement',
+          html: '<p>A seeded bracket should not simply list 1 vs 2, 3 vs 4, 5 vs 6.</p>' +
+            '<p>That would force the strongest entrants to eliminate one another immediately.</p>' +
+            '<p>Instead, seeding spreads top-ranked entrants across the bracket.</p><p>The central principle is:</p>' +
+            '<p><strong>strongest seeds should be positioned to meet later, assuming they keep winning.</strong></p>' +
+            '<p>For example, Seed 1 and Seed 2 should occupy opposite sides. Seeds 3 and 4 are placed into different quarters.</p>' +
+            '<p>Lower seeds fill the corresponding opening positions.</p>' +
+            '<p>The exact placement convention may vary by sport or governing body, so follow your competition rules where they specify a draw method.</p>' },
+        { h: 'Round-One Match List',
+          html: '<p>A bracket diagram is excellent for seeing the path to the final.</p>' +
+            '<p>It is not always the easiest format to read aloud.</p><p>A round-one match list can present:</p>' +
+            '<pre class="code">Match 1: Team A vs Team B\nMatch 2: Team C vs Team D</pre>' +
+            '<p>and so on.</p><p>This is useful for:</p>',
+          list: ['check-in desks', 'referees', 'announcements', 'court allocation', 'quick copying'],
+          after: '<p>The diagram and list serve different jobs.</p>' +
+            '<p>The bracket explains progression.</p><p>The match list explains the immediate fixtures.</p>' +
+            '<p>The tool includes both so organizers can use whichever view fits the moment.</p>' },
+        { h: 'Third-Place Play-Off',
+          html: '<p>A third-place match is usually played between the two semifinal losers.</p><p>It determines third and fourth place.</p>' +
+            '<p>Not every tournament needs one.</p><p>Use it when:</p>',
+          list: ['bronze placement matters', 'standings require third place', 'medals are awarded', 'competition rules specify it'],
+          after: '<p>Skip it when the event only needs a champion and finalist.</p>' +
+            '<p>Adding a third-place game creates one extra match, so include it when planning venue time.</p>' +
+            '<p>If you use the n - 1 match formula, remember that formula does not include an optional third-place play-off.</p>' },
+        { h: 'Random Draw Seeds',
+          html: '<p>The generator’s draw seed lets a random arrangement be reproduced.</p><p>That is useful when organizers:</p>',
+          list: ['publish the draw', 'close the browser', 'need to reprint', 'share the same bracket with another official'],
+          after: '<p>The same entrants, settings and seed can reproduce the same random draw.</p>' +
+            '<p>This also improves transparency.</p>' +
+            '<p>If someone asks how the bracket was created, the organizer does not need to redraw it and produce a different result.</p>' +
+            '<p>A random draw should be fixed once accepted.</p>' +
+            '<p>Do not keep redrawing until a preferred matchup appears.</p>' },
+        { h: 'When to Use Round Robin Instead',
+          html: '<p>Single elimination is efficient, but every losing team exits the title bracket after one match.</p><p>That can be undesirable for:</p>',
+          list: ['youth events', 'social leagues', 'short tournaments where participants travelled far', 'ranking competitions needing more results'],
+          after: '<p>Round robin gives each team several opponents.</p><p>It usually requires more matches.</p>' +
+            '<p>Choose single elimination when time is limited, a clear knockout format is desired, or the field is large.</p>' +
+            '<p>Choose round robin when participation volume matters, every team should play several games, or standings across multiple results are useful.</p>' +
+            '<p>Use the <a href="/tools/round-robin-schedule-generator">Round Robin Schedule Generator</a> for that format.</p>' },
+        { h: 'Common Tournament Bracket Mistakes',
+          html: '<p>Avoid these problems:</p>',
+          list: ['entering seeded teams in random order', 'putting Seeds 1 and 2 in the same half', 'redrawing repeatedly after seeing an unfavorable matchup',
+                 'forgetting byes for non-power-of-two fields', 'counting a bye as a match', 'assuming seed rank guarantees advancement',
+                 'adding a third-place game without scheduling time for it', 'using single elimination when participants need several guaranteed games',
+                 'inventing seed rankings without a defined basis', 'ignoring governing-body draw rules for formal competitions'],
+          after: '<p>A good bracket is predictable in structure even when the results are unpredictable.</p>' }
       ],
-      keywords: [
-        'tournament bracket generator', 'single elimination bracket', 'tournament seeding',
-        'bracket byes explained', 'printable tournament bracket', '16 team bracket',
-        'how to seed a tournament', 'odd number tournament bracket', 'knockout draw generator',
-        'third place playoff', 'double elimination vs single', 'pool play then knockout'
-      ]
+      keywords: ['tournament bracket generator', 'single elimination bracket maker', 'seeded tournament draw generator', 'printable bracket with byes',
+        'tournament seeding explained', 'third place playoff bracket', 'round one match list generator', 'random tournament draw generator',
+        'bracket byes power of two', 'knockout tournament generator', 'tournament bracket vs round robin', 'printable single elimination bracket']
     }
   });
 })();
