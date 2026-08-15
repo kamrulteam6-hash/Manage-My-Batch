@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>Sitemap Index Generator — Split &amp; Index Large XML Sitemaps | Manage My Batch</title>
-<meta name="description" content="Free sitemap index generator. Split a URL list into 50,000-URL sitemaps, build a valid sitemapindex file with lastmod, and get the robots.txt and Search Console steps.">
+<title>Sitemap Index Generator – Split Large XML Sitemaps Online | Manage My Batch</title>
+<meta name="description" content="Create a sitemap index from existing files or split a large URL list into XML sitemaps. De-duplicate URLs, add lastmod and generate robots.txt output.">
 <link rel="canonical" href="https://managemybatch.com/tools/sitemap-index-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="Sitemap Index Generator — Split &amp; Index Large XML Sitemaps">
-<meta property="og:description" content="Free sitemap index generator. Split a URL list into 50,000-URL sitemaps, build a valid sitemapindex file with lastmod, and get the robots.txt and Search Console steps.">
+<meta property="og:title" content="Sitemap Index Generator – Split Large XML Sitemaps Online">
+<meta property="og:description" content="Create a sitemap index from existing files or split a large URL list into XML sitemaps. De-duplicate URLs, add lastmod and generate robots.txt output.">
 <meta property="og:url" content="https://managemybatch.com/tools/sitemap-index-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Sitemap Index Generator — Split &amp; Index Large XML Sitemaps">
-<meta name="twitter:description" content="Free sitemap index generator. Split a URL list into 50,000-URL sitemaps, build a valid sitemapindex file with lastmod, and get the robots.txt and Search Console steps.">
+<meta name="twitter:title" content="Sitemap Index Generator – Split Large XML Sitemaps Online">
+<meta name="twitter:description" content="Create a sitemap index from existing files or split a large URL list into XML sitemaps. De-duplicate URLs, add lastmod and generate robots.txt output.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -387,94 +387,158 @@
       '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span>A sitemap is a discovery aid, not an indexing guarantee. It helps crawlers find URLs they might otherwise miss — deep pages, new content, weakly linked sections — but it does not make thin or duplicate pages rank.</span></div>',
     related: ['hreflang-tag-generator', 'canonical-tag-generator', 'ai-crawler-robots-txt-generator'],
     faqs: [
-      { q: 'What is a sitemap index file?', a: 'An XML file that lists your other sitemap files using <code>&lt;sitemapindex&gt;</code> and <code>&lt;sitemap&gt;</code> elements. You submit it once and search engines discover every child sitemap from it.' },
-      { q: 'When do I need one?', a: 'As soon as you exceed 50,000 URLs or 50 MB in a single sitemap. Many sites adopt one earlier anyway, because splitting by content type makes coverage reports far more useful.' },
-      { q: 'How many sitemaps can an index contain?', a: 'Up to 50,000, and the index itself must stay under 50 MB uncompressed. Indexes may nest one level, which is more than enough for any real site.' },
-      { q: 'Should I include changefreq and priority?', a: 'No. Google has ignored both for years. Only <code>lastmod</code> still carries weight, and only when it is accurate.' },
-      { q: 'Can child sitemaps live on a different domain?', a: 'Only if both hosts are verified in Search Console. Otherwise keep the index and all children on the same host, and reference the index from that host\'s robots.txt.' },
-      { q: 'Should I gzip my sitemaps?', a: 'It is allowed and saves bandwidth on large files. The index must reference the actual <code>.xml.gz</code> filenames, and the server must send <code>Content-Encoding: gzip</code>. The 50 MB limit applies to the uncompressed size.' }
+      { q: 'How many URLs can one sitemap contain?', a: 'A single sitemap can contain up to 50,000 URLs and must remain within the 50 MB uncompressed size limit.' },
+      { q: 'What does a sitemap index contain?', a: 'It contains links to child sitemap files, not the complete list of page URLs.' },
+      { q: 'Can I submit one sitemap index instead of every child file?', a: 'Yes. A sitemap index is designed to let search engines discover multiple sitemap files from one top-level file.' },
+      { q: 'Should sitemap URLs be canonical?', a: 'Generally yes. Include the preferred URLs you want indexed rather than duplicate or tracking variants.' },
+      { q: 'Should I use lastmod?', a: 'Use it when you can keep it accurate. Do not publish artificial dates just to make pages appear fresh.' },
+      { q: 'Does a sitemap improve rankings?', a: 'A sitemap improves URL discovery and crawl organization, but inclusion in a sitemap does not guarantee indexing or rankings.' },
+      { q: 'Can this tool split a large URL list?', a: 'Yes. Paste the URL list, choose a split size and filename pattern, then generate the sitemap index and child files.' }
     ],
     seo: {
-      title: 'Sitemap index files: splitting, limits and structure for large sites',
-      lead: 'This <strong>sitemap index generator</strong> builds a valid <code>&lt;sitemapindex&gt;</code>, or takes a raw URL list and splits it into spec-compliant child sitemaps with the index written for you. Below: the two hard limits, how to structure an index that is useful for diagnosis, and which optional fields to skip.',
+      title: 'Sitemap Index Generator – Split and Organize Large XML Sitemaps',
+      lead: 'Use the Sitemap Index Generator above to combine existing sitemap files into one index or split a large URL list into multiple XML sitemaps automatically. Add your site URL, choose the URLs per sitemap, control filenames and <code>lastmod</code> handling, then download the index and child files.',
       blocks: [
         {
-          h: 'What is a sitemap index?',
-          html: '<p>A <strong>sitemap index</strong> is an XML file that lists other sitemaps rather than pages. It uses the <code>&lt;sitemapindex&gt;</code> root element instead of <code>&lt;urlset&gt;</code>, and each entry carries a <code>&lt;loc&gt;</code> and an optional <code>&lt;lastmod&gt;</code>.</p>' +
-            '<p>You submit the index to Search Console or reference it from robots.txt, and the crawler discovers every child sitemap through it. One URL to maintain instead of forty.</p>' +
-            '<p>An index cannot contain another index. The structure is exactly two levels deep: index at the top, sitemaps beneath, pages inside those.</p>'
+          html: '<p>A sitemap index acts as a directory of sitemap files. It gives search engines one location to discover multiple child sitemaps, which is especially useful for large websites, ecommerce stores, publishers and programmatic SEO sites.</p>'
         },
         {
-          h: 'The limits',
-          table: {
-            head: ['Rule', 'Limit', 'Applies to'],
-            rows: [
-              ['URLs per sitemap', '50,000', 'Each child sitemap file.'],
-              ['Uncompressed file size', '50 MB', 'Each file, measured before gzip.'],
-              ['Sitemaps per index', '50,000', 'Entries in the index file.'],
-              ['Index nesting', 'One level', 'An index may not list another index.'],
-              ['Location', 'Same host', 'Child sitemaps must be on the domain the index sits on, unless cross-submission is verified.']
-            ]
-          },
-          after: '<p>Both the 50,000 and 50 MB limits are ceilings, not targets. Files near either are slow to fetch and painful to debug.</p>',
-          callout: { type: 'warn', text: '<strong>Exceeding either limit invalidates the whole file, not just the excess.</strong> A sitemap with 50,001 URLs is rejected outright — Google does not read the first 50,000 and stop. Split well below the ceiling.' }
+          h: 'What Is a Sitemap Index?',
+          html: '<p>A sitemap index is an XML file that lists other sitemap files.</p>' +
+            '<p>A basic structure contains one <code>&lt;sitemap&gt;</code> entry for each child sitemap.</p>' +
+            '<p>Each entry includes a <code>&lt;loc&gt;</code> value pointing to the sitemap URL and can optionally include an accurate <code>&lt;lastmod&gt;</code> date.</p>' +
+            '<p>The index itself does not normally contain your page URLs.</p>' +
+            '<p>Instead, it points to child sitemaps that contain those URLs.</p><p>Example structure:</p>' +
+            '<pre class="code">sitemap.xml\n  → sitemap-pages.xml\n  → sitemap-posts.xml\n  → sitemap-products.xml\n  → sitemap-images.xml</pre>' +
+            '<p>This makes large collections easier to organize and submit.</p>'
         },
         {
-          h: 'When you need one',
-          list: [
-            '<strong>More than 50,000 URLs.</strong> The obvious case — you have no choice.',
-            '<strong>Well under the limit but multiple content types.</strong> Separate sitemaps for products, categories, blog posts and static pages make coverage reports readable.',
-            '<strong>Multiple languages.</strong> One sitemap per locale isolates hreflang problems to a single file.',
-            '<strong>Frequent partial updates.</strong> Regenerating one 2,000-URL product sitemap hourly beats rewriting a 200,000-URL monolith.',
-            '<strong>Multiple systems generating URLs.</strong> A shop, a blog and a docs site each emitting their own sitemap, tied together by one index.'
-          ]
+          h: 'When Do You Need a Sitemap Index?',
+          html: '<p>A sitemap index is useful when your website has too many URLs for one sitemap or when separating content types makes management easier.</p>' +
+            '<p>A single sitemap is limited to:</p>',
+          list: ['50,000 URLs', '50 MB uncompressed'],
+          after: '<p>If you exceed either limit, split the sitemap.</p>' +
+            '<p>You can also split earlier for operational reasons.</p>' +
+            '<p>For example, an ecommerce site might separate products, categories, blog posts, brands and help articles. This can make debugging and Search Console analysis easier even below the technical maximum.</p>'
         },
         {
-          h: 'How to split for diagnosis, not just size',
-          html: '<p>The underrated benefit of an index is that Search Console reports coverage <em>per sitemap</em>. Split by content type and a drop in indexed pages points at a section immediately. Split arbitrarily into <code>sitemap-1.xml</code> through <code>sitemap-40.xml</code> and the same drop tells you nothing.</p>',
-          cards: [
-            { t: 'By content type', d: 'products, categories, articles, static. The default choice for most sites — it maps onto how you would investigate a problem.' },
-            { t: 'By locale', d: 'One sitemap per language or market. Essential when hreflang is involved.' },
-            { t: 'By recency', d: 'A small "recent" sitemap updated often, plus large archives updated rarely. Suits news and high-volume publishing.' },
-            { t: 'By source system', d: 'When different platforms own different URL spaces, let each own its sitemap.' }
-          ]
+          h: 'How to Use This Sitemap Index Generator',
+          html: '<p>Choose one of two modes.</p>' +
+            '<p>Use <strong>I have sitemap files</strong> when your site already generates separate sitemap files and you need an index tying them together.</p>' +
+            '<p>Enter the site URL and list each child sitemap.</p>' +
+            '<p>Use <strong>Split a URL list for me</strong> when you want a large page-URL list divided into valid child sitemaps.</p>' +
+            '<p>Choose the number of URLs per file and a filename prefix.</p>' +
+            '<p>You can also de-duplicate URLs, normalize and escape them, add relevant metadata and generate a Sitemap line for robots.txt.</p>' +
+            '<p>Download the index and child files.</p>'
         },
         {
-          h: 'Building your index',
-          steps: [
-            { t: 'Choose your mode', d: 'List existing sitemap URLs to build an index, or paste a flat URL list and let the tool split it.' },
-            { t: 'Set the URLs-per-file value', d: '10,000 to 25,000 is a comfortable working size — well inside the limits and quick to open in an editor.' },
-            { t: 'Add lastmod dates', d: 'On the index entries and, if you have accurate data, on the URLs. Accurate is the operative word.' },
-            { t: 'Download the child files and the index', d: 'Upload them all to the same host, in the same directory or one you can reference consistently.' },
-            { t: 'Reference and submit', d: 'Add <code>Sitemap: https://example.com/sitemap-index.xml</code> to robots.txt and submit the index in Search Console.' }
-          ]
+          h: 'Sitemap Index vs XML Sitemap',
+          html: '<p>An XML sitemap lists page or resource URLs.</p><p>A sitemap index lists sitemap files.</p>' +
+            '<p>That distinction is important.</p>' +
+            '<p>If you have 80,000 page URLs, you should not try to place all 80,000 directly inside one sitemap index.</p><p>Instead:</p>',
+          ol: ['Split the page URLs into valid child sitemaps.', 'List those sitemap files in the sitemap index.', 'Submit or expose the index.'],
+          after: '<p>The index is the top-level directory, not a substitute for the child sitemap content.</p>'
         },
         {
-          h: 'changefreq, priority and lastmod',
-          html: '<p>Two of these three are ignored. Google has stated plainly that <code>&lt;changefreq&gt;</code> and <code>&lt;priority&gt;</code> carry no weight — they were self-reported, universally inflated, and therefore useless. Emitting them costs bytes and buys nothing.</p>' +
-            '<p><code>&lt;lastmod&gt;</code> is different: Google uses it, <em>provided it is consistently accurate</em>. If your CMS stamps today\'s date on every URL at every build, the field is discarded for your whole site and you lose a real signal.</p>' +
-            '<p>So the rule is: emit <code>lastmod</code> only when it reflects a genuine content change, and drop the other two.</p>',
-          callout: { type: 'tip', text: 'Only list canonical, indexable, 200-returning URLs. Redirects, noindexed pages and non-canonical variants in a sitemap are contradictory signals — you are asking Google to index pages you told it not to. See the <a href="/tools/canonical-tag-generator">canonical tag generator</a>.' }
+          h: '50,000 URL and 50 MB Limits',
+          html: '<p>Each individual sitemap has a maximum of 50,000 URLs or 50 MB uncompressed, whichever limit is reached first.</p>' +
+            '<p>Large sites should leave some operational headroom instead of always sitting at the maximum.</p>' +
+            '<p>For example, using 40,000 or 45,000 URLs per sitemap can make future additions easier.</p>' +
+            '<p>This generator lets you choose the split size rather than forcing every child file to the maximum.</p>' +
+            '<p>Remember that compressed <code>.gz</code> files are measured against the uncompressed sitemap-size rule.</p>'
         },
         {
-          h: 'Should you gzip?',
-          html: '<p>Yes, for anything large. Sitemaps compress extremely well — a 45 MB file typically lands under 3 MB — and both Google and Bing accept <code>.xml.gz</code> transparently.</p>' +
-            '<p>Two caveats. The 50 MB limit applies to the <em>uncompressed</em> size, so gzip does not let you pack more URLs in. And the file must be served with the right encoding headers; a <code>.gz</code> served as <code>text/xml</code> arrives as binary noise.</p>'
+          h: 'How Should You Split a Large Sitemap?',
+          html: '<p>There is no SEO requirement that every sitemap contain the same number of URLs.</p>' +
+            '<p>Split in a way that helps maintenance.</p>' +
+            '<p>Useful strategies include splitting by content type, site section, numbered batch or update pattern. An ecommerce site might separate products, categories and blog posts, while a programmatic site may prefer predictable numbered batches. Choose the structure that makes generation and debugging easiest.</p>'
         },
         {
-          h: 'Related crawling tools',
-          list: [
-            '<a href="/tools/canonical-tag-generator">Canonical Tag Generator</a> — make sure the URLs you submit are the canonical ones.',
-            '<a href="/tools/hreflang-tag-generator">Hreflang Tag Generator</a> — annotate locales in the sitemap itself.',
-            '<a href="/tools/ai-crawler-robots-txt-generator">AI Crawler robots.txt Generator</a> — declare your sitemap and control crawler access.',
-            '<a href="/tools/nginx-redirect-generator">Nginx Redirect Generator</a> — clear redirects out of your sitemap after a migration.'
-          ]
+          h: 'What URLs Belong in a Sitemap?',
+          html: '<p>Include URLs you want search engines to discover and potentially index.</p>' +
+            '<p>Your sitemap should generally contain preferred canonical URLs.</p><p>Avoid filling it with URLs that are:</p>',
+          list: ['Redirects', '404 pages', 'Noindexed', 'Duplicate parameter variants', 'Session URLs', 'Internal search pages', 'Non-canonical duplicates', 'Blocked unintentionally'],
+          after: '<p>A sitemap should be a curated set of URLs you consider important and indexable.</p>'
+        },
+        {
+          h: 'Canonical URLs and Sitemaps',
+          html: '<p>Sitemaps can reinforce canonicalization.</p>' +
+            '<p>If a page declares URL A as canonical but your sitemap lists URL B, your site is providing inconsistent signals.</p>' +
+            '<p>Whenever possible, use the same preferred URL in:</p>',
+          list: ['Canonical tags', 'XML sitemaps', 'Internal links', 'Hreflang annotations', 'Redirect targets'],
+          after: '<p>Before splitting a raw URL export into sitemaps, clean tracking parameters and duplicate variants.</p>' +
+            '<p>Use the <a href="/tools/canonical-tag-generator">Canonical Tag Generator</a> when you need to normalize URLs first.</p>'
+        },
+        {
+          h: 'What Does lastmod Mean?',
+          html: '<p><code>lastmod</code> tells search engines when the referenced resource was last meaningfully modified.</p>' +
+            '<p>It should reflect a real content change.</p><p>Good examples include:</p>',
+          list: ['Substantial article update', 'Product information change', 'Important structured data change', 'Significant page revision'],
+          after: '<p>Do not update lastmod every day simply because your sitemap is regenerated.</p>' +
+            '<p>Search engines can learn to ignore unreliable dates.</p>' +
+            '<p>If you cannot maintain accurate lastmod values, leaving them out is better than publishing misleading timestamps.</p>'
+        },
+        {
+          h: 'lastmod in a Sitemap Index',
+          html: '<p>A sitemap index can include a lastmod value for each child sitemap.</p>' +
+            '<p>That date should indicate when the sitemap file itself was meaningfully updated, such as when URLs were added or removed.</p>' +
+            '<p>Do not automatically set every child sitemap to today on every generation if nothing changed.</p>' +
+            '<p>Accurate dates can help crawlers prioritize work.</p>' +
+            '<p>Inaccurate dates create noise.</p>' +
+            '<p>The generator lets you choose how lastmod values are handled so you can match your real publishing workflow.</p>'
+        },
+        {
+          h: 'Should Sitemaps Be Compressed?',
+          html: '<p>Large sitemap files can be served as gzip-compressed <code>.gz</code> files. If you use compression, the sitemap index must reference the actual published filenames. Compression reduces transfer size but does not increase the 50 MB uncompressed sitemap limit.</p>'
+        },
+        {
+          h: 'De-Duplicating URLs',
+          html: '<p>A clean sitemap set should not repeatedly list the same URL across child files unless there is a specific format-related reason.</p>' +
+            '<p>Duplicate entries add noise without creating extra ranking value.</p>' +
+            '<p>When splitting a large pasted list, enable de-duplication to remove exact repeats.</p>' +
+            '<p>Also normalize the URLs before generation.</p>' +
+            '<p>For example, tracked and untracked forms may technically be different strings even though they resolve to the same canonical page.</p>' +
+            '<p>A sitemap generator cannot always infer your content strategy, so review the source URL list before publishing.</p>'
+        },
+        {
+          h: 'XML Escaping and Valid URLs',
+          html: '<p>XML reserves characters such as <code>&amp;</code>.</p>' +
+            '<p>A URL containing query parameters must be correctly escaped inside an XML document.</p>' +
+            '<p>For example, an ampersand may need to appear as:</p><pre class="code">&amp;amp;</pre><p>rather than a raw <code>&amp;</code>.</p>' +
+            '<p>The generator can normalize and XML-escape URLs so the final output remains well formed.</p>' +
+            '<p>Always use complete absolute URLs including the protocol and hostname.</p>' +
+            '<p>Do not put relative paths such as <code>/products/widget</code> directly into a standard sitemap URL entry.</p>'
+        },
+        {
+          h: 'Add the Sitemap to robots.txt',
+          html: '<p>You can declare the location of a sitemap or sitemap index in robots.txt.</p><p>Example:</p>' +
+            '<pre class="code">Sitemap: https://example.com/sitemap.xml</pre>' +
+            '<p>This helps compliant crawlers discover the file.</p>' +
+            '<p>The line uses the full sitemap URL.</p>' +
+            '<p>If the sitemap index already points to all child sitemaps, one robots.txt line for the index is normally enough.</p>' +
+            '<p>You can also submit the sitemap index through search-engine webmaster tools such as Search Console. See the <a href="/tools/ai-crawler-robots-txt-generator">AI Crawler Robots.txt Generator</a> to build the full robots.txt file.</p>'
+        },
+        {
+          h: 'Sitemap Submission Does Not Guarantee Indexing',
+          html: '<p>A sitemap helps search engines discover URLs.</p>' +
+            '<p>It does not guarantee that every listed URL will be crawled, indexed or ranked.</p>' +
+            '<p>A page can still remain unindexed because of duplicate content, noindex directives, canonicalization, server errors, crawl problems or quality issues. Treat sitemaps as one part of technical SEO.</p>' +
+            '<p>Strong internal linking and accessible site architecture remain important.</p>'
+        },
+        {
+          h: 'Common Sitemap Index Mistakes',
+          html: '<p>Frequent problems include:</p>',
+          list: ['Exceeding the URL or size limit', 'Putting page URLs directly into a sitemap index', 'Listing sitemap files that return 404',
+                 'Including redirecting sitemap locations', 'Publishing inaccurate lastmod dates', 'Listing non-canonical page URLs',
+                 'Forgetting XML escaping', 'Referencing <code>.gz</code> files that do not exist', 'Creating child sitemap filenames but not uploading them',
+                 'Submitting an index before checking its live URLs'],
+          after: '<p>Validate both the index and every child sitemap.</p><p>A valid index is not useful if half of its children cannot be fetched. If URLs have moved, use the <a href="/tools/nginx-redirect-generator">Nginx Redirect Generator</a> before updating the sitemap.</p>'
         }
       ],
       keywords: [
-        'sitemap index generator', 'sitemap index file', 'xml sitemap 50000 limit',
-        'split sitemap', 'sitemapindex xml', 'sitemap lastmod', 'sitemap changefreq priority',
-        'gzip sitemap', 'multiple sitemaps', 'large site sitemap', 'sitemap best practices'
+        'sitemap index generator', 'xml sitemap 50000 limit', 'split large sitemap', 'sitemapindex xml',
+        'sitemap lastmod', 'gzip sitemap', 'multiple sitemaps', 'sitemap index vs sitemap',
+        'sitemap deduplicate urls', 'robots.txt sitemap line', 'sitemap xml escaping', 'large site sitemap generator'
       ]
     }
   });
