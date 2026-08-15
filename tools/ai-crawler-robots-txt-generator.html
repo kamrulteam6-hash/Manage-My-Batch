@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>AI Crawler Robots.txt Generator — Block or Allow GPTBot, ClaudeBot &amp; More | Manage My Batch</title>
-<meta name="description" content="Free AI crawler robots.txt generator. Allow or block GPTBot, ClaudeBot, PerplexityBot, Google-Extended, Bytespider and 25+ AI bots with one click. Copy-ready robots.txt.">
+<title>AI Crawler Robots.txt Generator – Block or Allow AI Bots | Manage My Batch</title>
+<meta name="description" content="Generate robots.txt rules for GPTBot, ClaudeBot, PerplexityBot and other AI crawlers. Block training bots, allow search bots and test rules instantly.">
 <link rel="canonical" href="https://managemybatch.com/tools/ai-crawler-robots-txt-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="AI Crawler Robots.txt Generator — Block or Allow GPTBot, ClaudeBot &amp; More">
-<meta property="og:description" content="Free AI crawler robots.txt generator. Allow or block GPTBot, ClaudeBot, PerplexityBot, Google-Extended, Bytespider and 25+ AI bots with one click. Copy-ready robots.txt.">
+<meta property="og:title" content="AI Crawler Robots.txt Generator – Block or Allow AI Bots">
+<meta property="og:description" content="Generate robots.txt rules for GPTBot, ClaudeBot, PerplexityBot and other AI crawlers. Block training bots, allow search bots and test rules instantly.">
 <meta property="og:url" content="https://managemybatch.com/tools/ai-crawler-robots-txt-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="AI Crawler Robots.txt Generator — Block or Allow GPTBot, ClaudeBot &amp; More">
-<meta name="twitter:description" content="Free AI crawler robots.txt generator. Allow or block GPTBot, ClaudeBot, PerplexityBot, Google-Extended, Bytespider and 25+ AI bots with one click. Copy-ready robots.txt.">
+<meta name="twitter:title" content="AI Crawler Robots.txt Generator – Block or Allow AI Bots">
+<meta name="twitter:description" content="Generate robots.txt rules for GPTBot, ClaudeBot, PerplexityBot and other AI crawlers. Block training bots, allow search bots and test rules instantly.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -447,95 +447,142 @@
       '<div class="note note-info" style="margin-top:12px">' + GTI.info + '<span>robots.txt is a request, not a wall. Crawlers that ignore it — and scrapers that spoof a browser user-agent — must be stopped at your CDN or WAF with rate limits and bot-management rules.</span></div>',
     related: ['llms-txt-generator', 'x-robots-tag-generator', 'meta-robots-tag-generator'],
     faqs: [
-      { q: 'Does blocking GPTBot remove my site from ChatGPT?', a: 'It stops OpenAI using your pages for model training, and it stops them being fetched live. If you want to stay citable in ChatGPT Search while opting out of training, block <code>GPTBot</code> but allow <code>OAI-SearchBot</code> and <code>ChatGPT-User</code>.' },
-      { q: 'Will blocking AI crawlers hurt my Google rankings?', a: 'No — as long as you leave <code>Googlebot</code> allowed. <code>Google-Extended</code> is a separate token that only controls Gemini and Vertex AI training data; blocking it has no effect on Search.' },
-      { q: 'Do AI crawlers actually obey robots.txt?', a: 'The major labs — OpenAI, Anthropic, Google, Apple, Meta, Perplexity — publish their user-agents and state that they honour robots.txt. Smaller and adversarial scrapers do not. For those, use CDN bot management or rate limiting.' },
-      { q: 'Where does robots.txt go?', a: 'Only at the root of each host: <code>https://example.com/robots.txt</code>. Subdomains need their own file, and it must return a 200 with content type <code>text/plain</code>.' },
-      { q: 'Is Crawl-delay worth adding?', a: 'Only for Bing and Yandex — Google ignores it entirely. If Googlebot is overloading your server, adjust the crawl rate in Search Console instead.' },
-      { q: 'What happens if I block everything with Disallow: / for User-agent: *?', a: 'You disappear from every search engine and AI product. Almost nobody wants that. Use targeted per-bot rules like the ones this generator produces.' }
+      { q: 'Where do I upload robots.txt?', a: 'Publish it at the root of the host it controls, normally <code>/robots.txt</code>. Rules on one subdomain do not automatically control every other subdomain.' },
+      { q: 'Can I block GPTBot but allow ChatGPT search?', a: 'Yes. GPTBot and OAI-SearchBot are separate user-agents, so you can create separate rules.' },
+      { q: 'Will blocking AI bots hurt Google rankings?', a: 'Blocking a separate AI crawler does not automatically block Googlebot. The risk comes from accidentally blocking Googlebot or using overly broad wildcard rules. Review the generated file carefully.' },
+      { q: 'Does robots.txt stop scraping completely?', a: 'No. It is a crawler-control convention, not a security barrier. Non-compliant automated clients can ignore it.' },
+      { q: 'Can I add my existing robots.txt rules?', a: 'Yes. Preserve rules your site already needs and add the AI-specific groups carefully. Test the final combined file rather than publishing only the new AI section.' },
+      { q: 'Is the generator free?', a: 'Yes. Configure your crawler policy above, generate the file, test the important paths and download the result.' }
     ],
     seo: {
-      title: 'AI crawler robots.txt: how to block GPTBot, ClaudeBot and the rest',
-      lead: 'This <strong>AI crawler robots.txt generator</strong> writes the exact <code>User-agent</code> and <code>Disallow</code> lines that control which AI companies may read your site. Below: what each bot actually does, why blocking a training crawler is different from blocking a search crawler, and the rules that quietly cost you traffic.',
+      title: 'AI Crawler Robots.txt Generator – Control GPTBot, ClaudeBot and More',
+      lead: 'Use the AI Crawler Robots.txt Generator above to control which AI crawlers can access your website. Choose a preset, select individual bots, add paths you want blocked, include your sitemap if needed, then copy or download a ready-to-use robots.txt file.',
       blocks: [
         {
-          h: 'What an AI crawler robots.txt does',
-          html: '<p><strong>robots.txt</strong> is a plain-text file at your domain root that tells automated clients which paths they may request. It has controlled search engine crawling since 1994; the only thing that changed with generative AI is the <em>list of user-agents</em> you now have to think about.</p>' +
-            '<p>Each AI company publishes one or more named crawlers. Adding a <code>User-agent</code> block for a bot and a <code>Disallow: /</code> line under it asks that specific crawler to stay away, while leaving Googlebot, Bingbot and everyone else untouched. Nothing is hidden and nothing is enforced — robots.txt is a published request, not a firewall.</p>' +
-            '<p>That distinction matters. If a crawler ignores the file, robots.txt cannot stop it. Blocking at the edge — a WAF rule, a Cloudflare bot rule, a server-level user-agent deny — is the only thing that actually enforces the decision.</p>'
+          html: '<p>The important part is choosing the right rule for the right crawler. AI companies increasingly use different user-agents for different purposes. One bot may collect content for model training while another is used to surface pages in AI search results. Blocking every AI-related bot can therefore have a different effect from blocking training crawlers only.</p>' +
+            '<p>This tool makes those choices easier without forcing you to write every User-agent and Disallow rule manually.</p>'
         },
         {
-          h: 'The AI crawlers worth knowing',
-          html: '<p>Not every bot from an AI company does the same job, and blocking the wrong one has very different consequences.</p>',
-          table: {
-            head: ['User-agent', 'Operator', 'What it does', 'Blocking cost'],
-            rows: [
-              ['<code>GPTBot</code>', 'OpenAI', 'Collects pages used to train future models.', 'None to search traffic. Content is excluded from training.'],
-              ['<code>OAI-SearchBot</code>', 'OpenAI', 'Builds the index behind ChatGPT search results.', 'You lose ChatGPT search visibility and citations.'],
-              ['<code>ChatGPT-User</code>', 'OpenAI', 'Fetches a page live when a user asks about a URL.', 'Users who paste your link get nothing back.'],
-              ['<code>ClaudeBot</code>', 'Anthropic', 'Training and index collection.', 'Excluded from training data.'],
-              ['<code>Claude-User</code>', 'Anthropic', 'Live retrieval on a user\'s behalf.', 'Blocks user-initiated fetches of your pages.'],
-              ['<code>PerplexityBot</code>', 'Perplexity', 'Indexes pages for answer citation.', 'You lose Perplexity citations and referral clicks.'],
-              ['<code>Google-Extended</code>', 'Google', 'Opt-out token for Gemini training only.', 'None. It does not affect Google Search at all.'],
-              ['<code>Bytespider</code>', 'ByteDance', 'Aggressive training collection.', 'Usually none — commonly blocked for load reasons.'],
-              ['<code>CCBot</code>', 'Common Crawl', 'Public web corpus reused by many model builders.', 'Removes you from a dataset dozens of labs train on.']
-            ]
-          },
-          callout: { type: 'warn', text: '<strong><code>Google-Extended</code> is not Googlebot.</strong> Blocking it opts you out of Gemini training and grounding while leaving Google Search crawling and ranking completely unaffected. Blocking <code>Googlebot</code> instead removes you from Google Search — a mistake that is easy to make and slow to notice.' }
-        },
-        {
-          h: 'How to block AI crawlers in robots.txt',
-          steps: [
-            { t: 'Pick a preset or select bots individually', d: 'Block-all, allow-search-only, block-training-only and allow-all cover most policies. Fine-tune from the full user-agent list afterwards.' },
-            { t: 'Decide per bot, not per company', d: 'Blocking <code>GPTBot</code> while allowing <code>OAI-SearchBot</code> keeps you out of training data but visible in ChatGPT search — usually the outcome publishers actually want.' },
-            { t: 'Add path rules if the block is partial', d: 'Disallow <code>/premium/</code> or <code>/members/</code> rather than the whole site when only some content is sensitive.' },
-            { t: 'Test the rules', d: 'Paste a URL into the tester. It applies the same longest-match precedence Google uses, so you can see which directive actually wins.' },
-            { t: 'Upload to your root', d: 'The file must be reachable at <code>https://example.com/robots.txt</code> and served as <code>text/plain</code> with a 200 response.' }
-          ]
-        },
-        {
-          h: 'Does blocking AI crawlers hurt SEO?',
-          html: '<p>No — provided you block AI user-agents and nothing else. Google Search ranking is driven by <code>Googlebot</code>, and Bing by <code>Bingbot</code>. Neither is affected by a <code>Disallow</code> aimed at <code>GPTBot</code>, <code>ClaudeBot</code> or <code>Google-Extended</code>.</p>' +
-            '<p>The real risks are collateral. Two mistakes account for nearly every case of self-inflicted deindexing:</p>',
+          h: 'What Is an AI Crawler?',
+          html: '<p>An AI crawler is an automated bot that requests web pages so an AI service can discover, index, retrieve or potentially use public content.</p>' +
+            '<p>AI crawling is not one single activity. Depending on the company and bot, a crawler may be used for:</p>',
           list: [
-            'Putting <code>Disallow: /</code> under <code>User-agent: *</code>, which blocks every crawler including Googlebot.',
-            'Blocking <code>Googlebot</code> or <code>Bingbot</code> while trying to block a similarly named AI bot.',
-            'Disallowing <code>/assets/</code> or <code>/static/</code>, which stops Google rendering your pages and can hurt rankings indirectly.',
-            'Blocking the crawler that powers AI search citations, then wondering why referral traffic from AI assistants disappeared.'
+            'AI model training',
+            'Search indexing',
+            'Real-time answer retrieval',
+            'Website discovery',
+            'Product-specific features',
+            'User-triggered page access'
           ],
-          callout: { type: 'tip', text: 'A <code>Disallow</code>-ed page can still appear in search results as a bare URL if other sites link to it. robots.txt controls <em>crawling</em>, not <em>indexing</em>. To keep a page out of the index, allow crawling and serve <a href="/tools/meta-robots-tag-generator">meta robots noindex</a> or an <a href="/tools/x-robots-tag-generator">X-Robots-Tag header</a> instead.' }
+          after: '<p>That distinction matters. For example, OpenAI separates GPTBot, which can be used for content that may contribute to model training, from OAI-SearchBot, which is used for ChatGPT search. Perplexity also identifies PerplexityBot as a crawler used for its search results rather than foundation-model training.</p>' +
+            '<p>A useful robots.txt strategy therefore starts with your goal, not with the assumption that every AI bot should be treated the same.</p>'
         },
         {
-          h: 'Choosing a policy',
-          cards: [
-            { t: 'Block everything', d: 'Every AI user-agent disallowed. Suits paywalled journalism, proprietary research and membership content where the text itself is the product.' },
-            { t: 'Allow search, block training', d: 'The common publisher position: appear and get cited in AI answers, stay out of model training corpora.' },
-            { t: 'Block training only', d: 'Nothing that affects live retrieval or citation. The lowest-cost opt-out available.' },
-            { t: 'Allow everything', d: 'Maximum reach. Sensible for documentation, marketing sites and anything whose value is being quoted widely.' }
-          ]
+          h: 'How to Use This AI Robots.txt Generator',
+          html: '<p>Start with the preset closest to your policy.</p>' +
+            '<p>Choose <strong>Block all AI</strong> if you want to tell known AI crawlers not to access your site.</p>' +
+            '<p>Choose <strong>Block AI, keep search</strong> if you want to restrict selected AI use while keeping normal search-engine crawlers available.</p>' +
+            '<p>Choose <strong>Allow all AI</strong> if you are comfortable with the listed crawlers accessing the site.</p>' +
+            '<p>Choose <strong>Custom</strong> when you want individual control.</p>' +
+            '<p>Next, review the bot list. Checked crawlers are blocked with:</p>' +
+            '<pre class="code">Disallow: /</pre>' +
+            '<p>Unchecked crawlers remain allowed unless another rule in your file blocks them.</p>' +
+            '<p>You can also add paths that should be disallowed for every bot, such as private utility directories or crawl-heavy parameter patterns.</p>' +
+            '<p>Generate the file, review the rule tester and publish the final version as <code>/robots.txt</code> on the relevant host.</p>'
         },
         {
-          h: 'Do AI crawlers obey robots.txt?',
-          html: '<p>The major operators — OpenAI, Anthropic, Google, Microsoft, Perplexity, Apple and Common Crawl — publish their user-agent strings and state that they honour robots.txt. In practice, compliance from those names is good and is checked publicly by researchers.</p>' +
-            '<p>Smaller scrapers and unnamed clients are a different matter. Many ignore the file entirely, and some spoof a browser user-agent so there is nothing to match on. If your content genuinely must not be collected, robots.txt is the polite front door, not the lock: rate limiting, bot-management rules and authentication are what actually enforce it.</p>' +
-            '<p>Also remember the file is public. Anyone can read <code>/robots.txt</code>, so a <code>Disallow: /internal-pricing/</code> line advertises the existence of a directory you would rather nobody knew about. Never use robots.txt as a secrecy mechanism.</p>'
+          h: 'Should You Block AI Crawlers?',
+          html: '<p>There is no universal answer.</p>' +
+            '<p>You may want to restrict AI crawlers when your business depends heavily on licensed content, subscriber-only material, original research, large proprietary databases or other content you do not want automatically collected.</p>' +
+            '<p>You may prefer to allow AI search crawlers when visibility in AI-powered discovery matters to you.</p>' +
+            '<p>A common middle-ground strategy is to allow search-oriented crawlers while blocking selected training crawlers.</p>' +
+            '<p>Before blocking a bot, identify what it does and review your rules periodically as crawler policies evolve.</p>'
         },
         {
-          h: 'Related crawler and indexing tools',
-          list: [
-            '<a href="/tools/llms-txt-generator">llms.txt Generator</a> — tell AI assistants which pages to read, rather than which to avoid.',
-            '<a href="/tools/meta-robots-tag-generator">Meta Robots Tag Generator</a> — per-page indexing and snippet control.',
-            '<a href="/tools/x-robots-tag-generator">X-Robots-Tag Generator</a> — the same directives for PDFs, images and whole directories.',
-            '<a href="/tools/canonical-tag-generator">Canonical Tag Generator</a> — consolidate duplicate URLs into one indexable address.',
-            '<a href="/tools/sitemap-index-generator">Sitemap Index Generator</a> — point crawlers at everything you do want read.'
-          ]
+          h: 'GPTBot vs OAI-SearchBot',
+          html: '<p>These OpenAI user-agents serve different purposes.</p>' +
+            '<p><strong>GPTBot</strong> is the crawler webmasters can control when they do not want crawled site content potentially used to improve or train OpenAI generative models.</p>' +
+            '<p><strong>OAI-SearchBot</strong> is used for ChatGPT search. Allowing it can help eligible pages be discovered and surfaced in ChatGPT search results.</p>' +
+            '<p>That means a publisher can choose to disallow GPTBot while allowing OAI-SearchBot.</p>' +
+            '<p>This is one of the most important differences to understand when creating an AI-focused robots.txt file. A blanket OpenAI block is not the same as a training-only block.</p>'
+        },
+        {
+          h: 'ClaudeBot and Anthropic Crawling',
+          html: '<p>Anthropic publishes robots.txt guidance for ClaudeBot and says website owners can block the crawler with a standard rule:</p>' +
+            '<pre class="code">User-agent: ClaudeBot\nDisallow: /</pre>' +
+            '<p>Anthropic also supports the non-standard <code>Crawl-delay</code> directive for limiting crawling speed.</p>' +
+            '<p>Do not assume Crawl-delay works across every crawler. It is not part of the core Robots Exclusion Protocol, and support differs by bot.</p>' +
+            '<p>If server load is your concern, combine robots.txt with normal server monitoring. Robots.txt communicates a preference to compliant crawlers; it is not an access-control or rate-limiting system.</p>'
+        },
+        {
+          h: 'PerplexityBot and AI Search Visibility',
+          html: '<p>PerplexityBot is designed to gather information used to surface and link websites in Perplexity search results.</p>' +
+            '<p>If AI search traffic and citations are important to your site, blocking search-oriented bots can reduce their ability to crawl your pages directly.</p>' +
+            '<p>That does not mean every site should allow them. The correct setting depends on your publishing policy.</p>' +
+            '<p>Think in terms of separate decisions:</p>',
+          ol: [
+            'Do I want traditional search engines to crawl this content?',
+            'Do I want AI search systems to discover and cite it?',
+            'Do I want content collected for AI model training?',
+            'Are there sections that should be restricted regardless of crawler?'
+          ],
+          after: '<p>The generator helps you turn those policy decisions into crawler-specific rules.</p>'
+        },
+        {
+          h: 'Robots.txt Does Not Guarantee Privacy',
+          html: '<p>A robots.txt file is public. Anyone can open it.</p>' +
+            '<p>It is also voluntary. Well-behaved crawlers can follow your rules, but robots.txt does not physically prevent a requester from downloading a public URL.</p>' +
+            '<p>Never use robots.txt to protect passwords, customer records, private documents, staging systems or confidential files.</p>' +
+            '<p>If content must stay private, use authentication, access controls, network restrictions or another real security mechanism.</p>' +
+            '<p>Robots.txt is for crawl management, not data security.</p>'
+        },
+        {
+          h: 'Robots.txt Is Not the Same as Noindex',
+          html: '<p>This is a frequent SEO mistake.</p>' +
+            '<p><code>Disallow</code> controls crawling. It does not reliably mean “remove this URL from search.”</p>' +
+            '<p>A URL blocked in robots.txt may still be discovered from links and can sometimes appear in search without a normal content snippet.</p>' +
+            '<p>If your goal is to keep an HTML page out of search results, use a <code>noindex</code> robots meta tag while allowing the search crawler to access the page so it can read that instruction.</p>' +
+            '<p>Use the <a href="/tools/meta-robots-tag-generator">Meta Robots Tag Generator</a> for page-level indexing controls.</p>' +
+            '<p>For PDFs and other non-HTML resources, use the <a href="/tools/x-robots-tag-generator">X-Robots-Tag Generator</a>.</p>'
+        },
+        {
+          h: 'How Robots.txt Matching Works',
+          html: '<p>A robots.txt file is built from user-agent groups and rules.</p><p>Example:</p>' +
+            '<pre class="code">User-agent: GPTBot\nDisallow: /private/</pre>' +
+            '<p>This tells GPTBot not to crawl URLs matching <code>/private/</code>.</p>' +
+            '<p>A different group can define a different policy:</p>' +
+            '<pre class="code">User-agent: OAI-SearchBot\nAllow: /</pre>' +
+            '<p>Specific crawlers can therefore receive different instructions in the same file.</p>' +
+            '<p>Rule matching can become complicated when broad and specific paths overlap. The rule tester in this tool helps you check the final result before publishing.</p>' +
+            '<p>Be especially careful when editing an existing robots.txt file. Do not replace important Googlebot, Bingbot, sitemap or application-specific rules accidentally just because you are adding AI crawler controls.</p>'
+        },
+        {
+          h: 'Can You Block Only Part of a Site?',
+          html: '<p>Yes.</p><p>Instead of blocking the entire domain, you can disallow selected paths.</p><p>For example:</p>' +
+            '<pre class="code">Disallow: /members/\nDisallow: /internal-search/\nDisallow: /reports/</pre>' +
+            '<p>Partial rules are useful when public content should remain discoverable but internal search pages, duplicate filters or low-value areas should not be crawled.</p>' +
+            '<p>A disallowed path is still not private. If the server permits access, the URL can be requested directly.</p>'
+        },
+        {
+          h: 'Should You Add a Sitemap Line?',
+          html: '<p>You can include a Sitemap directive in robots.txt so crawlers can locate your XML sitemap.</p>' +
+            '<p>Use an absolute sitemap URL.</p>' +
+            '<p>If your website has multiple sitemap files, a sitemap index is usually cleaner than listing many child sitemaps individually. The <a href="/tools/sitemap-index-generator">Sitemap Index Generator</a> can create the index for large sites.</p>' +
+            '<p>Your sitemap and robots.txt should work together. Avoid listing important URLs in your sitemap while unintentionally blocking the crawler from fetching them unless that behavior is intentional.</p>'
+        },
+        {
+          h: 'Common AI Robots.txt Mistakes',
+          html: '<p>The first mistake is blocking every AI-related bot without understanding whether it is used for training, search or another function.</p>' +
+            '<p>The second is using <code>Disallow: /</code> under <code>User-agent: *</code> and accidentally blocking normal search engines.</p>' +
+            '<p>Another mistake is assuming robots.txt removes a page from search results. It controls crawling, not indexing in the same way as <code>noindex</code>.</p>' +
+            '<p>Also avoid relying on Crawl-delay universally, publishing rules on the wrong host, or protecting sensitive URLs only with robots.txt.</p>' +
+            '<p>Finally, review old rules. AI crawler names and company policies evolve, and an outdated file can produce a result you no longer intend. If you also want to guide AI agents toward your best pages, see the <a href="/tools/llms-txt-generator">LLMs.txt Generator</a>.</p>'
         }
       ],
       keywords: [
-        'ai crawler robots.txt', 'block gptbot', 'robots.txt generator', 'block ai crawlers',
-        'gptbot robots.txt', 'claudebot block', 'google-extended robots.txt',
-        'block chatgpt from my website', 'perplexitybot block', 'ccbot disallow',
-        'stop ai scraping website', 'ai training opt out', 'bytespider block', 'robots.txt user-agent list'
+        'ai crawler robots.txt generator', 'block gptbot', 'robots.txt generator', 'block ai crawlers',
+        'gptbot robots.txt', 'claudebot block', 'oai-searchbot', 'perplexitybot block',
+        'stop ai scraping website', 'ai training opt out', 'robots.txt user-agent list', 'crawl-delay'
       ]
     }
   });

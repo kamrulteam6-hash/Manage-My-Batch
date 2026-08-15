@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>Meta Robots Tag Generator — noindex, nofollow &amp; Snippet Controls | Manage My Batch</title>
-<meta name="description" content="Free meta robots tag generator. Build noindex, nofollow, max-snippet, max-image-preview and unavailable_after directives, with per-bot rules and conflict detection.">
+<title>Meta Robots Tag Generator – Noindex, Nofollow &amp; Snippets | Manage My Batch</title>
+<meta name="description" content="Generate meta robots tags for noindex, nofollow, nosnippet, max-snippet, image previews, video previews and expiring pages. Copy ready HTML instantly.">
 <link rel="canonical" href="https://managemybatch.com/tools/meta-robots-tag-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="Meta Robots Tag Generator — noindex, nofollow &amp; Snippet Controls">
-<meta property="og:description" content="Free meta robots tag generator. Build noindex, nofollow, max-snippet, max-image-preview and unavailable_after directives, with per-bot rules and conflict detection.">
+<meta property="og:title" content="Meta Robots Tag Generator – Noindex, Nofollow &amp; Snippets">
+<meta property="og:description" content="Generate meta robots tags for noindex, nofollow, nosnippet, max-snippet, image previews, video previews and expiring pages. Copy ready HTML instantly.">
 <meta property="og:url" content="https://managemybatch.com/tools/meta-robots-tag-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Meta Robots Tag Generator — noindex, nofollow &amp; Snippet Controls">
-<meta name="twitter:description" content="Free meta robots tag generator. Build noindex, nofollow, max-snippet, max-image-preview and unavailable_after directives, with per-bot rules and conflict detection.">
+<meta name="twitter:title" content="Meta Robots Tag Generator – Noindex, Nofollow &amp; Snippets">
+<meta name="twitter:description" content="Generate meta robots tags for noindex, nofollow, nosnippet, max-snippet, image previews, video previews and expiring pages. Copy ready HTML instantly.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -371,98 +371,155 @@
       '<div class="note note-info" style="margin-top:12px">' + GTI.info + '<span><code>max-image-preview:large</code> is not cosmetic — it is a hard requirement for Google Discover and Top Stories. Many publishers lose those surfaces without realising a restrictive default is the cause.</span></div>',
     related: ['x-robots-tag-generator', 'canonical-tag-generator', 'ai-crawler-robots-txt-generator'],
     faqs: [
-      { q: 'What does noindex, follow mean?', a: 'The page will not appear in search results, but crawlers will still follow its links and discover the pages it points to. It is the right setting for paginated archives, internal search pages and filtered listings.' },
-      { q: 'Why is my noindex page still in Google?', a: 'Almost always because robots.txt blocks the URL, so Googlebot never fetches the page and never sees the tag. Unblock it, and the noindex will be honoured on the next crawl.' },
-      { q: 'Is the meta robots tag case-sensitive?', a: 'No. Directive names and values are case-insensitive, and whitespace around the commas is ignored. Keep to lowercase for readability.' },
-      { q: 'Should I add index, follow to every page?', a: 'It is unnecessary — index, follow is the default when no tag is present. Some teams add it anyway so that intent is explicit during audits. It does not help or hurt rankings.' },
-      { q: 'What does unavailable_after do?', a: 'It tells Google to drop the URL from results after a given date and time. It is useful for events, expiring offers and job listings. The page still returns 200 for users.' },
-      { q: 'Can I target one search engine only?', a: 'Yes — use the bot name instead of <code>robots</code>, for example <code>&lt;meta name="googlebot" content="noindex"&gt;</code>. A bot-specific tag overrides the generic one for that crawler.' }
+      { q: 'Where does the meta robots tag go?', a: 'Place it in the HTML document, normally inside the <code>&lt;head&gt;</code> section.' },
+      { q: 'Does noindex remove a page immediately?', a: 'Not necessarily. A search engine must recrawl the page and process the directive before its index can update.' },
+      { q: 'Can a robots.txt disallow replace noindex?', a: 'No. They serve different purposes. Robots.txt controls crawling; noindex controls inclusion in search results when the crawler can read the directive.' },
+      { q: 'Should every page have index, follow?', a: 'No. It is generally the default behavior and usually does not need to be written explicitly.' },
+      { q: 'Can I use meta robots on a PDF?', a: 'Use an X-Robots-Tag HTTP header for non-HTML resources such as PDFs.' },
+      { q: 'Does nosnippet affect Google AI features?', a: 'Google states that nosnippet also prevents page content from being used as a direct input for AI Overviews and AI Mode.' },
+      { q: 'Can I generate the tag for free?', a: 'Yes. Select the directives above, review the explanation and copy the generated tag into your page.' }
     ],
     seo: {
-      title: 'Meta robots tags: noindex, nofollow and everything in between',
-      lead: 'This <strong>meta robots tag generator</strong> builds the exact <code>&lt;meta name="robots"&gt;</code> directive you need, including snippet, image and expiry controls, and warns about combinations Google will ignore. Below: what each value does, why noindexed pages still show up, and when to reach for a header instead.',
+      title: 'Meta Robots Tag Generator – Control Indexing and Search Previews',
+      lead: 'Use the Meta Robots Tag Generator above to create a correct robots meta tag without memorizing every directive. Choose whether a page should be indexed, decide how links and previews should be handled, set snippet limits if needed, then copy the generated HTML into your page.',
       blocks: [
         {
-          h: 'What the meta robots tag does',
-          html: '<p>The <strong>meta robots tag</strong> is a single line in the <code>&lt;head&gt;</code> that controls how search engines index one page and how they display it in results:</p>' +
-            '<p><code>&lt;meta name="robots" content="noindex, follow"&gt;</code></p>' +
-            '<p>The crucial difference from robots.txt is <em>when</em> it applies. robots.txt stops a crawler requesting the page at all. The meta robots tag is read after the page has been fetched — which means the crawler must be allowed to fetch it for the directive to be seen.</p>' +
-            '<p>That single fact explains most of the confusion around noindex, and most of the cases where it appears not to work.</p>'
+          html: '<p>A robots meta tag gives crawlers page-level instructions about indexing and search presentation, including <code>noindex</code>, <code>nofollow</code>, snippet restrictions, image previews, video previews and expiring pages. A wrong directive can remove an important page from search, so configure it deliberately.</p>'
         },
         {
-          h: 'The directives, and what they actually mean',
-          table: {
-            head: ['Value', 'Effect'],
-            rows: [
-              ['<code>index</code> / <code>follow</code>', 'The defaults. Adding them changes nothing — omit the tag entirely instead.'],
-              ['<code>noindex</code>', 'Keep this page out of the index. Links on it are still followed unless you say otherwise.'],
-              ['<code>nofollow</code>', 'Do not pass ranking signals through links on this page. It does not stop the URLs being discovered elsewhere.'],
-              ['<code>none</code>', 'Shorthand for <code>noindex, nofollow</code>.'],
-              ['<code>noarchive</code>', 'No cached copy offered in results.'],
-              ['<code>nosnippet</code>', 'No text snippet and no video preview. Usually costs you clicks.'],
-              ['<code>max-snippet:150</code>', 'Cap the snippet at 150 characters. <code>-1</code> means no limit.'],
-              ['<code>max-image-preview:large</code>', 'Allow a large image preview. Recommended for editorial and ecommerce.'],
-              ['<code>max-video-preview:-1</code>', 'No limit on video preview length.'],
-              ['<code>noimageindex</code>', 'Do not index images hosted on this page.'],
-              ['<code>unavailable_after:2026-12-31T23:59:59Z</code>', 'Drop the page from the index after this date. Useful for events and limited offers.'],
-              ['<code>notranslate</code>', 'Do not offer a translation of this page in results.']
-            ]
-          }
+          h: 'What Is a Meta Robots Tag?',
+          html: '<p>A meta robots tag is an HTML meta element that communicates indexing and serving directives to compatible search crawlers.</p><p>Example:</p>' +
+            '<pre class="code">&lt;meta name="robots" content="noindex, nofollow"&gt;</pre>' +
+            '<p>The tag is normally placed in the HTML <code>&lt;head&gt;</code>.</p>' +
+            '<p>The <code>name="robots"</code> value applies the instructions to crawlers that support the robots meta tag.</p>' +
+            '<p>You can also target supported crawler tokens in specific situations, such as <code>googlebot</code>.</p>' +
+            '<p>Meta robots rules are different from robots.txt rules. Robots.txt mainly controls crawling. Meta robots directives can control indexing and how a crawled page is presented in search.</p>'
         },
         {
-          h: 'Why a noindexed page is still in Google',
-          html: '<p>Almost always one of four reasons, in descending order of frequency:</p>',
-          ol: [
-            '<strong>The page is also disallowed in robots.txt.</strong> Google never fetched it, so it never saw the noindex. It stays in the index as a bare URL with no snippet. Remove the <code>Disallow</code> and let it be crawled.',
-            '<strong>It has not been recrawled yet.</strong> Removal happens on the next crawl, which can take days or weeks on a low-priority URL. Request indexing in Search Console to speed it up.',
-            '<strong>The tag is injected by JavaScript.</strong> Google may index the page during the initial HTML pass before rendering. Serve the directive in the source HTML or as an HTTP header.',
-            '<strong>There are conflicting directives.</strong> Two robots meta tags, or a meta tag saying one thing and an <code>X-Robots-Tag</code> header saying another. Where they conflict, the most restrictive wins — but a duplicated tag can simply be ignored.'
-          ],
-          callout: { type: 'warn', text: '<strong>Never combine <code>Disallow</code> in robots.txt with <code>noindex</code> on the page.</strong> They cancel each other out. If you want a page gone from the index, it must remain crawlable so the noindex can be read.' }
+          h: 'How to Use This Meta Robots Tag Generator',
+          html: '<p>Start with the scenario that matches the page.</p>' +
+            '<p>Choose normal indexing for an ordinary public page that should appear in search.</p>' +
+            '<p>Choose a noindex scenario for a page that search engines can crawl but should not include in results.</p>' +
+            '<p>Then configure optional snippet and preview controls.</p><p>The tool can generate directives such as:</p>',
+          list: ['noindex', 'nofollow', 'nosnippet', 'max-snippet', 'max-image-preview', 'max-video-preview', 'noimageindex', 'notranslate', 'unavailable_after'],
+          after: '<p>Review the explanation before copying the result.</p>' +
+            '<p>If the target is a PDF, image, document or another non-HTML resource, use the <a href="/tools/x-robots-tag-generator">X-Robots-Tag Generator</a> instead of an HTML meta tag.</p>'
         },
         {
-          h: 'Which tool for which job',
-          cards: [
-            { t: 'robots.txt', d: 'Controls crawling of paths. Use it to save crawl budget on infinite facets, search results and admin areas. It cannot reliably remove anything from the index.' },
-            { t: 'Meta robots', d: 'Controls indexing and display of a single HTML page. The right default for thin pages, thank-you pages, staging content and internal search results.' },
-            { t: 'X-Robots-Tag', d: 'The same directives sent as an HTTP header. The only option for PDFs, images and other non-HTML files, and the efficient way to cover a whole directory.' }
-          ],
-          after: '<p>See the <a href="/tools/ai-crawler-robots-txt-generator">robots.txt generator</a> and the <a href="/tools/x-robots-tag-generator">X-Robots-Tag generator</a> for the other two.</p>'
+          h: 'Index vs Noindex',
+          html: '<p><code>index</code> means the page may be indexed.</p>' +
+            '<p><code>noindex</code> tells supporting search engines not to show the page in search results.</p><p>Example:</p>' +
+            '<pre class="code">&lt;meta name="robots" content="noindex"&gt;</pre><p>You might use noindex for:</p>',
+          list: ['Internal search-result pages', 'Account or utility pages', 'Certain thin system pages',
+                 'Duplicate pages that cannot be consolidated another way', 'Temporary campaign pages after they are no longer useful in search',
+                 'Staging-like public pages that cannot be access-restricted'],
+          after: '<p>Do not use noindex on valuable pages you expect to rank.</p>' +
+            '<p>Also do not place noindex on a page and then block that page in robots.txt before the crawler can read the tag. If the crawler cannot fetch the page, it may never see the noindex directive.</p>'
         },
         {
-          h: 'Targeting specific crawlers',
-          html: '<p>Replace <code>robots</code> with a crawler token to address one engine. <code>googlebot</code>, <code>bingbot</code>, <code>googlebot-news</code> and <code>googlebot-image</code> are the common ones:</p>' +
-            '<p><code>&lt;meta name="googlebot" content="noindex"&gt;</code></p>' +
-            '<p>A crawler-specific tag overrides the generic <code>robots</code> tag for that crawler only. Everyone else follows the generic one. Values are case-insensitive and whitespace around commas is ignored, so <code>NoIndex, Follow</code> is valid — but pick a convention and keep it consistent, because inconsistent casing makes bulk auditing painful.</p>'
+          h: 'Follow vs Nofollow',
+          html: '<p><code>nofollow</code> tells supporting crawlers not to follow links on the page.</p>' +
+            '<p>It does not mean the page itself is noindexed.</p><p>Example:</p>' +
+            '<pre class="code">&lt;meta name="robots" content="nofollow"&gt;</pre>' +
+            '<p>Most normal pages do not need page-wide nofollow. If only specific links need qualification, handle those links individually.</p>' +
+            '<p>A common combination is:</p><pre class="code">noindex, nofollow</pre>' +
+            '<p>But do not apply that combination automatically. A noindexed page can still contain links that you may want crawlers to discover.</p>' +
+            '<p>Choose each instruction based on the actual purpose of the page.</p>'
         },
         {
-          h: 'Pages that usually deserve noindex',
-          list: [
-            'Internal search result pages — infinite, thin, and a classic source of index bloat.',
-            'Thank-you, confirmation and download-delivery pages.',
-            'Login, account and checkout steps.',
-            'Faceted navigation combinations beyond the handful with genuine search demand.',
-            'Tag and author archives on small blogs where they duplicate the main listing.',
-            'Staging, preview and print-view URLs.',
-            'Expired jobs, events and out-of-stock products with no replacement — often best paired with <code>unavailable_after</code>.'
-          ],
-          callout: { type: 'tip', text: 'Prefer <code>noindex, follow</code> over <code>none</code> for internal pages. Keeping links followable lets ranking signals continue to flow to the pages you do want indexed, which matters most on the faceted and archive URLs where noindex is used heavily.' }
+          h: 'What Does nosnippet Do?',
+          html: '<p><code>nosnippet</code> tells Google not to show a text snippet or video preview for the page in search results.</p>' +
+            '<p>A static image thumbnail may still be possible in some contexts.</p>' +
+            '<p>This is a strong restriction.</p>' +
+            '<p>Google also applies nosnippet to direct use of that page’s content as input for AI Overviews and AI Mode.</p>' +
+            '<p>That makes nosnippet more significant than simply shortening a traditional blue-link description.</p>' +
+            '<p>Use it only when you genuinely do not want content from the page presented as a search snippet.</p>'
         },
         {
-          h: 'Related indexing tools',
-          list: [
-            '<a href="/tools/x-robots-tag-generator">X-Robots-Tag Generator</a> — header directives for PDFs, images and directories.',
-            '<a href="/tools/canonical-tag-generator">Canonical Tag Generator</a> — consolidate duplicates rather than noindexing them.',
-            '<a href="/tools/ai-crawler-robots-txt-generator">AI Crawler robots.txt Generator</a> — crawl-level control including AI user-agents.',
-            '<a href="/tools/sitemap-index-generator">Sitemap Index Generator</a> — never list a noindexed URL in a sitemap.'
-          ]
+          h: 'What Is max-snippet?',
+          html: '<p><code>max-snippet</code> lets you set the maximum number of characters Google may use for a textual snippet.</p><p>Example:</p>' +
+            '<pre class="code">max-snippet:160</pre><p>Special values include:</p>',
+          list: ['<code>0</code> – equivalent to nosnippet', '<code>-1</code> – no explicit character limit; Google can choose an appropriate snippet length'],
+          after: '<p>Do not confuse max-snippet with your meta description length.</p>' +
+            '<p>A meta description is a potential source for the search snippet. Google can also generate snippets from visible page content.</p>' +
+            '<p>Max-snippet is an instruction about the amount of text that may be shown or directly used in supported search features.</p>'
+        },
+        {
+          h: 'What Is max-image-preview?',
+          html: '<p><code>max-image-preview</code> controls the maximum image preview size that may be shown for a page.</p><p>Supported values include:</p>',
+          list: ['none', 'standard', 'large'],
+          after: '<p>Allowing large previews can be useful for content where strong imagery improves discovery, such as articles, recipes, travel pages or visual guides.</p>' +
+            '<p>Choose a more restrictive value only when you have a reason to limit image previews.</p>' +
+            '<p>This directive is about search presentation. It is not an image copyright or download-control system.</p>'
+        },
+        {
+          h: 'What Is max-video-preview?',
+          html: '<p><code>max-video-preview</code> limits the number of seconds that may be shown as a video preview.</p>' +
+            '<p>A value of <code>0</code> can limit the result to a static image where permitted.</p>' +
+            '<p>A value of <code>-1</code> means there is no specified maximum.</p>' +
+            '<p>This control is useful for pages where video content is important but you want to influence how much preview material can appear directly in search.</p>' +
+            '<p>It does not prevent the video file itself from being accessed if it is otherwise public.</p>'
+        },
+        {
+          h: 'What Does noimageindex Do?',
+          html: '<p><code>noimageindex</code> tells Google not to index images on the page.</p><p>Use it carefully.</p>' +
+            '<p>If your images are important for Google Images or visual discovery, applying this directive can work against that goal.</p>' +
+            '<p>Also distinguish between preventing a specific page’s images from being indexed and controlling indexing for a standalone image resource.</p>' +
+            '<p>For response-level control of non-HTML files, X-Robots-Tag may be the better tool.</p>'
+        },
+        {
+          h: 'What Is unavailable_after?',
+          html: '<p><code>unavailable_after</code> tells Google not to show a page in search results after a specified date and time.</p>' +
+            '<p>It can be useful for content with a clear expiration point, such as:</p>',
+          list: ['Job openings', 'Limited-time offers', 'Temporary event pages', 'Registration pages', 'Short-lived announcements'],
+          after: '<p>The date must be valid and correctly formatted.</p>' +
+            '<p>Do not use unavailable_after simply because an article is old. Evergreen content can continue to rank and serve users for years.</p>' +
+            '<p>This directive is for content that should stop appearing after a genuine deadline.</p>'
+        },
+        {
+          h: 'Meta Robots vs Robots.txt',
+          html: '<p>These are not interchangeable.</p><p>Robots.txt answers a crawling question:</p>' +
+            '<p>“May this crawler request this URL?”</p>' +
+            '<p>Meta robots answers indexing and presentation questions after a crawler accesses the page:</p>' +
+            '<p>“May this page appear in search, and how may its content be shown?”</p>' +
+            '<p>If a page is blocked by robots.txt, a crawler may not be able to read the meta robots tag.</p>' +
+            '<p>That is why blocking a page in robots.txt while also adding noindex can be counterproductive when your goal is deindexing.</p>' +
+            '<p>Use the <a href="/tools/ai-crawler-robots-txt-generator">AI Crawler Robots.txt Generator</a> for crawler-access rules and this tool for page-level indexing directives.</p>'
+        },
+        {
+          h: 'Meta Robots vs Canonical Tag',
+          html: '<p>Canonical and noindex solve different problems. Use canonical for duplicate or very similar accessible URLs when you want to signal a preferred version. Use noindex when a page should not appear in search results.</p>' +
+            '<p>Do not routinely noindex every duplicate page when canonicalization would better preserve the content relationship and consolidate signals.</p>' +
+            '<p>The <a href="/tools/canonical-tag-generator">Canonical Tag Generator</a> can help create the correct canonical element. For language and region variants, see the <a href="/tools/hreflang-tag-generator">Hreflang Tag Generator</a>.</p>'
+        },
+        {
+          h: 'Meta Robots vs X-Robots-Tag',
+          html: '<p>Meta robots is embedded in HTML.</p><p>X-Robots-Tag is sent in an HTTP response header.</p>' +
+            '<p>The header is especially useful for non-HTML resources such as:</p>',
+          list: ['PDF files', 'Images', 'Video files', 'Documents', 'Generated downloads'],
+          after: '<p>Choose the mechanism that matches the resource you control.</p>'
+        },
+        {
+          h: 'Conflicting Robots Directives',
+          html: '<p>When multiple supported robots rules conflict, Google generally applies the more restrictive outcome.</p>' +
+            '<p>For example, if one instruction allows a snippet but another says nosnippet, the restrictive rule wins.</p>' +
+            '<p>Conflicts can come from:</p>',
+          list: ['Duplicate meta tags', 'CMS settings', 'SEO plugins', 'Framework metadata', 'HTTP X-Robots-Tag headers', 'Template code'],
+          after: '<p>If a page behaves unexpectedly, inspect both the rendered HTML and HTTP headers.</p>'
+        },
+        {
+          h: 'Common Meta Robots Mistakes',
+          html: '<p>The most damaging mistake is accidentally placing noindex on an important page.</p>' +
+            '<p>Other common problems include blocking a noindexed page in robots.txt, using nofollow site-wide, setting conflicting directives, forgetting an old unavailable_after date and applying noimageindex to image-driven content.</p>' +
+            '<p>Another mistake is using noindex instead of fixing canonicalization, faceted navigation or poor site architecture.</p>' +
+            '<p>The tag should support a clear indexing strategy, not hide technical problems.</p>'
         }
       ],
       keywords: [
         'meta robots tag generator', 'noindex nofollow', 'meta robots noindex',
-        'meta name robots content', 'max-snippet', 'max-image-preview',
-        'unavailable_after', 'noindex not working', 'meta robots vs robots.txt',
-        'googlebot meta tag', 'noarchive nosnippet', 'stop page being indexed'
+        'meta name robots content', 'max-snippet', 'max-image-preview', 'max-video-preview',
+        'unavailable_after', 'nosnippet ai overviews', 'meta robots vs robots.txt',
+        'noimageindex', 'stop page being indexed'
       ]
     }
   });

@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>Ads.txt Generator — Free IAB ads.txt &amp; app-ads.txt Builder | Manage My Batch</title>
-<meta name="description" content="Free ads.txt generator with 20+ ad network presets (AdSense, Ad Manager, Amazon, Media.net, Criteo). Build IAB-compliant ads.txt and app-ads.txt files with live validation.">
+<title>Ads.txt Generator – Create an IAB Ads.txt File Online | Manage My Batch</title>
+<meta name="description" content="Create and validate an IAB ads.txt or app-ads.txt file with seller records, DIRECT or RESELLER relationships, OWNERDOMAIN and more. Free online tool.">
 <link rel="canonical" href="https://managemybatch.com/tools/ads-txt-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="Ads.txt Generator — Free IAB ads.txt &amp; app-ads.txt Builder">
-<meta property="og:description" content="Free ads.txt generator with 20+ ad network presets (AdSense, Ad Manager, Amazon, Media.net, Criteo). Build IAB-compliant ads.txt and app-ads.txt files with live validation.">
+<meta property="og:title" content="Ads.txt Generator – Create an IAB Ads.txt File Online">
+<meta property="og:description" content="Create and validate an IAB ads.txt or app-ads.txt file with seller records, DIRECT or RESELLER relationships, OWNERDOMAIN and more. Free online tool.">
 <meta property="og:url" content="https://managemybatch.com/tools/ads-txt-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Ads.txt Generator — Free IAB ads.txt &amp; app-ads.txt Builder">
-<meta name="twitter:description" content="Free ads.txt generator with 20+ ad network presets (AdSense, Ad Manager, Amazon, Media.net, Criteo). Build IAB-compliant ads.txt and app-ads.txt files with live validation.">
+<meta name="twitter:title" content="Ads.txt Generator – Create an IAB Ads.txt File Online">
+<meta name="twitter:description" content="Create and validate an IAB ads.txt or app-ads.txt file with seller records, DIRECT or RESELLER relationships, OWNERDOMAIN and more. Free online tool.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -392,91 +392,163 @@
       '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span>Seller IDs are account-specific. Copying rows from another publisher\'s ads.txt directs revenue to <em>them</em>, not you. Always take the ID from your own network dashboard.</span></div>',
     related: ['security-txt-generator', 'llms-txt-generator', 'canonical-tag-generator'],
     faqs: [
-      { q: 'What is an ads.txt file?', a: 'A plain-text file at your domain root listing every company authorised to sell your advertising inventory, in the IAB format <code>domain, publisher ID, DIRECT|RESELLER, TAG ID</code>. Buyers use it to reject spoofed inventory.' },
-      { q: 'Is ads.txt required for AdSense?', a: 'It is not strictly mandatory, but Google shows a warning in AdSense when your site has no file, and unauthorised inventory is filtered from many buyers. In practice you should always publish one.' },
-      { q: 'What is the difference between ads.txt and app-ads.txt?', a: 'Same format, different discovery. ads.txt covers websites and is fetched from the site\'s own root. app-ads.txt covers mobile apps and is fetched from the developer website listed in your App Store or Google Play entry.' },
-      { q: 'DIRECT or RESELLER — which do I use?', a: 'DIRECT if you hold the account with that exchange and are paid by them directly. RESELLER if another company sells your inventory on your behalf through that exchange.' },
-      { q: 'Do I need ads.txt on every subdomain?', a: 'Any subdomain that serves ads and is treated as its own site by buyers needs its own file, unless you redirect that subdomain\'s /ads.txt to the parent domain\'s file.' },
-      { q: 'How long until changes take effect?', a: 'Crawlers typically refresh every 24 hours to a few days. Adding a partner is safe immediately; removing one stops their bidding once the crawl updates, so coordinate removals with the network.' }
+      { q: 'Is ads.txt mandatory?', a: 'It is not universally mandatory, but it is widely recommended and supported across the programmatic advertising industry. Individual ad platforms may strongly encourage or effectively require correct implementation for their workflows.' },
+      { q: 'Where should ads.txt be placed?', a: 'For a website, publish it at the root as <code>/ads.txt</code>.' },
+      { q: 'What does DIRECT mean?', a: 'DIRECT means you directly control the seller account listed in the record.' },
+      { q: 'What does RESELLER mean?', a: 'RESELLER means another entity controls the listed seller account and is authorized to resell your inventory.' },
+      { q: 'Can I have multiple ad networks in one ads.txt file?', a: 'Yes. Add a valid record for each authorized seller relationship.' },
+      { q: 'What is the difference between ads.txt and app-ads.txt?', a: 'Ads.txt covers web inventory. App-ads.txt extends the system to apps and relies on the developer-domain relationship associated with the app listing.' },
+      { q: 'Can I create ads.txt for free?', a: 'Yes. Add or import your seller records above, validate them and download the generated file.' }
     ],
     seo: {
-      title: 'Ads.txt explained: authorised sellers, DIRECT vs RESELLER, and app-ads.txt',
-      lead: 'This <strong>ads.txt generator</strong> builds IAB-compliant authorised-seller files from network presets and validates every line before you publish. Below: what each field means, how buyers use the file, and the mistakes that quietly cut programmatic revenue.',
+      title: 'Ads.txt Generator – Create and Validate Your Ads.txt File',
+      lead: 'Use the Ads.txt Generator above to create an authorized digital sellers file for your website or app. Add seller records, choose DIRECT or RESELLER relationships, import existing lines, remove duplicates and generate a clean file you can publish.',
       blocks: [
         {
-          h: 'What is ads.txt?',
-          html: '<p><strong>ads.txt</strong> — Authorized Digital Sellers — is a public text file at your domain root listing every company allowed to sell your advertising inventory. The IAB introduced it in 2017 to kill domain spoofing, where a fraudster offers "impressions on example.com" that example.com never had.</p>' +
-            '<p>The mechanism is simple. Before bidding, a buyer fetches <code>https://example.com/ads.txt</code> and checks whether the seller offering the inventory appears in it. If not, the bid is treated as unauthorised and dropped. Most major DSPs now refuse unauthorised inventory outright.</p>' +
-            '<p>The file is a whitelist, not a description of your ad stack. Everything in it is public, and everything not in it is unsellable.</p>'
+          html: '<p>Ads.txt lets publishers declare which advertising systems may sell their digital inventory, helping buyers identify authorized sellers.</p>' +
+            '<p>The format is maintained by IAB Tech Lab.</p>'
         },
         {
-          h: 'The four fields',
-          table: {
-            head: ['Field', 'Required', 'Meaning'],
-            rows: [
-              ['Exchange domain', 'Yes', 'The canonical domain of the SSP, exactly as they publish it. Bare hostname — <code>google.com</code>, not <code>https://google.com/</code>.'],
-              ['Publisher account ID', 'Yes', 'Your seller ID <em>within that exchange</em>. Different for every network.'],
-              ['Relationship', 'Yes', '<code>DIRECT</code> if you hold the account and are paid by that exchange. <code>RESELLER</code> if a partner sells on your behalf.'],
-              ['Certification authority ID', 'No', 'The 16-character TAG ID identifying the exchange. Include it whenever the network publishes one.']
-            ]
-          },
-          after: '<p>Variables go above the records: <code>OWNERDOMAIN=</code> names the business owning the inventory, <code>MANAGERDOMAIN=</code> names a monetisation partner, and <code>CONTACT=</code> gives buyers a human to email. Anything after <code>#</code> is a comment.</p>',
-          callout: { type: 'warn', text: '<strong>Seller IDs are account-specific.</strong> Copying rows out of another publisher\'s ads.txt sends revenue to <em>them</em>, not you — and the placeholder IDs floating around in blog examples authorise nobody. Always take the ID from your own network dashboard.' }
+          h: 'What Is ads.txt?',
+          html: '<p>Ads.txt stands for <strong>Authorized Digital Sellers</strong>.</p>' +
+            '<p>It is a public text file placed on a publisher’s domain that lists companies authorized to sell or resell the publisher’s advertising inventory.</p>' +
+            '<p>For a website, the file normally appears at:</p>' +
+            '<pre class="code">https://example.com/ads.txt</pre>' +
+            '<p>Each seller record identifies the advertising system, the publisher or seller account, the relationship and, when available, a certification authority ID.</p>' +
+            '<p>A typical line looks like:</p>' +
+            '<pre class="code">google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0</pre>' +
+            '<p>Your actual seller ID must come from your advertising account or ad network. Do not copy placeholder IDs from examples.</p>'
         },
         {
-          h: 'DIRECT or RESELLER?',
-          html: '<p>Get this wrong and you fail supply-chain audits. The test is who pays you.</p>',
-          cards: [
-            { t: 'DIRECT', d: 'You have a contract with that exchange and receive payment from them. Your own AdSense, Ad Manager or direct SSP accounts.' },
-            { t: 'RESELLER', d: 'Another company — an ad network, a managed partner, a header-bidding wrapper provider — is authorised to sell your inventory through that exchange.' },
-            { t: 'Both, sometimes', d: 'The same exchange can legitimately appear twice with different IDs: one DIRECT row for your own account, one RESELLER row for a partner\'s.' }
-          ],
-          after: '<p>Marking a reseller as DIRECT is the most common audit failure and is treated as misrepresentation, not a typo.</p>'
+          h: 'Why Do Publishers Use ads.txt?',
+          html: '<p>Programmatic advertising involves publishers, exchanges, resellers and buyers. Ads.txt gives buyers a domain-controlled source for checking whether a seller is authorized, helping reduce domain spoofing and counterfeit inventory.</p>' +
+            '<p>Ads.txt does not guarantee ad revenue, but major advertising platforms strongly encourage correct implementation.</p>'
         },
         {
-          h: 'app-ads.txt is discovered differently',
-          html: '<p>The format is identical; the lookup is not. For mobile apps, crawlers read the <strong>developer website URL</strong> from your App Store or Google Play listing, then fetch <code>app-ads.txt</code> from the root of <em>that</em> domain.</p>' +
-            '<p>Two things follow. First, the store listing must point at a domain you control and can host a file on — if it points at a Facebook page or a deep link, nothing is found. Second, the file lives at the domain root, so <code>https://example.com/app-ads.txt</code>, never inside a subfolder.</p>' +
-            '<p>A publisher with both a website and apps needs both files, and they often list different networks.</p>'
+          h: 'How to Use This Ads.txt Generator',
+          html: '<p>Choose whether you are creating <code>ads.txt</code> for a website or <code>app-ads.txt</code> for an app.</p>' +
+            '<p>Enter your publisher ID when a network preset requires it.</p>' +
+            '<p>Add the seller records provided by your advertising partners. You can create rows individually or paste existing records in bulk.</p>' +
+            '<p>For each record, verify:</p>',
+          ol: ['Advertising system domain', 'Seller or publisher account ID', 'Relationship type', 'Certification authority ID, when supplied'],
+          after: '<p>You can also add ads.txt 1.1 variables such as OWNERDOMAIN or MANAGERDOMAIN when they apply.</p>' +
+            '<p>Generate the file, review validation warnings and publish only after confirming every seller ID with the relevant network.</p>'
         },
         {
-          h: 'Publishing rules that trip people up',
+          h: 'Understanding the Four ads.txt Fields',
+          html: '<p>A standard seller record can contain four comma-separated fields.</p><p>Example:</p>' +
+            '<pre class="code">example-ad-system.com, seller123, DIRECT, abcdef1234567890</pre>' +
+            '<h4 style="font-size:14.5px;margin:18px 0 8px">Field 1: Advertising System Domain</h4>' +
+            '<p>This is the canonical domain name of the advertising system or exchange.</p>' +
+            '<p>Use the domain supplied by the partner. Do not substitute a marketing website, login domain or guessed company domain.</p>' +
+            '<h4 style="font-size:14.5px;margin:18px 0 8px">Field 2: Seller Account ID</h4>' +
+            '<p>This identifies your account within that advertising system.</p>' +
+            '<p>It may be called a publisher ID, seller ID or account ID depending on the platform.</p>' +
+            '<p>This value must match the account through which your inventory is sold.</p>' +
+            '<h4 style="font-size:14.5px;margin:18px 0 8px">Field 3: DIRECT or RESELLER</h4>' +
+            '<p>This describes your relationship with the seller account.</p>' +
+            '<p>Use <code>DIRECT</code> when you directly control the account identified in field two.</p>' +
+            '<p>Use <code>RESELLER</code> when another company controls the account and is authorized to resell your inventory.</p>' +
+            '<p>Do not choose DIRECT simply because it sounds better. The value should describe the actual business relationship.</p>' +
+            '<h4 style="font-size:14.5px;margin:18px 0 8px">Field 4: Certification Authority ID</h4>' +
+            '<p>This optional field identifies the advertising system within a certification authority.</p>' +
+            '<p>Many well-known ad systems provide a standard value.</p>' +
+            '<p>Use the value your advertising partner supplies rather than inventing one.</p>'
+        },
+        {
+          h: 'DIRECT vs RESELLER',
+          html: '<p>This is one of the most common areas of confusion.</p>' +
+            '<p><code>DIRECT</code> means the publisher directly controls the seller account listed in the record.</p>' +
+            '<p><code>RESELLER</code> means the publisher has authorized another entity that controls the listed account to sell the inventory.</p>' +
+            '<p>A publisher can legitimately have both types of records in one file.</p>' +
+            '<p>The relationship is not a quality rating. A RESELLER entry is not automatically bad, and DIRECT does not mean the inventory is more valuable.</p>' +
+            '<p>Accuracy matters more than trying to minimize one label.</p>'
+        },
+        {
+          h: 'What Is ads.txt 1.1?',
+          html: '<p>IAB Tech Lab released ads.txt 1.1 with additional variables designed to improve transparency around inventory ownership and management.</p>' +
+            '<p>Two important additions are:</p>',
+          list: ['<code>OWNERDOMAIN</code>', '<code>MANAGERDOMAIN</code>'],
+          after: '<p>These values provide more context about the business entities involved.</p>' +
+            '<p>OWNERDOMAIN identifies the business domain that owns the media property.</p>' +
+            '<p>MANAGERDOMAIN can identify a company that exclusively or primarily manages monetization for the inventory owner in applicable relationships.</p>' +
+            '<p>Not every publisher needs every variable. Add them only when they accurately describe your setup.</p>'
+        },
+        {
+          h: 'What Is OWNERDOMAIN?',
+          html: '<p>OWNERDOMAIN helps identify the organization that owns the inventory.</p><p>For example:</p>' +
+            '<pre class="code">OWNERDOMAIN=example.com</pre>' +
+            '<p>This can be useful in cases where the domain hosting content, the corporate owner and the advertising relationships are not immediately obvious.</p>' +
+            '<p>Use the business domain appropriate to the ownership structure defined by the specification.</p>' +
+            '<p>Do not use OWNERDOMAIN as another place to list an ad network.</p>'
+        },
+        {
+          h: 'What Is MANAGERDOMAIN?',
+          html: '<p>MANAGERDOMAIN identifies an entity involved in managing the publisher’s monetization when the required relationship applies.</p>' +
+            '<p>This is particularly relevant for publishers working with a monetization partner.</p>' +
+            '<p>Do not add a manager merely because a company appears somewhere in your ad stack.</p>' +
+            '<p>The value should reflect the role defined by the ads.txt standard and your actual commercial arrangement.</p>'
+        },
+        {
+          h: 'What Is app-ads.txt?',
+          html: '<p>App-ads.txt extends the authorized sellers concept to applications.</p>' +
+            '<p>It is used for mobile apps, connected TV apps and other software distributed through app stores or similar environments.</p>' +
+            '<p>The app store listing connects the app to a developer website, and buyers can then locate the app-ads.txt file associated with that developer domain.</p>' +
+            '<p>The seller-record format is closely related to ads.txt, but correct developer-domain configuration is essential.</p>' +
+            '<p>If you are monetizing a mobile app, select the app-ads.txt option in the generator and follow the implementation instructions from your app store and ad partners.</p>'
+        },
+        {
+          h: 'Where Do I Get My Ads.txt Lines?',
+          html: '<p>Get them directly from the advertising platforms, exchanges or monetization partners you actually use.</p>' +
+            '<p>For Google AdSense, your ads.txt line contains your own <code>pub-</code> publisher ID.</p>' +
+            '<p>Other platforms provide their own required domain, seller ID, relationship type and certification ID.</p>' +
+            '<p>Do not build a large file by copying lines from another website.</p>' +
+            '<p>Their seller relationships and account IDs are not yours.</p>' +
+            '<p>A copied ads.txt file can authorize the wrong accounts and create verification or monetization problems.</p>'
+        },
+        {
+          h: 'How to Publish ads.txt',
+          html: '<p>For a normal website, upload the final file so it resolves at:</p><pre class="code">/ads.txt</pre>' +
+            '<p>Check the live URL in your browser.</p>' +
+            '<p>The file should be publicly accessible without login and should show plain-text seller records.</p>' +
+            '<p>Advertising platforms may need time to recrawl changes. If a platform reports an issue, compare its recommended line with the live file rather than only checking your local copy.</p>'
+        },
+        {
+          h: 'How to Update an Existing ads.txt File',
+          html: '<p>Do not automatically replace the whole file when adding a new ad partner.</p>' +
+            '<p>Import your existing records, merge the new lines and remove exact duplicates.</p>' +
+            '<p>Then verify whether any old seller relationships are no longer valid.</p>' +
+            '<p>Ads.txt should represent current authorized sellers, not every advertising company you have ever tested.</p>' +
+            '<p>Keeping records sorted by domain can make future reviews easier because additions and removals are easier to spot.</p>'
+        },
+        {
+          h: 'Common Ads.txt Errors',
+          html: '<p>One common error is using the wrong publisher ID.</p><p>Another is placing the file somewhere other than the root of the site.</p><p>Other mistakes include:</p>',
           list: [
-            '<strong>Root only.</strong> <code>/ads/ads.txt</code> and <code>/.well-known/ads.txt</code> are never read.',
-            '<strong>Must return 200 as <code>text/plain</code>.</strong> A styled 404 page counts as "no file" and a <code>text/html</code> content type can be rejected outright.',
-            '<strong>Subdomains that serve ads need their own file</strong>, unless you redirect that subdomain\'s <code>/ads.txt</code> to the parent.',
-            '<strong>Redirects are allowed but limited.</strong> Keep it to a single hop, ideally within your own domain.',
-            '<strong>Do not block it in robots.txt.</strong> Crawlers must be able to fetch it.',
-            '<strong>One record per line, comma-separated.</strong> Wrapped lines and smart quotes from a word processor break parsing.',
-            '<strong>Removing a partner cuts their demand within days</strong>, so coordinate removals rather than pruning blindly.'
-          ]
-        },
-        {
-          h: 'How to build your file',
-          steps: [
-            { t: 'Choose ads.txt or app-ads.txt', d: 'Websites take the first, apps the second. If you have both, generate them separately.' },
-            { t: 'Add networks from the presets', d: 'The canonical domain and TAG ID are filled in for you — these are the two fields most often mistyped.' },
-            { t: 'Paste in your real seller IDs', d: 'From each network\'s dashboard. The validator flags anything that looks like a placeholder.' },
-            { t: 'Set the relationship on each row', d: 'DIRECT only where you hold the account.' },
-            { t: 'Add variables and comments', d: '<code>OWNERDOMAIN</code>, <code>CONTACT</code>, and a comment per network so future edits are safe.' },
-            { t: 'Upload to your root and re-check', d: 'Revisit whenever you add or drop a partner, and audit quarterly regardless.' }
+            'Misspelling the ad system domain',
+            'Using DIRECT when the relationship is actually RESELLER',
+            'Copying another publisher’s records',
+            'Leaving placeholder IDs in production',
+            'Publishing duplicate lines',
+            'Keeping sellers that are no longer authorized',
+            'Using an incorrect developer website for app-ads.txt',
+            'Returning an HTML error page instead of the text file'
           ],
-          callout: { type: 'tip', text: 'Keep a comment above each block naming the partner and the date it was added. Ads.txt files accumulate rows from long-dead integrations, and an undocumented row is one nobody dares remove.' }
+          after: '<p>Validation can catch formatting problems, but it cannot know whether a seller relationship is commercially legitimate. You still need to verify the account information.</p>'
         },
         {
-          h: 'Related publisher and site-root tools',
-          list: [
-            '<a href="/tools/security-txt-generator">security.txt Generator</a> — the RFC 9116 vulnerability-contact file for your root.',
-            '<a href="/tools/llms-txt-generator">llms.txt Generator</a> — tell AI assistants which pages to read.',
-            '<a href="/tools/ai-crawler-robots-txt-generator">AI Crawler robots.txt Generator</a> — control which crawlers reach your content.',
-            '<a href="/tools/canonical-tag-generator">Canonical Tag Generator</a> — keep duplicate ad-bearing URLs out of the index.'
-          ]
+          h: 'Ads.txt and SEO',
+          html: '<p>Ads.txt is not a normal SEO ranking file.</p>' +
+            '<p>It is part of the advertising supply-chain ecosystem, not a page designed to rank in organic search.</p>' +
+            '<p>Do not add ads.txt records to improve keyword rankings, indexing or crawl frequency.</p>' +
+            '<p>Likewise, do not block your ads.txt file casually in robots.txt if advertising partners need to fetch it — see the <a href="/tools/ai-crawler-robots-txt-generator">AI Crawler Robots.txt Generator</a>.</p>' +
+            '<p>The file’s value depends on being publicly accessible to systems that verify authorized sellers. For genuine SEO work, use the <a href="/tools/canonical-tag-generator">Canonical Tag Generator</a> and the <a href="/tools/sitemap-index-generator">Sitemap Index Generator</a> instead.</p>'
         }
       ],
       keywords: [
         'ads.txt generator', 'app-ads.txt generator', 'ads.txt format', 'ads.txt direct reseller',
         'what is ads.txt', 'ads.txt adsense', 'iab ads.txt spec', 'ownerdomain ads.txt',
-        'ads.txt validator', 'ads.txt example', 'authorized digital sellers', 'ads.txt subdomain'
+        'managerdomain', 'ads.txt validator', 'authorized digital sellers', 'ads.txt 1.1'
       ]
     }
   });
