@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CX2WHCM8XP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CX2WHCM8XP');
+</script>
+<title>Granny Square Calculator — Rounds, Size &amp; Squares Needed | Manage My Batch</title>
+<meta name="description" content="Free granny square calculator. Work out how many rounds for a target size, the stitch count per round, and how many squares a blanket needs.">
+<meta name="keywords" content="granny square calculator, granny square size, how many rounds granny square, granny square stitch count, squares for a blanket">
+<link rel="canonical" href="https://managemybatch.com/tools/granny-square-calculator">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Granny Square Calculator — Rounds, Size &amp; Squares Needed">
+<meta property="og:description" content="Free granny square calculator. Work out how many rounds for a target size, the stitch count per round, and how many squares a blanket needs.">
+<meta property="og:url" content="https://managemybatch.com/tools/granny-square-calculator">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Granny Square Calculator — Rounds, Size &amp; Squares Needed">
+<meta name="twitter:description" content="Free granny square calculator. Work out how many rounds for a target size, the stitch count per round, and how many squares a blanket needs.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="/assets/favicon/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/favicon/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Square &amp; Gauge</div>
+
+    <div class="field">
+      <label>Calibrate from a square you have made</label>
+      <div class="row">
+        <div class="field"><label for="calR">Rounds worked</label><input type="number" id="calR" value="3" min="1" step="1"></div>
+        <div class="field"><label for="calS">Measured size (in)</label><input type="number" id="calS" value="4.5" min="0.5" step="0.25"></div>
+      </div>
+      <div class="hint">This is the accurate route — it captures your yarn, hook and tension in one number.</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label for="mode">What do you want to know?</label>
+      <select id="mode">
+        <option value="rounds" selected>How many rounds for a target size</option>
+        <option value="size">How big will N rounds be</option>
+      </select>
+    </div>
+
+    <div class="field" id="targetField">
+      <label for="target">Target square size (in)</label>
+      <input type="number" id="target" value="12" min="1" step="0.5">
+    </div>
+
+    <div class="field" id="roundsField" hidden>
+      <label for="rounds">Rounds</label>
+      <input type="number" id="rounds" value="8" min="1" step="1">
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <div class="label">Blanket from these squares</div>
+      <div class="row">
+        <div class="field"><label for="bw">Blanket width (in)</label><input type="number" id="bw" value="50" min="4" step="0.5"></div>
+        <div class="field"><label for="bh">Blanket length (in)</label><input type="number" id="bh" value="60" min="4" step="0.5"></div>
+      </div>
+      <div class="field"><label for="join">Joining adds per seam (in)</label>
+        <input type="number" id="join" value="0.25" min="0" step="0.125"></div>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Result<span class="spacer"></span>
+      <span class="result-pill" id="pill">—</span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="result">Square</button>
+      <button type="button" data-tab="rounds">Round by round</button>
+      <button type="button" data-tab="blanket">Blanket</button>
+      <button type="button" data-tab="checks">Checks</button>
+    </div>
+
+    <div data-panel="result"><div id="result"></div></div>
+    <div data-panel="rounds" hidden><div id="roundTable"></div></div>
+    <div data-panel="blanket" hidden><div id="blanket"></div></div>
+    <div data-panel="checks" hidden><div id="checks"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var $ = GT.$, $$ = GT.$$, I = GTI;
+  ['icoGear:gear', 'icoSpark:spark'].forEach(function (p) {
+    var b = p.split(':'), el = $('#' + b[0]); if (el) el.innerHTML = I[b[1]];
+  });
+
+  function num(id) { var v = parseFloat($(id).value); return isFinite(v) ? v : 0; }
+
+  /* A granny square grows linearly: every round adds one round-height of
+     fabric to all four sides, so the side length grows by a constant amount
+     per round. Calibrating from a real square captures that constant. */
+  function growth() {
+    var r = Math.max(1, Math.round(num('#calR'))), s = num('#calS');
+    return s > 0 ? s / r : 1.5;
+  }
+
+  /* Classic granny: round n has 4n groups of 3dc, i.e. 12n stitches. */
+  function stsAt(n) { return 12 * n; }
+  function groupsAt(n) { return 4 * n; }
+
+  function fmt(n, d) { var p = Math.pow(10, d == null ? 1 : d); return Math.round(n * p) / p; }
+
+  function render() {
+    var g = growth(), mode = $('#mode').value;
+    $('#targetField').hidden = mode !== 'rounds';
+    $('#roundsField').hidden = mode !== 'size';
+
+    var rounds, size;
+    if (mode === 'rounds') {
+      var t = num('#target');
+      rounds = Math.max(1, Math.round(t / g));
+      size = rounds * g;
+    } else {
+      rounds = Math.max(1, Math.round(num('#rounds')));
+      size = rounds * g;
+    }
+    $('#pill').textContent = rounds + ' rounds · ' + fmt(size) + ' in';
+
+    var cell = function (l, v, s) {
+      return '<div style="flex:1;min-width:112px;text-align:center;padding:14px 8px;border:1px solid var(--line,#e5e7eb);border-radius:10px">' +
+        '<div style="font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)">' + l + '</div>' +
+        '<div style="font-size:23px;font-weight:700;margin-top:3px">' + v + '</div>' +
+        (s ? '<div style="font-size:12px;color:var(--muted);margin-top:2px">' + s + '</div>' : '') + '</div>';
+    };
+
+    $('#result').innerHTML =
+      '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">' +
+        cell('Rounds', rounds, 'to work') +
+        cell('Finished', fmt(size) + ' in', fmt(size * 2.54) + ' cm') +
+        cell('Final round', stsAt(rounds) + ' dc', groupsAt(rounds) + ' groups') +
+      '</div>' +
+      '<div class="note note-ok" style="margin-top:12px">' + I.check +
+      '<span>Each round adds about <strong>' + fmt(g, 2) + ' in</strong> to the side, measured from your ' +
+      Math.round(num('#calR')) + '-round sample at ' + num('#calS') + ' in.</span></div>';
+
+    var rows = '';
+    for (var n = 1; n <= Math.min(rounds + 2, 20); n++) {
+      rows += '<tr' + (n === rounds ? ' style="background:rgba(37,99,235,.07)"' : '') + '><td>' + n + '</td>' +
+        '<td>' + groupsAt(n) + '</td><td>' + stsAt(n) + '</td><td>' + fmt(n * g) + ' in</td></tr>';
+    }
+    $('#roundTable').innerHTML = '<div class="seo-table-wrap"><table class="seo-table"><thead><tr>' +
+      '<th>Round</th><th>3-dc groups</th><th>Stitches</th><th>Size</th></tr></thead><tbody>' + rows + '</tbody></table></div>' +
+      '<div class="note note-info" style="margin-top:12px">' + I.info +
+      '<span>Classic granny: round <em>n</em> has 4<em>n</em> groups of 3 double crochet — four corners plus (<em>n</em>−1) groups along each side. That is 12<em>n</em> stitches, so the count grows by 12 every round.</span></div>';
+
+    /* blanket */
+    var join = num('#join');
+    var eff = size + join;
+    var cols = Math.max(1, Math.floor(num('#bw') / eff));
+    var rws = Math.max(1, Math.floor(num('#bh') / eff));
+    var total = cols * rws;
+    $('#blanket').innerHTML =
+      '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">' +
+        cell('Squares', total, cols + ' × ' + rws) +
+        cell('Finished', fmt(cols * eff) + ' × ' + fmt(rws * eff) + ' in', 'including joins') +
+        cell('Seams', (cols - 1) * rws + (rws - 1) * cols, 'to join') +
+      '</div>' +
+      '<div class="note note-warn" style="margin-top:12px">' + I.warn +
+      '<span>Squares rarely divide a target size exactly. This rounds <em>down</em> so the blanket never exceeds your dimensions — add a border to make up the difference, which is what most granny blankets do anyway.</span></div>';
+
+    var ch = [];
+    ch.push({ s: 'ok', m: 'Calibrating from a square you have already made beats any table, because granny square size depends on yarn, hook and tension together.' });
+    if (rounds > 15)
+      ch.push({ s: 'warn', m: rounds + ' rounds is a large square. Later rounds are long — round ' + rounds + ' alone is ' + stsAt(rounds) + ' stitches, more than the first five rounds combined.' });
+    ch.push({ s: 'warn', m: '<strong>Squares grow unevenly if your corners drift.</strong> The corner space (usually ch-2 or ch-3) sets how square the square is. A tight corner rounds the shape off; a loose one gives you wavy edges.' });
+    ch.push({ s: 'ok', m: 'Block the squares before joining. It is tedious for 80 squares and it is the difference between a flat blanket and a lumpy one — blocking evens out the small size differences between squares.' });
+    ch.push({ s: 'warn', m: 'Make one square first and measure it. If your calibration is even 0.2 in per round out, a 10-round square lands 2 in from target and every square in the blanket inherits the error.' });
+    $('#checks').innerHTML = ch.map(function (x) {
+      return '<div class="note ' + (x.s === 'ok' ? 'note-ok' : 'note-warn') + '" style="margin-top:8px">' +
+        (x.s === 'ok' ? I.check : I.warn) + '<span>' + x.m + '</span></div>';
+    }).join('');
+  }
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('input', render);
+  $('#cfg').addEventListener('change', render);
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); render(); });
+  render();
+
+  GT.page({
+    slug: 'granny-square-calculator',
+    lede: 'How many rounds for the square you want, how many stitches in each round, and how many squares a blanket needs — calibrated from a square you have actually made.',
+    steps: [
+      { icon: 'gear', title: 'Measure one square', text: 'Rounds worked and the size it came out. That is your calibration.' },
+      { icon: 'chart', title: 'Get the round count', text: 'For any target size, with the stitch count per round.' },
+      { icon: 'grid', title: 'Plan the blanket', text: 'Squares across, down and in total, including joining width.' }
+    ],
+    guideTitle: 'Granny squares grow in a straight line',
+    guide:
+      '<p style="color:var(--muted)">A granny square is one of the few things in crochet with genuinely simple arithmetic. Every round adds one round of fabric to all four sides, so the side length grows by a <strong>constant amount per round</strong>. Two rounds is twice one round; ten rounds is ten times.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Which makes calibration easy</h4><p style="color:var(--muted);font-size:13.8px">Make one square, count the rounds, measure it, divide. That single number — inches per round — is all you need, and it already contains your yarn, your hook and your tension. No gauge swatch required.</p>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">The stitch count is linear too</h4><p style="color:var(--muted);font-size:13.8px">In a classic granny, round <em>n</em> has 4<em>n</em> groups of three double crochet: four corners and (<em>n</em>−1) groups along each side. That is 12<em>n</em> stitches, growing by exactly 12 every round.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Later rounds take much longer</h4><p style="color:var(--muted);font-size:13.8px">Because the count grows by 12 a round, round 12 is 144 stitches while round 1 is 12. The last three rounds of a large square can be more work than the first eight. This is why big single squares feel slow and why blankets of small squares feel fast.</p>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">Corners decide the shape</h4><p style="color:var(--muted);font-size:13.8px">The chain space at each corner is what turns a growing circle into a square. Too tight and the corners round off; too loose and the edges ruffle. If your squares are not square, the corner space is almost always why.</p></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span>Block your squares before joining. With eighty squares it is a long evening, and it is the single thing that makes a granny blanket lie flat — blocking evens out the small differences between squares made on different days at different tensions.</span></div>',
+    related: ['granny-square-layout-generator', 'crochet-blanket-yarn-calculator', 'crochet-gauge-calculator'],
+    faqs: [
+      { q: 'How many rounds for a 12 inch granny square?', a: 'Depends on your yarn and hook. Measure a square you have made — if 3 rounds gives 4.5 in, that is 1.5 in per round, so 12 in needs 8 rounds. Worsted with a 5 mm hook is commonly around 1.3–1.6 in per round.' },
+      { q: 'How many stitches in each granny square round?', a: 'In a classic granny, round n has 4n groups of 3 double crochet, so 12n stitches. Round 1 is 12, round 2 is 24, round 5 is 60. The count grows by 12 every round.' },
+      { q: 'How many granny squares for a blanket?', a: 'Divide the blanket width by the square size plus joining width, do the same for the length, and multiply. A 50 × 60 in blanket from 6 in squares needs roughly 8 × 9 = 72 squares plus a border.' },
+      { q: 'Why are my granny squares different sizes?', a: 'Tension varies between sessions, and it is very noticeable across many small squares. Make them in batches rather than one at a time, and block them all before joining — blocking absorbs most of the variation.' },
+      { q: 'Why is my granny square not square?', a: 'The corner chain spaces. Too tight and the corners pull in and the square goes round; too loose and the sides ruffle. Adjust the corner chain count before adjusting anything else.' },
+      { q: 'Should I make a few big squares or many small ones?', a: 'Small squares are more joining and more ends but feel faster, because early rounds are short. One large square has far more stitches per round at the end. Most people find lots of small squares more sustainable.' }
+    ],
+    seo: {
+      title: 'Granny square maths: rounds, stitches and how many for a blanket',
+      lead: 'This <strong>granny square calculator</strong> converts between rounds and finished size, lists the stitch count per round, and works out how many squares a blanket needs. Below: why the growth is linear, and what makes squares come out uneven.',
+      blocks: [
+        {
+          h: 'The two formulas',
+          html: '<p>Granny squares are unusually predictable, because both size and stitch count grow linearly with the round number.</p>',
+          list: [
+            '<strong>Size</strong> = rounds × inches per round. Calibrate from a square you have made.',
+            '<strong>Stitches in round n</strong> = 12n for a classic granny (4n groups of 3 dc).',
+            '<strong>Groups in round n</strong> = 4n — four corners and (n−1) along each side.',
+            '<strong>Total stitches for n rounds</strong> = 6n(n+1), because the counts form an arithmetic series.'
+          ],
+          after: '<p>That last one explains why big squares feel slow: total work grows with the <em>square</em> of the round count, so a 12-round square is not twice a 6-round square, it is about four times.</p>'
+        },
+        {
+          h: 'Typical growth per round',
+          table: {
+            head: ['Yarn', 'Hook', 'Per round', '8 rounds'],
+            rows: [
+              ['DK', '4 mm', '~1.1 in', '~8.8 in'],
+              ['Worsted', '5 mm', '~1.4 in', '~11 in'],
+              ['Worsted', '5.5 mm', '~1.5 in', '~12 in'],
+              ['Aran', '6 mm', '~1.7 in', '~13.5 in'],
+              ['Chunky', '6.5 mm', '~2 in', '~16 in']
+            ]
+          },
+          callout: { type: 'tip', text: 'Use these only as a sanity check. Measuring one real square takes two minutes and is far more reliable, because tension varies more between crocheters than between hook sizes.' }
+        },
+        {
+          h: 'Planning a blanket',
+          steps: [
+            { t: 'Decide the square size', d: '4–6 in squares are quick and forgiving; 10–12 in squares mean fewer joins but longer rounds.' },
+            { t: 'Add the joining width', d: 'Slip-stitch joins add almost nothing; a single-crochet join adds around a quarter inch per seam, which across ten squares is 2.5 inches.' },
+            { t: 'Divide and round down', d: 'So the blanket never overshoots your target size.' },
+            { t: 'Make up the difference with a border', d: 'Which is what granny blankets do anyway, and it is the easiest place to absorb the rounding.' },
+            { t: 'Make one square first', d: 'Then measure, then commit. A calibration error multiplies across every square.' }
+          ]
+        },
+        {
+          h: 'Why squares come out uneven',
+          cards: [
+            { t: 'Tension drift', d: 'Squares made across several weeks vary. Making them in batches helps; blocking helps more.' },
+            { t: 'Corner spaces', d: 'The corner chain count decides whether the shape is square, rounded or ruffled. It is the first thing to check.' },
+            { t: 'Joining as you go', d: 'Consistent, but locks in any size differences. Blocking first is not possible, so tension discipline matters more.' },
+            { t: 'Different dye lots', d: 'Affects colour, not size — but on a blanket of many small squares a lot change is very visible.' }
+          ]
+        },
+        {
+          h: 'Related crochet tools',
+          list: [
+            '<a href="/tools/granny-square-layout-generator">Granny Square Layout Generator</a> — arrange the colours across the blanket.',
+            '<a href="/tools/crochet-blanket-yarn-calculator">Crochet Blanket Yarn Calculator</a> — yarn per colour.',
+            '<a href="/tools/crochet-gauge-calculator">Crochet Gauge Calculator</a> — gauge for other projects.',
+            '<a href="/tools/crochet-blanket-stitch-calculator">Crochet Blanket Stitch Calculator</a> — for a solid blanket instead.'
+          ]
+        }
+      ],
+      keywords: [
+        'granny square calculator', 'granny square size chart', 'how many rounds granny square',
+        'granny square stitch count', 'how many granny squares for a blanket', 'granny square 12 inch',
+        'granny square blanket layout', 'granny square not square', 'granny square rounds formula',
+        'joining granny squares', 'granny square blocking', 'crochet square blanket planning'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

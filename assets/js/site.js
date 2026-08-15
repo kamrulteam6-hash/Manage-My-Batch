@@ -172,6 +172,31 @@
       cat: 'Crochet & Yarn', icon: 'yarn', tone: 'ic-purple',
       kw: 'crochet yarn calculator yardage how much yarn blanket skeins dye lot substitute' },
 
+    { slug: 'crochet-blanket-stitch-calculator', name: 'Crochet Blanket Stitch Calculator', short: 'Blanket Stitches',
+      desc: 'Foundation chain, stitch count and rows for any blanket size from your gauge.',
+      cat: 'Crochet & Yarn', icon: 'yarn', tone: 'ic-purple',
+      kw: 'crochet blanket calculator foundation chain stitch count rows multiple turning chain size' },
+
+    { slug: 'crochet-blanket-yarn-calculator', name: 'Crochet Blanket Yarn Calculator', short: 'Blanket Yarn',
+      desc: 'Yarn for a blanket split per colour, with border, fringe and tails included.',
+      cat: 'Crochet & Yarn', icon: 'yarn', tone: 'ic-purple',
+      kw: 'crochet blanket yarn calculator per colour border fringe skeins stripes how much' },
+
+    { slug: 'granny-square-calculator', name: 'Granny Square Calculator', short: 'Granny Squares',
+      desc: 'Rounds for a target size, stitches per round, and squares needed for a blanket.',
+      cat: 'Crochet & Yarn', icon: 'yarn', tone: 'ic-purple',
+      kw: 'granny square calculator rounds size stitch count squares blanket joining blocking' },
+
+    { slug: 'granny-square-layout-generator', name: 'Granny Square Layout Generator', short: 'Square Layout',
+      desc: 'Arrange squares into a blanket grid with six colour placement styles.',
+      cat: 'Crochet & Yarn', icon: 'grid', tone: 'ic-purple',
+      kw: 'granny square layout generator colour placement grid blanket plan squares per colour' },
+
+    { slug: 'crochet-stripe-pattern-generator', name: 'Crochet Stripe Pattern Generator', short: 'Stripe Patterns',
+      desc: 'Even, Fibonacci, random or mirrored stripes with preview and yarn per colour.',
+      cat: 'Crochet & Yarn', icon: 'yarn', tone: 'ic-purple',
+      kw: 'crochet stripe generator pattern fibonacci random mirrored colour change yarn per colour' },
+
     /* ---- IDs & Random ---- */
     { slug: 'uuid-v7-generator', name: 'UUID v7 Generator', short: 'UUID v7',
       desc: 'Generate RFC 9562 time-ordered UUID v7 identifiers, with a built-in timestamp decoder.',

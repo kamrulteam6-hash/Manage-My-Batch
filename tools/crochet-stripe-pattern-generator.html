@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CX2WHCM8XP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CX2WHCM8XP');
+</script>
+<title>Crochet Stripe Pattern Generator — Row Sequence &amp; Yarn Per Colour | Manage My Batch</title>
+<meta name="description" content="Free crochet stripe generator. Build even, Fibonacci, random or mirrored stripe sequences with a visual preview, row-by-row list and yarn needed per colour.">
+<meta name="keywords" content="crochet stripe generator, stripe pattern blanket, fibonacci stripes crochet, random stripe sequence, yarn per colour stripes, temperature blanket stripes">
+<link rel="canonical" href="https://managemybatch.com/tools/crochet-stripe-pattern-generator">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Crochet Stripe Pattern Generator — Row Sequence &amp; Yarn Per Colour">
+<meta property="og:description" content="Free crochet stripe generator. Build even, Fibonacci, random or mirrored stripe sequences with a visual preview, row-by-row list and yarn needed per colour.">
+<meta property="og:url" content="https://managemybatch.com/tools/crochet-stripe-pattern-generator">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Crochet Stripe Pattern Generator — Row Sequence &amp; Yarn Per Colour">
+<meta name="twitter:description" content="Free crochet stripe generator. Build even, Fibonacci, random or mirrored stripe sequences with a visual preview, row-by-row list and yarn needed per colour.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="/assets/favicon/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/favicon/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Stripes</div>
+
+    <div class="field">
+      <label for="style">Stripe pattern</label>
+      <select id="style">
+        <option value="even" selected>Even — same width throughout</option>
+        <option value="fib">Fibonacci — 1, 1, 2, 3, 5, 8</option>
+        <option value="random">Random widths</option>
+        <option value="mirror">Mirrored — symmetrical about the centre</option>
+        <option value="thickthin">Thick and thin — alternating</option>
+      </select>
+      <div class="hint" id="styleHint"></div>
+    </div>
+
+    <div class="row">
+      <div class="field"><label for="rows">Total rows</label><input type="number" id="rows" value="120" min="2" max="1000" step="1"></div>
+      <div class="field"><label for="band">Base stripe width (rows)</label><input type="number" id="band" value="4" min="1" max="40" step="1"></div>
+    </div>
+
+    <div class="field">
+      <label for="palette">Colours</label>
+      <textarea id="palette" style="min-height:96px">Teal #0f766e
+Mustard #ca8a04
+Rust #b45309
+Cream #f5f5dc</textarea>
+      <div class="hint">One per line as <code>Name #hex</code>. Order matters for every pattern except random.</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <div class="label">Yarn estimate</div>
+      <div class="row">
+        <div class="field"><label for="w">Blanket width (in)</label><input type="number" id="w" value="50" min="1" step="0.5"></div>
+        <div class="field"><label for="rpi">Rows per 4 in</label><input type="number" id="rpi" value="8" min="1" step="0.5"></div>
+      </div>
+      <div class="row">
+        <div class="field"><label for="ypr">Yards per row</label><input type="number" id="ypr" value="0" min="0" step="0.5">
+          <div class="hint">Leave 0 to estimate from width.</div></div>
+        <div class="field"><label for="skY">Yards per skein</label><input type="number" id="skY" value="220" min="1"></div>
+      </div>
+    </div>
+
+    <div class="out-actions">
+      <button class="btn btn-primary" type="button" id="shuffle"><span id="icoBolt"></span> Reshuffle</button>
+      <button class="btn btn-ghost" type="button" id="copyBtn">Copy row list</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Pattern<span class="spacer"></span>
+      <span class="result-pill" id="pill">—</span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="preview">Preview</button>
+      <button type="button" data-tab="rows">Row by row</button>
+      <button type="button" data-tab="yarn">Yarn per colour</button>
+      <button type="button" data-tab="checks">Checks</button>
+    </div>
+
+    <div data-panel="preview"><div id="preview"></div></div>
+    <div data-panel="rows" hidden><div id="rowList"></div></div>
+    <div data-panel="yarn" hidden><div id="yarn"></div></div>
+    <div data-panel="checks" hidden><div id="checks"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var $ = GT.$, $$ = GT.$$, I = GTI;
+  ['icoGear:gear', 'icoSpark:spark', 'icoBolt:bolt'].forEach(function (p) {
+    var b = p.split(':'), el = $('#' + b[0]); if (el) el.innerHTML = I[b[1]];
+  });
+
+  var HINTS = {
+    even: 'Every stripe the same depth. Calm, predictable and the easiest to keep track of.',
+    fib: 'Stripe widths follow 1, 1, 2, 3, 5, 8 — the proportions look organic rather than mechanical.',
+    random: 'Widths vary randomly between one and twice the base. Reshuffle until you like it.',
+    mirror: 'The second half repeats the first in reverse, so the blanket is symmetrical top to bottom.',
+    thickthin: 'Alternates a wide band with a narrow one. Strong graphic rhythm from only two or three colours.'
+  };
+
+  var seed = 7;
+  function rnd() { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; }
+  function num(id) { var v = parseFloat($(id).value); return isFinite(v) ? v : 0; }
+
+  function palette() {
+    return $('#palette').value.split('\n').map(function (l) {
+      var t = l.trim(); if (!t) return null;
+      var m = t.match(/^(.*?)\s*(#[0-9a-f]{3,8})?$/i);
+      return { name: (m && m[1] ? m[1] : t).trim(), hex: (m && m[2]) ? m[2] : '#cbd5e1' };
+    }).filter(Boolean);
+  }
+
+  /* Returns an array of {c: colourIndex, n: rows} */
+  function bands() {
+    var P = palette(); if (!P.length) return null;
+    var total = Math.max(2, Math.min(1000, Math.round(num('#rows'))));
+    var base = Math.max(1, Math.round(num('#band')));
+    var style = $('#style').value;
+    var out = [], used = 0, i = 0;
+    var FIB = [1, 1, 2, 3, 5, 8, 13];
+
+    if (style === 'mirror') {
+      var half = [], h = 0, k = 0;
+      while (h < Math.ceil(total / 2)) {
+        var n1 = base;
+        half.push({ c: k % P.length, n: n1 }); h += n1; k++;
+      }
+      var mirrored = half.slice().reverse();
+      out = half.concat(mirrored);
+    } else {
+      while (used < total) {
+        var n;
+        if (style === 'even') n = base;
+        else if (style === 'fib') n = base * FIB[i % 6];
+        else if (style === 'random') n = Math.max(1, Math.round(base * (0.5 + rnd() * 1.5)));
+        else n = (i % 2 === 0) ? base * 2 : Math.max(1, Math.round(base / 2));
+        out.push({ c: i % P.length, n: n });
+        used += n; i++;
+      }
+    }
+
+    /* trim to exactly the requested row count */
+    var run = 0, trimmed = [];
+    for (var j = 0; j < out.length && run < total; j++) {
+      var take = Math.min(out[j].n, total - run);
+      if (take > 0) { trimmed.push({ c: out[j].c, n: take }); run += take; }
+    }
+    return { bands: trimmed, P: P, total: total, style: style };
+  }
+
+  function render() {
+    $('#styleHint').textContent = HINTS[$('#style').value];
+    var d = bands();
+    if (!d) { $('#preview').innerHTML = '<div class="note note-warn">' + I.warn + '<span>Add at least one colour.</span></div>'; return; }
+    $('#pill').textContent = d.bands.length + ' stripes · ' + d.total + ' rows';
+
+    /* preview: proportional horizontal bands */
+    var h = Math.max(220, Math.min(460, d.total * 2.4));
+    $('#preview').innerHTML =
+      '<div style="margin-top:10px;border:1px solid var(--line,#e5e7eb);border-radius:8px;overflow:hidden;display:flex;flex-direction:column;height:' + h + 'px">' +
+      d.bands.map(function (b) {
+        return '<div title="' + GT.esc(d.P[b.c].name) + ' — ' + b.n + ' rows" style="flex:' + b.n +
+          ';background:' + d.P[b.c].hex + '"></div>';
+      }).join('') + '</div>' +
+      '<div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:12px">' +
+      d.P.map(function (p) {
+        return '<span style="display:inline-flex;align-items:center;gap:6px;font-size:13.5px">' +
+          '<span style="width:14px;height:14px;border-radius:3px;background:' + p.hex + ';display:inline-block"></span>' +
+          GT.esc(p.name) + '</span>';
+      }).join('') + '</div>';
+
+    /* row list */
+    var r = 1, lines = [];
+    d.bands.forEach(function (b) {
+      var from = r, to = r + b.n - 1; r = to + 1;
+      lines.push({ t: 'Rows ' + from + (b.n > 1 ? '–' + to : '') + ': ' + d.P[b.c].name + ' (' + b.n + ')', hex: d.P[b.c].hex });
+    });
+    window.__lines = lines.map(function (l) { return l.t; }).join('\n');
+    $('#rowList').innerHTML = '<div style="margin-top:10px;max-height:420px;overflow:auto">' +
+      lines.map(function (l) {
+        return '<div style="display:flex;align-items:center;gap:8px;padding:5px 2px;border-bottom:1px solid var(--line,#eee);font-size:13.8px">' +
+          '<span style="width:12px;height:12px;border-radius:3px;background:' + l.hex + ';flex:none"></span>' + GT.esc(l.t) + '</div>';
+      }).join('') + '</div>';
+
+    /* yarn per colour */
+    var rowsPer = d.P.map(function () { return 0; });
+    d.bands.forEach(function (b) { rowsPer[b.c] += b.n; });
+    var ypr = num('#ypr');
+    if (!ypr) {
+      /* rough: one row of dc across W inches uses about W/9 yards at worsted */
+      ypr = num('#w') / 9;
+    }
+    var skY = num('#skY') || 1;
+    $('#yarn').innerHTML = '<div class="seo-table-wrap" style="margin-top:10px"><table class="seo-table"><thead><tr>' +
+      '<th>Colour</th><th>Rows</th><th>Yards</th><th>Skeins</th></tr></thead><tbody>' +
+      d.P.map(function (p, i) {
+        var yd = rowsPer[i] * ypr * 1.15;
+        return '<tr><td><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:' + p.hex +
+          ';margin-right:8px"></span>' + GT.esc(p.name) + '</td><td>' + rowsPer[i] + '</td><td>' +
+          Math.ceil(yd).toLocaleString() + '</td><td>' + Math.ceil(yd / skY) + '</td></tr>';
+      }).join('') + '</tbody></table></div>' +
+      '<div class="note note-info" style="margin-top:12px">' + I.info +
+      '<span>Includes a 15% margin. Yards per row is estimated from the blanket width unless you enter a measured figure — to measure it, weigh your yarn before and after a single row.</span></div>';
+
+    var ch = [];
+    var changes = d.bands.length - 1;
+    ch.push({ s: changes > 40 ? 'warn' : 'ok', m: '<strong>' + changes + ' colour changes</strong>, which means ' + (changes * 2) +
+      ' ends to weave in' + (changes > 40 ? '. That is a substantial job in itself — consider carrying colours up the side rather than cutting.' : '.') });
+    if (d.style === 'even' && d.P.length > 1 && (d.total / num('#band')) % d.P.length !== 0)
+      ch.push({ s: 'warn', m: 'The row count does not divide evenly into complete colour cycles, so the last stripe is cut short and the blanket does not finish on the colour it started with. Adjust the total rows or the stripe width if you want it to close cleanly.' });
+    if (d.style === 'fib')
+      ch.push({ s: 'ok', m: 'Fibonacci widths grow quickly — at a base of ' + num('#band') + ' rows the sixth band is ' + (num('#band') * 8) + ' rows. That is the effect, but check the preview so the largest band is not larger than you intended.' });
+    ch.push({ s: 'ok', m: '<strong>Carry unused colours up the side</strong> where a stripe repeats within a few rows. It saves cutting and weaving, and the border covers the carried strands.' });
+    ch.push({ s: 'warn', m: 'Change colour in the <em>last yarn-over of the previous row</em>, not at the start of the new one. Doing it at the start leaves a visible half-stitch of the old colour at the edge.' });
+    $('#checks').innerHTML = ch.map(function (x) {
+      return '<div class="note ' + (x.s === 'ok' ? 'note-ok' : 'note-warn') + '" style="margin-top:8px">' +
+        (x.s === 'ok' ? I.check : I.warn) + '<span>' + x.m + '</span></div>';
+    }).join('');
+  }
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#shuffle').addEventListener('click', function () { seed = Math.floor(Math.random() * 1e9) + 1; render(); });
+  $('#copyBtn').addEventListener('click', function () { GT.copy(window.__lines || '', 'Row list'); });
+  $('#cfg').addEventListener('input', render);
+  $('#cfg').addEventListener('change', render);
+  render();
+
+  GT.page({
+    slug: 'crochet-stripe-pattern-generator',
+    lede: 'Design a stripe sequence and see it before you commit — five pattern styles, a proportional preview, a row-by-row list and the yarn each colour needs.',
+    steps: [
+      { icon: 'gear', title: 'Choose a rhythm', text: 'Even, Fibonacci, random, mirrored or thick-and-thin.' },
+      { icon: 'spark', title: 'Preview it', text: 'Bands drawn to scale, so you see the proportions rather than imagining them.' },
+      { icon: 'list', title: 'Take the row list', text: 'Plus yarn per colour, with a margin.' }
+    ],
+    guideTitle: 'Stripe rhythms, and where the ends go',
+    guide:
+      '<p style="color:var(--muted)">Even stripes are the safe choice and they can look mechanical. The alternatives all vary the <em>width</em> rather than the colour order, which is what makes a stripe sequence feel designed instead of defaulted.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Fibonacci widths</h4><p style="color:var(--muted);font-size:13.8px">Widths of 1, 1, 2, 3, 5, 8 give proportions that read as organic rather than regular. It is a common trick in weaving and it works for the same reason here — the eye finds the ratios pleasant without being able to predict them. Watch the largest band, though: at a base of 4 rows the sixth stripe is 32 rows.</p>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">Mirrored sequences</h4><p style="color:var(--muted);font-size:13.8px">The second half reverses the first, so the blanket is symmetrical top to bottom. It looks deliberate on a throw where both ends are visible, and it solves the problem of a sequence that ends awkwardly mid-cycle.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Carry, do not cut</h4><p style="color:var(--muted);font-size:13.8px">Where a colour returns within a few rows, carry it up the side rather than cutting. Two ends per change adds up fast — a blanket with forty stripes is eighty ends — and carried strands disappear under the border.</p>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">Change colour one stitch early</h4><p style="color:var(--muted);font-size:13.8px">Make the switch on the final yarn-over of the <em>previous</em> row, so the last loop is already the new colour. Changing at the start of the new row leaves a visible half-stitch of the old shade at the edge, and it shows all the way up the blanket.</p></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span>Check whether your row count divides into whole colour cycles. If it does not, the blanket ends mid-sequence on a stripe that is cut short — which can look accidental. Adjusting the total rows by two or three is usually enough to close it cleanly.</span></div>',
+    related: ['crochet-blanket-yarn-calculator', 'crochet-blanket-stitch-calculator', 'granny-square-layout-generator'],
+    faqs: [
+      { q: 'How do I plan a crochet stripe pattern?', a: 'Decide the total rows, the base stripe width and the colour order, then choose a rhythm — even, Fibonacci, mirrored or random. Preview the proportions before starting, because a sequence that sounds good rarely looks the way you imagined.' },
+      { q: 'What is a Fibonacci stripe pattern?', a: 'Stripe widths follow the Fibonacci sequence — 1, 1, 2, 3, 5, 8 — multiplied by a base row count. The uneven but related proportions look organic rather than mechanical, which is why weavers and knitters use it too.' },
+      { q: 'How do I avoid weaving in so many ends?', a: 'Carry colours up the side of the work when a stripe repeats within a few rows, rather than cutting each time. The carried strands sit at the edge and disappear under the border.' },
+      { q: 'When should I change colour?', a: 'On the last yarn-over of the row before the change, so the final loop pulled through is already the new colour. Changing at the start of the new row leaves a half-stitch of the old colour showing at the edge.' },
+      { q: 'How much yarn does each colour need?', a: 'Multiply the rows in that colour by the yards per row. The Yarn per colour tab does this and adds a 15% margin. For a measured figure rather than an estimate, weigh your yarn before and after working one full row.' },
+      { q: 'Can I use this for a temperature blanket?', a: 'The row list and per-colour yarn figures are useful, but a temperature blanket is driven by data rather than a rhythm — one row per day in the colour band for that day\'s temperature. Use the even setting to estimate yarn, then substitute your real sequence.' }
+    ],
+    seo: {
+      title: 'Crochet stripe patterns: rhythms, colour changes and yarn per colour',
+      lead: 'This <strong>stripe generator</strong> builds a sequence, draws it to scale, and gives you a row-by-row list with the yarn each colour needs. Below: the five rhythms, and the two techniques that decide whether stripes look neat.',
+      blocks: [
+        {
+          h: 'Five ways to vary a stripe',
+          table: {
+            head: ['Style', 'Widths', 'Effect'],
+            rows: [
+              ['Even', 'All the same', 'Calm and regular. Easy to keep track of.'],
+              ['Fibonacci', '1, 1, 2, 3, 5, 8 × base', 'Organic proportions, no obvious repeat.'],
+              ['Random', 'Varies each band', 'Scrappy and informal. Reshuffle until it lands.'],
+              ['Mirrored', 'Symmetrical', 'Deliberate and finished at both ends.'],
+              ['Thick and thin', 'Alternating wide/narrow', 'Strong graphic rhythm from few colours.']
+            ]
+          },
+          after: '<p>All of these vary the stripe <em>width</em> while keeping the colour order. That is usually more effective than randomising the colours themselves, which tends to look like a mistake rather than a decision.</p>'
+        },
+        {
+          h: 'The two techniques that matter',
+          steps: [
+            { t: 'Change colour one stitch early', d: 'On the last yarn-over of the previous row, so the loop you finish with is already the new colour. Otherwise a half-stitch of the old colour shows at the edge of every stripe.' },
+            { t: 'Carry, do not cut', d: 'Where a colour returns within a few rows, run it up the side. Saves two ends per change and disappears under the border.' },
+            { t: 'Cut for long gaps', d: 'If a colour is absent for more than about six rows, carrying leaves loose strands that snag. Cut and weave.' },
+            { t: 'Weave as you go', d: 'Eighty ends at the end of a project is demoralising. Doing them every few stripes costs nothing extra.' },
+            { t: 'Keep the edge consistent', d: 'Carried yarn thickens one side. A border evens it out, so plan for one.' }
+          ]
+        },
+        {
+          h: 'Making the sequence close cleanly',
+          html: '<p>A stripe sequence that does not divide into the row count ends part-way through a cycle, with a final stripe cut short. On a scarf nobody notices; on a blanket where both ends are visible it can look unfinished.</p>',
+          list: [
+            '<strong>Adjust the total rows</strong> by two or three so the cycles complete. Easiest fix, and length is flexible anyway.',
+            '<strong>Adjust the stripe width</strong> so the cycle divides the row count.',
+            '<strong>Use a mirrored sequence</strong>, which is symmetrical by construction and always ends as it began.',
+            '<strong>Frame it deliberately</strong> — start and end with the same wide band, and treat the middle as the variable part.'
+          ],
+          callout: { type: 'tip', text: 'Work the length to a measurement rather than a row count, then adjust the last stripe to finish. Since row gauge drifts anyway, the row count was always approximate — the sequence is what people see.' }
+        },
+        {
+          h: 'Related crochet tools',
+          list: [
+            '<a href="/tools/crochet-blanket-yarn-calculator">Crochet Blanket Yarn Calculator</a> — total yarn including border and fringe.',
+            '<a href="/tools/crochet-blanket-stitch-calculator">Crochet Blanket Stitch Calculator</a> — chain and row counts.',
+            '<a href="/tools/granny-square-layout-generator">Granny Square Layout Generator</a> — colour placement for squares instead.',
+            '<a href="/tools/crochet-gauge-calculator">Crochet Gauge Calculator</a> — row gauge for the length.'
+          ]
+        }
+      ],
+      keywords: [
+        'crochet stripe generator', 'stripe pattern blanket', 'fibonacci stripes crochet',
+        'random stripe sequence', 'yarn per colour stripes', 'crochet colour change',
+        'carrying yarn up the side', 'striped blanket pattern', 'temperature blanket colours',
+        'crochet stripe planner', 'mirrored stripe sequence', 'how many ends to weave in'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

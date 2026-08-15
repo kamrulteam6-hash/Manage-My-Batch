@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CX2WHCM8XP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CX2WHCM8XP');
+</script>
+<title>Granny Square Layout Generator — Plan Colour Placement | Manage My Batch</title>
+<meta name="description" content="Free granny square layout generator. Arrange squares into a blanket grid with random, checkerboard, diagonal or gradient colour placement, and a per-colour square count.">
+<meta name="keywords" content="granny square layout generator, granny square blanket layout, square colour placement, crochet blanket grid planner, how many squares per colour">
+<link rel="canonical" href="https://managemybatch.com/tools/granny-square-layout-generator">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Granny Square Layout Generator — Plan Colour Placement">
+<meta property="og:description" content="Free granny square layout generator. Arrange squares into a blanket grid with random, checkerboard, diagonal or gradient colour placement, and a per-colour square count.">
+<meta property="og:url" content="https://managemybatch.com/tools/granny-square-layout-generator">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Granny Square Layout Generator — Plan Colour Placement">
+<meta name="twitter:description" content="Free granny square layout generator. Arrange squares into a blanket grid with random, checkerboard, diagonal or gradient colour placement, and a per-colour square count.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="/assets/favicon/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/favicon/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Layout</div>
+
+    <div class="row">
+      <div class="field"><label for="cols">Squares across</label><input type="number" id="cols" value="8" min="1" max="30" step="1"></div>
+      <div class="field"><label for="rows">Squares down</label><input type="number" id="rows" value="10" min="1" max="40" step="1"></div>
+    </div>
+
+    <div class="field">
+      <label for="size">Square size (in)</label>
+      <input type="number" id="size" value="6" min="1" step="0.25">
+      <div class="hint" id="sizeHint"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label for="style">Colour placement</label>
+      <select id="style">
+        <option value="random" selected>Random — no two neighbours alike</option>
+        <option value="checker">Checkerboard</option>
+        <option value="diagonal">Diagonal stripes</option>
+        <option value="gradient">Gradient — rows fade through the palette</option>
+        <option value="frame">Framed — border colour around the edge</option>
+        <option value="scrappy">Scrappy — fully random, repeats allowed</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="palette">Colours</label>
+      <textarea id="palette" style="min-height:96px">Teal #0f766e
+Mustard #ca8a04
+Rust #b45309
+Cream #f5f5dc
+Charcoal #374151</textarea>
+      <div class="hint">One per line as <code>Name #hex</code>. The hex is only for this preview — name them however you like.</div>
+    </div>
+
+    <div class="out-actions">
+      <button class="btn btn-primary" type="button" id="shuffle"><span id="icoBolt"></span> Reshuffle</button>
+      <button class="btn btn-ghost" type="button" id="printBtn">Print layout</button>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Blanket Plan<span class="spacer"></span>
+      <span class="result-pill" id="pill">—</span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="grid">Layout</button>
+      <button type="button" data-tab="counts">Squares per colour</button>
+      <button type="button" data-tab="checks">Checks</button>
+    </div>
+
+    <div data-panel="grid"><div id="grid"></div></div>
+    <div data-panel="counts" hidden><div id="counts"></div></div>
+    <div data-panel="checks" hidden><div id="checks"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var $ = GT.$, $$ = GT.$$, I = GTI;
+  ['icoGear:gear', 'icoSpark:spark', 'icoBolt:bolt'].forEach(function (p) {
+    var b = p.split(':'), el = $('#' + b[0]); if (el) el.innerHTML = I[b[1]];
+  });
+
+  var seed = 1;
+  function rnd() { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; }
+
+  function num(id) { var v = parseFloat($(id).value); return isFinite(v) ? v : 0; }
+
+  function palette() {
+    return $('#palette').value.split('\n').map(function (l) {
+      var t = l.trim(); if (!t) return null;
+      var m = t.match(/^(.*?)\s*(#[0-9a-f]{3,8})?$/i);
+      return { name: (m && m[1] ? m[1] : t).trim(), hex: (m && m[2]) ? m[2] : '#cbd5e1' };
+    }).filter(Boolean);
+  }
+
+  function buildGrid() {
+    var cols = Math.max(1, Math.min(30, Math.round(num('#cols'))));
+    var rows = Math.max(1, Math.min(40, Math.round(num('#rows'))));
+    var P = palette(); if (!P.length) return null;
+    var style = $('#style').value;
+    var g = [];
+
+    for (var r = 0; r < rows; r++) {
+      g[r] = [];
+      for (var c = 0; c < cols; c++) {
+        var idx;
+        if (style === 'checker') idx = (r + c) % P.length;
+        else if (style === 'diagonal') idx = (r + c) % P.length;
+        else if (style === 'gradient') idx = Math.min(P.length - 1, Math.floor(r / rows * P.length));
+        else if (style === 'frame') idx = (r === 0 || c === 0 || r === rows - 1 || c === cols - 1)
+          ? 0 : 1 + Math.floor(rnd() * Math.max(1, P.length - 1));
+        else if (style === 'scrappy') idx = Math.floor(rnd() * P.length);
+        else {
+          /* random with no matching orthogonal neighbour, where possible */
+          var banned = {};
+          if (c > 0) banned[g[r][c - 1]] = 1;
+          if (r > 0) banned[g[r - 1][c]] = 1;
+          var opts = [];
+          for (var i = 0; i < P.length; i++) if (!banned[i]) opts.push(i);
+          if (!opts.length) opts = P.map(function (_, i) { return i; });
+          idx = opts[Math.floor(rnd() * opts.length)];
+        }
+        g[r][c] = Math.min(idx, P.length - 1);
+      }
+    }
+    return { g: g, cols: cols, rows: rows, P: P, style: style };
+  }
+
+  function render() {
+    var d = buildGrid();
+    if (!d) { $('#grid').innerHTML = '<div class="note note-warn">' + I.warn + '<span>Add at least one colour.</span></div>'; return; }
+    var total = d.cols * d.rows, sz = num('#size');
+    $('#pill').textContent = total + ' squares';
+    $('#sizeHint').textContent = 'Finished blanket about ' + Math.round(d.cols * sz) + ' × ' + Math.round(d.rows * sz) +
+      ' in before any border.';
+
+    var cell = Math.max(14, Math.min(40, Math.floor(560 / d.cols)));
+    $('#grid').innerHTML =
+      '<div style="overflow-x:auto;margin-top:10px"><div style="display:inline-grid;grid-template-columns:repeat(' + d.cols +
+      ',' + cell + 'px);gap:2px;padding:8px;background:var(--line,#e5e7eb);border-radius:8px">' +
+      d.g.map(function (row) {
+        return row.map(function (i) {
+          return '<div title="' + GT.esc(d.P[i].name) + '" style="width:' + cell + 'px;height:' + cell +
+            'px;background:' + d.P[i].hex + ';border-radius:3px"></div>';
+        }).join('');
+      }).join('') + '</div></div>' +
+      '<div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:12px">' +
+      d.P.map(function (p) {
+        return '<span style="display:inline-flex;align-items:center;gap:6px;font-size:13.5px">' +
+          '<span style="width:14px;height:14px;border-radius:3px;background:' + p.hex + ';display:inline-block"></span>' +
+          GT.esc(p.name) + '</span>';
+      }).join('') + '</div>';
+
+    var counts = d.P.map(function () { return 0; });
+    d.g.forEach(function (row) { row.forEach(function (i) { counts[i]++; }); });
+    $('#counts').innerHTML = '<div class="seo-table-wrap" style="margin-top:10px"><table class="seo-table"><thead><tr>' +
+      '<th>Colour</th><th>Squares</th><th>Share</th></tr></thead><tbody>' +
+      d.P.map(function (p, i) {
+        return '<tr><td><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:' + p.hex +
+          ';margin-right:8px"></span>' + GT.esc(p.name) + '</td><td><strong>' + counts[i] + '</strong></td><td>' +
+          Math.round(counts[i] / total * 100) + '%</td></tr>';
+      }).join('') +
+      '<tr><td><strong>Total</strong></td><td><strong>' + total + '</strong></td><td>100%</td></tr>' +
+      '</tbody></table></div>' +
+      '<div class="note note-info" style="margin-top:12px">' + I.info +
+      '<span>Make a few spare squares in each colour. They cost little and they save you when one square turns out a size out, or when you decide the layout needs adjusting at the joining stage.</span></div>';
+
+    var ch = [];
+    if (d.style === 'random')
+      ch.push({ s: 'ok', m: 'No square touches another of the same colour on any side. Diagonal touches are allowed — preventing those as well usually needs more colours than most people have.' });
+    if (d.style === 'scrappy')
+      ch.push({ s: 'warn', m: 'Fully random allows neighbours to match, which is the point of a scrappy blanket but does produce visible clumps. Reshuffle a few times if a clump lands somewhere prominent.' });
+    if (d.P.length < 3 && d.style === 'random')
+      ch.push({ s: 'warn', m: 'With only ' + d.P.length + ' colours a no-touching layout is very constrained, and on a wide grid it may be impossible — the generator falls back to allowing a match rather than failing.' });
+    if (total > 120)
+      ch.push({ s: 'warn', m: total + ' squares is a big commitment. At ten minutes a square that is around ' + Math.round(total / 6) + ' hours of making before any joining.' });
+    ch.push({ s: 'warn', m: '<strong>Joining adds size.</strong> This grid shows squares edge to edge. A single-crochet join adds roughly a quarter inch per seam, so ' + d.cols + ' squares across gains about ' + Math.round((d.cols - 1) * 0.25) + ' in.' });
+    ch.push({ s: 'ok', m: 'Lay the squares out on the floor in this arrangement before joining anything. Photograph it — the photo is far easier to follow than a plan when you are three rows in.' });
+    $('#checks').innerHTML = ch.map(function (x) {
+      return '<div class="note ' + (x.s === 'ok' ? 'note-ok' : 'note-warn') + '" style="margin-top:8px">' +
+        (x.s === 'ok' ? I.check : I.warn) + '<span>' + x.m + '</span></div>';
+    }).join('');
+  }
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#shuffle').addEventListener('click', function () { seed = Math.floor(Math.random() * 1e9) + 1; render(); });
+  $('#printBtn').addEventListener('click', function () { window.print(); });
+  $('#cfg').addEventListener('input', render);
+  $('#cfg').addEventListener('change', render);
+  render();
+
+  GT.page({
+    slug: 'granny-square-layout-generator',
+    lede: 'Arrange your squares into a blanket before you join a single one — six placement styles, a visual grid, and how many squares to make in each colour.',
+    steps: [
+      { icon: 'grid', title: 'Set the grid', text: 'Squares across and down, and the size of one square.' },
+      { icon: 'spark', title: 'Choose a placement', text: 'Random with no touching neighbours, checkerboard, diagonal, gradient, framed or scrappy.' },
+      { icon: 'file', title: 'Print and lay out', text: 'With a square count per colour for the making stage.' }
+    ],
+    guideTitle: 'Deciding the layout before you make the squares',
+    guide:
+      '<p style="color:var(--muted)">The usual order is to make a pile of squares and then work out where they go. Doing it the other way round means you know exactly how many of each colour to make, and you never end up with eleven teal squares and two cream ones.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Random is harder than it sounds</h4><p style="color:var(--muted);font-size:13.8px">True randomness clumps. Scatter five colours across eighty squares at random and you will get patches where three of the same colour sit together, which reads as a mistake rather than as randomness. The default placement here forbids matching neighbours on any side, which looks the way people <em>expect</em> random to look.</p>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">Some styles need specific counts</h4><p style="color:var(--muted);font-size:13.8px">A checkerboard with an even number of squares across uses the colours equally; an odd number does not. A gradient uses whole bands. The per-colour table tells you the real numbers rather than an assumed even split.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Joining adds inches</h4><p style="color:var(--muted);font-size:13.8px">The grid shows squares touching. In reality a slip-stitch join adds almost nothing, while a single-crochet join adds around a quarter inch per seam. Across ten squares that is more than two inches, which matters if you are matching a bed size.</p>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">Photograph the floor layout</h4><p style="color:var(--muted);font-size:13.8px">Lay the finished squares out and take a photo before joining. Following a photo on your phone is far easier than following a plan, and it survives the cat walking through the middle of it.</p></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span>Make two or three spare squares in each colour. Squares made weeks apart vary in size, and having spares means you can set aside the odd one rather than unpicking a seam or accepting a lumpy corner.</span></div>',
+    related: ['granny-square-calculator', 'crochet-blanket-yarn-calculator', 'crochet-stripe-pattern-generator'],
+    faqs: [
+      { q: 'How do I arrange granny squares in a blanket?', a: 'Decide the grid first — squares across and down — then place colours so no two neighbours match. Lay the real squares out on the floor in that arrangement and photograph it before joining anything.' },
+      { q: 'How many squares do I need per colour?', a: 'It depends on the placement style. An even random split across five colours and eighty squares is sixteen each, but checkerboard and gradient layouts are deliberately uneven. The per-colour tab gives the actual counts for your grid.' },
+      { q: 'Why does my random layout look clumpy?', a: 'Because true randomness clumps. Genuine random placement regularly puts three of the same colour together, which reads as an error. The default style here prevents matching neighbours, which looks more like what people mean by random.' },
+      { q: 'Does joining change the blanket size?', a: 'Yes. A slip-stitch join adds almost nothing, but a single-crochet join adds roughly a quarter inch per seam. Across ten squares that is over two inches in each direction.' },
+      { q: 'Should I join as I go or make all the squares first?', a: 'Join-as-you-go is faster overall and avoids a mountain of joining at the end, but it locks in the layout and prevents blocking beforehand. Making all the squares first lets you block them and rearrange, which usually gives a flatter, tidier blanket.' },
+      { q: 'How many squares for a throw?', a: 'A 50 × 60 in throw from 6 in squares is roughly 8 across by 10 down — 80 squares — before any border, and slightly fewer if your join adds width.' }
+    ],
+    seo: {
+      title: 'Planning a granny square blanket: grid, colours and joining',
+      lede: 'This <strong>layout generator</strong> arranges squares into a blanket grid with six placement styles and tells you how many squares to make in each colour. Below: why random placement needs help, and what joining does to the finished size.',
+      blocks: [
+        {
+          h: 'Work out the grid first',
+          html: '<p>Two numbers decide everything: how many squares across and how many down. From those you get the total, the per-colour counts and the finished size.</p>' +
+            '<p>Divide your target blanket width by the square size — plus the joining allowance — and round down. Rounding down means the blanket comes in slightly under target, and the border makes up the difference. Rounding up means a blanket that is bigger than the bed.</p>',
+          table: {
+            head: ['Blanket', 'Target', '4 in squares', '6 in squares', '8 in squares'],
+            rows: [
+              ['Baby', '30 × 36 in', '7 × 9 = 63', '5 × 6 = 30', '3 × 4 = 12'],
+              ['Lapghan', '36 × 48 in', '9 × 12 = 108', '6 × 8 = 48', '4 × 6 = 24'],
+              ['Throw', '50 × 60 in', '12 × 15 = 180', '8 × 10 = 80', '6 × 7 = 42'],
+              ['Twin', '66 × 90 in', '16 × 22 = 352', '11 × 15 = 165', '8 × 11 = 88']
+            ]
+          },
+          after: '<p>Before joining allowance and border. Smaller squares mean far more squares and far more joining — 180 four-inch squares is a very different project from 42 eight-inch ones.</p>'
+        },
+        {
+          h: 'The six placement styles',
+          cards: [
+            { t: 'Random, no touching', d: 'The default. Colours are scattered but no square shares a side with its own colour. Looks like what people mean when they say random.' },
+            { t: 'Checkerboard', d: 'Alternating, formal and very tidy. Works best with two or three strongly contrasting colours.' },
+            { t: 'Diagonal', d: 'Colours run in diagonal bands across the blanket. Striking with a graded palette.' },
+            { t: 'Gradient', d: 'The palette fades from one end to the other in bands. Needs colours ordered deliberately in your list.' },
+            { t: 'Framed', d: 'The first colour forms a border of squares around a mixed centre. Good for using up a dominant colour.' },
+            { t: 'Scrappy', d: 'Fully random with repeats allowed. Honest stash-busting; expect clumps.' }
+          ]
+        },
+        {
+          h: 'Joining, and what it costs',
+          html: '<p>The method changes both the look and the finished size.</p>',
+          list: [
+            '<strong>Slip stitch join</strong> — nearly invisible, adds almost no width, creates a defined ridge on one side.',
+            '<strong>Single crochet join</strong> — a visible raised seam, adds around a quarter inch per seam. Sturdy and quick.',
+            '<strong>Whip stitch</strong> — flat and discreet, adds nothing, but slow and uses a tapestry needle throughout.',
+            '<strong>Join-as-you-go</strong> — no separate joining stage at all, but the layout is fixed once you start and you cannot block the squares first.',
+            '<strong>Continuous join</strong> — joins whole rows in one pass, minimising ends. Fiddly to set up, fast once running.'
+          ],
+          callout: { type: 'tip', text: 'Whichever you choose, block the squares before joining if you can. It is the single thing that turns a set of slightly different squares into a blanket that lies flat, and it is impossible once they are joined.' }
+        },
+        {
+          h: 'Related crochet tools',
+          list: [
+            '<a href="/tools/granny-square-calculator">Granny Square Calculator</a> — rounds, stitch counts and square size.',
+            '<a href="/tools/crochet-blanket-yarn-calculator">Crochet Blanket Yarn Calculator</a> — yarn per colour.',
+            '<a href="/tools/crochet-stripe-pattern-generator">Crochet Stripe Pattern Generator</a> — for a striped blanket instead.',
+            '<a href="/tools/crochet-blanket-stitch-calculator">Crochet Blanket Stitch Calculator</a> — for a solid blanket.'
+          ]
+        }
+      ],
+      keywords: [
+        'granny square layout generator', 'granny square blanket layout', 'how many squares for a blanket',
+        'granny square colour placement', 'crochet blanket grid planner', 'squares per colour crochet',
+        'joining granny squares', 'join as you go granny square', 'random square layout',
+        'granny square blanket size', 'crochet square arrangement', 'scrappy granny blanket'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

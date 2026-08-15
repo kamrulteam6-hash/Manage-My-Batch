@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CX2WHCM8XP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CX2WHCM8XP');
+</script>
+<title>Crochet Blanket Stitch Calculator — Foundation Chain &amp; Row Count | Manage My Batch</title>
+<meta name="description" content="Free crochet blanket calculator. Work out the foundation chain, stitch count and rows for any blanket size from your own gauge, with stitch multiples handled.">
+<meta name="keywords" content="crochet blanket calculator, foundation chain calculator, how many chains for a blanket, crochet stitch multiple, blanket size chart crochet">
+<link rel="canonical" href="https://managemybatch.com/tools/crochet-blanket-stitch-calculator">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Crochet Blanket Stitch Calculator — Foundation Chain &amp; Row Count">
+<meta property="og:description" content="Free crochet blanket calculator. Work out the foundation chain, stitch count and rows for any blanket size from your own gauge, with stitch multiples handled.">
+<meta property="og:url" content="https://managemybatch.com/tools/crochet-blanket-stitch-calculator">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Crochet Blanket Stitch Calculator — Foundation Chain &amp; Row Count">
+<meta name="twitter:description" content="Free crochet blanket calculator. Work out the foundation chain, stitch count and rows for any blanket size from your own gauge, with stitch multiples handled.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="/assets/favicon/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/favicon/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Blanket &amp; Gauge</div>
+
+    <div class="field">
+      <label for="preset">Blanket size</label>
+      <select id="preset"></select>
+    </div>
+
+    <div class="row">
+      <div class="field"><label for="w">Width (in)</label><input type="number" id="w" value="50" min="4" step="0.5"></div>
+      <div class="field"><label for="h">Length (in)</label><input type="number" id="h" value="60" min="4" step="0.5"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <div class="label">Your gauge</div>
+      <div class="row">
+        <div class="field"><label for="gSts">Stitches per 4 in</label><input type="number" id="gSts" value="12" min="1" step="0.5"></div>
+        <div class="field"><label for="gRows">Rows per 4 in</label><input type="number" id="gRows" value="7" min="1" step="0.5"></div>
+      </div>
+      <div class="hint">From a blocked swatch. Not sure? Use the <a href="/tools/crochet-gauge-calculator">gauge calculator</a> first.</div>
+    </div>
+
+    <div class="field">
+      <label for="stitch">Main stitch</label>
+      <select id="stitch">
+        <option value="sc">Single crochet — turning ch 1</option>
+        <option value="hdc">Half double crochet — ch 2</option>
+        <option value="dc" selected>Double crochet — ch 3</option>
+        <option value="tr">Treble crochet — ch 4</option>
+      </select>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <div class="label">Pattern repeat</div>
+      <div class="row">
+        <div class="field"><label for="mult">Multiple of</label><input type="number" id="mult" value="1" min="1" step="1"></div>
+        <div class="field"><label for="plus">Plus</label><input type="number" id="plus" value="0" min="0" step="1"></div>
+      </div>
+      <div class="hint">A pattern saying “multiple of 3 + 1” needs 3 and 1 here. Leave as 1 and 0 for a plain fabric.</div>
+    </div>
+
+    <div class="field">
+      <label for="border">Border width each side (in)</label>
+      <input type="number" id="border" value="0" min="0" step="0.25">
+      <div class="hint">Subtracted from the main panel so the finished blanket lands on your target size.</div>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Your Numbers<span class="spacer"></span>
+      <span class="result-pill" id="pill">—</span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="result">Start here</button>
+      <button type="button" data-tab="sizes">Standard sizes</button>
+      <button type="button" data-tab="checks">Checks</button>
+    </div>
+
+    <div data-panel="result"><div id="result"></div></div>
+    <div data-panel="sizes" hidden><div id="sizes"></div></div>
+    <div data-panel="checks" hidden><div id="checks"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var $ = GT.$, $$ = GT.$$, I = GTI;
+  ['icoGear:gear', 'icoSpark:spark'].forEach(function (p) {
+    var b = p.split(':'), el = $('#' + b[0]); if (el) el.innerHTML = I[b[1]];
+  });
+
+  var SIZES = [
+    { n: 'Custom', w: 0, h: 0 },
+    { n: 'Preemie', w: 18, h: 24 }, { n: 'Baby / pram', w: 30, h: 36 },
+    { n: 'Toddler', w: 36, h: 48 }, { n: 'Lapghan', w: 36, h: 48 },
+    { n: 'Throw', w: 50, h: 60 }, { n: 'Twin', w: 66, h: 90 },
+    { n: 'Double / full', w: 80, h: 90 }, { n: 'Queen', w: 90, h: 100 },
+    { n: 'King', w: 108, h: 100 }
+  ];
+  $('#preset').innerHTML = SIZES.map(function (s, i) {
+    return '<option value="' + i + '"' + (s.n === 'Throw' ? ' selected' : '') + '>' + s.n +
+      (s.w ? ' — ' + s.w + ' × ' + s.h + ' in' : '') + '</option>';
+  }).join('');
+
+  var TCH = { sc: 1, hdc: 2, dc: 3, tr: 4 };
+  var TNAME = { sc: 'single crochet', hdc: 'half double crochet', dc: 'double crochet', tr: 'treble crochet' };
+
+  function num(id) { var v = parseFloat($(id).value); return isFinite(v) ? v : 0; }
+
+  /* nearest n satisfying n % mult === plus % mult, and n >= mult+plus */
+  function fitMultiple(target, mult, plus) {
+    if (mult <= 1) return Math.max(1, Math.round(target));
+    var k = Math.round((target - plus) / mult);
+    if (k < 1) k = 1;
+    return k * mult + plus;
+  }
+
+  function calc() {
+    var W = num('#w'), H = num('#h'), b = num('#border');
+    var spi = num('#gSts') / 4, rpi = num('#gRows') / 4;
+    if (!W || !H || !spi || !rpi) return null;
+    var panelW = Math.max(1, W - 2 * b), panelH = Math.max(1, H - 2 * b);
+    var raw = panelW * spi;
+    var mult = Math.max(1, Math.round(num('#mult'))), plus = Math.max(0, Math.round(num('#plus')));
+    var sts = fitMultiple(raw, mult, plus);
+    var rows = Math.max(1, Math.round(panelH * rpi));
+    var st = $('#stitch').value;
+    return {
+      W: W, H: H, b: b, spi: spi, rpi: rpi, mult: mult, plus: plus,
+      panelW: panelW, panelH: panelH, raw: raw, sts: sts, rows: rows,
+      st: st, tch: TCH[st],
+      actualW: sts / spi + 2 * b, actualH: rows / rpi + 2 * b,
+      chain: sts + (st === 'sc' ? 1 : TCH[st] - 1 + 1)
+    };
+  }
+
+  function fmt(n) { return Math.round(n * 10) / 10; }
+
+  function render() {
+    var c = calc();
+    if (!c) { $('#result').innerHTML = '<div class="note note-warn">' + I.warn + '<span>Fill in the size and gauge.</span></div>'; return; }
+    $('#pill').textContent = c.sts + ' sts × ' + c.rows + ' rows';
+
+    /* Foundation chain: stitches + the turning chain that stands as the first
+       stitch. For sc the turning ch does not count, so it is sts + 1. */
+    var chainNote = c.st === 'sc'
+      ? 'chain ' + (c.sts + 1) + ' — that is ' + c.sts + ' stitches plus 1 turning chain, which does not count as a stitch'
+      : 'chain ' + (c.sts + c.tch - 1) + ' — that is ' + c.sts + ' stitches plus ' + (c.tch - 1) +
+        ', because the turning chain stands as your first ' + TNAME[c.st];
+    var chainNum = c.st === 'sc' ? c.sts + 1 : c.sts + c.tch - 1;
+
+    var cell = function (l, v, s) {
+      return '<div style="flex:1;min-width:112px;text-align:center;padding:14px 8px;border:1px solid var(--line,#e5e7eb);border-radius:10px">' +
+        '<div style="font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)">' + l + '</div>' +
+        '<div style="font-size:23px;font-weight:700;margin-top:3px">' + v + '</div>' +
+        (s ? '<div style="font-size:12px;color:var(--muted);margin-top:2px">' + s + '</div>' : '') + '</div>';
+    };
+
+    $('#result').innerHTML =
+      '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">' +
+        cell('Foundation chain', chainNum, 'to start') +
+        cell('Stitches per row', c.sts, 'after row 1') +
+        cell('Rows', c.rows, 'for the panel') +
+      '</div>' +
+      '<div class="note note-ok" style="margin-top:12px">' + I.check +
+      '<span><strong>Row 1:</strong> ' + chainNote + '.</span></div>' +
+      '<div class="seo-table-wrap" style="margin-top:12px"><table class="seo-table"><tbody>' +
+        '<tr><td>Target size</td><td>' + c.W + ' × ' + c.H + ' in</td></tr>' +
+        (c.b ? '<tr><td>Main panel (minus border)</td><td>' + fmt(c.panelW) + ' × ' + fmt(c.panelH) + ' in</td></tr>' : '') +
+        '<tr><td>Exact stitches needed</td><td>' + fmt(c.raw) + '</td></tr>' +
+        (c.mult > 1 ? '<tr><td>Rounded to multiple of ' + c.mult + ' + ' + c.plus + '</td><td><strong>' + c.sts + '</strong></td></tr>' : '') +
+        '<tr><td><strong>Finished size</strong></td><td><strong>' + fmt(c.actualW) + ' × ' + fmt(c.actualH) + ' in</strong></td></tr>' +
+      '</tbody></table></div>';
+
+    var ch = [];
+    var drift = c.actualW - c.W;
+    if (Math.abs(drift) > 1.5)
+      ch.push({ s: 'warn', m: 'Rounding to the pattern repeat moves the width by <strong>' + fmt(drift) + ' in</strong>. Adjust the border width to absorb it, or accept the size — on a blanket it will not show.' });
+    else
+      ch.push({ s: 'ok', m: 'Finished width lands within ' + fmt(Math.abs(drift)) + ' in of your target.' });
+    ch.push({ s: 'warn', m: '<strong>Foundation chains are usually tighter than the fabric above them.</strong> If your starting edge pulls in, chain with a hook one size larger, or use a foundation single/double crochet instead of a chain — it makes the first row and the chain in one pass and does not tighten.' });
+    ch.push({ s: 'ok', m: 'Work rows to a <em>measurement</em> rather than the row count if your row gauge drifts. Width is fixed at the chain; length is not.' });
+    if (c.rows > 200)
+      ch.push({ s: 'warn', m: c.rows + ' rows is a long project. Mark every 20th row with a stitch marker so a miscount costs you twenty rows, not two hundred.' });
+    ch.push({ s: 'ok', m: 'Count stitches on every 10th row. A blanket that gains one stitch a row becomes a trapezoid, and it is invisible until it is fifty rows too late.' });
+    $('#checks').innerHTML = ch.map(function (x) {
+      return '<div class="note ' + (x.s === 'ok' ? 'note-ok' : 'note-warn') + '" style="margin-top:8px">' +
+        (x.s === 'ok' ? I.check : I.warn) + '<span>' + x.m + '</span></div>';
+    }).join('');
+
+    var spi2 = c.spi, rpi2 = c.rpi;
+    $('#sizes').innerHTML = '<div class="seo-table-wrap"><table class="seo-table"><thead><tr>' +
+      '<th>Size</th><th>Inches</th><th>Stitches</th><th>Rows</th></tr></thead><tbody>' +
+      SIZES.filter(function (s) { return s.w; }).map(function (s) {
+        return '<tr><td><strong>' + s.n + '</strong></td><td>' + s.w + ' × ' + s.h + '</td>' +
+          '<td>' + fitMultiple(s.w * spi2, c.mult, c.plus) + '</td><td>' + Math.round(s.h * rpi2) + '</td></tr>';
+      }).join('') + '</tbody></table></div>' +
+      '<div class="note note-info" style="margin-top:12px">' + I.info +
+      '<span>Calculated at your current gauge of ' + num('#gSts') + ' sts and ' + num('#gRows') + ' rows per 4 in. Change the gauge and this table updates.</span></div>';
+  }
+
+  $('#preset').addEventListener('change', function () {
+    var s = SIZES[+$('#preset').value];
+    if (s && s.w) { $('#w').value = s.w; $('#h').value = s.h; }
+    render();
+  });
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('input', render);
+  $('#cfg').addEventListener('change', render);
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); render(); });
+  render();
+
+  GT.page({
+    slug: 'crochet-blanket-stitch-calculator',
+    lede: 'Turn a blanket size and your own gauge into a foundation chain, a stitch count and a row count — with pattern repeats and borders handled.',
+    steps: [
+      { icon: 'gear', title: 'Pick a size', text: 'Nine standard blanket sizes from preemie to king, or your own.' },
+      { icon: 'chart', title: 'Add your gauge', text: 'From a blocked swatch, in the stitch you will actually use.' },
+      { icon: 'check', title: 'Start chaining', text: 'Including the turning chain, which differs by stitch.' }
+    ],
+    guideTitle: 'Getting the starting chain right',
+    guide:
+      '<p style="color:var(--muted)">A blanket commits to its width at the foundation chain. Every row after that inherits the decision, so this is the one number worth calculating rather than guessing.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">The turning chain is not decoration</h4><p style="color:var(--muted);font-size:13.8px">In double crochet the turning chain of 3 <em>stands as the first stitch</em>, so a 150-stitch row starts from a chain of 152. In single crochet the chain of 1 does not count, so you chain 151. Getting this wrong puts you one stitch out on every row, which compounds into a visibly slanted edge.</p>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">Pattern repeats force rounding</h4><p style="color:var(--muted);font-size:13.8px">A shell or v-stitch pattern needs a multiple — "multiple of 6 + 1" means the count must fit that formula exactly. Your ideal width almost never lands on one, so the calculator rounds to the nearest valid count and tells you what that does to the finished size.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Chains pull in</h4><p style="color:var(--muted);font-size:13.8px">Almost everyone chains tighter than they crochet. The result is a blanket whose bottom edge is narrower than the body and refuses to lie flat. Two fixes: chain with a hook one size up, or skip the chain entirely and use a foundation single or double crochet, which builds the chain and the first row together at working tension.</p>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">Work length to a measurement</h4><p style="color:var(--muted);font-size:13.8px">Row counts are a guide. Since nothing depends on hitting an exact row, measure as you go and stop when the length is right — that absorbs any row-gauge drift for free.</p></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span>Count your stitches every tenth row. Accidentally working into the turning chain, or missing the last stitch of a row, adds or loses one stitch per row — and a blanket that gains a stitch a row is a trapezoid by the time anyone notices.</span></div>',
+    related: ['crochet-gauge-calculator', 'crochet-blanket-yarn-calculator', 'c2c-blanket-calculator'],
+    faqs: [
+      { q: 'How many chains do I need for a blanket?', a: 'Multiply your target width by your stitches per inch, then add the turning chain. At 3 stitches per inch a 50 in blanket needs 150 stitches, so you chain 152 for double crochet (the chain-3 counts as the first stitch) or 151 for single crochet.' },
+      { q: 'What does “multiple of 6 + 1” mean?', a: 'The stitch count must be a multiple of 6 with 1 extra — so 61, 67, 73 and so on. The multiple covers one pattern repeat and the extra stitches balance the ends. Enter 6 and 1 in the repeat fields and the calculator rounds for you.' },
+      { q: 'Why is my foundation chain too tight?', a: 'Most people chain tighter than they crochet, so the starting edge pulls in. Use a hook one size larger for the chain, or use a foundation single or double crochet, which creates the chain and first row together at working tension.' },
+      { q: 'Does the turning chain count as a stitch?', a: 'For double crochet and treble, yes by convention — the chain-3 or chain-4 stands as the first stitch. For single crochet the chain-1 does not count. Half double varies by pattern, so follow whatever the pattern says.' },
+      { q: 'What size should a blanket be?', a: 'Common finished sizes: baby 30 × 36 in, lapghan 36 × 48, throw 50 × 60, twin 66 × 90, queen 90 × 100. The Standard sizes tab converts all of them to stitches and rows at your gauge.' },
+      { q: 'How do I add a border?', a: 'Enter the border width per side and the calculator shrinks the main panel so the finished blanket still hits your target. A border is also the easiest place to absorb any rounding from a pattern repeat.' }
+    ],
+    seo: {
+      title: 'Crochet blanket calculator: chain, stitches and rows from your gauge',
+      lead: 'This <strong>blanket stitch calculator</strong> converts a target size and your gauge into a foundation chain, stitch count and row count, handling pattern repeats, borders and the turning chain. Below: standard blanket sizes and the details that decide whether the edges come out straight.',
+      blocks: [
+        {
+          h: 'The arithmetic',
+          html: '<p>Everything follows from gauge. Stitches per inch multiplied by target width gives the stitch count; rows per inch multiplied by target length gives the rows.</p>' +
+            '<p>The complications are all at the edges: the turning chain, the pattern repeat and the border. Each is small and each is the sort of thing that puts a blanket an inch or two off, or leaves one edge visibly slanted.</p>',
+          list: [
+            '<strong>Stitches</strong> = width × (gauge stitches ÷ 4)',
+            '<strong>Rows</strong> = length × (gauge rows ÷ 4)',
+            '<strong>Chain</strong> = stitches + turning chain allowance',
+            '<strong>With a border</strong>, subtract twice the border width before calculating the panel'
+          ]
+        },
+        {
+          h: 'Turning chains by stitch',
+          table: {
+            head: ['Stitch', 'Turning chain', 'Counts as a stitch?', 'Chain for 150 sts'],
+            rows: [
+              ['Single crochet', 'ch 1', 'No', '151'],
+              ['Half double', 'ch 2', 'Varies by pattern', '151 or 152'],
+              ['Double crochet', 'ch 3', 'Yes', '152'],
+              ['Treble', 'ch 4', 'Yes', '153']
+            ]
+          },
+          callout: { type: 'warn', text: 'Consistency matters more than which convention you pick. If the chain-3 counts as a stitch, you must work into the top of it at the end of the next row. Doing that on some rows and not others is what produces edges that wander in and out.' }
+        },
+        {
+          h: 'Standard blanket sizes',
+          table: {
+            head: ['Blanket', 'Size (in)', 'Notes'],
+            rows: [
+              ['Preemie', '18 × 24', 'Hospital sizes vary — check before donating.'],
+              ['Baby / pram', '30 × 36', 'The most common gift size.'],
+              ['Toddler / lapghan', '36 × 48', 'Also right for a wheelchair blanket.'],
+              ['Throw', '50 × 60', 'Sofa size. The default for most patterns.'],
+              ['Twin', '66 × 90', 'Covers the mattress with overhang.'],
+              ['Double / full', '80 × 90', ''],
+              ['Queen', '90 × 100', 'A serious undertaking in yarn and time.'],
+              ['King', '108 × 100', '']
+            ]
+          },
+          after: '<p>These are finished sizes with a normal drape. For a bedspread that hangs to the floor, add twice the drop to the width and once to the length.</p>'
+        },
+        {
+          h: 'Keeping the edges straight',
+          steps: [
+            { t: 'Count every tenth row', d: 'One stitch gained or lost per row builds into a trapezoid, and it is invisible until it is not.' },
+            { t: 'Mark the first and last stitch', d: 'Stitch markers on the edge stitches make it obvious when you have worked into the wrong place.' },
+            { t: 'Decide about the turning chain once', d: 'Either it counts or it does not. Apply the same rule on every row without exception.' },
+            { t: 'Do not work into the base of the turning chain', d: 'The classic cause of gaining a stitch per row in double crochet.' },
+            { t: 'Block at the end', d: 'Blocking straightens minor wobbles. It will not fix a genuine stitch-count drift.' }
+          ]
+        },
+        {
+          h: 'Related crochet tools',
+          list: [
+            '<a href="/tools/crochet-gauge-calculator">Crochet Gauge Calculator</a> — measure the gauge this calculator needs.',
+            '<a href="/tools/crochet-blanket-yarn-calculator">Crochet Blanket Yarn Calculator</a> — yarn for the blanket, including per colour.',
+            '<a href="/tools/crochet-yarn-yardage-calculator">Crochet Yarn Yardage Calculator</a> — general yardage from a swatch.'
+          ]
+        }
+      ],
+      keywords: [
+        'crochet blanket calculator', 'foundation chain calculator', 'how many chains for a blanket',
+        'crochet stitch multiple', 'blanket size chart crochet', 'crochet rows calculator',
+        'turning chain double crochet', 'crochet blanket dimensions', 'foundation double crochet',
+        'crochet blanket straight edges', 'baby blanket stitch count', 'throw blanket crochet size'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>

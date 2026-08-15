@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CX2WHCM8XP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CX2WHCM8XP');
+</script>
+<title>Crochet Blanket Yarn Calculator — Yarn Per Colour &amp; Border | Manage My Batch</title>
+<meta name="description" content="Free crochet blanket yarn calculator. Work out total yarn plus a per-colour breakdown for stripes, border and fringe, in yards, metres and skeins.">
+<meta name="keywords" content="crochet blanket yarn calculator, how much yarn for a blanket, yarn per colour stripes, border yarn calculator, fringe yarn amount">
+<link rel="canonical" href="https://managemybatch.com/tools/crochet-blanket-yarn-calculator">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Manage My Batch">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Manage My Batch">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Crochet Blanket Yarn Calculator — Yarn Per Colour &amp; Border">
+<meta property="og:description" content="Free crochet blanket yarn calculator. Work out total yarn plus a per-colour breakdown for stripes, border and fringe, in yards, metres and skeins.">
+<meta property="og:url" content="https://managemybatch.com/tools/crochet-blanket-yarn-calculator">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Crochet Blanket Yarn Calculator — Yarn Per Colour &amp; Border">
+<meta name="twitter:description" content="Free crochet blanket yarn calculator. Work out total yarn plus a per-colour breakdown for stripes, border and fringe, in yards, metres and skeins.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="/assets/favicon/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/favicon/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+</head>
+<body data-root="../">
+
+<section class="hero" id="hero"></section>
+
+<section id="toolApp">
+<div class="wrap">
+<div class="tool-grid">
+
+  <form class="card card-pad" id="cfg" autocomplete="off">
+    <div class="panel-title"><span class="ico" id="icoGear"></span>Blanket &amp; Yarn</div>
+
+    <div class="field">
+      <label for="preset">Blanket size</label>
+      <select id="preset"></select>
+    </div>
+
+    <div class="row">
+      <div class="field"><label for="w">Width (in)</label><input type="number" id="w" value="50" min="4" step="0.5"></div>
+      <div class="field"><label for="h">Length (in)</label><input type="number" id="h" value="60" min="4" step="0.5"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label for="weight">Yarn weight</label>
+      <select id="weight">
+        <option value="1">1 — Super fine</option>
+        <option value="2">2 — Fine (sport)</option>
+        <option value="3">3 — Light (DK)</option>
+        <option value="4" selected>4 — Medium (worsted, aran)</option>
+        <option value="5">5 — Bulky (chunky)</option>
+        <option value="6">6 — Super bulky</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="stitch">Main stitch</label>
+      <select id="stitch">
+        <option value="1.5">Single crochet</option>
+        <option value="1.25">Half double crochet</option>
+        <option value="1" selected>Double crochet</option>
+        <option value="0.85">Treble crochet</option>
+        <option value="0.7">Granny / mesh</option>
+      </select>
+    </div>
+
+    <div class="row">
+      <div class="field"><label for="skY">Yards per skein</label><input type="number" id="skY" value="220" min="1"></div>
+      <div class="field"><label for="skG">Grams per skein</label><input type="number" id="skG" value="100" min="1"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label for="colours">Number of colours</label>
+      <input type="number" id="colours" value="4" min="1" max="12" step="1">
+      <div class="hint">Assumed used equally. Uneven stripes shift the split but not the total.</div>
+    </div>
+
+    <div class="field">
+      <label for="border">Border width (in, each side)</label>
+      <input type="number" id="border" value="2" min="0" step="0.25">
+    </div>
+
+    <div class="field">
+      <div class="label">Extras</div>
+      <div class="checks">
+        <label class="check"><input type="checkbox" id="optFringe"><span><span class="t">Fringe on both short ends</span><span class="d">8 in strands, doubled, every inch.</span></span></label>
+        <label class="check"><input type="checkbox" id="optTails" checked><span><span class="t">Allow for weaving in tails</span><span class="d">Adds yarn per colour change.</span></span></label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="buffer">Safety margin</label>
+      <select id="buffer">
+        <option value="10">10%</option>
+        <option value="15" selected>15% — recommended</option>
+        <option value="25">25%</option>
+      </select>
+    </div>
+  </form>
+
+  <div class="card card-pad">
+    <div class="panel-title"><span class="ico" id="icoSpark"></span>Shopping List<span class="spacer"></span>
+      <span class="result-pill" id="pill">—</span></div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="on" data-tab="result">Total</button>
+      <button type="button" data-tab="colours">Per colour</button>
+      <button type="button" data-tab="checks">Checks</button>
+    </div>
+
+    <div data-panel="result"><div id="result"></div></div>
+    <div data-panel="colours" hidden><div id="colourOut"></div></div>
+    <div data-panel="checks" hidden><div id="checks"></div></div>
+  </div>
+
+</div>
+</div>
+</section>
+
+<div id="afterTool"></div>
+
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var $ = GT.$, $$ = GT.$$, I = GTI;
+  ['icoGear:gear', 'icoSpark:spark'].forEach(function (p) {
+    var b = p.split(':'), el = $('#' + b[0]); if (el) el.innerHTML = I[b[1]];
+  });
+
+  var SIZES = [
+    { n: 'Custom', w: 0, h: 0 }, { n: 'Preemie', w: 18, h: 24 }, { n: 'Baby', w: 30, h: 36 },
+    { n: 'Lapghan', w: 36, h: 48 }, { n: 'Throw', w: 50, h: 60 }, { n: 'Twin', w: 66, h: 90 },
+    { n: 'Double', w: 80, h: 90 }, { n: 'Queen', w: 90, h: 100 }, { n: 'King', w: 108, h: 100 }
+  ];
+  $('#preset').innerHTML = SIZES.map(function (s, i) {
+    return '<option value="' + i + '"' + (s.n === 'Throw' ? ' selected' : '') + '>' + s.n +
+      (s.w ? ' — ' + s.w + ' × ' + s.h + ' in' : '') + '</option>';
+  }).join('');
+
+  var YPSI = [2.2, 1.6, 1.2, 0.9, 0.67, 0.45, 0.3, 0.18];
+  function num(id) { var v = parseFloat($(id).value); return isFinite(v) ? v : 0; }
+
+  function calc() {
+    var W = num('#w'), H = num('#h');
+    if (!W || !H) return null;
+    var wi = parseInt($('#weight').value, 10);
+    var stMul = parseFloat($('#stitch').value);
+    var ypsi = YPSI[wi] * stMul;
+    var b = num('#border');
+
+    var bodyArea = Math.max(0, (W - 2 * b) * (H - 2 * b));
+    var borderArea = W * H - bodyArea;
+    var bodyYd = bodyArea * ypsi;
+    var borderYd = borderArea * ypsi;
+
+    /* Fringe: 8 in strands folded in half, two per inch along both short ends. */
+    var fringeYd = 0;
+    if ($('#optFringe').checked) fringeYd = (W * 2) * 2 * (8 / 36);
+
+    var colours = Math.max(1, Math.min(12, Math.round(num('#colours'))));
+    var tailsYd = 0;
+    if ($('#optTails').checked && colours > 1) {
+      /* roughly one colour change every few rows; 8 in of tail per change, two ends */
+      var rows = H * 2;                       // rough rows for a worsted blanket
+      var changes = Math.max(0, Math.floor(rows / 4));
+      tailsYd = changes * (16 / 36);
+    }
+
+    var buffer = parseFloat($('#buffer').value) || 0;
+    var subtotal = bodyYd + borderYd + fringeYd + tailsYd;
+    var total = subtotal * (1 + buffer / 100);
+    var skY = num('#skY') || 1, skG = num('#skG') || 1;
+
+    return {
+      W: W, H: H, b: b, colours: colours, ypsi: ypsi,
+      bodyYd: bodyYd, borderYd: borderYd, fringeYd: fringeYd, tailsYd: tailsYd,
+      subtotal: subtotal, total: total, buffer: buffer,
+      grams: total * (skG / skY), skeins: Math.ceil(total / skY), skY: skY, skG: skG,
+      perColour: (bodyYd * (1 + buffer / 100)) / colours
+    };
+  }
+
+  function fmt(n) { return Math.ceil(n).toLocaleString(); }
+
+  function render() {
+    var c = calc();
+    if (!c) { $('#result').innerHTML = '<div class="note note-warn">' + I.warn + '<span>Enter a blanket size.</span></div>'; return; }
+    $('#pill').textContent = c.skeins + ' skeins';
+
+    var cell = function (l, v, s) {
+      return '<div style="flex:1;min-width:118px;text-align:center;padding:14px 8px;border:1px solid var(--line,#e5e7eb);border-radius:10px">' +
+        '<div style="font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)">' + l + '</div>' +
+        '<div style="font-size:23px;font-weight:700;margin-top:3px">' + v + '</div>' +
+        (s ? '<div style="font-size:12px;color:var(--muted);margin-top:2px">' + s + '</div>' : '') + '</div>';
+    };
+
+    $('#result').innerHTML =
+      '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">' +
+        cell('Yards', fmt(c.total), fmt(c.total * 0.9144) + ' m') +
+        cell('Grams', fmt(c.grams), (Math.ceil(c.grams / 28.35 * 10) / 10) + ' oz') +
+        cell('Skeins', c.skeins, 'total') +
+      '</div>' +
+      '<div class="seo-table-wrap" style="margin-top:14px"><table class="seo-table"><thead><tr><th>Part</th><th>Yards</th></tr></thead><tbody>' +
+        '<tr><td>Main body</td><td>' + fmt(c.bodyYd) + '</td></tr>' +
+        (c.b ? '<tr><td>Border (' + c.b + ' in each side)</td><td>' + fmt(c.borderYd) + '</td></tr>' : '') +
+        (c.fringeYd ? '<tr><td>Fringe</td><td>' + fmt(c.fringeYd) + '</td></tr>' : '') +
+        (c.tailsYd ? '<tr><td>Weaving in tails</td><td>' + fmt(c.tailsYd) + '</td></tr>' : '') +
+        '<tr><td>Subtotal</td><td>' + fmt(c.subtotal) + '</td></tr>' +
+        '<tr><td><strong>With ' + c.buffer + '% margin</strong></td><td><strong>' + fmt(c.total) + '</strong></td></tr>' +
+      '</tbody></table></div>';
+
+    var perSk = Math.ceil(c.perColour / c.skY);
+    $('#colourOut').innerHTML =
+      '<div class="seo-table-wrap" style="margin-top:10px"><table class="seo-table"><thead><tr>' +
+      '<th>Colour</th><th>Yards</th><th>Skeins</th></tr></thead><tbody>' +
+      Array.apply(null, { length: c.colours }).map(function (_, i) {
+        return '<tr><td>Colour ' + (i + 1) + '</td><td>' + fmt(c.perColour) + '</td><td>' + perSk + '</td></tr>';
+      }).join('') +
+      (c.b ? '<tr><td><strong>Border colour</strong></td><td>' + fmt(c.borderYd * (1 + c.buffer / 100)) + '</td><td>' +
+        Math.ceil(c.borderYd * (1 + c.buffer / 100) / c.skY) + '</td></tr>' : '') +
+      '</tbody></table></div>' +
+      '<div class="note note-info" style="margin-top:12px">' + I.info +
+      '<span>Assumes the ' + c.colours + ' colours are used equally through the body. If one colour dominates — a background in a stripe sequence, say — weight its share up and the others down; the total does not change.</span></div>' +
+      '<div class="note note-warn" style="margin-top:8px">' + I.warn +
+      '<span>Rounding up per colour is why the colour skeins add to more than the total. That is correct: you cannot buy 2.3 skeins of one colour, and the spare is what protects you from a dye-lot problem later.</span></div>';
+
+    var ch = [];
+    if (c.b && c.borderYd / c.subtotal > 0.15)
+      ch.push({ s: 'warn', m: 'The border is <strong>' + Math.round(c.borderYd / c.subtotal * 100) + '% of the total yarn</strong>. Wide borders are much more yarn-hungry than they look, because they run around the whole perimeter.' });
+    if ($('#optFringe').checked)
+      ch.push({ s: 'warn', m: 'Fringe is calculated at 8 in strands folded double, two per inch across both short ends. Longer fringe scales linearly — 12 in strands cost half as much again.' });
+    if (c.colours > 6)
+      ch.push({ s: 'warn', m: c.colours + ' colours means a lot of ends. Weaving in is real time and real yarn, and it is the part everyone underestimates. Consider carrying colours up the side instead of cutting.' });
+    ch.push({ s: 'ok', m: 'Buy every colour in a single dye lot, all at once. A mid-project restock in a slightly different lot shows as a band across the blanket.' });
+    ch.push({ s: 'warn', m: 'This is an estimate from average yardage per square inch. For a large or expensive blanket, weigh a blocked swatch and use the <a href="/tools/crochet-yarn-yardage-calculator">yardage calculator</a> instead — it measures your real tension.' });
+    $('#checks').innerHTML = ch.map(function (x) {
+      return '<div class="note ' + (x.s === 'ok' ? 'note-ok' : 'note-warn') + '" style="margin-top:8px">' +
+        (x.s === 'ok' ? I.check : I.warn) + '<span>' + x.m + '</span></div>';
+    }).join('');
+  }
+
+  $('#preset').addEventListener('change', function () {
+    var s = SIZES[+$('#preset').value];
+    if (s && s.w) { $('#w').value = s.w; $('#h').value = s.h; }
+    render();
+  });
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); });
+  });
+  $('#cfg').addEventListener('input', render);
+  $('#cfg').addEventListener('change', render);
+  $('#cfg').addEventListener('submit', function (e) { e.preventDefault(); render(); });
+  render();
+
+  GT.page({
+    slug: 'crochet-blanket-yarn-calculator',
+    lede: 'Yarn for a blanket, broken down the way you actually buy it — per colour, plus border, fringe and the yarn that disappears into woven-in ends.',
+    steps: [
+      { icon: 'gear', title: 'Size and stitch', text: 'Eight standard blanket sizes, five stitches, six yarn weights.' },
+      { icon: 'yarn', title: 'Split by colour', text: 'A per-colour skein count you can take to the shop.' },
+      { icon: 'money', title: 'Add the extras', text: 'Border, fringe and tails, which most estimates leave out.' }
+    ],
+    guideTitle: 'Why the border costs more than you expect',
+    guide:
+      '<p style="color:var(--muted)">Most blanket yarn estimates cover the rectangle and stop. The parts that catch people out are the ones around the edge.</p>' +
+      '<div class="grid g2" style="margin-top:18px">' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">A border is a long thin rectangle</h4><p style="color:var(--muted);font-size:13.8px">A 2 in border on a 50 × 60 blanket is not a small trim — it is roughly 430 square inches of fabric, about 12% of the whole project. Because it runs the full perimeter, a border that sounds modest can be a skein or two on its own, usually in a contrast colour you bought one ball of.</p>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">Fringe is doubled</h4><p style="color:var(--muted);font-size:13.8px">Every strand is folded in half to attach, so an 8 in fringe uses 16 in of yarn per strand before the knot. At two strands per inch across both ends of a 50 in blanket, that is over 200 strands and around 90 yards.</p></div>' +
+      '<div><h4 style="font-size:14.5px;margin-bottom:8px">Tails add up in a striped blanket</h4><p style="color:var(--muted);font-size:13.8px">Each colour change leaves two ends, and each needs enough length to weave in safely — call it 8 inches per end. A blanket with a change every four rows racks up hundreds of them. It is rarely more than a few percent of the total, but it is real, and it is never in a pattern estimate.</p>' +
+      '<h4 style="font-size:14.5px;margin:16px 0 8px">Round up per colour, not overall</h4><p style="color:var(--muted);font-size:13.8px">You buy whole skeins of each colour, so the per-colour numbers rounded up will exceed the total. That is not an error — it is the actual shopping list, and the leftovers are your insurance against a dye lot vanishing.</p></div></div>' +
+      '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span>These figures come from average yardage per square inch for each yarn weight and stitch. Tension varies by 20% between crocheters. For a queen-size blanket or an expensive yarn, weigh a blocked swatch and use the <a href="/tools/crochet-yarn-yardage-calculator">yardage calculator</a> — it works from your own fabric rather than an average.</span></div>',
+    related: ['crochet-yarn-yardage-calculator', 'crochet-blanket-stitch-calculator', 'crochet-stripe-pattern-generator'],
+    faqs: [
+      { q: 'How much yarn for a 50 × 60 blanket?', a: 'In worsted-weight double crochet, roughly 2,000 yards for the body — about 9 or 10 standard skeins — plus a couple more for a 2 in border. Single crochet pushes the body figure past 3,000 yards.' },
+      { q: 'How do I split yarn between colours?', a: 'Divide the body yardage by the number of colours if they are used equally, then round each up to a whole skein. Border and fringe are usually a separate colour and need their own allowance.' },
+      { q: 'How much yarn does a border use?', a: 'More than people expect. A 2 in border on a throw is around 12% of the total project, because it runs the entire perimeter. Treat it as its own line in the budget.' },
+      { q: 'How much yarn for fringe?', a: 'Each strand is folded in half, so an 8 in finished fringe uses 16 in of yarn per strand. At two strands per inch on both ends of a 50 in blanket, that is roughly 90 yards.' },
+      { q: 'Why do the colour totals add up to more than the total?', a: 'Because each colour is rounded up to a whole skein. You cannot buy 2.3 skeins, so the shopping list is always slightly more than the mathematical requirement — and the spare is useful.' },
+      { q: 'Is this accurate enough to buy from?', a: 'For a normal blanket in a widely available yarn, yes, with the 15% margin. For something large, expensive or in a discontinued colour, weigh a swatch and use the yardage calculator instead.' }
+    ],
+    seo: {
+      title: 'Blanket yarn: totals, per-colour splits and the parts estimates miss',
+      lead: 'This <strong>blanket yarn calculator</strong> gives a total and a per-colour shopping list, including border, fringe and woven-in ends. Below: what each part costs, and when to stop estimating and weigh a swatch.',
+      blocks: [
+        {
+          h: 'The four parts of a blanket',
+          html: '<p>A blanket is not one number. It is a body, usually a border, sometimes a fringe, and — in anything multicoloured — a surprising amount of yarn that ends up woven invisibly into the fabric.</p>',
+          table: {
+            head: ['Part', 'Typical share', 'Notes'],
+            rows: [
+              ['Main body', '80–90%', 'Scales with area, so it grows fast with size.'],
+              ['Border', '5–15%', 'A 2 in border on a throw is around 12%.'],
+              ['Fringe', '0–5%', 'Only if you add it, but doubled per strand.'],
+              ['Woven-in tails', '1–3%', 'Rises with the number of colour changes.']
+            ]
+          }
+        },
+        {
+          h: 'Yardage by size and stitch',
+          table: {
+            head: ['Blanket', 'Size', 'DC worsted', 'SC worsted'],
+            rows: [
+              ['Baby', '30 × 36 in', '~725 yd', '~1,090 yd'],
+              ['Lapghan', '36 × 48 in', '~1,160 yd', '~1,740 yd'],
+              ['Throw', '50 × 60 in', '~2,010 yd', '~3,015 yd'],
+              ['Twin', '66 × 90 in', '~3,980 yd', '~5,970 yd'],
+              ['Queen', '90 × 100 in', '~6,030 yd', '~9,045 yd']
+            ]
+          },
+          after: '<p>Body only, before border, fringe or margin. Single crochet is roughly 50% more than double for the same area because the fabric is far denser.</p>',
+          callout: { type: 'warn', text: 'Changing your mind about the stitch after buying yarn is a common way to run short. Deciding on single crochet once the yarn is home means finding half as much again, in the same dye lot.' }
+        },
+        {
+          h: 'Buying in colours',
+          steps: [
+            { t: 'Work out the body total', d: 'Area times yardage per square inch for your weight and stitch.' },
+            { t: 'Divide by the colour count', d: 'If the colours are used equally. If one is a background, weight it up.' },
+            { t: 'Round each colour up', d: 'To whole skeins. The list will exceed the bare total — that is correct.' },
+            { t: 'Budget the border separately', d: 'Usually a different colour, and larger than it looks.' },
+            { t: 'Buy it all in one lot', d: 'Per colour. A restocked skein in a new lot shows as a band.' }
+          ]
+        },
+        {
+          h: 'Related crochet tools',
+          list: [
+            '<a href="/tools/crochet-yarn-yardage-calculator">Crochet Yarn Yardage Calculator</a> — the accurate swatch-based method.',
+            '<a href="/tools/crochet-blanket-stitch-calculator">Crochet Blanket Stitch Calculator</a> — chain and row counts.',
+            '<a href="/tools/crochet-stripe-pattern-generator">Crochet Stripe Pattern Generator</a> — plan the stripe sequence.',
+            '<a href="/tools/crochet-gauge-calculator">Crochet Gauge Calculator</a> — measure gauge first.'
+          ]
+        }
+      ],
+      keywords: [
+        'crochet blanket yarn calculator', 'how much yarn for a blanket', 'yarn per colour crochet',
+        'blanket border yarn', 'fringe yarn calculator', 'striped blanket yarn amounts',
+        'skeins for a throw', 'crochet yarn shopping list', 'baby blanket yarn amount',
+        'queen size crochet blanket yarn', 'yarn calculator by size', 'crochet border yardage'
+      ]
+    }
+  });
+})();
+</script>
+</body>
+</html>
