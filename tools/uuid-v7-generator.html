@@ -12,8 +12,8 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>UUID v7 Generator — Free Online UUID Generator &amp; Decoder | Manage My Batch</title>
-<meta name="description" content="Free UUID v7 generator. Create time-ordered RFC 9562 UUIDs in bulk with monotonic ordering, multiple formats and a built-in UUID timestamp decoder.">
+<title>UUID v7 Generator – Create Time-Ordered RFC 9562 UUIDs | Manage My Batch</title>
+<meta name="description" content="Generate UUID v7 identifiers online with secure randomness, bulk output, monotonic ordering and timestamp decoding. RFC 9562 compliant and browser-based.">
 <meta name="keywords" content="uuid v7 generator, uuid generator, generate uuid online, uuid v4 generator, guid generator, uuid decoder, rfc 9562, time ordered uuid, sortable uuid">
 <link rel="canonical" href="https://managemybatch.com/tools/uuid-v7-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
@@ -21,12 +21,12 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="UUID v7 Generator — Time-Ordered RFC 9562 UUIDs, Free">
-<meta property="og:description" content="Free UUID v7 generator. Create time-ordered, index-friendly RFC 9562 UUIDs in bulk, with monotonic ordering, multiple output formats and a built-in timestamp decoder.">
+<meta property="og:title" content="UUID v7 Generator – Create Time-Ordered RFC 9562 UUIDs">
+<meta property="og:description" content="Generate UUID v7 identifiers online with secure randomness, bulk output, monotonic ordering and timestamp decoding. RFC 9562 compliant and browser-based.">
 <meta property="og:url" content="https://managemybatch.com/tools/uuid-v7-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="UUID v7 Generator — Time-Ordered RFC 9562 UUIDs, Free">
-<meta name="twitter:description" content="Free UUID v7 generator. Create time-ordered, index-friendly RFC 9562 UUIDs in bulk, with monotonic ordering, multiple output formats and a built-in timestamp decoder.">
+<meta name="twitter:title" content="UUID v7 Generator – Create Time-Ordered RFC 9562 UUIDs">
+<meta name="twitter:description" content="Generate UUID v7 identifiers online with secure randomness, bulk output, monotonic ordering and timestamp decoding. RFC 9562 compliant and browser-based.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -368,112 +368,111 @@
       '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>v7 timestamps are readable by anyone.</strong> The first 12 hex characters are the creation time in plain sight. That is a feature for debugging and a leak if your IDs appear in public URLs and you would rather not disclose when a record was created.</span></div>' +
       '<div class="note note-info" style="margin-top:12px">' + GTI.info + '<span>Storing UUIDs as <code>CHAR(36)</code> costs 36 bytes per row plus index overhead. Use a native <code>uuid</code> column in PostgreSQL or <code>BINARY(16)</code> in MySQL and you are down to 16 bytes — on a large table that difference alone can be gigabytes of index.</span></div>',
     related: ['ulid-generator', 'nanoid-generator', 'mongodb-objectid-generator'],
-    faqs: [
-      { q: 'What is a UUID v7?', a: 'A 128-bit identifier defined by RFC 9562 whose first 48 bits are a Unix millisecond timestamp, followed by a version nibble, a sub-millisecond counter and 62 random bits. The result sorts chronologically while remaining globally unique.' },
-      { q: 'Is UUID v7 better than v4?', a: 'For database primary keys, yes — sequential inserts keep B-tree indexes compact and dramatically faster. For public tokens where creation time must stay private, v4 is the safer choice because it reveals nothing.' },
-      { q: 'Are these UUIDs cryptographically secure?', a: 'The random portion comes from <code>crypto.getRandomValues()</code>, the browser CSPRNG. Nothing is sent over the network. Note that v7 is not unguessable in the way a token should be — the timestamp portion is predictable by design.' },
-      { q: 'What does monotonic mode do?', a: 'When several IDs are created in the same millisecond, it increments a counter in the <code>rand_a</code> field so they still sort in creation order. Without it, IDs from the same tick sort randomly among themselves.' },
-      { q: 'Can I decode the timestamp from a UUID v7?', a: 'Yes — the first 12 hex characters are the Unix time in milliseconds. Paste any UUID into the decoder on this page and it will show the version, variant and creation time.' },
-      { q: 'Does my database support UUID v7 natively?', a: 'PostgreSQL 18 ships a built-in <code>uuidv7()</code> function; earlier versions can use the <code>pg_uuidv7</code> extension. MySQL has no native v7 function, so generate in the application and store as <code>BINARY(16)</code>. Most language SDKs already support it.' }
+faqs: [
+      { q: 'Is UUID v7 officially standardized?', a: 'Yes. UUID version 7 is defined in RFC 9562.' },
+      { q: 'Is UUID v7 sortable?', a: 'Yes. Its leading timestamp makes UUID v7 values naturally sortable by approximate creation time. Monotonic techniques can improve ordering within the same millisecond.' },
+      { q: 'How long is UUID v7?', a: 'It is 128 bits. The common dashed text representation is 36 characters long.' },
+      { q: 'Is UUID v7 better than UUID v4?', a: 'For time-ordered database keys, it can be a better fit. UUID v4 remains useful when you only need a random UUID without embedded time.' },
+      { q: 'Can I extract the date from UUID v7?', a: 'Yes. UUID v7 contains a millisecond Unix timestamp that can be decoded.' },
+      { q: 'Should I use UUID v7 as a database primary key?', a: 'It can be a strong choice when your database supports UUIDs and you want distributed ID generation with temporal ordering. Keep normal primary-key or uniqueness constraints.' },
+      { q: 'Is this UUID v7 generator free?', a: 'Yes. Generate, format and decode UUIDs above without creating an account.' }
     ],
     seo: {
-      title: 'UUID v7 Generator: time-ordered UUIDs explained',
-      lead: 'This <strong>free UUID generator</strong> produces RFC 9562 <strong>UUID v7</strong> identifiers — globally unique like a v4, but time-ordered so they keep database indexes fast. It also generates UUID v4, decodes the timestamp inside any existing UUID, and exports in JSON, CSV, SQL and TypeScript.',
+      title: 'UUID v7 Generator – Create Time-Ordered UUIDs Online',
+      lead: 'Use the UUID v7 Generator above to create RFC 9562 UUID version 7 identifiers in your browser. Generate one UUID or a large batch, choose the output format, enable monotonic ordering for IDs created in the same millisecond and decode existing UUIDs to inspect their structure.',
       blocks: [
-        {
-          h: 'What is a UUID v7?',
-          html: '<p>A <strong>UUID</strong> (Universally Unique Identifier), sometimes called a GUID, is a 128-bit value that can be generated independently on any machine with effectively no chance of collision. <strong>UUID version 7</strong>, standardised in RFC 9562, is the newest general-purpose variant and was designed specifically to fix the performance problem that made v4 a poor database key.</p>' +
-            '<p>A v7 UUID puts a 48-bit Unix millisecond timestamp in its leading bits, followed by a version nibble, a sub-millisecond counter and 62 bits of cryptographic randomness. Because the timestamp comes first and UUIDs are compared byte by byte, <strong>newer UUIDs always sort after older ones</strong>. You get global uniqueness and chronological ordering from a single value.</p>' +
-            '<p>The canonical form is 36 characters: <code>0198c4f1-9a2e-7c31-b8d4-5f6a7b8c9d0e</code>. The <code>7</code> at the start of the third group is the version marker.</p>'
-        },
-        {
-          h: 'UUID v7 vs UUID v4: which should you use?',
-          html: '<p>This is the decision most people arrive at this page to make. The short answer: <strong>v7 for database primary keys, v4 for anything where creation time must stay private.</strong></p>',
-          table: {
-            head: ['', 'UUID v4', 'UUID v7'],
-            rows: [
-              ['<strong>Structure</strong>', '122 random bits', '48-bit timestamp + 74 bits random'],
-              ['<strong>Sortable</strong>', 'No — random order', 'Yes — chronological by construction'],
-              ['<strong>Database index</strong>', 'Poor. Random inserts fragment B-trees', 'Excellent. Appends to the right edge like auto-increment'],
-              ['<strong>Reveals creation time</strong>', 'No', 'Yes — readable by anyone holding it'],
-              ['<strong>Best for</strong>', 'Session tokens, public IDs, nonces', 'Primary keys, event logs, anything paginated by time'],
-              ['<strong>Standard</strong>', 'RFC 4122 / RFC 9562', 'RFC 9562']
-            ]
-          },
-          after: '<p>The performance difference is not theoretical. Inserting a million random v4 keys scatters writes across every leaf page of a B-tree index, so the index cannot stay compact and the working set stops fitting in memory. Teams have measured insert throughput dropping by an order of magnitude for exactly this reason. UUID v7 inserts land at the right-hand edge, which is the same access pattern as an integer sequence.</p>'
-        },
-        {
-          h: 'How to generate UUIDs with this tool',
-          steps: [
-            { t: 'Choose the version', d: 'v7 for database keys and anything you want ordered. v4 when the identifier is public and creation time is sensitive. Nil and Max UUIDs are available as sentinel values.' },
-            { t: 'Set how many you need', d: 'Up to 10,000 per batch. All generated locally using your browser\'s cryptographic random number generator.' },
-            { t: 'Keep monotonic mode on', d: 'When several UUIDs are created in the same millisecond, a counter in the rand_a field keeps them in creation order. Without it, same-tick UUIDs sort randomly among themselves.' },
-            { t: 'Pick a format', d: 'Standard hyphenated, uppercase, no dashes, braces or URN form. Then export as a plain list, JSON array, CSV with timestamps, SQL insert values or a typed TypeScript array.' },
-            { t: 'Decode an existing UUID', d: 'Paste any UUID into the decoder to read its version, variant and — for v7 — the exact moment it was created.' }
-          ]
-        },
-        {
-          h: 'UUID v7 structure explained',
-          html: '<p>Reading a v7 UUID from left to right, each section has a defined job:</p>',
-          cards: [
-            { t: 'Bits 0–47 · timestamp', d: 'Unix time in milliseconds. This is what makes v7 sortable, and what the decoder reads back.' },
-            { t: 'Bits 48–51 · version', d: 'Always <code>7</code>. Identifies the UUID variant to any parser.' },
-            { t: 'Bits 52–63 · rand_a', d: 'Sub-millisecond counter in monotonic mode, otherwise random. Orders UUIDs created in the same tick.' },
-            { t: 'Bits 64–65 · variant', d: 'RFC 9562 variant marker. Always renders as 8, 9, a or b in canonical form.' },
-            { t: 'Bits 66–127 · rand_b', d: '62 bits of cryptographic randomness. This is what makes collision effectively impossible.' }
-          ]
-        },
-        {
-          h: 'When not to use UUID v7',
-          html: '<p>UUID v7 embeds a readable timestamp, and that is sometimes a liability rather than a feature.</p>',
-          list: [
-            '<strong>Public identifiers where timing is sensitive.</strong> Anyone holding the UUID can read exactly when the record was created, to the millisecond.',
-            '<strong>Anywhere enumeration matters.</strong> Roughly sequential IDs let an observer infer signup volume, order counts or activity patterns over time.',
-            '<strong>Session tokens and password-reset nonces.</strong> These need full unpredictability. Use v4, or better, a dedicated <a href="/tools/random-byte-generator">random token</a>.',
-            '<strong>When you need a shorter identifier.</strong> A <a href="/tools/nanoid-generator">NanoID</a> is 21 characters against 36, and a <a href="/tools/ulid-generator">ULID</a> is 26 while still sorting chronologically.'
-          ]
-        },
-        {
-          h: 'Storing UUIDs efficiently',
-          html: '<p>How you store a UUID matters as much as which version you pick. Storing it as <code>CHAR(36)</code> costs 36 bytes per row plus index overhead — on a large table with several UUID columns, that difference alone runs to gigabytes.</p>',
-          list: [
-            '<strong>PostgreSQL</strong> — use the native <code>uuid</code> type. 16 bytes, proper indexing. Version 18 ships a built-in <code>uuidv7()</code> function; earlier versions can use the <code>pg_uuidv7</code> extension.',
-            '<strong>MySQL</strong> — store as <code>BINARY(16)</code> and convert with <code>UUID_TO_BIN(?, 1)</code>. There is no native v7 function, so generate in your application.',
-            '<strong>SQL Server</strong> — <code>UNIQUEIDENTIFIER</code> is 16 bytes, but note its unusual sort order when clustering.',
-            '<strong>SQLite</strong> — a <code>BLOB</code> of 16 bytes, or <code>TEXT</code> if simplicity matters more than size.'
-          ],
-          callout: { type: 'ok', text: '<strong>Everything on this page is generated locally.</strong> UUIDs come from <code>crypto.getRandomValues()</code>, your browser\'s cryptographic random source, and nothing is transmitted. It is safe to generate production identifiers here.' }
-        },
-        {
-          h: 'Generating UUID v7 in code',
-          html: '<p>Once you have chosen a format, most languages have a one-line implementation:</p>' +
-            '<ul>' +
-            '<li><strong>JavaScript / TypeScript</strong> — <code>import { v7 as uuidv7 } from \'uuid\'</code></li>' +
-            '<li><strong>Node built-in</strong> — <code>crypto.randomUUID()</code> gives v4 only; use the <code>uuid</code> package for v7</li>' +
-            '<li><strong>Python</strong> — <code>from uuid6 import uuid7</code></li>' +
-            '<li><strong>Go</strong> — <code>uuid.NewV7()</code> from <code>github.com/google/uuid</code></li>' +
-            '<li><strong>Rust</strong> — <code>Uuid::now_v7()</code> with the <code>v7</code> feature enabled</li>' +
-            '<li><strong>PostgreSQL 18+</strong> — <code>DEFAULT uuidv7()</code> directly in your table definition</li>' +
-            '</ul>' +
-            '<p>The Code snippets tab on this page has copy-ready examples for each of these, including the correct storage column type.</p>'
-        },
-        {
-          h: 'Related identifier tools',
-          list: [
-            '<a href="/tools/ulid-generator">ULID Generator</a> — 26 characters, also sortable, easier for humans to read aloud.',
-            '<a href="/tools/nanoid-generator">NanoID Generator</a> — short URL-safe IDs with a collision probability calculator.',
-            '<a href="/tools/mongodb-objectid-generator">MongoDB ObjectId Generator</a> — 12-byte BSON identifiers with a timestamp decoder.',
-            '<a href="/tools/random-hex-string-generator">Random Hex String Generator</a> — cryptographically secure tokens and keys.',
-            '<a href="/tools/json-test-data-generator">JSON Test Data Generator</a> — seeded fixtures including UUID fields.'
-          ]
-        }
+        { html: '<p>UUID v7 combines a Unix timestamp with random data. That gives it a useful property traditional random UUID v4 values do not have: newly generated IDs naturally sort by creation time.</p>' +
+            '<p>For databases and distributed systems, that can be a practical advantage. You keep the familiar 128-bit UUID format while avoiding the completely random insertion order of UUID v4.</p>' },
+        { h: 'What Is UUID v7?',
+          html: '<p>UUID v7 is a time-ordered UUID format standardized in RFC 9562.</p><p>It is still a 128-bit UUID, but its leading bits contain a Unix timestamp measured in milliseconds.</p><p>The layout includes:</p>',
+          list: ['48-bit Unix timestamp', 'Version field identifying UUID version 7', 'Variant bits', 'Random or monotonic data in the remaining fields'],
+          after: '<p>A standard textual UUID v7 still looks like a normal UUID:</p><pre class="code">0190f3d2-6f4c-7a31-8f54-0d76a7d6b2ce</pre>' +
+            '<p>The important difference is inside the value. The timestamp sits near the beginning, so IDs produced later tend to sort after earlier IDs.</p>' },
+        { h: 'Why Use UUID v7 Instead of UUID v4?',
+          html: '<p>UUID v4 is almost entirely random.</p><p>That is excellent for uniqueness, but random primary keys can scatter database inserts across an index.</p>' +
+            '<p>UUID v7 adds time ordering while preserving the standard UUID shape.</p><p>A simple comparison:</p>',
+          table: { head: ['Feature', 'UUID v7', 'UUID v4'], rows: [
+            ['Size', '128 bits', '128 bits'], ['Standard text length', '36 characters', '36 characters'], ['Timestamp', 'Yes', 'No'],
+            ['Naturally time ordered', 'Yes', 'No'], ['Random component', 'Yes', 'Yes'], ['RFC standardized', 'Yes', 'Yes'], ['Fits UUID database types', 'Yes', 'Yes']
+          ] },
+          after: '<p>UUID v7 is a strong choice when you want standard UUID compatibility plus roughly chronological ordering.</p>' },
+        { h: 'How to Use This UUID v7 Generator',
+          html: '<p>Choose how many UUIDs you need.</p><p>The tool can generate a single value or a large batch directly in your browser.</p><p>Next, choose the format:</p>',
+          list: ['Standard dashed UUID', 'Uppercase', 'No dashes', 'Braced format', 'URN format'],
+          after: '<p>For most applications, keep the standard dashed form.</p>' +
+            '<p>Enable <strong>Monotonic within the same millisecond</strong> if you want IDs created during the same millisecond to remain ordered instead of relying entirely on randomness for those values.</p>' +
+            '<p>You can also paste an existing UUID into the decoder to inspect its version, variant and embedded timestamp when applicable.</p>' },
+        { h: 'How UUID v7 Stores Time',
+          html: '<p>The first 48 bits contain the Unix Epoch timestamp in milliseconds.</p><p>That timestamp represents elapsed milliseconds since January 1, 1970 UTC.</p>' +
+            '<p>Because the timestamp appears first, the binary value—and normally the canonical text form—tracks creation order at millisecond resolution.</p><p>This makes UUID v7 useful for:</p>',
+          list: ['Database primary keys', 'Event records', 'Logs', 'Distributed jobs', 'Messages', 'Audit records', 'API resources', 'Test fixtures with realistic chronology'],
+          after: '<p>Do not use the embedded timestamp as a secret. Anyone who can read a UUID v7 can infer its approximate creation time.</p>' },
+        { h: 'Does UUID v7 Guarantee Exact Creation Order?',
+          html: '<p>Not by timestamp alone.</p><p>Many IDs can be generated during the same millisecond. If the remaining fields are random, values within that millisecond do not necessarily sort in the exact order they were requested.</p>' +
+            '<p>That is where monotonic generation helps.</p>' +
+            '<p>RFC 9562 describes approaches that can use counters, additional precision or carefully managed random fields to improve ordering within the same timestamp.</p>' +
+            '<p>The generator’s monotonic option is useful when you want a batch created in one millisecond to remain consistently ordered.</p>' +
+            '<p>For production applications, use a well-tested UUID v7 implementation.</p>' },
+        { h: 'Is UUID v7 Unique?',
+          html: '<p>UUID v7 provides a large random portion in addition to its timestamp.</p>' +
+            '<p>A conventional layout has 74 bits available for random data after accounting for the timestamp, version and variant fields.</p>' +
+            '<p>That gives a very large space for IDs generated during the same timestamp period.</p>' +
+            '<p>As with any random identifier, “unique” is probabilistic rather than mathematically guaranteed unless your application also checks uniqueness.</p>' +
+            '<p>For database records, keep a UNIQUE constraint or primary key constraint in place.</p>' +
+            '<p>The identifier design makes collisions extremely unlikely; the database constraint gives you deterministic enforcement.</p>' },
+        { h: 'UUID v7 and Database Performance',
+          html: '<p>Time-ordered identifiers can be friendlier to ordered indexes than completely random UUIDs.</p>' +
+            '<p>With UUID v4, new values are distributed throughout the keyspace.</p><p>With UUID v7, newer values tend to arrive near other recent values.</p>' +
+            '<p>That can improve locality for some database workloads and reduce the index fragmentation associated with random insertion patterns.</p>' +
+            '<p>The exact effect depends on your database and workload, so test with your schema. The broader advantage is standard UUID compatibility plus temporal ordering.</p>' },
+        { h: 'UUID v7 vs ULID',
+          html: '<p>UUID v7 and ULID solve similar problems, but they use different formats.</p>',
+          table: { head: ['Feature', 'UUID v7', 'ULID'], rows: [
+            ['Binary size', '128 bits', '128 bits'], ['Text length', '36 standard', '26'], ['Encoding', 'Hex UUID format', 'Crockford Base32'],
+            ['Timestamp precision', 'Milliseconds', 'Milliseconds'], ['Sortable', 'Yes', 'Yes'], ['Formal RFC UUID standard', 'Yes', 'No'], ['Native UUID DB support', 'Strong', 'Usually stored as text/binary']
+          ] },
+          after: '<p>Choose UUID v7 when interoperability with UUID-aware software matters.</p>' +
+            '<p>Choose ULID when a compact, URL-friendly, sortable text representation is more important.</p>' +
+            '<p>Use the <a href="/tools/ulid-generator">ULID Generator</a> to compare actual output.</p>' },
+        { h: 'UUID v7 vs NanoID',
+          html: '<p>NanoID is primarily a compact random identifier.</p><p>UUID v7 is a structured, time-ordered identifier.</p>' +
+            '<p>NanoID lets you customize the alphabet and length. UUID v7 has a standardized 128-bit structure.</p><p>Use UUID v7 when:</p>',
+          list: ['Time ordering matters', 'Native UUID types are useful', 'Standards-based interchange matters'],
+          after: '<p>Use NanoID when:</p><ul style="color:var(--muted);padding-left:18px"><li>Short public IDs matter</li><li>A custom alphabet matters</li><li>You do not want a timestamp embedded by default</li></ul>' +
+            '<p>Neither is automatically better. They optimize for different constraints. See the <a href="/tools/nanoid-generator">NanoID Generator</a>.</p>' },
+        { h: 'UUID v7 vs MongoDB ObjectId',
+          html: '<p>MongoDB ObjectId is 12 bytes, or 96 bits, and includes a timestamp plus process-related and counter data.</p>' +
+            '<p>UUID v7 is 16 bytes, or 128 bits, and follows the UUID standard.</p><p>Both can be roughly time ordered.</p>' +
+            '<p>If your application is already centered on MongoDB, ObjectId may be the natural <code>_id</code> format.</p>' +
+            '<p>If identifiers need to move across databases, services and programming languages that understand UUIDs, UUID v7 can be easier to standardize around. See the <a href="/tools/mongodb-objectid-generator">MongoDB ObjectId Generator</a>.</p>' },
+        { h: 'Can You Decode a UUID v7 Timestamp?',
+          html: '<p>Yes.</p><p>Because the first 48 bits encode a Unix timestamp in milliseconds, a UUID v7 decoder can recover the approximate creation time.</p><p>That is useful when:</p>',
+          list: ['Debugging records', 'Inspecting fixtures', 'Verifying ID generators', 'Checking event order', 'Understanding imported data'],
+          after: '<p>It is not a substitute for a proper <code>created_at</code> column.</p>' +
+            '<p>Keep explicit timestamps when your application needs querying, timezone handling, auditing or business logic around creation time.</p>' +
+            '<p>The timestamp inside the identifier is best treated as a useful property, not your only source of temporal data.</p>' },
+        { h: 'Generate UUID v7 for Historical Test Data',
+          html: '<p>Choosing a timestamp is useful for fixtures, migration tests and records that need realistic historical ordering.</p>' +
+            '<p>For production data, generate the UUID at the appropriate creation time unless a migration has a deliberate reason to preserve an older timestamp.</p>' },
+        { h: 'Secure Randomness Matters',
+          html: '<p>The random portion of an identifier should come from a cryptographically strong random source.</p>' +
+            '<p>This tool generates values locally in the browser using the Web Crypto random-number facilities rather than <code>Math.random()</code>.</p>' +
+            '<p>That matters because <code>Math.random()</code> is not designed for security-sensitive random generation.</p>' +
+            '<p>Nothing needs to be sent to the server simply to create the UUID batch.</p>' +
+            '<p>For production systems, use the secure UUID implementation provided by a trusted library, runtime or database rather than copying client-side generation logic blindly. See the <a href="/tools/random-hex-string-generator">Random Hex String Generator</a> for raw secure randomness.</p>' },
+        { h: 'UUID Formats Explained',
+          html: '<p>The same UUID can be displayed as standard dashed text, uppercase, without dashes, inside braces or as a <code>urn:uuid:</code> value. The underlying 128-bit identifier is the same.</p>' +
+            '<p>Choose the representation your database, API or framework expects.</p>' },
+        { h: 'Common UUID v7 Mistakes',
+          html: '<p>Avoid these assumptions:</p>',
+          list: ['UUID v7 hides creation time', 'Sorting always proves exact event order', 'The ID replaces a database uniqueness constraint',
+                 'Every UUID-looking value is version 7', 'Removing dashes changes the underlying UUID', 'An ID timestamp replaces a real application timestamp',
+                 'Random generation with Math.random() is equivalent to a secure generator'],
+          after: '<p>Decode unfamiliar values before making assumptions about their version.</p>' }
       ],
-      keywords: [
-        'uuid v7 generator', 'uuid generator', 'generate uuid online', 'uuid v4 generator',
-        'guid generator', 'uuid decoder', 'rfc 9562', 'time ordered uuid', 'sortable uuid',
-        'uuid vs guid', 'uuid v7 vs v4', 'random uuid generator', 'bulk uuid generator',
-        'uuid primary key', 'postgres uuid v7'
-      ]
+      keywords: ['uuid v7 generator', 'rfc 9562', 'time ordered uuid', 'uuid v7 vs uuid v4', 'sortable uuid',
+        'uuid v7 timestamp decode', 'monotonic uuid', 'uuid v7 vs ulid', 'uuid v7 database primary key',
+        'uuid v7 vs nanoid', 'secure uuid generator', 'uuid v7 vs mongodb objectid']
     }
   });
 })();

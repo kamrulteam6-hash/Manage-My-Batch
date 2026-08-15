@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>ULID Generator — Sortable, URL-Safe Identifiers | Manage My Batch</title>
-<meta name="description" content="Free ULID generator. Create lexicographically sortable 26-character Crockford Base32 identifiers with monotonic ordering, bulk output and a built-in ULID decoder.">
+<title>ULID Generator – Create Sortable 26-Character IDs Online | Manage My Batch</title>
+<meta name="description" content="Generate ULIDs online with secure randomness, custom timestamps, bulk output, lowercase formatting, monotonic ordering and ULID decoding. Free browser tool.">
 <link rel="canonical" href="https://managemybatch.com/tools/ulid-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="ULID Generator — Sortable, URL-Safe Identifiers">
-<meta property="og:description" content="Free ULID generator. Create lexicographically sortable 26-character Crockford Base32 identifiers with monotonic ordering, bulk output and a built-in ULID decoder.">
+<meta property="og:title" content="ULID Generator – Create Sortable 26-Character IDs Online">
+<meta property="og:description" content="Generate ULIDs online with secure randomness, custom timestamps, bulk output, lowercase formatting, monotonic ordering and ULID decoding. Free browser tool.">
 <meta property="og:url" content="https://managemybatch.com/tools/ulid-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="ULID Generator — Sortable, URL-Safe Identifiers">
-<meta name="twitter:description" content="Free ULID generator. Create lexicographically sortable 26-character Crockford Base32 identifiers with monotonic ordering, bulk output and a built-in ULID decoder.">
+<meta name="twitter:title" content="ULID Generator – Create Sortable 26-Character IDs Online">
+<meta name="twitter:description" content="Generate ULIDs online with secure randomness, custom timestamps, bulk output, lowercase formatting, monotonic ordering and ULID decoding. Free browser tool.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -344,92 +344,124 @@
       '<p style="color:var(--muted);margin-top:16px"><strong>A reasonable default:</strong> UUID v7 for internal database keys where native types and tooling matter, ULID for identifiers that humans see, type or read aloud — order numbers, support tickets, short share links.</p>' +
       '<div class="note note-warn" style="margin-top:16px">' + GTI.warn + '<span>Like UUID v7, a ULID publishes its creation time. If the moment a record was created is sensitive — or if an attacker could infer volume from watching IDs — use a fully random identifier such as a NanoID instead.</span></div>',
     related: ['uuid-v7-generator', 'nanoid-generator', 'mongodb-objectid-generator'],
-    faqs: [
-      { q: 'What is a ULID?', a: 'A Universally Unique Lexicographically Sortable Identifier: 26 characters of Crockford Base32, made up of a 48-bit millisecond timestamp followed by 80 bits of randomness. Sorting them as strings sorts them by creation time.' },
-      { q: 'Is a ULID better than a UUID?', a: 'It is shorter, URL-safe and easier for humans to read, and it sorts chronologically. UUID v7 offers the same ordering with the benefit of being a formal standard with native database support. Both are good; ULID favours readability, UUID v7 favours ecosystem.' },
-      { q: 'Can two ULIDs collide?', a: 'Within the same millisecond you would need a collision across 80 random bits — roughly 1.2 × 10²⁴ possibilities. Generating a million IDs in one millisecond gives a collision probability far below one in a trillion. Monotonic mode removes the risk entirely for a single generator.' },
-      { q: 'Why does the alphabet skip I, L, O and U?', a: 'Crockford Base32 excludes them so that identifiers cannot be misread — 1 versus l, 0 versus O — and to avoid accidentally spelling offensive words. It makes ULIDs far safer to transcribe by hand.' },
-      { q: 'Are ULIDs case sensitive?', a: 'The canonical form is uppercase, but Crockford Base32 decoding is case-insensitive, so a lowercase ULID still parses to the same value. Pick one form and store it consistently.' },
-      { q: 'How should I store ULIDs in a database?', a: '<code>CHAR(26)</code> is the simple option. If storage or index size matters, convert to the underlying 16 bytes and store as <code>BINARY(16)</code>, <code>bytea</code> or even a <code>uuid</code> column, converting at the application boundary.' }
+faqs: [
+      { q: 'How long is a ULID?', a: 'A canonical ULID is 26 characters and represents a 128-bit value.' },
+      { q: 'Is ULID a UUID?', a: 'No. It is a separate community specification, although both ULID and UUID are 128-bit identifier formats.' },
+      { q: 'Does ULID contain a timestamp?', a: 'Yes. The first 48 bits encode a Unix timestamp in milliseconds.' },
+      { q: 'Are ULIDs sortable?', a: 'Yes. Properly generated ULIDs are lexicographically sortable by their timestamp. Monotonic generation preserves ordering for multiple IDs in the same millisecond.' },
+      { q: 'Is ULID URL-safe?', a: 'Yes. Its Crockford Base32 text form uses letters and digits without URL-reserved punctuation.' },
+      { q: 'ULID or UUID v7: which should I choose?', a: 'Choose ULID for compact sortable text. Choose UUID v7 when native UUID types and RFC-standardized UUID interoperability are more important.' },
+      { q: 'Is this ULID generator free?', a: 'Yes. Generate, format, decode and download ULIDs above without creating an account.' }
     ],
     seo: {
-      title: 'ULID: sortable, URL-safe identifiers and how they compare to UUID',
-      lead: 'This <strong>ULID generator</strong> creates 26-character identifiers that sort by creation time, survive a double-click, and read back without the ambiguity of a UUID. Below: the encoding, the monotonic guarantee, and how to store them efficiently.',
+      title: 'ULID Generator – Create Sortable, URL-Safe Identifiers Online',
+      lead: 'Use the ULID Generator above to create Universally Unique Lexicographically Sortable Identifiers in your browser. Generate one or thousands, choose the timestamp, switch between canonical uppercase and lowercase output, enable monotonic ordering and decode an existing ULID to see when it was created.',
       blocks: [
-        {
-          h: 'What is a ULID?',
-          html: '<p>A <strong>ULID</strong> — Universally Unique Lexicographically Sortable Identifier — is 128 bits rendered as 26 characters in Crockford Base32:</p>' +
-            '<p><code>01ARZ3NDEKTSV4RRFFQ69G5FAV</code></p>' +
-            '<p>The first 10 characters encode a 48-bit millisecond timestamp; the remaining 16 encode 80 bits of randomness. Because the timestamp leads and Base32 preserves ordering, sorting ULIDs as plain strings sorts them by creation time. No parsing, no separate column, no database-specific function.</p>' +
-            '<p>It carries the same 128 bits as a UUID in 26 characters instead of 36, with no dashes — so it survives a double-click selection, fits cleanly in a URL, and can be typed by a human without hyphen confusion.</p>'
-        },
-        {
-          h: 'ULID vs UUID v7',
-          html: '<p>They solve the same problem and differ mostly in encoding and status.</p>',
-          table: {
-            head: ['', 'ULID', 'UUID v7'],
-            rows: [
-              ['Bits', '128', '128'],
-              ['Text length', '26 characters', '36 with dashes'],
-              ['Encoding', 'Crockford Base32, no dashes', 'Hex with dashes'],
-              ['Timestamp', '48-bit ms, first 10 chars', '48-bit ms, leading bits'],
-              ['Standardised', 'Community spec', 'RFC 9562 (2024)'],
-              ['Database native type', 'Store as 16-byte binary or CHAR(26)', 'Native UUID type in Postgres, SQL Server and others'],
-              ['Double-click select', 'Selects the whole ID', 'Dashes break selection in some editors'],
-              ['Tool support', 'Libraries in most languages', 'Broad, including database functions']
-            ]
-          },
-          after: '<p>Practical rule: if your database has a native UUID type and identifiers cross system boundaries, use <a href="/tools/uuid-v7-generator">UUID v7</a> — it is the standard and it stores in 16 bytes automatically. If identifiers appear in URLs, get read aloud, or you value the compact form, use ULID.</p>'
-        },
-        {
-          h: 'Why the alphabet skips I, L, O and U',
-          html: '<p>ULID uses <strong>Crockford Base32</strong>: the digits 0–9 and 22 uppercase letters, excluding <code>I</code>, <code>L</code>, <code>O</code> and <code>U</code>.</p>' +
-            '<p>The first three are excluded because they are visually confusable with <code>1</code>, <code>1</code> and <code>0</code> when read from a screen, a printed label or a support ticket. <code>U</code> is excluded for a more practical reason: it prevents the encoding from spontaneously producing certain offensive words.</p>' +
-            '<p>Crockford decoding is also forgiving by design — a decoder accepts <code>I</code> and <code>l</code> as <code>1</code>, and <code>O</code> as <code>0</code>. Someone transcribing an ID by hand gets the right value even when they guess wrong. This is the property that makes ULIDs pleasant in any system where a human reads an ID back to you.</p>'
-        },
-        {
-          h: 'Monotonicity within a millisecond',
-          html: '<p>Two ULIDs created in the same millisecond share a timestamp, so their order is decided by the random component — which means it is arbitrary. For most uses that is fine. When it is not, the spec defines a <strong>monotonic</strong> mode.</p>',
-          steps: [
-            { t: 'Same millisecond detected', d: 'The generator compares against the previously issued ULID.' },
-            { t: 'Increment instead of randomise', d: 'The 80-bit random component is incremented by one rather than regenerated.' },
-            { t: 'Strict ordering within the process', d: 'Consecutive ULIDs from one generator sort correctly even at high rates.' },
-            { t: 'Not a global guarantee', d: 'Two processes generating in the same millisecond still interleave unpredictably. Monotonicity is per-generator, never distributed.' }
-          ],
-          callout: { type: 'tip', text: 'Use monotonic mode when insert order must match ID order within a single service — an append-only log, an event stream, a paginated feed keyed on ID. Do not assume it holds across replicas; if global ordering matters, you need a sequence or a coordination service, not an identifier format.' }
-        },
-        {
-          h: 'Collisions and case',
-          html: '<p>Within a millisecond, uniqueness depends on 80 random bits. Generating a thousand ULIDs in the same millisecond gives a collision probability around 10<sup>-18</sup> — you would need to sustain that rate for longer than the age of the universe for a collision to be likely. Across different milliseconds, collision is impossible by construction.</p>' +
-            '<p>ULIDs are canonically <strong>uppercase</strong>. Crockford decoding accepts lowercase and maps it to the same value, so <code>01arz3…</code> and <code>01ARZ3…</code> represent the same ID — but string comparison in your database does not know that. Normalise to uppercase on input and store one canonical form, or a case-sensitive unique index will happily accept both.</p>',
-          callout: { type: 'warn', text: '<strong>ULIDs disclose creation time to anyone who has one.</strong> The first ten characters decode to a millisecond timestamp with no key required. For public identifiers where timing is sensitive — or where the sequence would reveal how many records you create — use a <a href="/tools/nanoid-generator">NanoID</a> or a UUID v4 as the external ID.' }
-        },
-        {
-          h: 'Storing ULIDs in a database',
-          cards: [
-            { t: 'BINARY(16) / bytea', d: 'The efficient choice. Half the storage of the text form, smaller indexes, and byte order preserves sort order. Costs you readability in ad-hoc queries.' },
-            { t: 'CHAR(26)', d: 'Readable, greppable, and sorts correctly as text. Fixed-width so no varchar overhead. The pragmatic default for most applications.' },
-            { t: 'Native UUID column', d: 'A ULID is 128 bits, so it fits a UUID column exactly. You get 16-byte storage plus database tooling, at the cost of it displaying as a UUID rather than a ULID.' },
-            { t: 'Avoid VARCHAR with no length', d: 'It invites inconsistent casing and padded values, and neither shows up until a lookup mysteriously misses.' }
-          ]
-        },
-        {
-          h: 'Related identifier tools',
-          list: [
-            '<a href="/tools/uuid-v7-generator">UUID v7 Generator</a> — the RFC-standardised time-ordered UUID.',
-            '<a href="/tools/nanoid-generator">NanoID Generator</a> — shorter, fully random, no timestamp.',
-            '<a href="/tools/mongodb-objectid-generator">MongoDB ObjectId Generator</a> — the 12-byte MongoDB equivalent.',
-            '<a href="/tools/random-hex-string-generator">Random Hex String Generator</a> — raw hex tokens.',
-            '<a href="/tools/json-test-data-generator">JSON Test Data Generator</a> — fixtures with ULID keys.'
-          ]
-        }
+        { html: '<p>A ULID is a 128-bit identifier represented as 26 Crockford Base32 characters.</p>' +
+            '<p>Its first 48 bits encode a millisecond timestamp. The remaining 80 bits provide randomness.</p>' +
+            '<p>That layout makes ULIDs compact, URL-friendly and naturally sortable by time—a useful combination for database records, APIs, logs, events and distributed applications.</p>' },
+        { h: 'What Is a ULID?',
+          html: '<p>ULID stands for <strong>Universally Unique Lexicographically Sortable Identifier</strong>.</p><p>A typical ULID looks like:</p>' +
+            '<pre class="code">01ARZ3NDEKTSV4RRFFQ69G5FAV</pre><p>The format contains two logical parts:</p>',
+          table: { head: ['Part', 'Size', 'Purpose'], rows: [['Timestamp', '48 bits', 'Unix time in milliseconds'], ['Randomness', '80 bits', 'Uniqueness within the timestamp'], ['Total', '128 bits', 'Complete ULID']] },
+          after: '<p>The 128-bit value is encoded using Crockford Base32, producing a fixed 26-character string.</p>' +
+            '<p>Because the timestamp comes first, normal lexicographic string sorting also sorts correctly generated ULIDs by time.</p>' },
+        { h: 'How to Use This ULID Generator',
+          html: '<p>Choose how many identifiers you want.</p><p>For normal use, leave the timestamp set to the current time.</p>' +
+            '<p>For test fixtures, you can choose a specific date and time. This is useful when you need realistic records that sort as if they were created in the past.</p>' +
+            '<p>Next, choose uppercase or lowercase output.</p>' +
+            '<p>The canonical ULID representation is uppercase. Crockford Base32 decoding is case-insensitive, so many implementations also accept lowercase.</p>' +
+            '<p>Enable <strong>Monotonic within a millisecond</strong> when generating multiple values that may share exactly the same millisecond timestamp.</p>' +
+            '<p>Then copy, download or export the generated values.</p>' +
+            '<p>You can paste an existing ULID into the decoder to inspect its timestamp and validate the string.</p>' },
+        { h: 'Why Are ULIDs Sortable?',
+          html: '<p>The timestamp is encoded at the beginning of the identifier.</p>' +
+            '<p>That means an older ULID normally starts with a lower encoded time value than a newer one.</p><p>Example conceptually:</p>' +
+            '<p>Older record: <code>01H...</code></p><p>Newer record: <code>01J...</code></p>' +
+            '<p>Because the time component comes first, text sorting can follow creation chronology.</p>' +
+            '<p>This is different from UUID v4, where the value is random and sorting the ID does not meaningfully represent creation time.</p>' +
+            '<p>Sortable IDs are convenient in databases, logs and event systems where recent records are often grouped together.</p>' },
+        { h: 'What Is Crockford Base32?',
+          html: '<p>Crockford Base32 is an encoding alphabet designed to be compact and easier for humans to read than many other binary-to-text formats.</p>' +
+            '<p>ULID uses characters that avoid several ambiguous letters.</p>' +
+            '<p>The canonical encoding does not use letters such as I, L, O and U.</p>' +
+            '<p>That reduces visual confusion in copied identifiers.</p>' +
+            '<p>Base32 also allows a 128-bit value to fit into 26 characters, compared with the 36-character standard textual form of a UUID.</p>' +
+            '<p>ULIDs contain no punctuation, which makes them convenient in URLs, filenames and systems where hyphens are undesirable.</p>' },
+        { h: 'ULID Timestamp Explained',
+          html: '<p>The timestamp portion is 48 bits and represents Unix time in milliseconds.</p>' +
+            '<p>That gives ULID millisecond-level time ordering, and a decoder can recover the approximate creation time.</p>' +
+            '<p>Do not choose ULID if creation time itself must remain hidden.</p>' +
+            '<p>Also avoid treating the embedded timestamp as your only business timestamp. Keep a normal <code>created_at</code> field when your application needs explicit date queries, auditing or time-zone-aware logic.</p>' },
+        { h: 'What Does Monotonic ULID Mean?',
+          html: '<p>Several ULIDs can be created during one millisecond.</p>' +
+            '<p>If every value uses a new random 80-bit portion, those same-millisecond ULIDs are unique but may not appear in the exact order they were generated.</p>' +
+            '<p>A monotonic ULID generator solves that by incrementing the random component when the timestamp has not advanced.</p>' +
+            '<p>This preserves lexicographic order for identifiers created in the same millisecond.</p>' +
+            '<p>Monotonic generation is especially useful in high-throughput applications where many records can be created during one clock tick.</p>' +
+            '<p>Production code should use a library that correctly handles monotonic state and overflow.</p>' },
+        { h: 'How Unique Is a ULID?',
+          html: '<p>The random component contains 80 bits.</p><p>Within a given millisecond, that provides an enormous identifier space.</p>' +
+            '<p>The ULID specification describes roughly 1.21 × 10²⁴ possible random values per millisecond.</p>' +
+            '<p>Collisions are therefore extremely unlikely with a secure implementation.</p>' +
+            '<p>Still, identifier uniqueness should not be treated as a replacement for database integrity.</p>' +
+            '<p>If a column must be unique, enforce that with a UNIQUE constraint or primary key.</p>' +
+            '<p>The generator makes structurally valid IDs; your application remains responsible for persistence rules.</p>' },
+        { h: 'ULID vs UUID v7',
+          html: '<p>ULID and UUID v7 are close alternatives.</p><p>Both are 128-bit, timestamp-first identifiers designed to sort roughly by creation time.</p>' +
+            '<p>The biggest difference is representation and standardization.</p>',
+          table: { head: ['Feature', 'ULID', 'UUID v7'], rows: [
+            ['Size', '128 bits', '128 bits'], ['Text length', '26 characters', '36 characters'], ['Encoding', 'Crockford Base32', 'UUID hexadecimal format'],
+            ['Millisecond timestamp', 'Yes', 'Yes'], ['Lexicographically sortable', 'Yes', 'Yes'], ['URL-friendly text', 'Excellent', 'Good'],
+            ['IETF UUID standard', 'No', 'Yes'], ['Native UUID DB type', 'Not directly', 'Yes']
+          ] },
+          after: '<p>Use ULID when compact sortable text is attractive.</p>' +
+            '<p>Use UUID v7 when standards-based UUID interoperability and native database UUID support matter more.</p>' +
+            '<p>Try the <a href="/tools/uuid-v7-generator">UUID v7 Generator</a> if you want to compare both formats side by side.</p>' },
+        { h: 'ULID vs NanoID',
+          html: '<p>NanoID is usually a random identifier without a timestamp.</p><p>ULID includes time by design.</p><p>That leads to different strengths.</p><p>Choose ULID when:</p>',
+          list: ['You want chronological sorting', 'You want a fixed 26-character format', 'Exposing approximate creation time is acceptable'],
+          after: '<p>Choose NanoID when:</p><ul style="color:var(--muted);padding-left:18px"><li>You want a shorter configurable ID</li><li>You want a custom alphabet</li><li>You do not need time ordering</li><li>You prefer no embedded timestamp</li></ul>' +
+            '<p>NanoID’s default length is 21 characters, while a ULID is always represented canonically as 26 Base32 characters. See the <a href="/tools/nanoid-generator">NanoID Generator</a>.</p>' },
+        { h: 'ULID vs MongoDB ObjectId',
+          html: '<p>Both formats embed time.</p>' +
+            '<p>MongoDB ObjectId uses a 4-byte timestamp with one-second resolution and additional bytes for process uniqueness and a counter.</p>' +
+            '<p>ULID uses a 48-bit millisecond timestamp plus 80 bits of randomness.</p>' +
+            '<p>ObjectId is deeply integrated into MongoDB.</p>' +
+            '<p>ULID is database-agnostic and useful when IDs need to travel between different systems while remaining sortable as text.</p>' +
+            '<p>If you are generating MongoDB <code>_id</code> values, the <a href="/tools/mongodb-objectid-generator">MongoDB ObjectId Generator</a> is the more relevant tool for fixtures and decoding.</p>' },
+        { h: 'Are ULIDs URL-Safe?',
+          html: '<p>Yes. Crockford Base32 uses letters and digits without URL-reserved punctuation, so ULIDs work cleanly in routes, JSON, CSV, filenames and API paths.</p>' +
+            '<p>URL-safe does not mean secret. The timestamp is decodable, and authorization should never depend on an identifier simply being hard to guess.</p>' },
+        { h: 'Uppercase vs Lowercase ULID',
+          html: '<p>The canonical ULID representation is uppercase, although Crockford Base32 decoding is case-insensitive.</p>' +
+            '<p>Use uppercase for the safest interoperability. If your application deliberately uses lowercase, make sure every system accepts it and keep the stored format consistent.</p>' },
+        { h: 'Can You Create ULIDs for Past Dates?',
+          html: '<p>Yes. A chosen timestamp is useful for database seeds, historical fixtures, migration simulations and sorting tests.</p>' +
+            '<p>For production data, generate the identifier at the appropriate event time unless your migration design specifically requires preserving an original timestamp.</p>' },
+        { h: 'ULID Overflow and Validation',
+          html: '<p>A 26-character Base32 string can theoretically represent 130 bits, but a ULID contains only 128 bits.</p>' +
+            '<p>That means not every possible 26-character Base32 string is a valid ULID.</p>' +
+            '<p>The canonical specification defines a maximum encoded value. Decoders should reject values above the 128-bit range rather than silently overflowing.</p>' +
+            '<p>A proper validator should also check:</p>',
+          list: ['Length is 26 characters', 'Characters belong to the accepted alphabet', 'Encoded value fits the ULID range', 'Timestamp can be decoded correctly'],
+          after: '<p>Do not validate a ULID using length alone.</p>' },
+        { h: 'Secure Randomness Matters',
+          html: '<p>The 80-bit random component should come from a cryptographically strong random source.</p>' +
+            '<p>This browser tool uses secure random-number facilities rather than relying on <code>Math.random()</code>.</p>' +
+            '<p>That gives the generated output appropriate randomness for identifier generation.</p>' +
+            '<p>For production applications, use a trusted ULID library for your runtime or language, especially when monotonic behavior is required across concurrent requests.</p>' +
+            '<p>The online tool is ideal for fixtures, testing, debugging and one-off batches.</p>' },
+        { h: 'Common ULID Mistakes',
+          html: '<p>Avoid these problems:</p>',
+          list: ['Assuming ULID is an IETF UUID standard', 'Treating the embedded timestamp as private', 'Depending on ID order as your only event-order guarantee',
+                 'Mixing uppercase and lowercase without a policy', 'Generating randomness with a weak PRNG', 'Validating only the 26-character length',
+                 'Forgetting a database uniqueness constraint', 'Reimplementing monotonic logic without handling edge cases'],
+          after: '<p>The format is simple to read, but robust generation still deserves a tested implementation.</p>' }
       ],
-      keywords: [
-        'ulid generator', 'what is a ulid', 'ulid vs uuid', 'sortable unique id',
-        'crockford base32', 'ulid monotonic', 'lexicographically sortable id',
-        'ulid decode timestamp', 'ulid database storage', 'time ordered identifier',
-        'ulid online', 'uuid alternative'
-      ]
+      keywords: ['ulid generator', 'sortable unique id', 'crockford base32', 'ulid vs uuid v7', 'ulid monotonic',
+        'lexicographically sortable id', 'ulid decode timestamp', 'ulid database storage', 'ulid vs nanoid',
+        'time ordered identifier', 'ulid validation', 'ulid vs mongodb objectid']
     }
   });
 })();

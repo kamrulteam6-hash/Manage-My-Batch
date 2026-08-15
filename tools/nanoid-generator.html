@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>NanoID Generator — URL-Safe Short IDs + Collision Calculator | Manage My Batch</title>
-<meta name="description" content="Free NanoID generator with a real collision-probability calculator. Custom alphabets, adjustable length, bulk output, and code for JavaScript, Python, Go and more.">
+<title>NanoID Generator – Secure URL-Safe IDs &amp; Collision Checker | Manage My Batch</title>
+<meta name="description" content="Generate secure NanoIDs online with custom length, alphabet, prefix, suffix, bulk output and a collision probability calculator. Free browser-based tool.">
 <link rel="canonical" href="https://managemybatch.com/tools/nanoid-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="NanoID Generator — URL-Safe Short IDs + Collision Calculator">
-<meta property="og:description" content="Free NanoID generator with a real collision-probability calculator. Custom alphabets, adjustable length, bulk output, and code for JavaScript, Python, Go and more.">
+<meta property="og:title" content="NanoID Generator – Secure URL-Safe IDs &amp; Collision Checker">
+<meta property="og:description" content="Generate secure NanoIDs online with custom length, alphabet, prefix, suffix, bulk output and a collision probability calculator. Free browser-based tool.">
 <meta property="og:url" content="https://managemybatch.com/tools/nanoid-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="NanoID Generator — URL-Safe Short IDs + Collision Calculator">
-<meta name="twitter:description" content="Free NanoID generator with a real collision-probability calculator. Custom alphabets, adjustable length, bulk output, and code for JavaScript, Python, Go and more.">
+<meta name="twitter:title" content="NanoID Generator – Secure URL-Safe IDs &amp; Collision Checker">
+<meta name="twitter:description" content="Generate secure NanoIDs online with custom length, alphabet, prefix, suffix, bulk output and a collision probability calculator. Free browser-based tool.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -331,91 +331,117 @@
       '<div><h4 style="font-size:14.5px;margin-bottom:8px">Where teams get it wrong</h4><ul style="color:var(--muted);font-size:13.8px;padding-left:18px;margin:0"><li>Using a short ID as a security token. Length is not the same as secrecy — an 8-character ID is brute-forceable.</li><li>Assuming a database unique constraint makes collisions free. It makes them <em>visible</em>, as failed inserts under load.</li><li>Custom alphabets containing characters that need percent-encoding in URLs.</li><li>Reimplementing NanoID with a naive modulo, which biases the first characters of the alphabet.</li></ul></div></div>' +
       '<div class="note note-info" style="margin-top:18px">' + GTI.info + '<span><strong>NanoID has no timestamp.</strong> That is the trade-off against ULID and UUID v7: nothing leaks about when a record was created, but the IDs do not sort chronologically and give your database index no locality. Use NanoID for public-facing identifiers, and a time-ordered ID for the primary key.</span></div>',
     related: ['uuid-v7-generator', 'ulid-generator', 'random-hex-string-generator'],
-    faqs: [
-      { q: 'What is NanoID?', a: 'A small library that generates compact, URL-safe random identifiers. The default is 21 characters from a 64-character alphabet, giving 126 bits of entropy in a shorter string than a UUID.' },
-      { q: 'Is NanoID more secure than UUID v4?', a: 'At the default length it has slightly more entropy — 126 bits versus 122 — and both use a cryptographic random source. Neither should be treated as a secret token on its own; use a dedicated session or API token for that.' },
-      { q: 'How long should my NanoID be?', a: 'Use the calculator on this page with your real creation rate. As a rule: 21 characters unless you have a reason, 10–12 for public short links, and never under 8 for anything that must be unguessable.' },
-      { q: 'Can I use a custom alphabet?', a: 'Yes. Common choices are lowercase-only for case-insensitive systems, hex for compatibility, and a no-look-alike set that drops 1, l, I, O and 0 for codes people read aloud. Every alphabet change alters the entropy — the calculator updates live.' },
-      { q: 'Are NanoIDs sortable?', a: 'No. They are purely random with no embedded timestamp, so they carry no ordering and give a B-tree index no insert locality. If you need sortable identifiers, use ULID or UUID v7.' },
-      { q: 'Why does the alphabet look scrambled?', a: 'The default NanoID alphabet is deliberately shuffled rather than alphabetical. It contains the same 64 URL-safe characters; the ordering has no effect on randomness or entropy.' }
+faqs: [
+      { q: 'What is the default NanoID length?', a: 'The standard Nano ID library uses 21 characters by default.' },
+      { q: 'How much entropy does a 21-character NanoID have?', a: 'With the 64-character default alphabet, 21 characters provide 126 bits of entropy.' },
+      { q: 'Is NanoID better than UUID?', a: 'It depends on the application. NanoID is shorter and customizable. UUID is standardized and widely supported by databases and APIs.' },
+      { q: 'Can NanoID contain only numbers?', a: 'Yes. Use a numeric custom alphabet. Because ten symbols provide less entropy per character than 64 symbols, you will generally need a longer ID.' },
+      { q: 'Does NanoID contain a timestamp?', a: 'No, not by default. If you need sortable timestamp-based identifiers, compare UUID v7 or ULID.' },
+      { q: 'Can I use NanoID as a database primary key?', a: 'Yes, provided your schema and indexing strategy fit random text IDs. Enforce uniqueness at the database level.' },
+      { q: 'Are NanoIDs safe in URLs?', a: 'The default alphabet is URL-friendly. Remember that a URL-safe identifier is not automatically a secret or authorization token.' },
+      { q: 'Is this NanoID generator free?', a: 'Yes. Generate IDs, customize the format and calculate collision risk above without creating an account.' }
     ],
     seo: {
-      title: 'NanoID: choosing a length and alphabet that will not collide',
-      lead: 'This <strong>NanoID generator</strong> produces URL-safe random IDs at any length or alphabet, with a collision calculator that tells you how long your configuration actually lasts. Below: how NanoID compares to UUID v4, how to size an ID properly, and why the default alphabet looks scrambled.',
+      title: 'NanoID Generator – Create Secure, URL-Safe IDs Online',
+      lead: 'Need a compact unique ID without the long UUID format? Use the NanoID Generator above to create secure, URL-safe NanoIDs instantly. Choose the ID length, generate one or thousands at once, use the standard alphabet or enter your own, add a prefix or suffix and check the estimated collision risk before choosing a shorter format.',
       blocks: [
-        {
-          h: 'What is NanoID?',
-          html: '<p><strong>NanoID</strong> is a tiny library for generating random string identifiers. The defaults are 21 characters from a 64-symbol URL-safe alphabet: <code>A–Z a–z 0–9 _ -</code>.</p>' +
-            '<p>Compared with a UUID it is shorter and cleaner in a URL — <code>V1StGXR8_Z5jdHi6B-myT</code> against <code>f47ac10b-58cc-4372-a567-0e02b2c3d479</code> — while carrying 126 bits of entropy versus a UUID v4\'s 122. It is not a standard, so it is not the right choice for interop, but for an application\'s own IDs it is strictly more convenient.</p>' +
-            '<p>Both length and alphabet are configurable, which is where the interesting decisions are.</p>'
-        },
-        {
-          h: 'Is it more secure than UUID v4?',
-          html: '<p>Marginally, and for a specific reason. A UUID v4 spends six bits on version and variant markers, leaving 122 random bits. A default NanoID uses all 21 characters for randomness: 21 × 6 bits = 126.</p>' +
-            '<p>Both draw from a cryptographically secure source — <code>crypto.getRandomValues()</code> in the browser, <code>crypto.randomBytes()</code> in Node — so neither is predictable. Four bits is not a meaningful security difference; at these magnitudes both are unguessable.</p>' +
-            '<p>The real security question is not the algorithm but the <em>length you configure</em>. A 6-character NanoID has about 36 bits of entropy and is enumerable in minutes. NanoID makes shortening easy, which makes it easy to shorten past the point of safety.</p>',
-          callout: { type: 'warn', text: '<strong>Never use a short NanoID as an access token or an unguessable share link.</strong> Anything under about 16 characters from the default alphabet is brute-forceable by a determined attacker. Short IDs are for things that are also protected by authorisation checks.' }
-        },
-        {
-          h: 'How long should your NanoID be?',
-          table: {
-            head: ['Length', 'Entropy', 'Suitable for'],
-            rows: [
-              ['6', '~36 bits', 'Nothing public. A URL shortener with rate limiting at most.'],
-              ['8', '~48 bits', 'Short internal references where collisions can be retried.'],
-              ['10', '~60 bits', 'User-facing IDs at modest scale — millions of records.'],
-              ['12', '~72 bits', 'A comfortable default for most applications.'],
-              ['16', '~96 bits', 'High-volume systems, and anything semi-public.'],
-              ['21 (default)', '126 bits', 'Effectively collision-free forever. Use unless length genuinely matters.'],
-              ['24+', '144+ bits', 'Tokens and secrets — though a <a href="/tools/random-byte-generator">random byte</a> secret is a better fit.']
-            ]
-          },
-          after: '<p>The collision calculator in the tool gives the concrete number: at your chosen length and generation rate, how long until a 1% chance of any collision. That is a far more useful figure than an entropy count.</p>'
-        },
-        {
-          h: 'Custom alphabets',
-          steps: [
-            { t: 'Start from the default', d: '64 URL-safe characters. Change it only for a reason you can name.' },
-            { t: 'Drop ambiguous characters for human transcription', d: 'Remove <code>0 O I l 1</code> when someone will read an ID aloud or type it from a printout.' },
-            { t: 'Use lowercase-only for case-insensitive systems', d: 'Some databases and filesystems fold case, which silently halves your key space if you assumed otherwise.' },
-            { t: 'Use hex or numeric where the consumer is strict', d: 'Legacy systems that reject <code>_</code> or <code>-</code> exist, and finding out in production is expensive.' },
-            { t: 'Re-check the length', d: 'A smaller alphabet carries less entropy per character. Dropping from 64 to 32 symbols means each character is worth 5 bits instead of 6 — you need about 20% more characters for the same safety.' }
-          ]
-        },
-        {
-          h: 'NanoIDs are not sortable',
-          html: '<p>They are fully random, with no timestamp component. That has two consequences worth planning around.</p>',
-          cards: [
-            { t: 'No creation order', d: 'You cannot sort by ID to get chronological order. Keep a real <code>created_at</code> column — which you should have anyway.' },
-            { t: 'Random index inserts', d: 'On a large B-tree primary key, random values write to scattered pages rather than the tail. On tables in the tens of millions this is measurable.' },
-            { t: 'Nothing leaks', d: 'The flip side: a NanoID reveals no timing, no volume and no ordering. For public identifiers this is exactly what you want.' }
-          ],
-          after: '<p>If you need both time-ordering and a compact URL-safe form, use a <a href="/tools/ulid-generator">ULID</a> or a <a href="/tools/uuid-v7-generator">UUID v7</a> instead. A common pattern is a time-ordered internal primary key plus a NanoID as the public-facing identifier.</p>'
-        },
-        {
-          h: 'Why the default alphabet looks scrambled',
-          html: '<p>NanoID\'s published alphabet is <code>useandom-26T198340PX75pxJACKVERYMINDBUSHWOLF_GQZbfghjklqvwyzrict</code> — deliberately unordered rather than <code>A-Za-z0-9_-</code>.</p>' +
-            '<p>The ordering is cosmetic, not cryptographic: each character is selected uniformly at random regardless of position in the alphabet string, so a shuffled alphabet and a sorted one produce identically distributed IDs. The scrambling exists so that generated IDs look less patterned to a human eye and are less likely to spell recognisable words.</p>' +
-            '<p>Which is the other reason to consider a custom alphabet: with 64 symbols including vowels, a 21-character ID will eventually contain an unfortunate word. If IDs are shown to customers, an alphabet without vowels removes the problem entirely.</p>',
-          callout: { type: 'tip', text: 'Pick the length once and never shorten it later. Lengthening is easy — old IDs stay valid. Shortening means every existing ID is now longer than the format allows, and any validation you added will reject your own historical data.' }
-        },
-        {
-          h: 'Related identifier tools',
-          list: [
-            '<a href="/tools/uuid-v7-generator">UUID v7 Generator</a> — standardised, time-ordered identifiers.',
-            '<a href="/tools/ulid-generator">ULID Generator</a> — sortable and URL-safe in 26 characters.',
-            '<a href="/tools/random-hex-string-generator">Random Hex String Generator</a> — hex tokens sized in bytes.',
-            '<a href="/tools/random-byte-generator">Random Byte Generator</a> — raw key material for secrets.',
-            '<a href="/tools/coupon-code-generator">Coupon Code Generator</a> — human-readable codes with guess resistance.'
-          ]
-        }
+        { html: '<p>The default Nano ID format uses 21 characters from a 64-character URL-safe alphabet: uppercase letters, lowercase letters, numbers, underscore and hyphen.</p>' +
+            '<p>That gives 126 bits of entropy and collision resistance in the same general range as UUID v4 while producing a shorter text identifier.</p>' +
+            '<p>Generation happens locally in your browser using secure random values.</p>' },
+        { h: 'What Is NanoID?',
+          html: '<p>NanoID is a compact random identifier format popular in web applications, APIs and databases.</p><p>A default ID looks like:</p>' +
+            '<pre class="code">V1StGXR8_Z5jdHi6B-myT</pre>' +
+            '<p>Unlike UUID, NanoID has no fixed 36-character hexadecimal representation; you can control the length and alphabet.</p><p>That flexibility is useful when you need IDs that are:</p>',
+          list: ['Shorter in URLs', 'Easy to embed in JSON', 'Compatible with a restricted character set', 'Self-describing with prefixes', 'Suitable for test data', 'Generated independently across distributed systems'],
+          after: '<p>The official Nano ID library uses cryptographically secure random values and a URL-friendly default alphabet.</p>' },
+        { h: 'How to Use This NanoID Generator',
+          html: '<p>Start with the number of IDs you need.</p><p>For normal use, leave the length at 21 characters unless you have a specific reason to change it.</p>' +
+            '<p>Next, choose the alphabet.</p><p>Use the standard URL-safe alphabet unless your system requires a restricted character set.</p><p>Add a prefix such as:</p>' +
+            '<pre class="code">user_\norder_\ninv_</pre><p>or a suffix if your naming scheme requires one.</p>' +
+            '<p>Then enter your expected generation volume in the collision calculator.</p>' +
+            '<p>Generate the IDs only after checking whether the chosen length and alphabet provide enough identifier space for your application.</p>' },
+        { h: 'Why Is the Default NanoID 21 Characters?',
+          html: '<p>Nano ID’s default alphabet contains 64 symbols.</p><p>Each character therefore carries 6 bits of entropy because:</p>' +
+            '<pre class="code">2^6 = 64</pre><p>At 21 characters:</p><pre class="code">21 × 6 = 126 bits</pre>' +
+            '<p>That gives a huge number of possible IDs.</p>' +
+            '<p>The default was designed to provide collision probability in a similar range to UUID v4 while using fewer text characters.</p>' +
+            '<p>Shortening the ID reduces the identifier space quickly.</p>' +
+            '<p>That may still be perfectly reasonable for a small application, but the decision should be based on expected generation volume rather than appearance alone.</p>' },
+        { h: 'NanoID Collision Probability Explained',
+          html: '<p>A collision happens when two independently generated identifiers are identical.</p><p>Collision risk depends mainly on three things:</p>',
+          ol: ['Alphabet size', 'ID length', 'Number of IDs generated'],
+          after: '<p>A longer ID creates more combinations.</p><p>A larger alphabet also creates more combinations per character.</p>' +
+            '<p>For example, an 8-character numeric ID has far fewer possibilities than an 8-character NanoID using 64 symbols.</p>' +
+            '<p>That is why “8 characters” by itself tells you very little about safety.</p>' +
+            '<p>Use the collision calculator in this tool whenever you shorten the default length or reduce the alphabet.</p>' },
+        { h: 'How Long Should a NanoID Be?',
+          html: '<p>For most applications, 21 characters is the default. Shorten it only when you understand the tradeoff.</p><p>With a 64-character alphabet, approximate entropy is:</p>',
+          table: { head: ['Length', 'Entropy'], rows: [['8', '48 bits'], ['10', '60 bits'], ['12', '72 bits'], ['16', '96 bits'], ['21', '126 bits']] },
+          after: '<p>Estimate lifetime ID volume and choose a collision risk you can accept rather than selecting a length only because it looks tidy.</p>' +
+            '<p>If duplicate IDs would cause serious damage, also enforce uniqueness in the database.</p>' },
+        { h: 'Custom NanoID Alphabets',
+          html: '<p>A custom alphabet controls which characters can appear.</p><p>Numeric only:</p><pre class="code">0123456789</pre>' +
+            '<p>Uppercase letters and digits:</p><pre class="code">ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</pre>' +
+            '<p>Human-friendly systems may remove characters that look alike, such as:</p>',
+          list: ['0 and O', '1 and I', 'lowercase l'],
+          after: '<p>Custom alphabets are useful for:</p><ul style="color:var(--muted);padding-left:18px"><li>Human-entered references</li><li>Printed labels</li><li>Case-insensitive systems</li><li>Coupon-like codes</li><li>Legacy databases</li><li>Restricted file names</li></ul>' +
+            '<p>The tradeoff is entropy.</p><p>A smaller alphabet needs a longer ID to provide the same identifier space.</p>' +
+            '<p>Always recalculate collision risk after changing the alphabet.</p>' },
+        { h: 'NanoID vs UUID v4',
+          html: '<p>NanoID and UUID v4 are both commonly used for random unique identifiers.</p><p>The difference is flexibility.</p>',
+          table: { head: ['Feature', 'NanoID', 'UUID v4'], rows: [
+            ['Default text length', '21', '36'], ['Default entropy/randomness', '126 bits', '122 random bits'], ['Custom length', 'Yes', 'No standard variation'],
+            ['Custom alphabet', 'Yes', 'No'], ['URL-friendly', 'Yes', 'Yes'], ['Standard UUID format', 'No', 'Yes'], ['Embedded timestamp', 'No', 'No']
+          ] },
+          after: '<p>Choose NanoID when short text and custom formatting matter.</p>' +
+            '<p>Choose UUID when external systems specifically expect a UUID type or standardized UUID representation.</p>' },
+        { h: 'NanoID vs UUID v7',
+          html: '<p>UUID v7 is time ordered.</p><p>NanoID is random by default.</p><p>That means they solve different application needs.</p><p>Choose UUID v7 if:</p>',
+          list: ['IDs should roughly sort by creation time', 'Native database UUID types matter', 'You want an RFC-standardized format'],
+          after: '<p>Choose NanoID if:</p><ul style="color:var(--muted);padding-left:18px"><li>You want a short public ID</li><li>You need a custom alphabet</li><li>You do not want creation time embedded</li><li>You want flexible prefixes or suffixes</li></ul>' +
+            '<p>Use the <a href="/tools/uuid-v7-generator">UUID v7 Generator</a> to compare both outputs.</p>' },
+        { h: 'NanoID vs ULID',
+          html: '<p>ULID is always a 128-bit, 26-character Crockford Base32 identifier with a millisecond timestamp.</p>' +
+            '<p>NanoID has configurable length and alphabet and does not contain time by default.</p>' +
+            '<p>ULID is useful for sortable records.</p><p>NanoID is useful for compact random references.</p>' +
+            '<p>If your database frequently sorts records by ID and you want creation order reflected in the identifier, ULID may be more suitable.</p>' +
+            '<p>If you want <code>usr_xxx</code>, <code>post_xxx</code> or short public resource IDs, NanoID is often simpler. See the <a href="/tools/ulid-generator">ULID Generator</a>.</p>' },
+        { h: 'Are NanoIDs Secure?',
+          html: '<p>The official Nano ID implementation uses cryptographically secure randomness.</p>' +
+            '<p>This tool also generates values using the browser’s secure random-number capabilities rather than <code>Math.random()</code>.</p>' +
+            '<p>That makes the IDs difficult to predict, but an identifier is not automatically an authentication credential.</p><p>A NanoID may appear in:</p>',
+          list: ['URLs', 'Browser history', 'Logs', 'Analytics', 'Support tickets', 'Screenshots', 'API responses'],
+          after: '<p>Do not treat an ordinary record ID as authorization.</p><p>Protect resources with separate authentication and authorization.</p>' },
+        { h: 'Prefixes and Suffixes',
+          html: '<p>Prefixes such as <code>usr_</code>, <code>ord_</code> and <code>post_</code> make IDs easier to recognize in logs and support workflows.</p>' +
+            '<p>They do <strong>not</strong> increase randomness. If every user ID begins with <code>usr_</code>, those characters are predictable. Calculate collision risk from the random portion, not the prefix or suffix.</p>' },
+        { h: 'Bulk NanoID Generation',
+          html: '<p>Bulk output is useful for database seeds, test fixtures, mock API data, CSV imports and migration dry runs.</p>' +
+            '<p>For production records, generate the ID inside the application at creation time. The online tool is best used for testing formats, calculating risk and creating controlled batches.</p>' },
+        { h: 'NanoID in Database Primary Keys',
+          html: '<p>NanoIDs can work well as database identifiers.</p><p>They can be generated outside the database, which is convenient in distributed applications.</p><p>If you store NanoIDs as text, consider:</p>',
+          list: ['Column length', 'Case sensitivity', 'Index size', 'Collation', 'Uniqueness constraints'],
+          after: '<p>A database UNIQUE constraint is still important.</p>' +
+            '<p>Random generation makes collisions highly unlikely; the constraint ensures the database never silently accepts a duplicate key.</p>' +
+            '<p>For very write-heavy indexed tables, also compare random NanoIDs with time-ordered UUID v7 or ULID keys.</p>' +
+            '<p>Random insertion order can behave differently from sequential or time-ordered keys.</p>' },
+        { h: 'URL-Safe Does Not Mean Human-Friendly',
+          html: '<p>The default alphabet works well in URLs, but mixed-case IDs are not always easy to read from paper or dictate aloud.</p>' +
+            '<p>For human-entered codes, use an alphabet that removes confusing characters and increase the length as needed to compensate for the smaller character set.</p>' },
+        { h: 'Do NanoIDs Reveal Creation Time?',
+          html: '<p>Not by default. A standard NanoID is random and does not encode a timestamp, unlike ULID, UUID v7 and MongoDB ObjectId.</p>' +
+            '<p>Store a separate creation timestamp whenever your application needs one.</p>' },
+        { h: 'Common NanoID Mistakes',
+          html: '<p>Avoid these errors:</p>',
+          list: ['Shortening the ID without checking collision risk', 'Reducing the alphabet without increasing length', 'Counting a predictable prefix as entropy',
+                 'Using Math.random() for security-sensitive identifiers', 'Treating an ID as a password or access-control mechanism',
+                 'Assuming uniqueness means a database constraint is unnecessary', 'Using a case-sensitive alphabet in a case-insensitive storage system',
+                 'Choosing numeric-only IDs that are far too short for the expected volume'],
+          after: '<p>The generator’s collision calculator exists for a reason. Use it before changing the default parameters.</p>' }
       ],
-      keywords: [
-        'nanoid generator', 'nanoid length', 'nanoid vs uuid', 'nanoid collision',
-        'url safe id generator', 'short unique id', 'nanoid custom alphabet',
-        'random string id', 'nanoid entropy', 'unique id for urls',
-        'nanoid online', 'short id generator'
-      ]
+      keywords: ['nanoid generator', 'nanoid collision probability', 'nanoid custom alphabet', 'nanoid vs uuid',
+        'nanoid entropy', 'nanoid prefix', 'nanoid vs ulid', 'nanoid vs uuid v7', 'url safe id generator',
+        'nanoid database primary key', 'secure random id generator', 'nanoid length calculator']
     }
   });
 })();

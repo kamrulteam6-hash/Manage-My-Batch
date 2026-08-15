@@ -12,20 +12,20 @@
 
   gtag('config', 'G-CX2WHCM8XP');
 </script>
-<title>Nginx Redirect Generator — 301/302 Rules, Maps &amp; Regex | Manage My Batch</title>
-<meta name="description" content="Free Nginx redirect generator. Turn a URL list into optimized 301/302 rules, an O(1) map block, or regex rewrites — plus HTTPS, www and domain migration presets.">
+<title>Nginx Redirect Generator – 301, 302, Regex &amp; Bulk Rules | Manage My Batch</title>
+<meta name="description" content="Generate clean Nginx 301 and 302 redirects for single URLs, bulk migrations, domains, directories, HTTPS, www rules and regex patterns. Copy ready config.">
 <link rel="canonical" href="https://managemybatch.com/tools/nginx-redirect-generator">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Manage My Batch">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Manage My Batch">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="Nginx Redirect Generator — 301/302 Rules, Maps &amp; Regex">
-<meta property="og:description" content="Free Nginx redirect generator. Turn a URL list into optimized 301/302 rules, an O(1) map block, or regex rewrites — plus HTTPS, www and domain migration presets.">
+<meta property="og:title" content="Nginx Redirect Generator – 301, 302, Regex &amp; Bulk Rules">
+<meta property="og:description" content="Generate clean Nginx 301 and 302 redirects for single URLs, bulk migrations, domains, directories, HTTPS, www rules and regex patterns. Copy ready config.">
 <meta property="og:url" content="https://managemybatch.com/tools/nginx-redirect-generator">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Nginx Redirect Generator — 301/302 Rules, Maps &amp; Regex">
-<meta name="twitter:description" content="Free Nginx redirect generator. Turn a URL list into optimized 301/302 rules, an O(1) map block, or regex rewrites — plus HTTPS, www and domain migration presets.">
+<meta name="twitter:title" content="Nginx Redirect Generator – 301, 302, Regex &amp; Bulk Rules">
+<meta name="twitter:description" content="Generate clean Nginx 301 and 302 redirects for single URLs, bulk migrations, domains, directories, HTTPS, www rules and regex patterns. Copy ready config.">
 <meta name="theme-color" content="#2563eb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -446,100 +446,102 @@
       '<div class="note note-warn" style="margin-top:18px">' + GTI.warn + '<span><strong>Redirect chains are the silent killer of migrations.</strong> <code>/a → /b → /c</code> works for users but wastes crawl budget, dilutes signals at every hop, and browsers cap the chain length. Always map old URLs to their <em>final</em> destination, even when that means rewriting a spreadsheet someone else built.</span></div>' +
       '<div class="note note-info" style="margin-top:12px">' + GTI.info + '<span>Nginx does not read <code>.htaccess</code> files — there is no per-directory config. Everything lives in the server configuration and needs a reload to take effect, which is why <code>nginx -t</code> before <code>systemctl reload</code> is non-negotiable.</span></div>',
     related: ['canonical-tag-generator', 'x-robots-tag-generator', 'sitemap-index-generator'],
-    faqs: [
-      { q: 'Should I use 301 or 302?', a: 'Use 301 for permanent moves — it transfers ranking signals and eventually replaces the old URL in the index. Use 302 only when the original URL will genuinely return, such as a temporary campaign page or maintenance route.' },
-      { q: 'What is the difference between 301 and 308?', a: 'Both are permanent. A 301 allows clients to convert POST requests to GET; a 308 preserves the method and body. For plain page redirects 301 is standard; for APIs, prefer 308.' },
-      { q: 'How do I redirect thousands of URLs efficiently?', a: 'Use a map block. Nginx evaluates location and rewrite rules sequentially, so thousands of them add latency to every request. A map is a hash table with constant-time lookup, and the entries can be kept in an included file.' },
-      { q: 'Does my redirect preserve query strings?', a: '<code>$request_uri</code> already includes the query string. When you build a target from <code>$uri</code> or a literal path, append <code>$is_args$args</code> — the “Preserve query string” option does this for you.' },
-      { q: 'Why is my redirect looping?', a: 'Usually the target matches the same rule that produced it — for example forcing HTTPS inside the HTTPS server block, or a trailing-slash rule fighting a canonical-host rule. Check with <code>curl -sSIL</code> and make sure each rule\'s target cannot re-enter it.' },
-      { q: 'How long should I keep redirects?', a: 'At least twelve months, and indefinitely where feasible. Search engines need repeated crawls of the old URL before signals fully transfer, and old inbound links keep sending traffic for years.' }
+faqs: [
+      { q: 'Is 301 or 302 better for SEO?', a: 'Neither is universally “better.” Use 301 for a permanent move and 302 for a temporary one. The status should reflect your real intent.' },
+      { q: 'Does a 301 redirect lose PageRank?', a: 'Google states that 301 and other permanent redirects do not cause a loss in PageRank.' },
+      { q: 'Can I generate hundreds of Nginx redirects at once?', a: 'Yes. Paste your old-to-new URL pairs in bulk. For larger exact redirect sets, a map can keep the configuration cleaner.' },
+      { q: 'Should I redirect every 404 to the homepage?', a: 'No. Redirect only when a relevant replacement exists. Unrelated mass redirects can create a poor experience and may be interpreted as soft 404s.' },
+      { q: 'Should old URLs stay in the XML sitemap?', a: 'After a permanent migration is established, your sitemap should normally contain the new canonical URLs rather than old redirected URLs.' },
+      { q: 'Can I use regex redirects?', a: 'Yes, when a consistent pattern maps many old URLs to correct destinations. Test the pattern carefully before production.' },
+      { q: 'Is this Nginx redirect generator free?', a: 'Yes. Build the redirect rules above, review the checks and copy or download the generated configuration.' }
     ],
     seo: {
-      title: 'Nginx redirects: return, rewrite and map blocks for site migrations',
-      lead: 'This <strong>Nginx redirect generator</strong> turns a migration spreadsheet into production-ready config — exact <code>location</code> blocks for small sets, an O(1) <code>map</code> for thousands — with loop and chain detection built in. Below: which status code to use, how query strings behave, and why redirects loop.',
+      title: 'Nginx Redirect Generator – Create 301, 302, Bulk and Regex Redirects',
+      lead: 'Moving pages, changing domains or cleaning up old URLs? Use the Nginx Redirect Generator above to turn your redirect plan into copy-ready Nginx configuration.',
       blocks: [
-        {
-          h: 'The three ways to redirect in Nginx',
-          html: '<p>Nginx offers several mechanisms and they are not equivalent in cost or behaviour. Choosing wrongly is how a migration turns into a latency problem.</p>',
-          table: {
-            head: ['Method', 'Best for', 'Cost'],
-            rows: [
-              ['<code>location = /old { return 301 ...; }</code>', 'Exact one-to-one redirects, up to a few dozen.', 'Hash lookup. Effectively free.'],
-              ['<code>rewrite ^/old/(.*)$ /new/$1 permanent;</code>', 'Pattern moves where a path segment changes.', 'Regex evaluated per request, in order.'],
-              ['<code>map $request_uri $target { ... }</code>', 'Hundreds or thousands of unrelated redirects.', 'One hash lookup regardless of table size.'],
-              ['<code>try_files</code> + named location', 'Fallbacks, not redirects.', 'Filesystem check.']
-            ]
-          },
-          after: '<p>The rule of thumb: exact <code>location</code> blocks below about fifty rules, a <code>map</code> above it, and <code>rewrite</code> only where the new URL is genuinely derived from the old one.</p>',
-          callout: { type: 'warn', text: '<strong>A long list of <code>rewrite</code> rules is evaluated in order, on every request.</strong> Two thousand regexes at the top of a server block means every request runs up to two thousand pattern matches before anything is served. A <code>map</code> does the same job in one lookup.' }
-        },
-        {
-          h: 'Which status code?',
-          cards: [
-            { t: '301 Moved Permanently', d: 'The default for migrations. Cached hard by browsers and treated as a permanent signal by search engines. Method may be rewritten to GET.' },
-            { t: '302 Found', d: 'Temporary. Use for A/B tests, maintenance and geolocation. Search engines keep indexing the original URL.' },
-            { t: '307 Temporary Redirect', d: 'Like 302 but guarantees the method and body are preserved. The correct temporary redirect for POST requests.' },
-            { t: '308 Permanent Redirect', d: 'Like 301 but preserves method and body. The right permanent choice for API endpoints.' }
-          ],
-          after: '<p>For ordinary page moves, 301 remains correct. For anything that receives non-GET requests, use 308 or 307 so the method survives.</p>'
-        },
-        {
-          h: 'Building your rules',
-          steps: [
-            { t: 'Paste your URL pairs', d: 'One <code>old,new</code> pair per line — straight out of the migration spreadsheet.' },
-            { t: 'Pick the output style', d: 'Exact locations, rewrites or a map block. The tool recommends one based on how many rules you pasted.' },
-            { t: 'Choose the status code', d: '301 for permanent moves, 308 where the request method must survive.' },
-            { t: 'Decide on query-string handling', d: 'Preserve or drop. This is the setting people forget, and it changes analytics attribution.' },
-            { t: 'Check the diagnostics', d: 'The tool flags loops, chains, duplicate sources and rules that can never match because an earlier one shadows them.' },
-            { t: 'Test before reloading', d: '<code>nginx -t</code> validates syntax, then <code>nginx -s reload</code> applies without dropping connections.' }
-          ]
-        },
-        {
-          h: 'Query strings and the $request_uri trap',
-          html: '<p>Nginx has two variables that look interchangeable and are not. <code>$uri</code> is the normalised path with the query string stripped. <code>$request_uri</code> is the original, query string included.</p>' +
-            '<p>This matters in two places. In a <code>map</code>, keying on <code>$request_uri</code> means <code>/old</code> and <code>/old?utm_source=x</code> are different keys and the tracked version will not match — usually you want to key on <code>$uri</code>. In a <code>return</code>, a target ending in <code>?</code> discards the incoming query string, while one without it appends the original query automatically.</p>',
-          list: [
-            '<code>return 301 /new;</code> — the original query string is appended.',
-            '<code>return 301 /new?;</code> — the trailing <code>?</code> drops the original query string.',
-            '<code>return 301 /new?ref=old;</code> — replaces the query string entirely.',
-            '<code>rewrite ... permanent;</code> — appends the query string unless the replacement contains a <code>?</code>.'
-          ],
-          callout: { type: 'tip', text: 'Dropping UTM parameters at redirect time breaks campaign attribution in analytics. Preserve query strings by default and strip them only where a parameter genuinely causes a problem.' }
-        },
-        {
-          h: 'Why redirects loop',
-          html: '<p>A loop is Nginx returning a redirect to a URL that redirects back. The browser gives up with <code>ERR_TOO_MANY_REDIRECTS</code>. The usual causes:</p>',
-          ol: [
-            '<strong>The target matches the source rule.</strong> Redirecting <code>/blog/(.*)</code> to <code>/blog/$1/</code> means the new URL matches the pattern again. Anchor the regex or exclude the trailing-slash form.',
-            '<strong>Two rules pointing at each other</strong> — often one added by the application and one by the server, months apart.',
-            '<strong>An HTTPS redirect behind a proxy.</strong> Nginx sees HTTP on the internal hop, redirects to HTTPS, the proxy forwards HTTP again. Check <code>$http_x_forwarded_proto</code>, not <code>$scheme</code>.',
-            '<strong>Trailing-slash rules fighting the application.</strong> Nginx adds a slash, the framework removes it, forever.',
-            '<strong>A <code>www</code> rule and a canonical host rule disagreeing</strong> about which form is authoritative.'
-          ],
-          after: '<p>Chains are the quieter version of the same problem: A goes to B goes to C. Each hop costs latency and dilutes signals, and browsers stop following after roughly twenty. The generator detects both and collapses chains to a single hop.</p>'
-        },
-        {
-          h: 'How long to keep redirects',
-          html: '<p>At least a year, and preferably permanently. Search engines usually transfer signals within a few months, but external links and bookmarks last far longer than anyone expects — inbound traffic on redirects from a migration five years ago is entirely normal.</p>' +
-            '<p>Redirects cost nothing to keep when implemented as a <code>map</code>: one hash lookup no matter how many entries. There is rarely a performance reason to prune, and removing an old rule converts a working link into a 404 with no warning.</p>' +
-            '<p>Where a redirect table has become genuinely unmanageable, retire rules by measured traffic rather than by age.</p>'
-        },
-        {
-          h: 'Related migration tools',
-          list: [
-            '<a href="/tools/canonical-tag-generator">Canonical Tag Generator</a> — consolidate duplicates you cannot redirect.',
-            '<a href="/tools/sitemap-index-generator">Sitemap Index Generator</a> — resubmit clean URL lists after the move.',
-            '<a href="/tools/x-robots-tag-generator">X-Robots-Tag Generator</a> — indexing headers for files and directories.',
-            '<a href="/tools/hreflang-tag-generator">Hreflang Tag Generator</a> — locale redirects that do not break annotations.'
-          ]
-        }
+        { html: '<p>Paste old and new URL pairs, choose the status code and output style, then generate rules for individual pages, directories, domains, HTTPS normalization or regex patterns. For larger migrations, the tool can also produce a redirect map instead of filling your server block with hundreds of repetitive rules.</p>' +
+            '<p>A bad rule can create loops or send thousands of URLs to the wrong destination. Redirect each old URL to the most relevant new URL, use a permanent status only for a genuine permanent move, and test the response before deployment.</p>' },
+        { h: 'What Is an Nginx Redirect?',
+          html: '<p>An Nginx redirect is a server-side response that tells a browser or crawler to request a different URL.</p><p>For example, a permanent page move can return:</p>' +
+            '<pre class="code">301 Moved Permanently</pre><p>along with the new location.</p>' +
+            '<p>The visitor is sent to the destination automatically. Search engines can also use the redirect as a signal that the old URL has moved.</p>' +
+            '<p>Nginx can create redirects with several mechanisms, including the <code>return</code> and <code>rewrite</code> directives. Simple redirects are usually easier to understand with <code>return</code>, while regex-based transformations may require <code>rewrite</code>.</p>' },
+        { h: 'How to Use This Nginx Redirect Generator',
+          html: '<p>Choose the scenario that matches what you are changing.</p>' +
+            '<p>For page-to-page redirects, paste one old URL and one new URL per line. The tool accepts common separators such as commas, tabs or pipes.</p><p>Example:</p>' +
+            '<pre class="code">/old-page, /new-page</pre>' +
+            '<p>For a domain move, enter the old and new hosts.</p>' +
+            '<p>For a directory move, enter the old path and the replacement path.</p>' +
+            '<p>For pattern-based migrations, use the regex fields only when a predictable rule genuinely maps many URLs to new locations.</p>' +
+            '<p>Then choose the redirect status and output style.</p>' +
+            '<p>Before copying the configuration into production, open the generated checks and verify a few representative URLs, including URLs that should not redirect.</p>' },
+        { h: '301 vs 302 Redirect: Which One Should You Use?',
+          html: '<p>Use a <strong>301 redirect</strong> when the move is permanent.</p><p>Examples include:</p>',
+          list: ['A page has a new permanent URL', 'A product category was renamed', 'HTTP permanently redirects to HTTPS', 'A domain migration is complete', 'An old slug has been replaced'],
+          after: '<p>Google treats 301 and other permanent server-side redirects as strong signals that the destination should become the canonical URL.</p>' +
+            '<p>Use a <strong>302 redirect</strong> when the move is temporary.</p>' +
+            '<p>Examples include a short-lived campaign, temporary maintenance route or controlled experiment where the original URL should remain the long-term address.</p>' +
+            '<p>Do not use 302 simply because you are afraid a 301 will “lose SEO value.” Google states that permanent redirects do not cause a loss of PageRank.</p>' +
+            '<p>The status should describe the real intent of the move.</p>' },
+        { h: 'Nginx return vs rewrite',
+          html: '<p>For a simple redirect, <code>return</code> is often the clearest choice.</p><p>Example:</p>' +
+            '<pre class="code">return 301 https://example.com/new-page;</pre>' +
+            '<p>Nginx stops processing and returns the specified status and location.</p>' +
+            '<p>The <code>rewrite</code> directive is more useful when the destination depends on a regular-expression match.</p>' +
+            '<p>For example, you may need to capture part of an old path and reuse it in the new path.</p>' +
+            '<p>Regex is powerful, but it increases the number of ways a migration can go wrong. If ten URLs can be mapped explicitly, ten exact redirects are often easier to audit than one clever expression nobody understands six months later.</p>' +
+            '<p>Use regex when it reduces real complexity, not merely because it produces fewer lines.</p>' },
+        { h: 'Bulk Nginx Redirects for Site Migrations',
+          html: '<p>Large redesigns often involve hundreds or thousands of old URLs.</p><p>Do not create those redirects from memory.</p>' +
+            '<p>Export the old URLs, map each one to its best destination and paste the pairs into bulk mode.</p>' +
+            '<p>A good migration map should answer three questions for every old URL:</p>',
+          ol: ['Does an equivalent new page exist?', 'What is the closest useful destination?', 'Should this URL redirect at all?'],
+          after: '<p>Avoid redirecting every removed page to the homepage. A mass homepage redirect is poor for users and may be treated as a soft 404 when the destination is not relevant.</p>' +
+            '<p>If a page truly has no replacement, returning a proper 404 or 410 can be cleaner than forcing an unrelated redirect.</p>' },
+        { h: 'When to Use an Nginx map',
+          html: '<p>For a large set of exact old-to-new URL pairs, an Nginx <code>map</code> can keep the configuration cleaner than hundreds of location rules.</p>' +
+            '<p>It is especially useful when redirects are maintained as a separate file. Keep that file under version control when possible so migration changes remain auditable.</p>' },
+        { h: 'Redirect an Old Domain to a New Domain',
+          html: '<p>A domain migration should normally preserve each path where an equivalent page exists.</p><p>Better:</p>' +
+            '<pre class="code">oldsite.com/products/widget\n→ newsite.com/products/widget</pre><p>Weaker:</p>' +
+            '<pre class="code">oldsite.com/products/widget\n→ newsite.com/</pre>' +
+            '<p>Preserving the path helps users reach the content they expected and gives search engines a clearer migration signal.</p>' +
+            '<p>After a domain move, update your internal links, canonical tags, hreflang annotations and XML sitemaps so they point directly to the new domain.</p>' +
+            '<p>Do not rely on redirects forever as a substitute for cleaning up your own site signals.</p>' },
+        { h: 'Force HTTPS with Nginx',
+          html: '<p>If HTTP is no longer your preferred protocol, redirect HTTP requests to HTTPS at the server level.</p><p>Your final SEO signals should agree:</p>',
+          table: { head: ['Signal', 'Preferred Version'], rows: [['Redirect', 'HTTP → HTTPS'], ['Canonical', 'HTTPS'], ['Internal links', 'HTTPS'], ['XML sitemap', 'HTTPS'], ['Hreflang', 'HTTPS']] },
+          after: '<p>Mixed signals create unnecessary crawling and make troubleshooting harder.</p>' +
+            '<p>After enabling HTTPS redirects, test more than the homepage. Check deep URLs, query strings, assets where relevant and both hostname variants.</p>' },
+        { h: 'WWW vs Non-WWW Redirects',
+          html: '<p>Choose one hostname and redirect the other version directly to it. Avoid chains such as HTTP www → HTTP non-www → HTTPS non-www when one hop can reach the final canonical destination.</p>' +
+            '<p>Your canonical tags, sitemaps and internal links should use the same preferred host.</p>' },
+        { h: 'Should You Preserve Query Strings?',
+          html: '<p>It depends on what the query string does. Tracking parameters may be useful for analytics, while functional parameters can control filters, language or product state.</p>' +
+            '<p>Do not automatically drop or preserve every query string. Decide based on the migration requirement and make the behavior explicit before launch.</p>' },
+        { h: 'Regex Redirects and Capture Groups',
+          html: '<p>Regex redirects are useful when many old URLs follow one consistent structure. A capture group can preserve the changing part of a slug in the destination.</p>' +
+            '<p>Before deployment, test valid matches, near-misses, query strings, case sensitivity and trailing slashes. One overbroad regex can affect far more URLs than intended.</p>' },
+        { h: 'Avoid Redirect Chains',
+          html: '<p>A redirect chain occurs when one URL redirects to another URL that redirects again.</p><p>Example:</p><pre class="code">A → B → C</pre>' +
+            '<p>If C is the final page, redirect A directly to C.</p>' +
+            '<p>Chains add extra requests for users and crawlers. They also make migrations harder to maintain.</p>' +
+            '<p>Redirect loops are worse:</p><pre class="code">A → B → A</pre>' +
+            '<p>Always test the final configuration before reloading Nginx.</p><p>A basic deployment workflow is:</p>',
+          ol: ['Back up the current config.', 'Add the new rules.', 'Run the Nginx configuration test.', 'Reload only after the test passes.', 'Check live HTTP status codes.', 'Crawl the old URL list after launch.'] },
+        { h: 'Redirects, Canonicals and Sitemaps Should Agree',
+          html: '<p>If <code>/old-page</code> redirects to <code>/new-page</code>, the new page should not canonicalize back to the old URL. After a migration, update canonicals, internal links, sitemaps and hreflang so they point directly to the final URLs.</p>' +
+            '<p>Use the <a href="/tools/canonical-tag-generator">Canonical Tag Generator</a> and <a href="/tools/sitemap-index-generator">Sitemap Index Generator</a> when rebuilding those signals.</p>' },
+        { h: 'Common Nginx Redirect Mistakes',
+          html: '<p>Watch for these problems:</p>',
+          list: ['Using 302 for a permanent migration', 'Sending unrelated URLs to the homepage', 'Creating multiple redirect hops', 'Redirecting to another redirect',
+                 'Losing important query parameters', 'Using an overly broad regex', 'Mixing www and non-www destinations', 'Redirecting HTTPS back to HTTP',
+                 'Leaving old URLs in internal links', 'Updating Nginx without testing the config'],
+          after: '<p>A redirect plan succeeds when each important old URL reaches the correct final destination in one predictable hop. For language-specific redirect targets, keep <a href="/tools/hreflang-tag-generator">hreflang</a> in sync, and use <a href="/tools/x-robots-tag-generator">X-Robots-Tag</a> for non-HTML resources that move.</p>' }
       ],
-      keywords: [
-        'nginx redirect generator', 'nginx 301 redirect', 'nginx rewrite rule',
-        'nginx map redirect', 'bulk redirect nginx', 'nginx redirect query string',
-        '301 vs 302', '308 permanent redirect', 'nginx redirect loop',
-        'site migration redirects', 'nginx location return 301', 'htaccess to nginx redirect'
-      ]
+      keywords: ['nginx redirect generator', '301 vs 302', 'nginx rewrite vs return', 'bulk nginx redirects',
+        'nginx redirect map', 'nginx https redirect', 'nginx www redirect', 'redirect chain', 'nginx regex redirect',
+        'domain migration redirects', 'nginx redirect config generator', 'permanent redirect pagerank']
     }
   });
 })();
